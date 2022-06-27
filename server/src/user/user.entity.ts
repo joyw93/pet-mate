@@ -11,6 +11,6 @@ export class UserEntity {
   @Column({ length: 60 })
   nickname: string;
 
-  @Column({ length: 60 })
+  @Column({ length: 255 })
   password: string;
 }
