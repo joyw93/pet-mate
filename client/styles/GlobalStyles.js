@@ -14,7 +14,7 @@ html {
 }
 body {
   margin: 0;
-  width: 100vw;
+  width: 100%;
 }
 h1,
 div,

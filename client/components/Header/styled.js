@@ -2,11 +2,10 @@ import styled from 'styled-components';
 
 export const NavContainer = styled.header`
   display: flex;
-  position: relative;
   align-items: center;
   justify-content: space-between;
   height: 64px;
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
 

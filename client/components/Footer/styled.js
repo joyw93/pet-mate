@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
-  position: relative;
   align-items: center;
   justify-content: space-around;
+  width: 100%;
   height: 200px;
   background: #fff;
 
@@ -16,7 +16,7 @@ export const FooterContainer = styled.footer`
   }
   #members {
     display: flex;
-    width: 800px;
+    max-width: 800px;
     margin: 0 auto;
     justify-content: space-between;
   }
@@ -31,6 +31,7 @@ export const FooterContainer = styled.footer`
     font-weight: bold;
   }
   #members a {
+    display: block;
     width: 100%;
     height: 100%;
     cursor: pointer;
@@ -58,8 +59,11 @@ export const FooterContainer = styled.footer`
   }
   #copyright {
     display: flex;
+    justify-content: center;
   }
-  #copyright > img {
+  #copyright > a,
+  #copyright img {
+    display: block;
     width: 28px;
     height: 28px;
   }
