@@ -1,7 +1,9 @@
+import { PostCardContainer } from './styled';
+
 const PostCard = () => {
   return (
     <>
-      <div>PostCard</div>
+      <PostCardContainer>PostCard</PostCardContainer>
     </>
   );
 };

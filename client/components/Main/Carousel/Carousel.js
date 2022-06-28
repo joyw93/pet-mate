@@ -1,7 +1,9 @@
+import { CarouselContainer } from "./styled";
+
 const Carousel = () => {
     return (
       <>
-        <div>Carousel</div>
+        <CarouselContainer>Carousel</CarouselContainer>
       </>
     );
   };
