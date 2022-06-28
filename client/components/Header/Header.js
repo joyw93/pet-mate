@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { NavContainer, Tab, Login, Signup, Input } from "./styled";
 
-
-
 const Header = () => {
   return (
     <>
@@ -27,7 +25,7 @@ const Header = () => {
         </div>
         <div id="menu_right">
           <form>
-            <Input placeholder="검색어를 입력하세요"/>
+            <Input placeholder="검색어를 입력하세요" />
           </form>
           <ul id="gnb">
             <li>

@@ -1,6 +1,6 @@
 import { PostCardContainer } from './styled';
 
-const PostCard = () => {
+const PostCards = () => {
   return (
     <>
       <PostCardContainer>PostCard</PostCardContainer>
@@ -8,4 +8,4 @@ const PostCard = () => {
   );
 };
 
-export default PostCard;
+export default PostCards;
