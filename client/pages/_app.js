@@ -15,10 +15,8 @@ import GlobalStyles from "../styles/GlobalStyles";
 //     color: #000;
 //     text-decoration: none;
 //   }
-
-
-
 // `;
+
 
 const App = ({ Component }) => {
   return (

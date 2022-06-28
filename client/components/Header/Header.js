@@ -1,47 +1,44 @@
-import Link from 'next/link';
-import { NavContainer } from './styled';
-import { Input, Space } from 'antd';
-// import 'antd/dist/antd.css';
+import Link from "next/link";
+import { NavContainer, Tab, Login, Signup, Input } from "./styled";
 
-const { Search } = Input;
+
 
 const Header = () => {
   return (
     <>
       <NavContainer>
-        <div id='menu_left'>
-          <Link href='/'>
-            <div id='logo'></div>
+        <div id="menu_left">
+          <Link href="/">
+            <div id="logo"></div>
           </Link>
 
-          <ul id='lnb'>
+          <ul id="lnb">
             <li>
-              <Link href='/user'>산책 메이트</Link>
+              <Tab>
+                <Link href="/running-mate">산책메이트</Link>
+              </Tab>
             </li>
             <li>
-              <Link href='/'>커뮤니티</Link>
+              <Tab>
+                <Link href="/community">커뮤니티</Link>
+              </Tab>
             </li>
           </ul>
         </div>
-        <div id='menu_right'>
+        <div id="menu_right">
           <form>
-            <Input
-              id='search_input'
-              placeholder='검색어를 입력하세요.'
-              allowClear
-              style={{
-                width: 200,
-                borderRadius: '20px',
-                border: '1px solid #FB9B03',
-              }}
-            />
+            <Input placeholder="검색어를 입력하세요"/>
           </form>
-          <ul id='gnb'>
+          <ul id="gnb">
             <li>
-              <Link href='/user'>로그인</Link>
+              <Login>
+                <Link href="/">로그인</Link>
+              </Login>
             </li>
             <li>
-              <Link href='/'>회원가입</Link>
+              <Signup>
+                <Link href="/">회원가입</Link>
+              </Signup>
             </li>
           </ul>
         </div>
