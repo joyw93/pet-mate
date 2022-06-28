@@ -1,12 +1,14 @@
 import AppLayout from "../components/AppLayout";
-
+import Banner from "../components/Main/Banner/Banner";
+import Carousel from "../components/Main/Carousel/Carousel";
+import PostCard from "../components/Main/PostCard/PostCard";
 
 const Home = () => {
-
-
   return (
     <AppLayout>
-      펫메이트 홈페이지입니다.
+      <Carousel />
+      <Banner />
+      <PostCard />
     </AppLayout>
   );
 };
