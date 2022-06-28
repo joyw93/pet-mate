@@ -1,7 +1,9 @@
+import { BannerContainer } from './styled';
+
 const Banner = () => {
   return (
     <>
-      <div>배너</div>
+      <BannerContainer>배너</BannerContainer>
     </>
   );
 };
