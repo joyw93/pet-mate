@@ -1,6 +1,6 @@
-import Head from "next/head";
-import styled, { createGlobalStyle } from "styled-components";
-import GlobalStyles from "../styles/GlobalStyles";
+import Head from 'next/head';
+import styled, { createGlobalStyle } from 'styled-components';
+import GlobalStyles from '../styles/GlobalStyles';
 
 // const GlobalStyle = createGlobalStyle`
 // 	* {
@@ -17,17 +17,15 @@ import GlobalStyles from "../styles/GlobalStyles";
 //   }
 // `;
 
-
 const App = ({ Component }) => {
   return (
     <>
       <GlobalStyles />
-        <Head>
-          <meta charSet="utf-8" />
-          <title>펫메이트</title>
-        </Head>
+      <Head>
+        <meta charSet='utf-8' />
+        <title>펫메이트</title>
+      </Head>
       <Component />
-    
     </>
   );
 };

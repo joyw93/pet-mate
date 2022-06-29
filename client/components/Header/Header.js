@@ -1,41 +1,54 @@
-import Link from "next/link";
-import { NavContainer, Tab, Login, Signup, Input } from "./styled";
+import Link from 'next/link';
+import { useState } from 'react';
+import { NavContainer, Tab, Login, Signup, Input } from './styled';
 
 const Header = () => {
+  const [inputVal, setInputVal] = useState('');
+  const handleValChange = (event) => {
+    setInputVal(event.target.value);
+  };
+  const clearInputVal = (e) => {
+    e.preventDefault();
+    setInputVal('');
+  };
+
   return (
     <>
       <NavContainer>
-        <div id="menu_left">
-          <Link href="/">
-            <div id="logo"></div>
+        <div id='menu_left'>
+          <Link href='/'>
+            <div id='logo'></div>
           </Link>
 
-          <ul id="lnb">
+          <ul id='lnb'>
             <li>
               <Tab>
-                <Link href="/running-mate">산책메이트</Link>
+                <Link href='/running-mate'>산책메이트</Link>
               </Tab>
             </li>
             <li>
               <Tab>
-                <Link href="/community">커뮤니티</Link>
+                <Link href='/community'>커뮤니티</Link>
               </Tab>
             </li>
           </ul>
         </div>
-        <div id="menu_right">
+        <div id='menu_right'>
           <form>
-            <Input placeholder="검색어를 입력하세요" />
+            <Input placeholder='검색어를 입력하세요' onChange={handleValChange} value={inputVal} />
+            <button id='cancel_btn' onClick={clearInputVal}>
+              <img src='img/cancelbtn.png' />
+            </button>
           </form>
-          <ul id="gnb">
+          <ul id='gnb'>
             <li>
               <Login>
-                <Link href="/">로그인</Link>
+                <Link href='/'>로그인</Link>
               </Login>
             </li>
             <li>
               <Signup>
-                <Link href="/">회원가입</Link>
+                <Link href='/'>회원가입</Link>
               </Signup>
             </li>
           </ul>
