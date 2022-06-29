@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next -p 800",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 80"
   },
   "author": "",
   "license": "ISC",
