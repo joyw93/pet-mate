@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const BannerContainer = styled.div`
   width: 100%;
-  height: 1600px;
-  background-color: #ccc;
 `;
 
-export const BannerItem = styled.img`
+export const BannerItem = styled.div`
   width: 100%;
+  height: 800px;
+  background-image: url(${(props) => props.url});
 `;

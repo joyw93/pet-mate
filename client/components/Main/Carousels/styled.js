@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const CarouselContainer = styled.div`
   width: 100%;
@@ -8,4 +8,5 @@ export const CarouselContainer = styled.div`
 
 export const CarouselItem = styled.img`
   width: 100%;
+  height: 520px;
 `;

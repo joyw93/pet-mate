@@ -4,8 +4,12 @@ const Banner = () => {
   return (
     <>
       <BannerContainer>
-        <BannerItem src='img/dog1.jpg'/>
-        <BannerItem src='img/dog2.jpg'/>
+        <BannerItem url='img/banner1.png'>
+          <button>둘러보기</button>
+        </BannerItem>
+        <BannerItem url='img/banner2.png'>
+          <button>둘러보기</button>
+        </BannerItem>
       </BannerContainer>
     </>
   );
