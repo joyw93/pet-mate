@@ -12,7 +12,7 @@ const PostCards = () => {
     {
       id: 1,
       src: "img/pet1.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함",
+      title: "울집 댕댕이랑  ",
     },
     {
       id: 2,
@@ -23,6 +23,11 @@ const PostCards = () => {
       id: 3,
       src: "img/pet3.jpg",
       title: "울집 댕댕이랑 산책하실 분 구함3",
+    },
+    {
+      id: 4,
+      src: "img/pet3.jpg",
+      title: "울집 댕댕이랑 산책하실 분 구함",
     },
   ];
 
@@ -39,6 +44,11 @@ const PostCards = () => {
     },
     {
       id: 3,
+      src: "img/pet3.jpg",
+      title: "울집 댕댕이랑 산책하실 분 구함",
+    },
+    {
+      id: 4,
       src: "img/pet3.jpg",
       title: "울집 댕댕이랑 산책하실 분 구함",
     },
