@@ -20,7 +20,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 const App = ({ Component }) => {
   return (
     <>
-      {/* <GlobalStyles /> */}
+      <GlobalStyles />
       <Head>
         <meta charSet='utf-8' />
         <title>펫메이트</title>
