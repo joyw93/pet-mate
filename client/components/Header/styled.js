@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const NavContainer = styled.header`
   display: flex;
@@ -12,7 +12,7 @@ export const NavContainer = styled.header`
   #logo {
     width: 156px;
     height: 56px;
-    background-image: url("img/logo_pet.png");
+    background-image: url('img/logo_pet.png');
     background-size: cover;
     cursor: pointer;
   }
@@ -28,17 +28,31 @@ export const NavContainer = styled.header`
   #lnb li {
     line-height: 64px;
   }
+  #menu_right form {
+    position: relative;
+  }
+  #cancel_btn {
+    background: none;
+    border: none;
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    cursor: pointer;
+  }
+  #cancel_btn > img {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 export const Input = styled.input`
-border-radius: 15px;
-border: 1px solid #fb9b03;
-height: 30px;
-width: 200px;
-opacity: 0.7;
-text-indent: 12px;
-
-`
+  border-radius: 15px;
+  border: 1px solid #fb9b03;
+  height: 30px;
+  width: 200px;
+  opacity: 0.7;
+  text-indent: 12px;
+`;
 
 export const Tab = styled.div`
   margin-left: 20px;
@@ -46,6 +60,7 @@ export const Tab = styled.div`
   font-size: 15px;
   &:hover {
     color: #fb9b03;
+    transition: 0.2s all;
   }
 `;
 
@@ -55,6 +70,7 @@ export const Login = styled.div`
   font-size: 15px;
   &:hover {
     color: #fb9b03;
+    transition: 0.2s all;
   }
 `;
 

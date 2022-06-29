@@ -5,7 +5,7 @@ export const PostCardContainer = styled.div`
   height: 1200px;
   margin: 0 auto;
   background-color: #eee;
-  text-align: center;
+  
 `;
 
 export const Title = styled.div`
