@@ -1,14 +1,10 @@
 import AppLayout from "../components/AppLayout";
-import Banner from "../components/Main/Banner/Banner";
-import Carousels from "../components/Main/Carousels/Carousels";
-import PostCards from "../components/Main/PostCards/PostCards";
+
 
 const RunningMate = () => {
   return (
     <AppLayout>
-      <Carousels />
-      <Banner />
-      <PostCards />
+      <div>It will be 산책메이트 페이지</div>
     </AppLayout>
   );
 };

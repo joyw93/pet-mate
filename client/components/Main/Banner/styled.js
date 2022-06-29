@@ -5,3 +5,7 @@ export const BannerContainer = styled.div`
   height: 1600px;
   background-color: #ccc;
 `;
+
+export const BannerItem = styled.img`
+  width: 100%;
+`;
