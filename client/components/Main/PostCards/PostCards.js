@@ -1,9 +1,15 @@
-import { PostCardContainer } from './styled';
+import { PostCardContainer, Title, RunningMate, Community } from "./styled";
 
 const PostCards = () => {
   return (
     <>
-      <PostCardContainer>PostCard</PostCardContainer>
+      <PostCardContainer>
+        <Title>인기 게시글</Title>
+        <RunningMate>
+          <span>산책 메이트</span>
+        </RunningMate>
+        <Community></Community>
+      </PostCardContainer>
     </>
   );
 };
