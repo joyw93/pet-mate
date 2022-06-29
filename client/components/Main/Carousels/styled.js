@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 export const CarouselContainer = styled.div`
-  width: 100%;
+  max-width: 1920px;
   height: 520px;
-  background-color: #eee;
+  margin: 0 auto;
 `;
 
 export const CarouselItem = styled.img`
-  width: 100%;
+  width: 1920px;
   height: 520px;
 `;

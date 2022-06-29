@@ -55,4 +55,5 @@ export const ComuContainer = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
