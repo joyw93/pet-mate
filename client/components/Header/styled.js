@@ -38,12 +38,12 @@ export const NavContainer = styled.header`
     border: none;
     position: absolute;
     right: 5px;
-    top: 3px;
+    top: 6px;
     cursor: pointer;
   }
   #cancel_btn > img {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
   }
 `;
 
