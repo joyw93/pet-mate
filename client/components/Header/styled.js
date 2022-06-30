@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Colors } from '../../styles/ColorVariable';
 
 export const NavContainer = styled.header`
   display: flex;
@@ -47,7 +48,7 @@ export const NavContainer = styled.header`
 
 export const Input = styled.input`
   border-radius: 15px;
-  border: 1px solid #fb9b03;
+  border: 1px solid ${Colors.primaryColor};
   height: 30px;
   width: 200px;
   opacity: 0.7;
@@ -59,7 +60,7 @@ export const Tab = styled.div`
   font-weight: bold;
   font-size: 15px;
   &:hover {
-    color: #fb9b03;
+    color: ${Colors.primaryColor};
     transition: 0.2s all;
   }
 `;
@@ -69,7 +70,7 @@ export const Login = styled.div`
   font-weight: bold;
   font-size: 15px;
   &:hover {
-    color: #fb9b03;
+    color: ${Colors.primaryColor};
     transition: 0.2s all;
   }
 `;
@@ -79,6 +80,7 @@ export const Signup = styled.div`
   font-weight: bold;
   font-size: 15px;
   &:hover {
-    color: #fb9b03;
+    color: ${Colors.primaryColor};
+    transition: 0.2s all;
   }
 `;

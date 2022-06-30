@@ -4,9 +4,17 @@ import { NavContainer, Tab, Login, Signup, Input } from './styled';
 
 const Header = () => {
   const [inputVal, setInputVal] = useState('');
+  const [visibile, setVisibile] = useState(false);
+
   const handleValChange = (event) => {
+    if (event.target.value !== '') {
+      setVisibile(true);
+    } else {
+      setVisibile(false);
+    }
     setInputVal(event.target.value);
   };
+
   const clearInputVal = (e) => {
     e.preventDefault();
     setInputVal('');
@@ -36,9 +44,11 @@ const Header = () => {
         <div id='menu_right'>
           <form>
             <Input placeholder='검색어를 입력하세요' onChange={handleValChange} value={inputVal} />
-            <button id='cancel_btn' onClick={clearInputVal}>
-              <img src='img/cancelbtn.png' />
-            </button>
+            {visibile && (
+              <button id='cancel_btn' onClick={clearInputVal}>
+                <img src='img/cancelbtn.png' />
+              </button>
+            )}
           </form>
           <ul id='gnb'>
             <li>
