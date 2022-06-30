@@ -1,6 +1,5 @@
 import AppLayout from "../components/AppLayout";
 
-
 const Community = () => {
   return (
     <AppLayout>
@@ -8,5 +7,4 @@ const Community = () => {
     </AppLayout>
   );
 };
-
 export default Community;

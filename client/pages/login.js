@@ -1,11 +1,14 @@
 import AppLayout from "../components/AppLayout";
+import LogIn from "../components/LogIn/LogIn";
 
-const LogIn = () => {
+const LogInPage = () => {
   return (
     <AppLayout>
-      <div>It will be LogIn</div>
+      <LogIn />
+
     </AppLayout>
   );
 };
 
-export default LogIn;
+export default LogInPage;
+

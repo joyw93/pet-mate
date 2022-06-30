@@ -1,22 +1,37 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
 
-export const SignUpContainer = styled.div`
+export const LogInContainer = styled.div`
   width: 400px;
   margin: 0 auto;
   margin-top: 90px;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  img {
-    width: 80%;
+  h1 {
+    padding-top: 50px;
+    padding-bottom: 5px;
+    border-bottom: 3px solid #fb9b03;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  p {
+    margin-top: 10px;
+  }
+
+  p:hover {
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
 export const FormWrapper = styled.div`
   width: 280px;
-  margin-bottom: 50px;
 `;
 
 export const InputWrapper = styled.div`
@@ -46,22 +61,9 @@ export const InputWrapper = styled.div`
     width: 210px;
   }
 
-  & p {
+  p {
     padding-top: 10px;
-    color: ${(props) => props.color};
   }
-`;
-
-export const ValidBtn = styled.button`
-  background-color: #000;
-  color: #fff;
-  border-radius: 10px;
-  width: 70px;
-  height: 40px;
-  margin-left: 5px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
 `;
 
 export const SignupBtn = styled.button`
@@ -71,6 +73,16 @@ export const SignupBtn = styled.button`
   border-radius: 10px;
   background-color: ${Colors.primaryColor};
   font-weight: bold;
-  font-size: 16px;
   cursor: pointer;
+  margin-bottom: 10px;
+`;
+
+export const GoogleBtn = styled(SignupBtn)`
+  background-color: #fff;
+  border: 1px solid #000;
+`;
+
+export const KakaoBtn = styled(SignupBtn)`
+  background-color: #fff;
+  border: 2px solid ${Colors.profileYellow};
 `;
