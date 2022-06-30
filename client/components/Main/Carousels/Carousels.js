@@ -12,7 +12,9 @@ const Carousels = () => {
     <>
       <CarouselContainer>
         <Carousel animation="slide" duration={800} interval={2000}>
-         {imageUrls.map((imageUrl) => <CarouselItem src={imageUrl}/>)}
+          {imageUrls.map((imageUrl) => (
+            <CarouselItem key={imageUrl} src={imageUrl} />
+          ))}
         </Carousel>
       </CarouselContainer>
     </>
