@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { Colors } from '../../../styles/ColorVariable';
 
 export const PostCardContainer = styled.div`
   max-width: 1200px;
@@ -16,7 +17,7 @@ export const PostCardContainer = styled.div`
 export const Title = styled.h1`
   padding-top: 50px;
   padding-bottom: 5px;
-  border-bottom: 3px solid #fb9b03;
+  border-bottom: 3px solid ${Colors.primaryColor};
   display: inline-block;
   font-weight: bold;
   font-size: 28px;
