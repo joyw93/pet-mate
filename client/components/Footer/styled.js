@@ -27,7 +27,9 @@ export const FooterContainer = styled.footer`
   }
   #members p {
     margin-top: 7px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+  }
+  #members p:nth-of-type(1) {
     font-weight: bold;
   }
   #members a {
