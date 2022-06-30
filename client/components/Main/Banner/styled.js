@@ -27,11 +27,11 @@ export const BannerItem = styled.div`
     padding: 0 80px;
   }
   .banner_item_img img {
-    max-width: 600px;
+    width: 100%;
   }
   .banner_item_box h1 {
     font-weight: bold;
-    font-size: 2.2vmax;
+    font-size: 2.8rem;
     line-height: 1.5;
     margin-bottom: 30px;
   }

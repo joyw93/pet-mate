@@ -5,7 +5,8 @@ export const NavContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  flex-wrap: wrap;
+  min-height: 64px;
   max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
