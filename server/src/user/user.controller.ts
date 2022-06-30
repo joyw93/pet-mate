@@ -1,4 +1,12 @@
-import { Body, Controller, Get, NotFoundException, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
@@ -6,9 +14,25 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post('nicknameCheck')
+  async nicknameCheck(@Body() body) {
+    return await this.userService.isValidNickname(body.nickname);
+  }
+
+  @Post('emailCheck')
+  async emailCheck(@Body() body) {
+    return await this.userService.isValidEmail(body.email);
+  }
+
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
     return await this.userService.createUser(createUserDto);
   }
 
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req) {
+    return req.user;
+    // return await this.userService.login(body.email, body.password);
+  }
 }
