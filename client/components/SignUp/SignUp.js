@@ -5,11 +5,13 @@ import {
   ValidBtn,
   SignupBtn,
   FormWrapper,
+  CheckInput
 } from "./styled";
 
 const SignUp = () => {
   //객체로 바꾸기
   const [username, setUsername] = useState("");
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
@@ -19,13 +21,28 @@ const SignUp = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const [nickname, setNickname] = useState("");
+  //닉네임 중복확인
   const [nicknameIsValid, setNicknameIsValid] = useState(false);
   const [nicknameIsUnvalid, setNicknameIsUnvalid] = useState(false);
 
+  //이메일 중복확인
+  const [emailIsValid, setEmailIsValid] = useState(false);
+  const [emailIsUnvalid, setEmailIsUnvalid] = useState(false);
+
   const checkNickname = (e) => {
     setNickname(e.target.value);
+    console.log(nickname);
+
+    setEmailIsValid(false);
+    setEmailIsUnvalid(false);
+
   };
+
+  const checkEmail = (e) => {
+    setEmail(e.target.value);
+    setNicknameIsValid(false);
+    setNicknameIsUnvalid(false);
+  }
 
   const handleValidNickname = () => {
     //이미 닉네임이 있을 때
@@ -38,6 +55,21 @@ const SignUp = () => {
       }
     }
   };
+
+  const handleValidEmail = () => {
+    // if(email.search('@')) {
+
+    // }
+    if (email.length !== 0 && email === "test@test.com") {
+      setEmailIsUnvalid(true);
+    } else {
+      //이메일 없을 때
+      if (email.length !== 0) {
+        setEmailIsValid(true);
+      }
+    }
+
+  }
 
   const handleSignUpSubmit = () => {
     if (!username) {
@@ -83,19 +115,13 @@ const SignUp = () => {
             ></input>
             <ValidBtn onClick={handleValidNickname}>중복확인</ValidBtn>
           </div>
-          {nicknameIsUnvalid && !nicknameIsValid ? (
-            <p color="red">사용할 수 없는 닉네임입니다.</p>
-          ) : !nickname && !nicknameIsUnvalid ? (
-            ""
-          ) : (
-            <p color="green">사용가능한 닉네임입니다.</p>
-          )}
+          {!nicknameIsUnvalid && !nicknameIsValid ? '' : nicknameIsValid && !nicknameIsUnvalid ? <CheckInput color="green">사용가능한 닉네임입니다.</CheckInput> : <CheckInput color="red">사용할 수 없는 닉네임입니다.</CheckInput>}
         </InputWrapper>
         <InputWrapper>
           <label>이메일</label>
           <div>
-            <input type="email"></input>
-            <ValidBtn>중복확인</ValidBtn>
+            <input type="email" value={email} onChange={checkEmail}></input>
+            <ValidBtn onClick={handleValidEmail}>중복확인</ValidBtn>
           </div>
         </InputWrapper>
         <InputWrapper>
