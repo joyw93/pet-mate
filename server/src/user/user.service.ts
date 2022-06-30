@@ -16,6 +16,24 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  async isValidNickname(nickname: string) {
+    const userByNickname = await this.userRepository.findOne({
+      where: { nickname },
+    });
+    if (userByNickname) {
+      throw new UnauthorizedException('해당 닉네임은 이미 존재합니다.');
+    }
+  }
+
+  async isValidEmail(email: string) {
+    const userByEmail = await this.userRepository.findOne({
+      where: { email },
+    });
+    if (userByEmail) {
+      throw new UnauthorizedException('해당 이메일은 이미 존재합니다.');
+    }
+  }
+
   async createUser(createUserDto: CreateUserDto) {
     const { email, nickname, password } = createUserDto;
 
@@ -45,7 +63,11 @@ export class UserService {
       return userWithoutPassword;
     } catch (error) {
       console.error(error);
-      throw new HttpException('서버 에러', 500);
+      throw new HttpException('Internal Server Error', 500);
     }
+  }
+
+  async login(email: string, password: string) {
+    
   }
 }
