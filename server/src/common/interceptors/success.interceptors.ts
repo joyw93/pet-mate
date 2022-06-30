@@ -13,6 +13,7 @@ export class SuccessInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data) => ({
         success: true,
+        timestamp: new Date().toISOString(),
         data,
       })),
     );

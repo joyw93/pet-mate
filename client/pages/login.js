@@ -5,8 +5,10 @@ const LogInPage = () => {
   return (
     <AppLayout>
       <LogIn />
+
     </AppLayout>
   );
 };
 
 export default LogInPage;
+
