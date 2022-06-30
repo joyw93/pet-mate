@@ -18,6 +18,7 @@ const Header = () => {
   const clearInputVal = (e) => {
     e.preventDefault();
     setInputVal("");
+    setVisibile(false);
   };
 
   return (
