@@ -22,7 +22,7 @@ export const FormWrapper = styled.div`
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   width: 100%;
 
   label {
@@ -49,7 +49,7 @@ export const InputWrapper = styled.div`
 
 export const CheckInput = styled.p`
   padding-top: 10px;
-  color:${(props) => props.color};
+  color: ${(props) => props.color || "black"};
 `;
 
 export const ValidBtn = styled.button`
@@ -73,4 +73,19 @@ export const SignupBtn = styled.button`
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 20px;
+`;
+
+export const CheckContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  input {
+    background-color: white;
+    accent-color: ${Colors.primaryColor};
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  label {
+    font-size: 14px;
+  }
 `;

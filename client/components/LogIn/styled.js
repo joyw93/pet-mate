@@ -45,44 +45,47 @@ export const InputWrapper = styled.div`
     margin-bottom: 10px;
   }
 
-  input {
+  /* input {
     height: 40px;
     width: 100%;
     border-radius: 5px;
     border: 0.5px solid ${Colors.btnGray};
-  }
-
-  div {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  div > input {
-    width: 210px;
-  }
+  } */
 
   p {
     padding-top: 10px;
   }
 `;
 
-export const SignupBtn = styled.button`
+export const UserInput = styled.input`
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+
+  border: 0.5px solid ${Colors.btnGray};
+`;
+
+export const MainBtn = styled.button`
   width: 100%;
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: ${Colors.primaryColor};
+
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 10px;
 `;
 
-export const GoogleBtn = styled(SignupBtn)`
+export const LoginBtn = styled(MainBtn)`
+  background-color: ${Colors.primaryColor};
+`;
+
+export const GoogleBtn = styled(MainBtn)`
   background-color: #fff;
   border: 1px solid #000;
 `;
 
-export const KakaoBtn = styled(SignupBtn)`
+export const KakaoBtn = styled(MainBtn)`
   background-color: #fff;
   border: 2px solid ${Colors.profileYellow};
 `;
