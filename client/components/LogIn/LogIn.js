@@ -1,10 +1,11 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import {
   LogInContainer,
   FormWrapper,
   InputWrapper,
-  SignupBtn,
+  UserInput,
+  LoginBtn,
   GoogleBtn,
   KakaoBtn,
 } from "./styled";
@@ -30,23 +31,23 @@ const LogIn = () => {
       <FormWrapper>
         <InputWrapper>
           <label>이메일</label>
-          <input
+          <UserInput
             type="email"
             value={email}
             ref={emailRef}
             onChange={(e) => setEmail(e.target.value)}
-          ></input>
+          ></UserInput>
         </InputWrapper>
         <InputWrapper>
           <label>비밀번호</label>
-          <input
+          <UserInput
             type="password"
             value={password}
             ref={passwordRef}
             onChange={(e) => setPassword(e.target.value)}
-          ></input>
+          ></UserInput>
         </InputWrapper>
-        <SignupBtn onClick={handleLoginSubmit}>로그인</SignupBtn>
+        <LoginBtn onClick={handleLoginSubmit}>로그인</LoginBtn>
         <GoogleBtn>구글 로그인</GoogleBtn>
         <KakaoBtn>카카오 로그인</KakaoBtn>
       </FormWrapper>
