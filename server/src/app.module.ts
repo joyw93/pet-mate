@@ -7,13 +7,16 @@ import { AuthModule } from './auth/auth.module';
 import * as ormconfig from '../ormconfig';
 import { UserService } from './user/user.service';
 import { UserEntity } from './user/user.entity';
+import { CommunityModule } from './community/community.module';
+import { CommunityEntity } from './community/community.entity';
 
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forRoot(ormconfig),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, CommunityEntity]),
     AuthModule,
+    CommunityModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],
