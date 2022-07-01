@@ -6,24 +6,27 @@ import { SuccessInterceptor } from './common/interceptors/success.interceptors';
 import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(new SuccessInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: true,
+    origin: ['http://127.0.0.1:800'],
     credentials: true,
   });
-  app.use(cookieParser());
+  app.use(cookieParser(process.env.COOKIE_SECRET));
   app.use(
     session({
       resave: false,
       saveUninitialized: false,
-      secret: 'secret',
+      secret: process.env.COOKIE_SECRET,
       cookie: {
         httpOnly: true,
+        secure: false,
       },
     }),
   );
