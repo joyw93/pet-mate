@@ -1,19 +1,24 @@
-import MyPosts from "./MyPosts/MyPosts";
-import MyComments from "./MyComments/MyComments";
-import LikedPosts from "./LikedPosts/LikedPosts";
-
-import { ProfileContainer, BackgroundArea, ContentArea, UserContent } from "./styled";
+import MyPosts from "./MyPosts";
 import { useState } from "react";
+import {
+  ProfileContainer,
+  BackgroundArea,
+  ContentArea,
+  UserContent,
+  ProfileInfo,
+  ProfileImg,
+  UserInfo,
+  UserFeed,
+  TabWrapper,
+  TabList,
+  ImageWrapper,
+} from "./styled";
 
 const MyProfile = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const tabClickeHandler = (index) => {
     setActiveIndex(index);
-  };
-
-  const generateKey = (pre) => {
-    return `${pre}_${new Date().getTime()}`;
   };
 
   const MyPostItems = [
@@ -70,12 +75,14 @@ const MyProfile = () => {
       src: "img/pet1.jpg",
       con: "울집 댕댕이 궁물 타임~!~!~!",
       link: "/community",
+      tag: "like",
     },
     {
       id: 9,
       src: "img/pet2.jpg",
       title: "궁금해요 울집 댕댕이",
       link: "/community",
+      tag: "mypost",
     },
     {
       id: 10,
@@ -85,32 +92,7 @@ const MyProfile = () => {
     },
   ];
 
-  const tabContentsArr = [
-    {
-      tabTitle: (
-        <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickeHandler(0)}>
-          내가 쓴 게시글
-        </li>
-      ),
-      tabContent: MyPostItems.map((item) => <MyPosts key={generateKey(item.id)} {...item} />),
-    },
-    {
-      tabTitle: (
-        <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickeHandler(1)}>
-          내가 쓴 댓글
-        </li>
-      ),
-      tabContent: MyCommentItems.map((item) => <MyComments key={generateKey(item.id)} {...item} />),
-    },
-    {
-      tabTitle: (
-        <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickeHandler(2)}>
-          좋아요
-        </li>
-      ),
-      tabContent: MyLikedItems.map((item) => <LikedPosts key={generateKey(item.id)} {...item} />),
-    },
-  ];
+  const titles = [MyPostItems, MyCommentItems, MyLikedItems];
 
   return (
     <>
@@ -118,15 +100,15 @@ const MyProfile = () => {
         <BackgroundArea />
         <ContentArea>
           <UserContent>
-            <div id="profile_info">
-              <div id="profile_img">
+            <ProfileInfo>
+              <ProfileImg>
                 <img src="img/son.png" alt="프로필이미지" />
-              </div>
-              <div id="user_info">
+              </ProfileImg>
+              <UserInfo>
                 <h2>YS</h2>
                 <p>mdlife94@gmail.com</p>
-              </div>
-              <div id="user_feed">
+              </UserInfo>
+              <UserFeed>
                 <p>
                   내가 쓴 게시글 <span>{`${MyPostItems.length}개`}</span>
                 </p>
@@ -136,16 +118,27 @@ const MyProfile = () => {
                 <p>
                   좋아요 <span>{`${MyLikedItems.length}개`}</span>
                 </p>
-              </div>
-            </div>
-            <div id="tab">
-              <ul id="tab_lists">
-                {tabContentsArr.map((tabBox) => {
-                  return tabBox.tabTitle;
-                })}
-              </ul>
-              <div id="tabConBox">{tabContentsArr[activeIndex].tabContent}</div>
-            </div>
+              </UserFeed>
+            </ProfileInfo>
+            <TabWrapper>
+              <TabList>
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickeHandler(0)}>
+                  내가 쓴 게시글
+                </li>
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickeHandler(1)}>
+                  내가 쓴 댓글
+                </li>
+                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickeHandler(2)}>
+                  좋아요
+                </li>
+              </TabList>
+
+              <ImageWrapper>
+                {titles[activeIndex].map((item) => (
+                  <MyPosts key={item.id} {...item} />
+                ))}
+              </ImageWrapper>
+            </TabWrapper>
           </UserContent>
         </ContentArea>
       </ProfileContainer>
