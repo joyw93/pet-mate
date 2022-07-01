@@ -5,11 +5,11 @@ export const CommentContainer = styled.div`
   cursor: pointer;
 
   img {
-    width: 280px;
-    height: 280px;
+    width: 210px;
+    height: 210px;
     object-fit: cover;
     margin-bottom: 20px;
-    margin-right: 25px;
+    margin-right: 20px;
     border-radius: 5px;
   }
 `;
