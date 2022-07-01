@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: ['http://127.0.0.1:800'],
+    origin: ['http://127.0.0.1:800', 'http://petmate.kr'],
     credentials: true,
   });
   app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -27,6 +27,7 @@ async function bootstrap() {
       cookie: {
         httpOnly: true,
         secure: false,
+        domain:'.petmate.kr'
       },
     }),
   );

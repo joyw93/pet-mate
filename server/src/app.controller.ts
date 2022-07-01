@@ -6,7 +6,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  async getHello(@Req() req) {
+  async getHello(@Request() req) {
     console.log(req.session);
+    console.log(req.user);
   }
 }

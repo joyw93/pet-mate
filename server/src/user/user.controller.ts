@@ -38,4 +38,9 @@ export class UserController {
     return user;
     // return await this.userService.login(body.email, body.password);
   }
+
+  @Get('test')
+  async test(@User() user) {
+    console.log(user)
+  }
 }
