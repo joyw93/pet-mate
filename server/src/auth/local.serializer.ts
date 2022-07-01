@@ -16,17 +16,16 @@ export class LocalSerializer extends PassportSerializer {
   }
 
   serializeUser(user: UserEntity, done: CallableFunction) {
-    console.log(user);
-    done(null, user.email);
+    done(null, user.id);
   }
 
   async deserializeUser(userId: string, done: CallableFunction) {
+    console.log(userId)
     return await this.userRepository
       .findOne({
         where: { id: +userId },
       })
       .then((user) => {
-        console.log('user', user);
         done(null, user);
       })
       .catch((error) => {

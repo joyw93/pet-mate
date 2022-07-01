@@ -14,6 +14,7 @@ export class UserEntity {
   @Column({ length: 60 })
   email: string;
 
+  // select: false 추가하기
   @Column({ length: 255 })
   password: string;
 }

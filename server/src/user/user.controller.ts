@@ -7,7 +7,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { User } from 'src/common/decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -31,8 +33,14 @@ export class UserController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return req.user;
+  async login(@User() user: UserEntity) {
+    console.log(user);
+    return user;
     // return await this.userService.login(body.email, body.password);
+  }
+
+  @Get('test')
+  async test(@User() user) {
+    console.log(user);
   }
 }
