@@ -45,11 +45,11 @@ export const InputWrapper = styled.div`
   div > input {
     width: 210px;
   }
+`;
 
-  & p {
-    padding-top: 10px;
-    color: ${(props) => props.color};
-  }
+export const CheckInput = styled.p`
+  padding-top: 10px;
+  color:${(props) => props.color};
 `;
 
 export const ValidBtn = styled.button`
