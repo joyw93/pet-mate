@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -24,6 +24,6 @@ export class AuthService {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     }
-    return null;
+    throw new HttpException('비밀번호 불일치', 401);
   }
 }
