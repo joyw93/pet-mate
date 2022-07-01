@@ -26,6 +26,8 @@ async function bootstrap() {
         secret: process.env.COOKIE_SECRET,
         cookie: {
             httpOnly: true,
+            secure: true,
+            domain: '.petmate.kr'
         },
     }));
     app.use(passport.initialize());
