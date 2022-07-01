@@ -22,78 +22,93 @@ export const ContentArea = styled.div`
   z-index: 1;
   padding-top: 60px;
 `;
-
 export const UserContent = styled.div`
-  width: 1200px;
+  max-width: 1200px;
   min-height: 600px;
   margin: 0 auto;
   display: flex;
   background-color: #fff;
+`;
+export const ProfileInfo = styled.div`
+  width: 280px;
+  height: 480px;
+  padding: 60px;
+`;
+export const ProfileImg = styled.div`
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
 
-  /* profile_info */
-
-  #profile_info {
-    width: 280px;
-    height: 480px;
-    padding: 60px;
-  }
-
-  #profile_img {
-    width: 160px;
-    height: 160px;
-    margin: 0 auto;
-  }
-  #profile_img img {
+  img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     border: 3px solid ${Colors.primaryColor};
   }
-  #user_info h2,
-  #user_info p {
+`;
+export const UserInfo = styled.div`
+  h2 {
     text-align: center;
     margin: 14px 0;
-  }
-  #user_info h2 {
     font-size: 1.4rem;
     font-weight: bold;
   }
-  #user_feed {
-    margin-top: 40px;
+  p {
+    text-align: center;
+    margin: 14px 0;
   }
-  #user_feed p {
+`;
+export const UserFeed = styled.div`
+  margin-top: 40px;
+
+  p {
     font-size: 1.2rem;
     margin: 18px 0;
   }
-  #user_feed span {
+  span {
     float: right;
   }
+`;
 
-  /* tab */
+export const TabWrapper = styled.div`
+  width: 100%;
+  padding-top: 30px;
+`;
 
-  #tab {
-    width: 100%;
-    padding-top: 30px;
-  }
-  #tab_lists {
-    display: flex;
-  }
-  #tab_lists li {
+export const TabList = styled.ul`
+  display: flex;
+
+  li {
     font-size: 1.2rem;
     font-weight: bold;
     margin-right: 15px;
     padding-bottom: 5px;
     cursor: pointer;
   }
-  #tab_lists li.is_active {
+  li.is_active {
     color: ${Colors.primaryColor};
     border-bottom: 2.5px solid ${Colors.primaryColor};
   }
+`;
 
-  #tabConBox {
+export const ImageWrapper = styled.div`
+  width: 100%;
+  padding-top: 28px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  div {
+    width: 210px;
+    height: 210px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-right: 20px;
+  }
+
+  img {
     width: 100%;
-    padding-top: 28px;
-    display: flex;
-    flex-wrap: wrap;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
   }
 `;

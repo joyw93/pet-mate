@@ -33,6 +33,18 @@ const CommunityPostCreate = () => {
 
         <KeywordWrapper>
           <h2>키워드 등록</h2>
+          <div id="keyword_area">
+            <button className="keyword_item">
+              <span>hi</span>
+              <svg class="delete-icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet">
+                <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+              </svg>
+            </button>
+
+            <div id="keyword_input">
+              <input type="text" placeholder="키워드" />
+            </div>
+          </div>
         </KeywordWrapper>
       </CreatePostContainer>
     </>

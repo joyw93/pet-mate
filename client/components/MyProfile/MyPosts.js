@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { PostContainer } from "./styled";
 
 const MyPosts = ({ src, link }) => {
   return (
-    <PostContainer>
+    <div>
       <Link href={link}>
         <img src={src} />
       </Link>
-    </PostContainer>
+    </div>
   );
 };
 

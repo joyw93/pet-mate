@@ -116,5 +116,45 @@ export const KeywordWrapper = styled.div`
     font-size: 1.1rem;
     font-weight: bold;
     color: #444;
+    margin-bottom: 10px;
+  }
+  .keyword_item {
+    margin-right: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+  }
+  .keyword_item span {
+    padding: 0 7px 0 2px;
+  }
+  .keyword_item:hover svg {
+    fill: ${Colors.primaryColor};
+    transition: all 0.3s;
+  }
+  #keyword_input,
+  .keyword_item {
+    display: inline-block;
+    position: relative;
+  }
+  #keyword_input::after,
+  .keyword_item::before {
+    content: "#";
+    position: absolute;
+    left: 12px;
+    top: 0;
+    line-height: 32px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #757575;
+  }
+  #keyword_input input,
+  .keyword_item {
+    border-radius: 20px;
+    height: 32px;
+    padding-left: 24px;
+    border: none;
+    background-color: #f9f9f9;
+    font-size: 1.2rem;
+    /* font-weight: bold; */
+    color: #757575;
   }
 `;
