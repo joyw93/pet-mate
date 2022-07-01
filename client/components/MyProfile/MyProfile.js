@@ -12,6 +12,10 @@ const MyProfile = () => {
     setActiveIndex(index);
   };
 
+  const generateKey = (pre) => {
+    return `${pre}_${new Date().getTime()}`;
+  };
+
   const MyPostItems = [
     {
       id: 1,
@@ -37,17 +41,23 @@ const MyProfile = () => {
       title: "울집 댕댕이랑 산책하실 분 구함",
       link: "/community",
     },
+    {
+      id: 5,
+      src: "img/pet2.jpg",
+      title: "울집 댕댕이랑 산책하실 분 구함2",
+      link: "/community",
+    },
   ];
 
   const MyCommentItems = [
     {
-      id: 5,
+      id: 6,
       src: "img/pet1.jpg",
       con: "울집 댕댕이 궁물 타임~!~!~!",
       link: "/community",
     },
     {
-      id: 6,
+      id: 7,
       src: "img/pet2.jpg",
       title: "궁금해요 울집 댕댕이",
       link: "/community",
@@ -56,19 +66,19 @@ const MyProfile = () => {
 
   const MyLikedItems = [
     {
-      id: 7,
+      id: 8,
       src: "img/pet1.jpg",
       con: "울집 댕댕이 궁물 타임~!~!~!",
       link: "/community",
     },
     {
-      id: 8,
+      id: 9,
       src: "img/pet2.jpg",
       title: "궁금해요 울집 댕댕이",
       link: "/community",
     },
     {
-      id: 9,
+      id: 10,
       src: "img/pet3.jpg",
       title: "울집 댕댕이랑 산책하실 분 구함",
       link: "/community",
@@ -78,27 +88,27 @@ const MyProfile = () => {
   const tabContentsArr = [
     {
       tabTitle: (
-        <li id={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickeHandler(0)}>
+        <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickeHandler(0)}>
           내가 쓴 게시글
         </li>
       ),
-      tabContent: MyPostItems.map((item) => <MyPosts key={item.id} {...item} />),
+      tabContent: MyPostItems.map((item) => <MyPosts key={generateKey(item.id)} {...item} />),
     },
     {
       tabTitle: (
-        <li id={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickeHandler(1)}>
+        <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickeHandler(1)}>
           내가 쓴 댓글
         </li>
       ),
-      tabContent: MyCommentItems.map((item) => <MyComments key={item.id} {...item} />),
+      tabContent: MyCommentItems.map((item) => <MyComments key={generateKey(item.id)} {...item} />),
     },
     {
       tabTitle: (
-        <li id={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickeHandler(2)}>
+        <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickeHandler(2)}>
           좋아요
         </li>
       ),
-      tabContent: MyLikedItems.map((item) => <LikedPosts key={item.id} {...item} />),
+      tabContent: MyLikedItems.map((item) => <LikedPosts key={generateKey(item.id)} {...item} />),
     },
   ];
 

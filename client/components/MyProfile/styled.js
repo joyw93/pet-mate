@@ -85,7 +85,7 @@ export const UserContent = styled.div`
     padding-bottom: 5px;
     cursor: pointer;
   }
-  #tab_lists li#is_active {
+  #tab_lists li.is_active {
     color: ${Colors.primaryColor};
     border-bottom: 2.5px solid ${Colors.primaryColor};
   }
