@@ -5,13 +5,12 @@ export class CommunityEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column()
-  userId: number;
+  @Column('int', { name: 'UserId' })
+  UserId: number;
 
-  @Column({ length: 60 })
+  @Column('varchar', { name: 'title' })
   title: string;
 
-  @Column({ length: 255 })
+  @Column('text', { name: 'content' })
   content: string;
-
 }

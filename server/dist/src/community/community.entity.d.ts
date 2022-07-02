@@ -1,6 +1,6 @@
 export declare class CommunityEntity {
     id: number;
-    userId: number;
+    UserId: number;
     title: string;
     content: string;
 }

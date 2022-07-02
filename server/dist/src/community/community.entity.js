@@ -18,15 +18,15 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)('int', { name: 'UserId' }),
     __metadata("design:type", Number)
-], CommunityEntity.prototype, "userId", void 0);
+], CommunityEntity.prototype, "UserId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 60 }),
+    (0, typeorm_1.Column)('varchar', { name: 'title' }),
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 255 }),
+    (0, typeorm_1.Column)('text', { name: 'content' }),
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "content", void 0);
 CommunityEntity = __decorate([
