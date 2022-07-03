@@ -14,10 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
-const local_auth_guard_1 = require("../auth/local-auth.guard");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const create_user_dto_1 = require("./dto/create-user.dto");
-const user_entity_1 = require("./user.entity");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService) {
@@ -32,9 +30,9 @@ let UserController = class UserController {
     async signup(createUserDto) {
         return await this.userService.createUser(createUserDto);
     }
-    async login(user) {
-        console.log(user);
-        return user;
+    async login(body) {
+        console.log(body);
+        return body;
     }
     async test(user) {
         console.log(user);
@@ -62,11 +60,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "signup", null);
 __decorate([
-    (0, common_1.UseGuards)(local_auth_guard_1.LocalAuthGuard),
     (0, common_1.Post)('login'),
-    __param(0, (0, user_decorator_1.User)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.UserEntity]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([

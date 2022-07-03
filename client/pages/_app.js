@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styled, { createGlobalStyle } from "styled-components";
 import GlobalStyles from "../styles/GlobalStyles";
-
+import wrapper from "../store/configureStore";
 // const GlobalStyle = createGlobalStyle`
 // 	* {
 // 		padding: 0;
@@ -30,4 +30,4 @@ const App = ({ Component }) => {
   );
 };
 
-export default App;
+export default wrapper.withRedux(App);

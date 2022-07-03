@@ -1,5 +1,4 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 export declare class UserController {
     private readonly userService;
@@ -17,6 +16,6 @@ export declare class UserController {
         communities: import("../community/community.entity").CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
     }>;
-    login(user: UserEntity): Promise<UserEntity>;
+    login(body: any): Promise<any>;
     test(user: any): Promise<void>;
 }
