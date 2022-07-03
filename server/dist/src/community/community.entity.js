@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityEntity = void 0;
+const community_like_entity_1 = require("../common/entities/community-like.entity");
+const user_entity_1 = require("../user/user.entity");
 const typeorm_1 = require("typeorm");
 let CommunityEntity = class CommunityEntity {
 };
@@ -18,10 +20,6 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'UserId' }),
-    __metadata("design:type", Number)
-], CommunityEntity.prototype, "UserId", void 0);
-__decorate([
     (0, typeorm_1.Column)('varchar', { name: 'title' }),
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "title", void 0);
@@ -29,6 +27,24 @@ __decorate([
     (0, typeorm_1.Column)('text', { name: 'content' }),
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.communities, {
+        onDelete: 'CASCADE',
+    }),
+    (0, typeorm_1.JoinColumn)([
+        {
+            name: 'author_id',
+            referencedColumnName: 'id',
+        },
+    ]),
+    __metadata("design:type", user_entity_1.UserEntity)
+], CommunityEntity.prototype, "author", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.post, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], CommunityEntity.prototype, "likes", void 0);
 CommunityEntity = __decorate([
     (0, typeorm_1.Entity)('Community')
 ], CommunityEntity);

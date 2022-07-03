@@ -11,6 +11,11 @@ export declare class UserController {
         name: string;
         nickname: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
+        communities: import("../community/community.entity").CommunityEntity[];
+        likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
     test(user: any): Promise<void>;

@@ -22,20 +22,33 @@ let CommunityController = class CommunityController {
     constructor(communityService) {
         this.communityService = communityService;
     }
-    async createPost(createPostDto, user) {
-        const userId = user.id;
+    async createPost(user, createPostDto) {
+        const userId = user ? user.id : 1;
         return await this.communityService.createPost(userId, createPostDto);
+    }
+    async likePost(user, param) {
+        const userId = user ? user.id : 1;
+        const postId = param.id;
+        return await this.communityService.likePost(userId, postId);
     }
 };
 __decorate([
     (0, common_1.Post)('post'),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, user_decorator_1.User)()),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_post_dto_1.CreatePostDto,
-        user_entity_1.UserEntity]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity,
+        create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.Get)('post/:id/like'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Object]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "likePost", null);
 CommunityController = __decorate([
     (0, common_1.Controller)('community'),
     __metadata("design:paramtypes", [community_service_1.CommunityService])

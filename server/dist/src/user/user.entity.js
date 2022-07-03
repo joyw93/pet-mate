@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
+const community_like_entity_1 = require("../common/entities/community-like.entity");
+const community_entity_1 = require("../community/community.entity");
 const typeorm_1 = require("typeorm");
 let UserEntity = class UserEntity {
 };
@@ -18,21 +20,45 @@ __decorate([
     __metadata("design:type", Number)
 ], UserEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 60 }),
+    (0, typeorm_1.Column)('varchar', { name: 'name' }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 60 }),
+    (0, typeorm_1.Column)('varchar', { name: 'nickname' }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "nickname", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 60 }),
+    (0, typeorm_1.Column)('varchar', { name: 'email' }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 255 }),
+    (0, typeorm_1.Column)('varchar', { name: 'password' }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], UserEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], UserEntity.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], UserEntity.prototype, "deletedAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => community_entity_1.CommunityEntity, (post) => post.author, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "communities", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.post, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "likes", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('User')
 ], UserEntity);

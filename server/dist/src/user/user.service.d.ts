@@ -11,5 +11,10 @@ export declare class UserService {
         name: string;
         nickname: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
+        communities: import("../community/community.entity").CommunityEntity[];
+        likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
     }>;
 }

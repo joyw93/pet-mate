@@ -8,5 +8,10 @@ export declare class AuthService {
         name: string;
         nickname: string;
         email: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
+        communities: import("../community/community.entity").CommunityEntity[];
+        likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
     }>;
 }
