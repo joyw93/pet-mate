@@ -31,12 +31,19 @@ export class UserController {
     return await this.userService.createUser(createUserDto);
   }
 
-  @UseGuards(LocalAuthGuard)
+  // 배포
+  // @UseGuards(LocalAuthGuard)
+  // @Post('login')
+  // async login(@User() user: UserEntity) {
+  //   console.log(user);
+  //   return user;
+  // }
+
+  // 로컬
   @Post('login')
-  async login(@User() user: UserEntity) {
-    console.log(user);
-    return user;
-    // return await this.userService.login(body.email, body.password);
+  async login(@Body() body) {
+    console.log(body);
+    return body;
   }
 
   @Get('test')

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "next -p 800",
+    "dev": "cross-env NODE_ENV=development next -p 800",
     "build": "next build",
-    "start": "next start -p 80"
+    "start": "cross-env NODE_ENV=production next start -p 80"
   },
   "author": "",
   "license": "ISC",

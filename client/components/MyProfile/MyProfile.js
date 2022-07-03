@@ -1,5 +1,5 @@
 import MyPosts from "./MyPosts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ProfileContainer,
   BackgroundArea,
@@ -13,13 +13,22 @@ import {
   TabList,
   ImageWrapper,
 } from "./styled";
+import { useSelector } from "react-redux";
+import Router from "next/router";
 
 const MyProfile = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { me } = useSelector((state) => state.user);
 
   const tabClickeHandler = (index) => {
     setActiveIndex(index);
   };
+
+  useEffect(() => {
+    if (!me) {
+      Router.push("/");
+    }
+  }, [me]);
 
   const MyPostItems = [
     {
@@ -106,7 +115,7 @@ const MyProfile = () => {
               </ProfileImg>
               <UserInfo>
                 <h2>YS</h2>
-                <p>mdlife94@gmail.com</p>
+                <p>{me?.email}</p>
               </UserInfo>
               <UserFeed>
                 <p>

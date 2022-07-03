@@ -1,10 +1,19 @@
 import Link from "next/link";
-import { useState } from "react";
-import { NavContainer, Tab, Login, Signup, Input } from "./styled";
+import Router from "next/router";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRequestAction } from "../../reducers/user";
+import { NavContainer, Tab, Login, Signup, Input, AuthTab } from "./styled";
 
 const Header = () => {
   const [inputVal, setInputVal] = useState("");
   const [visibile, setVisibile] = useState(false);
+  const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
+  const logOut = useCallback(() => {
+    dispatch(logoutRequestAction());
+  }, []);
+
 
   const handleValChange = (event) => {
     if (event.target.value !== "") {
@@ -62,20 +71,31 @@ const Header = () => {
             )}
           </form>
           <ul id="gnb">
-            <li>
-              <Login>
-                <Link href="/login">
-                  <a>로그인</a>
-                </Link>
-              </Login>
-            </li>
-            <li>
-              <Signup>
-                <Link href="/signup">
-                  <a>회원가입</a>
-                </Link>
-              </Signup>
-            </li>
+            {me ? (
+              <>
+                <AuthTab>
+                  <Link href="/profile">
+                    <a>프로필</a>
+                  </Link>
+                </AuthTab>
+                <AuthTab>
+                  <span onClick={logOut}>로그아웃</span>
+                </AuthTab>
+              </>
+            ) : (
+              <>
+                <AuthTab>
+                  <Link href="/login">
+                    <a>로그인</a>
+                  </Link>
+                </AuthTab>
+                <AuthTab>
+                  <Link href="/signup">
+                    <a>회원가입</a>
+                  </Link>
+                </AuthTab>
+              </>
+            )}
           </ul>
         </div>
       </NavContainer>

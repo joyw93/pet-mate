@@ -66,22 +66,15 @@ export const Tab = styled.div`
   }
 `;
 
-export const Login = styled.div`
+export const AuthTab = styled.li`
   margin-left: 20px;
   font-weight: bold;
   font-size: 15px;
   &:hover {
+    cursor: pointer;
     color: ${Colors.primaryColor};
     transition: 0.2s all;
   }
-`;
 
-export const Signup = styled.div`
-  margin-left: 20px;
-  font-weight: bold;
-  font-size: 15px;
-  &:hover {
-    color: ${Colors.primaryColor};
-    transition: 0.2s all;
-  }
+
 `;
