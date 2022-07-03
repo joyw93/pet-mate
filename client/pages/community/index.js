@@ -1,9 +1,17 @@
+import Link from "next/link";
+import AppLayout from "../../components/AppLayout";
 
 const Community = () => {
   return (
     <>
-    {/* 목록보여주기 */}
-      <div>It will be 커뮤니티 페이지</div>
+      <AppLayout>
+        <div>커뮤니티 목록</div>
+        <button>
+          <Link href="/community/post">
+            <a>게시글 쓰기</a>
+          </Link>
+        </button>
+      </AppLayout>
     </>
   );
 };

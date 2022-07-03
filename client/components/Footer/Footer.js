@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
         <div id='copyright'>
           <a href='https://github.com/joyw93/pet-mate'>
-            <img src='img/git.png' alt='github' />
+            <img src='../img/git.png' alt='github' />
           </a>
           <p>Copyright ⓒ 2022 PETMATE</p>
         </div>

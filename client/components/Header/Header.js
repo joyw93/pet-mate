@@ -26,18 +26,24 @@ const Header = () => {
       <NavContainer>
         <div id="menu_left">
           <Link href="/">
-            <div id="logo"></div>
+            <a>
+              <div id="logo"></div>
+            </a>
           </Link>
 
           <ul id="lnb">
             <li>
               <Tab>
-                <Link href="/running-mate">산책메이트</Link>
+                <Link href="/walking-mate">
+                  <a>산책메이트</a>
+                </Link>
               </Tab>
             </li>
             <li>
               <Tab>
-                <Link href="/community">커뮤니티</Link>
+                <Link href="/community">
+                  <a>커뮤니티</a>
+                </Link>
               </Tab>
             </li>
           </ul>
@@ -58,12 +64,16 @@ const Header = () => {
           <ul id="gnb">
             <li>
               <Login>
-                <Link href="/login">로그인</Link>
+                <Link href="/login">
+                  <a>로그인</a>
+                </Link>
               </Login>
             </li>
             <li>
               <Signup>
-                <Link href="/signup">회원가입</Link>
+                <Link href="/signup">
+                  <a>회원가입</a>
+                </Link>
               </Signup>
             </li>
           </ul>

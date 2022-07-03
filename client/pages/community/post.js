@@ -1,12 +1,12 @@
 import AppLayout from "../../components/AppLayout";
-// import CommunityPostCreate from "../../../components/CommunityPostCreate/CommunityPostCreate";
+import CommunityPost from "../../components/CommunityPost/CommunityPostCreate";
 
-const CommunityCreate = () => {
+
+const PostPage = () => {
   return (
     <AppLayout>
-      {/* <CommunityPostCreate /> */}
-      게시글작성
+      <CommunityPost />
     </AppLayout>
   );
 };
-export default CommunityCreate;
+export default PostPage;

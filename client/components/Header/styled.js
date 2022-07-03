@@ -14,7 +14,7 @@ export const NavContainer = styled.header`
   #logo {
     width: 156px;
     height: 56px;
-    background-image: url('img/logo_pet.png');
+    background-image: url('../img/logo_pet.png');
     background-size: cover;
     cursor: pointer;
   }
