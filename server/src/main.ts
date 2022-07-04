@@ -24,6 +24,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       secret: process.env.COOKIE_SECRET,
+      // 배포 때 주석 풀기!
       // cookie: {
       //   httpOnly: true,
       //   secure: false,

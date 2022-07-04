@@ -4,6 +4,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 export declare class CommunityController {
     private readonly communityService;
     constructor(communityService: CommunityService);
+    getAllPosts(): Promise<import("./community.entity").CommunityEntity[]>;
     createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, param: any): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
 }

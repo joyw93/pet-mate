@@ -17,6 +17,10 @@ export class CommunityService {
     private communityLikeRepository: Repository<CommunityLikeEntity>,
   ) {}
 
+  async getAllPosts() {
+    return await this.communityRepository.find();
+  }
+
   async createPost(userId: number, createPostDto: CreatePostDto) {
     const { title, content } = createPostDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });

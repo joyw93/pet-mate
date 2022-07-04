@@ -35,9 +35,16 @@ let UserController = class UserController {
     async login(user) {
         return user;
     }
+    async logout(res) {
+        res.clearCookie('connect.sid', { httpOnly: true });
+        return res.send('ok');
+    }
     async getLikedPost(user) {
         const userId = user.id;
         return await this.userService.getLikedPosts(userId);
+    }
+    async isLoggedIn(user) {
+        console.log(user);
     }
 };
 __decorate([
@@ -70,12 +77,26 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Response)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "logout", null);
+__decorate([
     (0, common_1.Get)('likedPosts'),
     __param(0, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getLikedPost", null);
+__decorate([
+    (0, common_1.Get)('loggedInTest'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "isLoggedIn", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

@@ -25,6 +25,9 @@ let CommunityService = class CommunityService {
         this.userRepository = userRepository;
         this.communityLikeRepository = communityLikeRepository;
     }
+    async getAllPosts() {
+        return await this.communityRepository.find();
+    }
     async createPost(userId, createPostDto) {
         const { title, content } = createPostDto;
         const user = await this.userRepository.findOne({ where: { id: userId } });

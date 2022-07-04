@@ -18,5 +18,7 @@ export declare class UserController {
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
+    logout(res: any): Promise<any>;
     getLikedPost(user: UserEntity): Promise<UserEntity[]>;
+    isLoggedIn(user: any): Promise<void>;
 }

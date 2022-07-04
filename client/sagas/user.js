@@ -4,7 +4,6 @@ import {
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
-  SIGN_UP_RESET,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -63,13 +62,12 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post("/api/logout");
+  return axios.post(`${serverUrl}/users/logout`);
 }
 
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(100);
+    const result = yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });

@@ -1,5 +1,6 @@
+import axios from "axios";
 import { useEffect } from "react";
-import { useState, useRef } from "react";
+import { useState, useRef,useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SignUpContainer,
@@ -10,8 +11,6 @@ import {
   CheckInput,
   CheckContainer,
 } from "./styled";
-import axios from "axios";
-import { useCallback } from "react";
 import { signupRequestAction, signupResetAction } from "../../reducers/user";
 import Router from "next/router";
 

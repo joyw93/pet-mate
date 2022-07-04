@@ -8,6 +8,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}
 
+  @Get()
+  async getAllPosts() {
+    return await this.communityService.getAllPosts()
+  }
+
   @Post('post')
   async createPost(
     @User() user: UserEntity,

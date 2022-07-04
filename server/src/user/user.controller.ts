@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Response,
   Post,
   Request,
   UseGuards,
@@ -37,9 +38,20 @@ export class UserController {
     return user;
   }
 
+  @Post('logout')
+  async logout(@Response() res) {
+    res.clearCookie('connect.sid', { httpOnly: true });
+    return res.send('ok');
+  }
+
   @Get('likedPosts')
   async getLikedPost(@User() user: UserEntity) {
     const userId = user.id;
     return await this.userService.getLikedPosts(userId);
+  }
+
+  @Get('loggedInTest')
+  async isLoggedIn(@User() user) {
+    console.log(user)
   }
 }

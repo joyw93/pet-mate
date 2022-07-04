@@ -22,6 +22,9 @@ let CommunityController = class CommunityController {
     constructor(communityService) {
         this.communityService = communityService;
     }
+    async getAllPosts() {
+        return await this.communityService.getAllPosts();
+    }
     async createPost(user, createPostDto) {
         const userId = user.id;
         return await this.communityService.createPost(userId, createPostDto);
@@ -32,6 +35,12 @@ let CommunityController = class CommunityController {
         return await this.communityService.likePost(userId, postId);
     }
 };
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "getAllPosts", null);
 __decorate([
     (0, common_1.Post)('post'),
     __param(0, (0, user_decorator_1.User)()),
