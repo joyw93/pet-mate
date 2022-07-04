@@ -39,9 +39,6 @@ let UserController = class UserController {
         const userId = user.id;
         return await this.userService.getLikedPosts(userId);
     }
-    async test(user) {
-        console.log(user);
-    }
 };
 __decorate([
     (0, common_1.Post)('nicknameCheck'),
@@ -79,13 +76,6 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getLikedPost", null);
-__decorate([
-    (0, common_1.Get)('test'),
-    __param(0, (0, user_decorator_1.User)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "test", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

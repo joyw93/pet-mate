@@ -42,9 +42,4 @@ export class UserController {
     const userId = user.id;
     return await this.userService.getLikedPosts(userId);
   }
-
-  @Get('test')
-  async test(@User() user) {
-    console.log(user);
-  }
 }

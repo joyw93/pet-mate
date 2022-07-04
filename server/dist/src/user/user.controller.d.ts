@@ -19,5 +19,4 @@ export declare class UserController {
     }>;
     login(user: UserEntity): Promise<UserEntity>;
     getLikedPost(user: UserEntity): Promise<UserEntity[]>;
-    test(user: any): Promise<void>;
 }

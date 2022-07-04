@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SignUpContainer,
   InputWrapper,
@@ -9,16 +10,34 @@ import {
   CheckInput,
   CheckContainer,
 } from "./styled";
+import axios from "axios";
+import { useCallback } from "react";
+import { signupRequestAction, signupResetAction } from "../../reducers/user";
+import Router from "next/router";
 
 const SignUp = () => {
+  const serverUrl =
+    process.env.NODE_ENV === "production"
+      ? "http://api.petmate.kr"
+      : "http://127.0.0.1:3000";
+  const dispatch = useDispatch();
+  const { signUpDone } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signUpDone) {
+      dispatch(signupResetAction());
+      Router.replace("/");
+    }
+  }, [signUpDone]);
+
   //객체로 바꾸기
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const usernameRef = useRef();
+  const nameRef = useRef();
   const nicknameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -61,40 +80,49 @@ const SignUp = () => {
     setEmailIsInvalid(false);
   };
 
-  const handleValidNickname = () => {
-    //이미 닉네임이 있을 때
-    if (nickname.length !== 0 && nickname === "admin") {
-      setNicknameIsInvalid(true);
-    } else {
-      //닉네임 없을 때
-      if (nickname.length !== 0) {
-        setNicknameIsValid(true);
-      }
-    }
-  };
+  const handleValidNickname = useCallback(() => {
+    if (nickname.length === 0) setNicknameIsInvalid(true);
+    /* 
+    닉네임 유효성 검사 추가 하기 ...
+    */
+
+    // nickname valid check to backend
+    axios
+      .post(`${serverUrl}/users/nicknameCheck`, {
+        nickname,
+      })
+      .then(() => setNicknameIsValid(true))
+      .catch(() => setNicknameIsInvalid(true));
+  }, [nickname]);
 
   const handleValidEmail = () => {
     //이메일 양식 안 맞을 때
     if (email.search("@") === -1) {
       return setGoblin(true);
     }
-    //기존에 있는 이메일일 때
-    if (email.length !== 0 && email === "test@test.com") {
-      setGoblin(false);
-      setEmailIsInvalid(true);
-    } else {
-      //이메일 없을 때
-      if (email.length !== 0) {
-        setGoblin(false);
+    /* 
+    이메일 유효성 검사 추가 하기 ...
+    */
+
+    // email valid check to backend
+    axios
+      .post(`${serverUrl}/users/emailCheck`, {
+        email,
+      })
+      .then(() => {
         setEmailIsValid(true);
-      }
-    }
+        setGoblin(false);
+      })
+      .catch(() => {
+        setEmailIsInvalid(true);
+        setGoblin(false);
+      });
   };
 
-  const handleSignUpSubmit = () => {
+  const handleSignUpSubmit = useCallback(() => {
     //반려될 때
-    if (!username) {
-      return usernameRef.current.focus();
+    if (!name) {
+      return nameRef.current.focus();
     }
     if (!nickname) {
       return nicknameRef.current.focus();
@@ -105,6 +133,7 @@ const SignUp = () => {
     if (!password) {
       return passwordRef.current.focus();
     }
+    // 버그 fix
     if (password !== password2) {
       passwordRef.current.focus();
       setPassword2("");
@@ -113,19 +142,21 @@ const SignUp = () => {
       //비번 일치할 때
       setPwConfirm(false);
     }
-  };
+
+    dispatch(signupRequestAction({ name, nickname, email, password }));
+  }, [name, nickname, email, password]);
 
   return (
     <SignUpContainer>
-      <img src="img/welcomecat.png" />
+      <img src="../img/welcomecat.png" />
       <FormWrapper>
         <InputWrapper>
           <label>이름</label>
           <input
             type="text"
-            value={username}
-            ref={usernameRef}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            ref={nameRef}
+            onChange={(e) => setName(e.target.value)}
           ></input>
         </InputWrapper>
         <InputWrapper>
@@ -182,7 +213,9 @@ const SignUp = () => {
             ref={passwordRef}
             onChange={(e) => setPassword2(e.target.value)}
           ></input>
-          {pwConfirm && <CheckInput>비밀번호가 일치하지 않습니다.</CheckInput>}
+          {pwConfirm && (
+            <CheckInput color="red">비밀번호가 일치하지 않습니다.</CheckInput>
+          )}
         </InputWrapper>
         <CheckContainer>
           <label>
