@@ -31,7 +31,7 @@ let LocalSerializer = class LocalSerializer extends passport_1.PassportSerialize
     async deserializeUser(userId, done) {
         return await this.userRepository
             .findOne({
-            where: { id: +userId },
+            where: { id: userId },
         })
             .then((user) => {
             done(null, user);

@@ -12,14 +12,14 @@ export class CommunityService {
     @InjectRepository(CommunityEntity)
     private communityRepository: Repository<CommunityEntity>,
     @InjectRepository(UserEntity)
-    private UserRepository: Repository<UserEntity>,
+    private userRepository: Repository<UserEntity>,
     @InjectRepository(CommunityLikeEntity)
-    private CommunityLikeRepository: Repository<CommunityLikeEntity>,
+    private communityLikeRepository: Repository<CommunityLikeEntity>,
   ) {}
 
   async createPost(userId: number, createPostDto: CreatePostDto) {
     const { title, content } = createPostDto;
-    const user = await this.UserRepository.findOne({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { id: userId } });
     const post = new CommunityEntity();
     post.title = title;
     post.content = content;
@@ -32,7 +32,7 @@ export class CommunityService {
   }
 
   async likePost(userId: number, postId: number) {
-    const user = await this.UserRepository.findOne({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { id: userId } });
     const post = await this.communityRepository.findOne({
       where: { id: postId },
     });
@@ -40,7 +40,7 @@ export class CommunityService {
     communityLike.auth = user;
     communityLike.post = post;
     try {
-      return await this.CommunityLikeRepository.save(communityLike);
+      return await this.communityLikeRepository.save(communityLike);
     } catch (err) {
       throw new HttpException(err, 500);
     }

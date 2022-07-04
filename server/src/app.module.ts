@@ -9,12 +9,13 @@ import { UserService } from './user/user.service';
 import { UserEntity } from './user/user.entity';
 import { CommunityModule } from './community/community.module';
 import { CommunityEntity } from './community/community.entity';
+import { CommunityLikeEntity } from './common/entities/community-like.entity';
 
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forRoot(ormconfig),
-    TypeOrmModule.forFeature([UserEntity, CommunityEntity]),
+    TypeOrmModule.forFeature([UserEntity, CommunityEntity, CommunityLikeEntity]),
     AuthModule,
     CommunityModule,
   ],

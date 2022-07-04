@@ -114,7 +114,7 @@ const MyProfile = () => {
                 <img src="img/son.png" alt="프로필이미지" />
               </ProfileImg>
               <UserInfo>
-                <h2>YS</h2>
+                <h2>{me?.nickname}</h2>
                 <p>{me?.email}</p>
               </UserInfo>
               <UserFeed>

@@ -5,9 +5,9 @@ import { CommunityEntity } from './community.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 export declare class CommunityService {
     private communityRepository;
-    private UserRepository;
-    private CommunityLikeRepository;
-    constructor(communityRepository: Repository<CommunityEntity>, UserRepository: Repository<UserEntity>, CommunityLikeRepository: Repository<CommunityLikeEntity>);
+    private userRepository;
+    private communityLikeRepository;
+    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>);
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
 }

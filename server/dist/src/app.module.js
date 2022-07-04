@@ -18,6 +18,7 @@ const user_service_1 = require("./user/user.service");
 const user_entity_1 = require("./user/user.entity");
 const community_module_1 = require("./community/community.module");
 const community_entity_1 = require("./community/community.entity");
+const community_like_entity_1 = require("./common/entities/community-like.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -25,7 +26,7 @@ AppModule = __decorate([
         imports: [
             user_module_1.UserModule,
             typeorm_1.TypeOrmModule.forRoot(ormconfig),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, community_entity_1.CommunityEntity]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, community_entity_1.CommunityEntity, community_like_entity_1.CommunityLikeEntity]),
             auth_module_1.AuthModule,
             community_module_1.CommunityModule,
         ],

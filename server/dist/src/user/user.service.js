@@ -29,9 +29,13 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 const bcrypt = require("bcrypt");
+const community_entity_1 = require("../community/community.entity");
+const community_like_entity_1 = require("../common/entities/community-like.entity");
 let UserService = class UserService {
-    constructor(userRepository) {
+    constructor(userRepository, communityRepository, communityLikeRepository) {
         this.userRepository = userRepository;
+        this.communityRepository = communityRepository;
+        this.communityLikeRepository = communityLikeRepository;
     }
     async isValidNickname(nickname) {
         const userByNickname = await this.userRepository.findOne({
@@ -74,11 +78,17 @@ let UserService = class UserService {
             throw new common_1.HttpException('Internal Server Error', 500);
         }
     }
+    async getLikedPosts(userId) {
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
+    __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

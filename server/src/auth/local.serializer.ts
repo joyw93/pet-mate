@@ -19,10 +19,10 @@ export class LocalSerializer extends PassportSerializer {
     done(null, user.id);
   }
 
-  async deserializeUser(userId: string, done: CallableFunction) {
+  async deserializeUser(userId: number, done: CallableFunction) {
     return await this.userRepository
       .findOne({
-        where: { id: +userId },
+        where: { id: userId },
       })
       .then((user) => {
         done(null, user);

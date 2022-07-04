@@ -7,5 +7,5 @@ export declare class LocalSerializer extends PassportSerializer {
     private userRepository;
     constructor(authService: AuthService, userRepository: Repository<UserEntity>);
     serializeUser(user: UserEntity, done: CallableFunction): void;
-    deserializeUser(userId: string, done: CallableFunction): Promise<void>;
+    deserializeUser(userId: number, done: CallableFunction): Promise<void>;
 }

@@ -20,10 +20,10 @@ function logInAPI(data) {
 function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
-    console.log(result)
+    const payload= result.data
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: payload.data,
     });
   } catch (err) {
     console.error(err);

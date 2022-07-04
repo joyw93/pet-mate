@@ -24,7 +24,6 @@ export class UserEntity {
   @Column('varchar', { name: 'email' })
   email: string;
 
-  // select: false 추가하기
   @Column('varchar', { name: 'password' })
   password: string;
 

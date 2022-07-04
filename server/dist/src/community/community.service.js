@@ -20,14 +20,14 @@ const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 let CommunityService = class CommunityService {
-    constructor(communityRepository, UserRepository, CommunityLikeRepository) {
+    constructor(communityRepository, userRepository, communityLikeRepository) {
         this.communityRepository = communityRepository;
-        this.UserRepository = UserRepository;
-        this.CommunityLikeRepository = CommunityLikeRepository;
+        this.userRepository = userRepository;
+        this.communityLikeRepository = communityLikeRepository;
     }
     async createPost(userId, createPostDto) {
         const { title, content } = createPostDto;
-        const user = await this.UserRepository.findOne({ where: { id: userId } });
+        const user = await this.userRepository.findOne({ where: { id: userId } });
         const post = new community_entity_1.CommunityEntity();
         post.title = title;
         post.content = content;
@@ -40,7 +40,7 @@ let CommunityService = class CommunityService {
         }
     }
     async likePost(userId, postId) {
-        const user = await this.UserRepository.findOne({ where: { id: userId } });
+        const user = await this.userRepository.findOne({ where: { id: userId } });
         const post = await this.communityRepository.findOne({
             where: { id: postId },
         });
@@ -48,7 +48,7 @@ let CommunityService = class CommunityService {
         communityLike.auth = user;
         communityLike.post = post;
         try {
-            return await this.CommunityLikeRepository.save(communityLike);
+            return await this.communityLikeRepository.save(communityLike);
         }
         catch (err) {
             throw new common_1.HttpException(err, 500);

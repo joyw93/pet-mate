@@ -31,23 +31,21 @@ export class UserController {
     return await this.userService.createUser(createUserDto);
   }
 
-  // 배포
-  // @UseGuards(LocalAuthGuard)
-  // @Post('login')
-  // async login(@User() user: UserEntity) {
-  //   console.log(user);
-  //   return user;
-  // }
-
-  // 로컬
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() body) {
-    console.log(body);
-    return body;
+  async login(@User() user: UserEntity) {
+    console.log(user);
+    return user;
+  }
+
+  @Get('likedPosts')
+  async getLikedPost(@User() user: UserEntity) {
+    const userId = user.id;
+    return await this.userService.getLikedPosts(userId);
   }
 
   @Get('test')
   async test(@User() user) {
-    console.log(user)
+    console.log(user);
   }
 }

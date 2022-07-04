@@ -8,12 +8,18 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { CommunityEntity } from 'src/community/community.entity';
+import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(CommunityEntity)
+    private communityRepository: Repository<CommunityEntity>,
+    @InjectRepository(CommunityLikeEntity)
+    private communityLikeRepository: Repository<CommunityLikeEntity>,
   ) {}
 
   async isValidNickname(nickname: string) {
@@ -67,4 +73,7 @@ export class UserService {
     }
   }
 
+  async getLikedPosts(userId: number) {
+    
+  }
 }
