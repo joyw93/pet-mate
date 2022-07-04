@@ -3,5 +3,5 @@ import { UserEntity } from 'src/user/user.entity';
 export declare class CommunityLikeEntity {
     id: number;
     post: CommunityEntity;
-    auth: UserEntity;
+    author: UserEntity;
 }

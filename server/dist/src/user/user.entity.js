@@ -52,9 +52,9 @@ __decorate([
         cascade: true,
     }),
     __metadata("design:type", Array)
-], UserEntity.prototype, "communities", void 0);
+], UserEntity.prototype, "posts", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.post, {
+    (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.author, {
         cascade: true,
     }),
     __metadata("design:type", Array)

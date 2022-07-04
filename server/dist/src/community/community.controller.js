@@ -23,11 +23,11 @@ let CommunityController = class CommunityController {
         this.communityService = communityService;
     }
     async createPost(user, createPostDto) {
-        const userId = user ? user.id : 1;
+        const userId = user.id;
         return await this.communityService.createPost(userId, createPostDto);
     }
     async likePost(user, param) {
-        const userId = user ? user.id : 1;
+        const userId = user.id;
         const postId = param.id;
         return await this.communityService.likePost(userId, postId);
     }

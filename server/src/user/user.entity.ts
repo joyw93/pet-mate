@@ -43,11 +43,11 @@ export class UserEntity {
       cascade: true,
     },
   )
-  communities: CommunityEntity[];
+  posts: CommunityEntity[];
 
   @OneToMany(
     () => CommunityLikeEntity,
-    (like: CommunityLikeEntity) => like.post,
+    (like: CommunityLikeEntity) => like.author,
     {
       cascade: true,
     },

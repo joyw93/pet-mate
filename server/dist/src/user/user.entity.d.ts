@@ -9,6 +9,6 @@ export declare class UserEntity {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
-    communities: CommunityEntity[];
+    posts: CommunityEntity[];
     likes: CommunityLikeEntity[];
 }

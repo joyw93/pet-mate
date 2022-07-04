@@ -74,6 +74,13 @@ export class UserService {
   }
 
   async getLikedPosts(userId: number) {
-    
+    const posts = this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.id'])
+      .leftJoinAndSelect('user.likes', 'like')
+      .leftJoinAndSelect('like.post', 'post')
+      .where('user.id = :id', { id: userId })
+      .getMany();
+    return posts;
   }
 }

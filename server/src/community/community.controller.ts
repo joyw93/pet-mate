@@ -13,13 +13,13 @@ export class CommunityController {
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
-    const userId = user ? user.id : 1;
+    const userId = user.id;
     return await this.communityService.createPost(userId, createPostDto);
   }
 
   @Get('post/:id/like')
   async likePost(@User() user: UserEntity, @Param() param) {
-    const userId = user ? user.id : 1;
+    const userId = user.id;
     const postId = param.id;
     return await this.communityService.likePost(userId, postId);
   }

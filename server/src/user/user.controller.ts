@@ -34,7 +34,6 @@ export class UserController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@User() user: UserEntity) {
-    console.log(user);
     return user;
   }
 

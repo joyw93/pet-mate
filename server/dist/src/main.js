@@ -24,11 +24,6 @@ async function bootstrap() {
         resave: false,
         saveUninitialized: false,
         secret: process.env.COOKIE_SECRET,
-        cookie: {
-            httpOnly: true,
-            secure: false,
-            domain: '.petmate.kr'
-        },
     }));
     app.use(passport.initialize());
     app.use(passport.session());

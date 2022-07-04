@@ -18,8 +18,8 @@ export declare class UserService {
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
-        communities: CommunityEntity[];
+        posts: CommunityEntity[];
         likes: CommunityLikeEntity[];
     }>;
-    getLikedPosts(userId: number): Promise<void>;
+    getLikedPosts(userId: number): Promise<UserEntity[]>;
 }

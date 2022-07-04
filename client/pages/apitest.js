@@ -10,7 +10,7 @@ const Test = () => {
   const submit = (e) => {
     axios
       .post(
-        "http://127.0.0.1:80/users/login",
+        "http://127.0.0.1:3000/users/login",
         { email, password },
         { withCredentials: true }
       )
@@ -22,7 +22,7 @@ const Test = () => {
 
   const sessionCheck = () => {
     axios
-      .get("http://127.0.0.1:80/users/test", { withCredentials: true })
+      .get("http://127.0.0.1:3000/users/test", { withCredentials: true })
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };

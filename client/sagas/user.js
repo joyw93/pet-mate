@@ -14,13 +14,15 @@ import {
 } from "../reducers/user";
 
 function logInAPI(data) {
-  return axios.post("http://127.0.0.1:3000/users/login", data);
+  return axios.post("http://127.0.0.1:3000/users/login", data, {
+    withCredentials: true,
+  });
 }
 
 function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
-    const payload= result.data
+    const payload = result.data;
     yield put({
       type: LOG_IN_SUCCESS,
       data: payload.data,

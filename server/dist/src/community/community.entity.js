@@ -28,7 +28,7 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.communities, {
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.posts, {
         onDelete: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)([

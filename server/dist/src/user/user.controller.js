@@ -33,7 +33,6 @@ let UserController = class UserController {
         return await this.userService.createUser(createUserDto);
     }
     async login(user) {
-        console.log(user);
         return user;
     }
     async getLikedPost(user) {

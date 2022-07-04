@@ -37,7 +37,7 @@ export class CommunityService {
       where: { id: postId },
     });
     const communityLike = new CommunityLikeEntity();
-    communityLike.auth = user;
+    communityLike.author = user;
     communityLike.post = post;
     try {
       return await this.communityLikeRepository.save(communityLike);

@@ -20,7 +20,7 @@ export class CommunityEntity {
   @Column('text', { name: 'content' })
   content: string;
 
-  @ManyToOne(() => UserEntity, (author: UserEntity) => author.communities, {
+  @ManyToOne(() => UserEntity, (author: UserEntity) => author.posts, {
     onDelete: 'CASCADE',
   })
   @JoinColumn([

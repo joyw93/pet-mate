@@ -14,10 +14,10 @@ export declare class UserController {
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
-        communities: import("../community/community.entity").CommunityEntity[];
+        posts: import("../community/community.entity").CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
-    getLikedPost(user: UserEntity): Promise<void>;
+    getLikedPost(user: UserEntity): Promise<UserEntity[]>;
     test(user: any): Promise<void>;
 }

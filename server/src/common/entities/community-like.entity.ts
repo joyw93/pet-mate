@@ -16,7 +16,7 @@ export class CommunityLikeEntity {
   @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
   post: CommunityEntity;
 
-  @ManyToOne(() => UserEntity, (auth) => auth.likes)
+  @ManyToOne(() => UserEntity, (author) => author.likes)
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
-  auth: UserEntity;
+  author: UserEntity;
 }
