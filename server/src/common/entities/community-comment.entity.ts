@@ -13,11 +13,15 @@ export class CommunityCommentEntity {
   @Column('text', { name: 'content' })
   content: string;
 
-  @ManyToOne(() => UserEntity, (author) => author.comments)
+  @ManyToOne(() => UserEntity, (author) => author.comments, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
   author: UserEntity;
 
-  @ManyToOne(() => CommunityEntity, (post) => post.comments)
+  @ManyToOne(() => CommunityEntity, (post) => post.comments, {
+    onDelete:'CASCADE'
+  })
   @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
   post: CommunityEntity;
 }

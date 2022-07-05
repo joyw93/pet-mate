@@ -43,6 +43,14 @@ export class CommunityService {
     }
   }
 
+  async deletePost(postId: number) {
+    try {
+      return await this.communityRepository.delete(postId);
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
+
   async likePost(userId: number, postId: number) {
     try {
       const user = await this.userRepository.findOne({ where: { id: userId } });

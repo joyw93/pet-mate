@@ -14,6 +14,7 @@ export declare class CommunityService {
     getAllPosts(): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
+    deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
     getAllComments(postId: number): Promise<CommunityEntity[]>;
     createComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;

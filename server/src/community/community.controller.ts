@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -26,7 +27,7 @@ export class CommunityController {
     const postId = id;
     return await this.communityService.getOnePost(postId);
   }
-  
+
   @Get(':id/like')
   async likePost(
     @User() user: UserEntity,
@@ -44,6 +45,12 @@ export class CommunityController {
   ) {
     const userId = user.id;
     return await this.communityService.createPost(userId, createPostDto);
+  }
+  // Todo: 인가처리
+  @Delete(':id')
+  async deletePost(@Param('id', ParseIntPipe) id: number) {
+    const postId = id;
+    return await this.communityService.deletePost(postId);
   }
 
   @Get(':id/comment')

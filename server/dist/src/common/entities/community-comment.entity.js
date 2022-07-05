@@ -28,12 +28,16 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityCommentEntity.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.comments),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.comments, {
+        onDelete: 'CASCADE'
+    }),
     (0, typeorm_1.JoinColumn)({ name: 'author_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], CommunityCommentEntity.prototype, "author", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.comments),
+    (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.comments, {
+        onDelete: 'CASCADE'
+    }),
     (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityCommentEntity.prototype, "post", void 0);

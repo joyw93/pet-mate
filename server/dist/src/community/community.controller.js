@@ -39,6 +39,10 @@ let CommunityController = class CommunityController {
         const userId = user.id;
         return await this.communityService.createPost(userId, createPostDto);
     }
+    async deletePost(id) {
+        const postId = id;
+        return await this.communityService.deletePost(postId);
+    }
     async getAllComments(id) {
         const postId = id;
         return await this.communityService.getAllComments(postId);
@@ -79,6 +83,13 @@ __decorate([
         create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "deletePost", null);
 __decorate([
     (0, common_1.Get)(':id/comment'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
