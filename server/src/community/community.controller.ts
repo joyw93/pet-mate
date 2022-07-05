@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
@@ -10,7 +17,23 @@ export class CommunityController {
 
   @Get()
   async getAllPosts() {
-    return await this.communityService.getAllPosts()
+    return await this.communityService.getAllPosts();
+  }
+
+  @Get('/:id')
+  async getOnePost(@Param('id', ParseIntPipe) id: number) {
+    const postId = id;
+    return await this.communityService.getOnePost(postId);
+  }
+
+  @Get('/:id/like')
+  async likePost(
+    @User() user: UserEntity,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const userId = user.id;
+    const postId = id;
+    return await this.communityService.likePost(userId, postId);
   }
 
   @Post('post')
@@ -20,12 +43,5 @@ export class CommunityController {
   ) {
     const userId = user.id;
     return await this.communityService.createPost(userId, createPostDto);
-  }
-
-  @Get('post/:id/like')
-  async likePost(@User() user: UserEntity, @Param() param) {
-    const userId = user.id;
-    const postId = param.id;
-    return await this.communityService.likePost(userId, postId);
   }
 }

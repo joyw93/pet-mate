@@ -21,6 +21,10 @@ export class CommunityService {
     return await this.communityRepository.find();
   }
 
+  async getOnePost(postId: number) {
+    return await this.communityRepository.findOne({ where: { id: postId } });
+  }
+
   async createPost(userId: number, createPostDto: CreatePostDto) {
     const { title, content } = createPostDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });

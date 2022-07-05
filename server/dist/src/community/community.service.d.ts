@@ -9,6 +9,7 @@ export declare class CommunityService {
     private communityLikeRepository;
     constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>);
     getAllPosts(): Promise<CommunityEntity[]>;
+    getOnePost(postId: number): Promise<CommunityEntity>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
 }

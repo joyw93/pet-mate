@@ -5,6 +5,7 @@ export declare class CommunityController {
     private readonly communityService;
     constructor(communityService: CommunityService);
     getAllPosts(): Promise<import("./community.entity").CommunityEntity[]>;
+    getOnePost(id: number): Promise<import("./community.entity").CommunityEntity>;
+    likePost(user: UserEntity, id: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
-    likePost(user: UserEntity, param: any): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
 }
