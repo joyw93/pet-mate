@@ -9,6 +9,7 @@ import {
 import { User } from 'src/common/decorators/user.decorator';
 import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
+import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('community')
@@ -20,13 +21,13 @@ export class CommunityController {
     return await this.communityService.getAllPosts();
   }
 
-  @Get('/:id')
+  @Get(':id')
   async getOnePost(@Param('id', ParseIntPipe) id: number) {
     const postId = id;
     return await this.communityService.getOnePost(postId);
   }
 
-  @Get('/:id/like')
+  @Get(':id/like')
   async likePost(
     @User() user: UserEntity,
     @Param('id', ParseIntPipe) id: number,
@@ -36,12 +37,27 @@ export class CommunityController {
     return await this.communityService.likePost(userId, postId);
   }
 
-  @Post('post')
+  @Post()
   async createPost(
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
     const userId = user.id;
     return await this.communityService.createPost(userId, createPostDto);
+  }
+
+  @Post(':id/comment')
+  async createComment(
+    @User() user: UserEntity,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createCommentDto: CreateCommentDto,
+  ) {
+    const userId = user.id;
+    const postId = id;
+    return await this.communityService.createComment(
+      userId,
+      postId,
+      createCommentDto,
+    );
   }
 }

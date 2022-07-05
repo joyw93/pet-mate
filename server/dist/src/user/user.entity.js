@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
+const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
 const community_entity_1 = require("../community/community.entity");
 const typeorm_1 = require("typeorm");
@@ -59,6 +60,12 @@ __decorate([
     }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "likes", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => community_comment_entity_1.CommunityCommentEntity, (comment) => comment.author, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "comments", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('User')
 ], UserEntity);

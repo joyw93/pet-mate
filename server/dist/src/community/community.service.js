@@ -15,15 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 let CommunityService = class CommunityService {
-    constructor(communityRepository, userRepository, communityLikeRepository) {
+    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository) {
         this.communityRepository = communityRepository;
         this.userRepository = userRepository;
         this.communityLikeRepository = communityLikeRepository;
+        this.communityCommentRepository = communityCommentRepository;
     }
     async getAllPosts() {
         return await this.communityRepository.find();
@@ -60,13 +62,33 @@ let CommunityService = class CommunityService {
             throw new common_1.HttpException(err, 500);
         }
     }
+    async createComment(userId, postId, createCommentDto) {
+        const { title, content } = createCommentDto;
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        const post = await this.communityRepository.findOne({
+            where: { id: postId },
+        });
+        const comment = new community_comment_entity_1.CommunityCommentEntity();
+        comment.author = user;
+        comment.post = post;
+        comment.title = title;
+        comment.content = content;
+        try {
+            return await this.communityCommentRepository.save(comment);
+        }
+        catch (err) {
+            throw new common_1.HttpException(err, 500);
+        }
+    }
 };
 CommunityService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
+    __param(3, (0, typeorm_1.InjectRepository)(community_comment_entity_1.CommunityCommentEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], CommunityService);

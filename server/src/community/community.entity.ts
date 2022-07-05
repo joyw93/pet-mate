@@ -1,3 +1,4 @@
+import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 import {
@@ -39,4 +40,11 @@ export class CommunityEntity {
     },
   )
   likes: CommunityLikeEntity[];
+
+  @OneToMany(
+    () => CommunityCommentEntity,
+    (comment: CommunityCommentEntity) => comment.post,
+    { cascade: true },
+  )
+  comments: CommunityCommentEntity[];
 }

@@ -13,5 +13,6 @@ export declare class AuthService {
         deletedAt: Date;
         posts: import("../community/community.entity").CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
+        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
 }

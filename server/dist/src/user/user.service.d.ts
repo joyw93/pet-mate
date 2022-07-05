@@ -20,6 +20,7 @@ export declare class UserService {
         deletedAt: Date;
         posts: CommunityEntity[];
         likes: CommunityLikeEntity[];
+        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     getLikedPosts(userId: number): Promise<UserEntity[]>;
 }

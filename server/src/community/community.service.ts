@@ -1,9 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
+import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
@@ -15,6 +17,8 @@ export class CommunityService {
     private userRepository: Repository<UserEntity>,
     @InjectRepository(CommunityLikeEntity)
     private communityLikeRepository: Repository<CommunityLikeEntity>,
+    @InjectRepository(CommunityCommentEntity)
+    private communityCommentRepository: Repository<CommunityCommentEntity>,
   ) {}
 
   async getAllPosts() {
@@ -49,6 +53,28 @@ export class CommunityService {
     communityLike.post = post;
     try {
       return await this.communityLikeRepository.save(communityLike);
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
+
+  async createComment(
+    userId: number,
+    postId: number,
+    createCommentDto: CreateCommentDto,
+  ) {
+    const { title, content } = createCommentDto;
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const post = await this.communityRepository.findOne({
+      where: { id: postId },
+    });
+    const comment = new CommunityCommentEntity();
+    comment.author = user;
+    comment.post = post;
+    comment.title = title;
+    comment.content = content;
+    try {
+      return await this.communityCommentRepository.save(comment);
     } catch (err) {
       throw new HttpException(err, 500);
     }
