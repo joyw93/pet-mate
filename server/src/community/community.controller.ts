@@ -26,7 +26,7 @@ export class CommunityController {
     const postId = id;
     return await this.communityService.getOnePost(postId);
   }
-
+  
   @Get(':id/like')
   async likePost(
     @User() user: UserEntity,
@@ -44,6 +44,12 @@ export class CommunityController {
   ) {
     const userId = user.id;
     return await this.communityService.createPost(userId, createPostDto);
+  }
+
+  @Get(':id/comment')
+  async getAllComments(@Param('id', ParseIntPipe) id: number) {
+    const postId = id;
+    return await this.communityService.getAllComments(postId);
   }
 
   @Post(':id/comment')

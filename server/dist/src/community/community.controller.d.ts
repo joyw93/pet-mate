@@ -9,5 +9,6 @@ export declare class CommunityController {
     getOnePost(id: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, id: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
+    getAllComments(id: number): Promise<import("./community.entity").CommunityEntity[]>;
     createComment(user: UserEntity, id: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
 }

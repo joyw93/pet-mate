@@ -15,5 +15,6 @@ export declare class CommunityService {
     getOnePost(postId: number): Promise<CommunityEntity>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
+    getAllComments(postId: number): Promise<CommunityEntity[]>;
     createComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
 }

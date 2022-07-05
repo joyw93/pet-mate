@@ -34,13 +34,13 @@ let CommunityService = class CommunityService {
         return await this.communityRepository.findOne({ where: { id: postId } });
     }
     async createPost(userId, createPostDto) {
-        const { title, content } = createPostDto;
-        const user = await this.userRepository.findOne({ where: { id: userId } });
-        const post = new community_entity_1.CommunityEntity();
-        post.title = title;
-        post.content = content;
-        post.author = user;
         try {
+            const { title, content } = createPostDto;
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            const post = new community_entity_1.CommunityEntity();
+            post.title = title;
+            post.content = content;
+            post.author = user;
             return await this.communityRepository.save(post);
         }
         catch (err) {
@@ -48,32 +48,43 @@ let CommunityService = class CommunityService {
         }
     }
     async likePost(userId, postId) {
-        const user = await this.userRepository.findOne({ where: { id: userId } });
-        const post = await this.communityRepository.findOne({
-            where: { id: postId },
-        });
-        const communityLike = new community_like_entity_1.CommunityLikeEntity();
-        communityLike.author = user;
-        communityLike.post = post;
         try {
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            const post = await this.communityRepository.findOne({
+                where: { id: postId },
+            });
+            const communityLike = new community_like_entity_1.CommunityLikeEntity();
+            communityLike.author = user;
+            communityLike.post = post;
             return await this.communityLikeRepository.save(communityLike);
         }
         catch (err) {
             throw new common_1.HttpException(err, 500);
         }
     }
-    async createComment(userId, postId, createCommentDto) {
-        const { title, content } = createCommentDto;
-        const user = await this.userRepository.findOne({ where: { id: userId } });
-        const post = await this.communityRepository.findOne({
-            where: { id: postId },
-        });
-        const comment = new community_comment_entity_1.CommunityCommentEntity();
-        comment.author = user;
-        comment.post = post;
-        comment.title = title;
-        comment.content = content;
+    async getAllComments(postId) {
         try {
+            return await this.communityRepository.find({
+                where: { id: postId },
+                relations: ['comments'],
+            });
+        }
+        catch (err) {
+            throw new common_1.HttpException(err, 500);
+        }
+    }
+    async createComment(userId, postId, createCommentDto) {
+        try {
+            const { title, content } = createCommentDto;
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            const post = await this.communityRepository.findOne({
+                where: { id: postId },
+            });
+            const comment = new community_comment_entity_1.CommunityCommentEntity();
+            comment.author = user;
+            comment.post = post;
+            comment.title = title;
+            comment.content = content;
             return await this.communityCommentRepository.save(comment);
         }
         catch (err) {
