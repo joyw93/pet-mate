@@ -98,4 +98,12 @@ export class CommunityService {
       throw new HttpException(err, 500);
     }
   }
+
+  async deleteComment(commentId: number) {
+    try {
+      return await this.communityCommentRepository.delete(commentId);
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
 }

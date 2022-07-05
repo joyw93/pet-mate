@@ -26,31 +26,29 @@ let CommunityController = class CommunityController {
     async getAllPosts() {
         return await this.communityService.getAllPosts();
     }
-    async getOnePost(id) {
-        const postId = id;
+    async getOnePost(postId) {
         return await this.communityService.getOnePost(postId);
     }
-    async likePost(user, id) {
+    async likePost(user, postId) {
         const userId = user.id;
-        const postId = id;
         return await this.communityService.likePost(userId, postId);
     }
     async createPost(user, createPostDto) {
         const userId = user.id;
         return await this.communityService.createPost(userId, createPostDto);
     }
-    async deletePost(id) {
-        const postId = id;
+    async deletePost(postId) {
         return await this.communityService.deletePost(postId);
     }
-    async getAllComments(id) {
-        const postId = id;
+    async getAllComments(postId) {
         return await this.communityService.getAllComments(postId);
     }
-    async createComment(user, id, createCommentDto) {
+    async createComment(user, postId, createCommentDto) {
         const userId = user.id;
-        const postId = id;
         return await this.communityService.createComment(userId, postId, createCommentDto);
+    }
+    async deleteComment(commentId) {
+        return await this.communityService.deleteComment(commentId);
     }
 };
 __decorate([
@@ -60,16 +58,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getAllPosts", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, common_1.Get)(':postId'),
+    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getOnePost", null);
 __decorate([
-    (0, common_1.Get)(':id/like'),
+    (0, common_1.Get)(':postId/like'),
     __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
     __metadata("design:returntype", Promise)
@@ -84,28 +82,35 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, common_1.Delete)(':postId'),
+    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "deletePost", null);
 __decorate([
-    (0, common_1.Get)(':id/comment'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, common_1.Get)(':postId/comment'),
+    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getAllComments", null);
 __decorate([
-    (0, common_1.Post)(':id/comment'),
+    (0, common_1.Post)(':postId/comment'),
     __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createComment", null);
+__decorate([
+    (0, common_1.Delete)('comment/:commentId'),
+    __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "deleteComment", null);
 CommunityController = __decorate([
     (0, common_1.Controller)('community'),
     __metadata("design:paramtypes", [community_service_1.CommunityService])

@@ -6,10 +6,11 @@ export declare class CommunityController {
     private readonly communityService;
     constructor(communityService: CommunityService);
     getAllPosts(): Promise<import("./community.entity").CommunityEntity[]>;
-    getOnePost(id: number): Promise<import("./community.entity").CommunityEntity>;
-    likePost(user: UserEntity, id: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
+    getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
+    likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
-    deletePost(id: number): Promise<import("typeorm").DeleteResult>;
-    getAllComments(id: number): Promise<import("./community.entity").CommunityEntity[]>;
-    createComment(user: UserEntity, id: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
+    deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
+    getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
+    createComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
+    deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
 }

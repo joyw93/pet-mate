@@ -22,19 +22,17 @@ export class CommunityController {
     return await this.communityService.getAllPosts();
   }
 
-  @Get(':id')
-  async getOnePost(@Param('id', ParseIntPipe) id: number) {
-    const postId = id;
+  @Get(':postId')
+  async getOnePost(@Param('postId', ParseIntPipe) postId: number) {
     return await this.communityService.getOnePost(postId);
   }
 
-  @Get(':id/like')
+  @Get(':postId/like')
   async likePost(
     @User() user: UserEntity,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('postId', ParseIntPipe) postId: number,
   ) {
     const userId = user.id;
-    const postId = id;
     return await this.communityService.likePost(userId, postId);
   }
 
@@ -47,30 +45,33 @@ export class CommunityController {
     return await this.communityService.createPost(userId, createPostDto);
   }
   // Todo: 인가처리
-  @Delete(':id')
-  async deletePost(@Param('id', ParseIntPipe) id: number) {
-    const postId = id;
+  @Delete(':postId')
+  async deletePost(@Param('postId', ParseIntPipe) postId: number) {
     return await this.communityService.deletePost(postId);
   }
 
-  @Get(':id/comment')
-  async getAllComments(@Param('id', ParseIntPipe) id: number) {
-    const postId = id;
+  @Get(':postId/comment')
+  async getAllComments(@Param('postId', ParseIntPipe) postId: number) {
     return await this.communityService.getAllComments(postId);
   }
 
-  @Post(':id/comment')
+  @Post(':postId/comment')
   async createComment(
     @User() user: UserEntity,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('postId', ParseIntPipe) postId: number,
     @Body() createCommentDto: CreateCommentDto,
   ) {
     const userId = user.id;
-    const postId = id;
     return await this.communityService.createComment(
       userId,
       postId,
       createCommentDto,
     );
+  }
+  @Delete('comment/:commentId')
+  async deleteComment(
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return await this.communityService.deleteComment(commentId)
   }
 }

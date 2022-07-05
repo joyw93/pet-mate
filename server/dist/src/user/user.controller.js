@@ -84,7 +84,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "logout", null);
 __decorate([
-    (0, common_1.Get)('likedPosts'),
+    (0, common_1.Get)('liked-posts'),
     __param(0, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),

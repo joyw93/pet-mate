@@ -99,6 +99,14 @@ let CommunityService = class CommunityService {
             throw new common_1.HttpException(err, 500);
         }
     }
+    async deleteComment(commentId) {
+        try {
+            return await this.communityCommentRepository.delete(commentId);
+        }
+        catch (err) {
+            throw new common_1.HttpException(err, 500);
+        }
+    }
 };
 CommunityService = __decorate([
     (0, common_1.Injectable)(),
