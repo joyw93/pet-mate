@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { EditPostDto } from './dto/edit-post.dto';
 export declare class CommunityService {
     private communityRepository;
     private userRepository;
@@ -14,6 +15,14 @@ export declare class CommunityService {
     getAllPosts(): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
+    editPost(postId: number, editPostDto: EditPostDto): Promise<{
+        title: string;
+        content: string;
+        id: number;
+        author: UserEntity;
+        likes: CommunityLikeEntity[];
+        comments: CommunityCommentEntity[];
+    } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
     getAllComments(postId: number): Promise<CommunityEntity[]>;

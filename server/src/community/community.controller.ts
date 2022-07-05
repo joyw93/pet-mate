@@ -5,13 +5,16 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { EditPostDto } from './dto/edit-post.dto';
 
 @Controller('community')
 export class CommunityController {
@@ -44,6 +47,15 @@ export class CommunityController {
     const userId = user.id;
     return await this.communityService.createPost(userId, createPostDto);
   }
+
+  @Patch(':postId')
+  async editPost(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body() editPostDto: EditPostDto,
+  ) {
+    return await this.communityService.editPost(postId, editPostDto);
+  }
+
   // Todo: 인가처리
   @Delete(':postId')
   async deletePost(@Param('postId', ParseIntPipe) postId: number) {
@@ -69,9 +81,7 @@ export class CommunityController {
     );
   }
   @Delete('comment/:commentId')
-  async deleteComment(
-    @Param('commentId', ParseIntPipe) commentId: number,
-  ) {
-    return await this.communityService.deleteComment(commentId)
+  async deleteComment(@Param('commentId', ParseIntPipe) commentId: number) {
+    return await this.communityService.deleteComment(commentId);
   }
 }
