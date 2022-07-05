@@ -80,6 +80,15 @@ export class CommunityController {
       createCommentDto,
     );
   }
+
+  @Patch('comment/:commentId')
+  async editComment(
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @Body('content') commentContent: string,
+  ) {
+    return await this.communityService.editComment(commentId, commentContent);
+  }
+
   @Delete('comment/:commentId')
   async deleteComment(@Param('commentId', ParseIntPipe) commentId: number) {
     return await this.communityService.deleteComment(commentId);

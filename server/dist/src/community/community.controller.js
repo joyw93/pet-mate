@@ -51,6 +51,9 @@ let CommunityController = class CommunityController {
         const userId = user.id;
         return await this.communityService.createComment(userId, postId, createCommentDto);
     }
+    async editComment(commentId, commentContent) {
+        return await this.communityService.editComment(commentId, commentContent);
+    }
     async deleteComment(commentId) {
         return await this.communityService.deleteComment(commentId);
     }
@@ -116,6 +119,14 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createComment", null);
+__decorate([
+    (0, common_1.Patch)('comment/:commentId'),
+    __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)('content')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "editComment", null);
 __decorate([
     (0, common_1.Delete)('comment/:commentId'),
     __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),

@@ -27,5 +27,12 @@ export declare class CommunityService {
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
     getAllComments(postId: number): Promise<CommunityEntity[]>;
     createComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
+    editComment(commentId: number, content: string): Promise<{
+        content: string;
+        id: number;
+        title: string;
+        author: UserEntity;
+        post: CommunityEntity;
+    } & CommunityCommentEntity>;
     deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
 }

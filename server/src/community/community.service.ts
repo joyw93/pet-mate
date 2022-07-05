@@ -113,6 +113,18 @@ export class CommunityService {
     }
   }
 
+  async editComment(commentId: number, content: string) {
+    try {
+      const oldComment = await this.communityCommentRepository.findOne({
+        where: { id: commentId },
+      });
+      const newComment = { ...oldComment, content };
+      return await this.communityCommentRepository.save(newComment);
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
+
   async deleteComment(commentId: number) {
     try {
       return await this.communityCommentRepository.delete(commentId);

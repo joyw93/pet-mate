@@ -21,5 +21,12 @@ export declare class CommunityController {
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
     createComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
+    editComment(commentId: number, commentContent: string): Promise<{
+        content: string;
+        id: number;
+        title: string;
+        author: UserEntity;
+        post: import("./community.entity").CommunityEntity;
+    } & import("../common/entities/community-comment.entity").CommunityCommentEntity>;
     deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
 }
