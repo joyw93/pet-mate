@@ -19,6 +19,7 @@ const user_entity_1 = require("../user/user.entity");
 const community_service_1 = require("./community.service");
 const create_comment_dto_1 = require("./dto/create-comment.dto");
 const create_post_dto_1 = require("./dto/create-post.dto");
+const edit_post_dto_1 = require("./dto/edit-post.dto");
 let CommunityController = class CommunityController {
     constructor(communityService) {
         this.communityService = communityService;
@@ -36,6 +37,9 @@ let CommunityController = class CommunityController {
     async createPost(user, createPostDto) {
         const userId = user.id;
         return await this.communityService.createPost(userId, createPostDto);
+    }
+    async editPost(postId, editPostDto) {
+        return await this.communityService.editPost(postId, editPostDto);
     }
     async deletePost(postId) {
         return await this.communityService.deletePost(postId);
@@ -81,6 +85,14 @@ __decorate([
         create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.Patch)(':postId'),
+    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, edit_post_dto_1.EditPostDto]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "editPost", null);
 __decorate([
     (0, common_1.Delete)(':postId'),
     __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),

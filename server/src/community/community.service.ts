@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { EditPostDto } from './dto/edit-post.dto';
 
 @Injectable()
 export class CommunityService {
@@ -38,6 +39,19 @@ export class CommunityService {
       post.content = content;
       post.author = user;
       return await this.communityRepository.save(post);
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
+
+  async editPost(postId: number, editPostDto: EditPostDto) {
+    try {
+      const { title, content } = editPostDto;
+      const oldPost = await this.communityRepository.findOne({
+        where: { id: postId },
+      });
+      const newPost = { ...oldPost, title, content };
+      return await this.communityRepository.save(newPost);
     } catch (err) {
       throw new HttpException(err, 500);
     }

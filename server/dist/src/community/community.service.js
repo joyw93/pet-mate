@@ -47,6 +47,19 @@ let CommunityService = class CommunityService {
             throw new common_1.HttpException(err, 500);
         }
     }
+    async editPost(postId, editPostDto) {
+        try {
+            const { title, content } = editPostDto;
+            const oldPost = await this.communityRepository.findOne({
+                where: { id: postId },
+            });
+            const newPost = Object.assign(Object.assign({}, oldPost), { title, content });
+            return await this.communityRepository.save(newPost);
+        }
+        catch (err) {
+            throw new common_1.HttpException(err, 500);
+        }
+    }
     async deletePost(postId) {
         try {
             return await this.communityRepository.delete(postId);
