@@ -27,11 +27,29 @@ let CommunityService = class CommunityService {
         this.communityLikeRepository = communityLikeRepository;
         this.communityCommentRepository = communityCommentRepository;
     }
-    async getAllPosts() {
-        return await this.communityRepository.find();
+    async getPosts(offset, postCount) {
+        try {
+            if (postCount) {
+                return await this.communityRepository.find({
+                    skip: offset,
+                    take: postCount,
+                });
+            }
+            else {
+                return await this.communityRepository.find();
+            }
+        }
+        catch (err) {
+            throw new common_1.HttpException(err, 500);
+        }
     }
     async getOnePost(postId) {
-        return await this.communityRepository.findOne({ where: { id: postId } });
+        try {
+            return await this.communityRepository.findOne({ where: { id: postId } });
+        }
+        catch (err) {
+            throw new common_1.HttpException(err, 500);
+        }
     }
     async createPost(userId, createPostDto) {
         try {

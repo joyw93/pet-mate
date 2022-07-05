@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserEntity } from 'src/user/user.entity';
@@ -21,8 +22,11 @@ export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}
 
   @Get()
-  async getAllPosts() {
-    return await this.communityService.getAllPosts();
+  async getPosts(
+    @Query('offset') offset: number,
+    @Query('count') postCount: number,
+  ) {
+    return await this.communityService.getPosts(offset || 0, postCount);
   }
 
   @Get(':postId')

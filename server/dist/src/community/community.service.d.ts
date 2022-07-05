@@ -12,7 +12,7 @@ export declare class CommunityService {
     private communityLikeRepository;
     private communityCommentRepository;
     constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>);
-    getAllPosts(): Promise<CommunityEntity[]>;
+    getPosts(offset: number, postCount: number): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{

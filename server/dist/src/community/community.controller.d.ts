@@ -6,7 +6,7 @@ import { EditPostDto } from './dto/edit-post.dto';
 export declare class CommunityController {
     private readonly communityService;
     constructor(communityService: CommunityService);
-    getAllPosts(): Promise<import("./community.entity").CommunityEntity[]>;
+    getPosts(offset: number, postCount: number): Promise<import("./community.entity").CommunityEntity[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
