@@ -16,6 +16,7 @@ export declare class UserController {
         deletedAt: Date;
         posts: import("../community/community.entity").CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
+        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
     logout(res: any): Promise<any>;
