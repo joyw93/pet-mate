@@ -14,7 +14,6 @@ const Header = () => {
     dispatch(logoutRequestAction());
   }, []);
 
-
   const handleValChange = (event) => {
     if (event.target.value !== "") {
       setVisibile(true);
@@ -43,7 +42,7 @@ const Header = () => {
           <ul id="lnb">
             <li>
               <Tab>
-                <Link href="/walking-mate">
+                <Link href="/sanchaek">
                   <a>산책메이트</a>
                 </Link>
               </Tab>
