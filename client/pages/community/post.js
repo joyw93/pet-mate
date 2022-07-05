@@ -1,6 +1,5 @@
 import AppLayout from "../../components/AppLayout";
-import CommunityPost from "../../components/CommunityPost/CommunityPostCreate";
-
+import CommunityPost from "../../components/CommunityPost/CommunityPost";
 
 const PostPage = () => {
   return (

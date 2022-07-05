@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Colors } from '../../styles/ColorVariable';
+import styled from "styled-components";
+import { Colors } from "../../styles/ColorVariable";
 
 export const NavContainer = styled.header`
   display: flex;
@@ -14,7 +14,7 @@ export const NavContainer = styled.header`
   #logo {
     width: 156px;
     height: 56px;
-    background-image: url('../img/logo_pet.png');
+    background-image: url("../img/logo_pet.png");
     background-size: cover;
     cursor: pointer;
   }
@@ -37,13 +37,13 @@ export const NavContainer = styled.header`
     background: none;
     border: none;
     position: absolute;
-    right: 5px;
-    top: 6px;
+    right: 7px;
+    top: 7px;
     cursor: pointer;
   }
   #cancel_btn > img {
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
@@ -75,6 +75,4 @@ export const AuthTab = styled.li`
     color: ${Colors.primaryColor};
     transition: 0.2s all;
   }
-
-
 `;
