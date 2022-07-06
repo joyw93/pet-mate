@@ -1,19 +1,17 @@
 import Head from "next/head";
 
 import AppLayout from "../components/AppLayout";
-import SignUp from "../components/SignUp/SignUp";
-
-const SignUpPage = () => {
+const SearchPage = () => {
   return (
     <>
       <Head>
-        <title>환영합니다! | 펫메이트</title>
+        <title>검색결과 | 펫메이트</title>
       </Head>
       <AppLayout>
-        <SignUp />
+        <div>검색결과 페이지</div>
       </AppLayout>
     </>
   );
 };
 
-export default SignUpPage;
+export default SearchPage;
