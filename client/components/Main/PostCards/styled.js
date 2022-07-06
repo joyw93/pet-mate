@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Colors } from '../../../styles/ColorVariable';
+import styled from "styled-components";
+import { Colors } from "../../../styles/ColorVariable";
 
 export const PostCardContainer = styled.div`
   max-width: 1200px;

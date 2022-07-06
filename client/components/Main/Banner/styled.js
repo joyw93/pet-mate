@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const BannerContainer = styled.div`
   width: 100%;
@@ -6,32 +6,33 @@ export const BannerContainer = styled.div`
 
 export const BannerItem = styled.div`
   width: 100%;
-  height: 800px;
+
   & + & {
     background-color: #fff8ec;
   }
   .banner_container {
     max-width: 1200px;
-    height: 100%;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: space-evenly;
+    align-content: center;
+    padding: 60px 0;
   }
   .banner_item_img,
   .banner_item_box {
     max-width: 600px;
+    margin: auto 0;
   }
   .banner_item_box {
-    padding: 0 80px;
+    padding: 0 60px;
   }
   .banner_item_img img {
     width: 100%;
   }
   .banner_item_box h1 {
     font-weight: bold;
-    font-size: 2.8rem;
+    font-size: 2rem;
     line-height: 1.5;
     margin-bottom: 30px;
   }

@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
 
-import LoadingButton from "@mui/lab/LoadingButton";
-
-export const Button = styled(LoadingButton)`
+export const Button = styled.button`
   font-size: 0.9rem;
   width: 60px;
   height: 35px;
@@ -118,6 +116,12 @@ export const CommentWrapper = styled.div`
       width: 100%;
       height: 35px;
       border: 1px solid #ddd;
+      padding-left: 10px;
+    }
+    input::placeholder {
+      font-weight: bold;
+      color: #ddd;
+      font-size: 0.9rem;
     }
 
     button {
