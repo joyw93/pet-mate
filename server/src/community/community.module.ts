@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { CommunityController } from './community.controller';
@@ -10,6 +11,7 @@ import { CommunityService } from './community.service';
   imports: [
     TypeOrmModule.forFeature([
       CommunityEntity,
+      CommunityCommentEntity,
       CommunityLikeEntity,
       UserEntity,
     ]),

@@ -1,40 +1,36 @@
 import styled from "styled-components";
-import { Colors } from "../../styles/ColorVariable";
+
 export const SanchaekContainer = styled.div`
-  /* max-width: 1200px;
   margin: 0 auto;
-  padding: 0 14px; */
 `;
 
 export const SanchaekBanner = styled.div`
   width: 100%;
-  height: 520px;
-  background-color: ${Colors.primaryColor};
   margin-bottom: 100px;
-  div {
-    width: 1920px;
-    height: 520px;
-    margin: 0 auto;
-    background-image: url("../img/sanchaekbanner.png");
-    background-repeat: no-repeat;
-    background-size: contain;
+
+  img {
+    width: 100%;
   }
 `;
 
 export const SanchaekContent = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 100px auto;
   padding: 0 14px;
 `;
 export const Item = styled.div`
-  background-color: #eee;
+  /* background-color: #eee; */
+  margin-bottom: 80px;
 
   h2 {
-    font-size: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   span {
-    font-size: 16px;
+    font-size: 0.9rem;
   }
 `;
 
@@ -43,4 +39,40 @@ export const ItemImage = styled.img`
   height: 270px;
   object-fit: cover;
   border-radius: 10px;
+
+  &:hover {
+    transition: all 0.3s;
+    opacity: 0.7;
+  }
+`;
+
+export const BtnContainer = styled.div`
+  position: relative;
+
+  span {
+    width: 100%;
+    border: 0.3px solid #eee;
+    position: absolute;
+    top: 50%;
+  }
+
+  button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #eee;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    &:hover {
+      transition: all 0.3s;
+      opacity: 0.6;
+    }
+  }
 `;

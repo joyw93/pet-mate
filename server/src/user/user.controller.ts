@@ -44,7 +44,7 @@ export class UserController {
     return res.send('ok');
   }
 
-  @Get('likedPosts')
+  @Get('liked-posts')
   async getLikedPost(@User() user: UserEntity) {
     const userId = user.id;
     return await this.userService.getLikedPosts(userId);

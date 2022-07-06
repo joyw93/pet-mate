@@ -1,5 +1,6 @@
 //import { useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
+import { ListContainer, BtnContainer } from "./styled";
 
 const DUMMY_POSTS = [
   {
@@ -115,9 +116,15 @@ const DUMMY_POSTS = [
 const CommunityList = () => {
   return (
     <>
-      {DUMMY_POSTS.map((item) => (
-        <CommunityItem key={item.id} {...item} />
-      ))}
+      <ListContainer>
+        {DUMMY_POSTS.map((item) => (
+          <CommunityItem key={item.id} {...item} />
+        ))}
+        <BtnContainer>
+          <span></span>
+          <button>더보기</button>
+        </BtnContainer>
+      </ListContainer>
     </>
   );
 };

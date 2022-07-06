@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import AppLayout from "../../components/AppLayout";
+import Head from "next/head";
+
 import CommunityMain from "../../components/CommunityMain/CommunityMain";
 
 const Community = () => {
@@ -8,6 +10,9 @@ const Community = () => {
 
   return (
     <>
+      <Head>
+        <title>커뮤니티 | 펫메이트</title>
+      </Head>
       <AppLayout>
         {me ? (
           <button>

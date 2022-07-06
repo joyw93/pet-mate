@@ -1,3 +1,4 @@
+import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { CommunityEntity } from 'src/community/community.entity';
 export declare class UserEntity {
@@ -11,4 +12,5 @@ export declare class UserEntity {
     deletedAt: Date | null;
     posts: CommunityEntity[];
     likes: CommunityLikeEntity[];
+    comments: CommunityCommentEntity[];
 }

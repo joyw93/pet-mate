@@ -1,5 +1,5 @@
-import AppLayout from '../../components/AppLayout';
-import WalkingMatePost from '../../components/WalkingMatePost/WalkingMatePost'
+import AppLayout from "../../components/AppLayout";
+import WalkingMatePost from "../../components/WalkingMatePost/WalkingMatePost";
 
 const PostPage = () => {
   return (

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Colors } from '../../../styles/ColorVariable';
+import styled from "styled-components";
+import { Colors } from "../../../styles/ColorVariable";
 
 export const PostCardContainer = styled.div`
   max-width: 1200px;
@@ -11,7 +11,8 @@ export const PostCardContainer = styled.div`
     font-size: 24px;
     font-weight: bold;
     text-align: left;
-    margin-top: 30px;
+    margin-top: 50px;
+    margin-bottom: 40px;
   }
 `;
 export const Title = styled.h1`
@@ -21,23 +22,25 @@ export const Title = styled.h1`
   display: inline-block;
   font-weight: bold;
   font-size: 28px;
-  margin-bottom: 30px;
 `;
 
-export const MateContainter = styled.div`
-  margin-top: 20px;
+export const PostContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 2%;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
-  /* margin-bottom: 100px; */
+  margin-bottom: 80px;
 `;
 
 export const ListItem = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  width: 280px;
-  height: 350px;
+  /* max-width: 280px; */
+  min-height: 350px;
+  flex-basis: 20%;
+  flex-shrink: 1;
+  flex-grow: 1;
 
   & img {
     width: 100%;
@@ -50,11 +53,25 @@ export const ListItem = styled.div`
     margin-top: 10px;
     font-size: 20px;
   }
-`;
 
-export const ComuContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  & img:hover {
+    transition: all 0.3s;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 1023px) {
+    & {
+      flex-basis: 49%;
+    }
+  }
+  /* @media (min-width: 480px) and(max-width: 767px) {
+    & {
+      flex-basis: 49%;
+    }
+  } */
+  @media (max-width: 479px) {
+    & {
+      flex-basis: 100%;
+    }
+  }
 `;

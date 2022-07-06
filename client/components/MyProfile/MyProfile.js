@@ -24,11 +24,11 @@ const MyProfile = () => {
     setActiveIndex(index);
   };
 
-  useEffect(() => {
-    if (!me) {
-      Router.push("/");
-    }
-  }, [me]);
+  // useEffect(() => {
+  //   if (!me) {
+  //     Router.push("/");
+  //   }
+  // }, [me]);
 
   const MyPostItems = [
     {
@@ -131,13 +131,22 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickeHandler(0)}>
+                <li
+                  className={activeIndex === 0 ? "is_active" : ""}
+                  onClick={() => tabClickeHandler(0)}
+                >
                   내가 쓴 게시글
                 </li>
-                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickeHandler(1)}>
+                <li
+                  className={activeIndex === 1 ? "is_active" : ""}
+                  onClick={() => tabClickeHandler(1)}
+                >
                   내가 쓴 댓글
                 </li>
-                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickeHandler(2)}>
+                <li
+                  className={activeIndex === 2 ? "is_active" : ""}
+                  onClick={() => tabClickeHandler(2)}
+                >
                   좋아요
                 </li>
               </TabList>

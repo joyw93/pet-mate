@@ -1,5 +1,38 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
+import LoadingButton from "@mui/lab/LoadingButton";
+
+export const Button = styled(LoadingButton)`
+  font-size: 0.9rem;
+  width: 60px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  background-color: #d9d9d9;
+  margin-left: 10px;
+  transition: all 0.1s;
+
+  &:first-child {
+    background-color: ${Colors.primaryColor};
+  }
+
+  &:last-child {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &:first-child:hover {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  &:last-child:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+`;
 
 export const CreatePostContainer = styled.div`
   max-width: 720px;
@@ -14,23 +47,6 @@ export const TitleWrapper = styled.div`
   h1 {
     font-size: 1.3rem;
     font-weight: bold;
-  }
-  #buttons button {
-    font-size: 1rem;
-    width: 60px;
-    height: 35px;
-    border-radius: 20px;
-    border: none;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-  }
-  #submit_btn {
-    background-color: ${Colors.primaryColor};
-  }
-  #cancel_btn {
-    background-color: #000;
-    margin-left: 10px;
   }
 `;
 

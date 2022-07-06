@@ -6,7 +6,9 @@ import {
   ItemImage,
   SanchaekBanner,
   SanchaekContent,
+  BtnContainer,
 } from "./styled";
+import Link from "next/link";
 
 const DUMMY_LISTS = [
   {
@@ -21,18 +23,49 @@ const DUMMY_LISTS = [
     title: "울집 댕댕이랑 산책하실 분 구함2222",
     content:
       "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet2.jpg",
   },
   {
     id: 3,
     title: "울집 댕댕이랑 산책하실 분 구함",
     content:
       "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet3.jpg",
   },
   {
     id: 4,
     title: "울집 댕댕이랑 산책하실 분 구함2222",
     content:
       "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet1.jpg",
+  },
+  {
+    id: 5,
+    title: "울집 댕댕이랑 산책하실 분 구함",
+    content:
+      "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet1.jpg",
+  },
+  {
+    id: 6,
+    title: "울집 댕댕이랑 산책하실 분 구함2222",
+    content:
+      "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet2.jpg",
+  },
+  {
+    id: 7,
+    title: "울집 댕댕이랑 산책하실 분 구함",
+    content:
+      "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet3.jpg",
+  },
+  {
+    id: 8,
+    title: "울집 댕댕이랑 산책하실 분 구함2222",
+    content:
+      "안녕하세욤 어쩌구 저쩌구 산책하실 분 구해욤 근데 저는 강아지가 없어요......나도 강아지...갱얼지...",
+    image: "../img/pet1.jpg",
   },
 ];
 
@@ -40,7 +73,11 @@ const SanchaekMain = () => {
   return (
     <SanchaekContainer>
       <SanchaekBanner>
-        <div></div>
+        <Link href="/">
+          <a>
+            <img src="../img/sanchaekbanner.png" />
+          </a>
+        </Link>
       </SanchaekBanner>
       <SanchaekContent>
         <Box sx={{ width: "100%" }}>
@@ -60,6 +97,10 @@ const SanchaekMain = () => {
             ))}
           </Grid>
         </Box>
+        <BtnContainer>
+          <span></span>
+          <button>더보기</button>
+        </BtnContainer>
       </SanchaekContent>
     </SanchaekContainer>
   );

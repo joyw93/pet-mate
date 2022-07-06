@@ -24,6 +24,10 @@ export const Selection = styled.select`
   &:focus {
     outline: none;
   }
+
+  option {
+    font-size: 1rem;
+  }
 `;
 
 export const NoticeBtn = styled.button`
@@ -41,6 +45,7 @@ export const NoticeWrapper = styled.div`
   padding: 10px 0;
   border-bottom: 1.5px solid #eee;
 
+  cursor: pointer;
   span {
     font-size: 16px;
     font-weight: bold;
@@ -48,21 +53,30 @@ export const NoticeWrapper = styled.div`
 `;
 
 //CommunityList
+export const ListContainer = styled.div`
+  margin-bottom: 50px;
+`;
 
 //CommunityItem
 export const ItemContainer = styled.div`
+  padding: 40px 0;
+  border-top: 1px solid #eee;
+
+  &:first-child {
+    border-top: none;
+  }
+`;
+
+export const ItemWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 260px;
-
-  padding: 40px 0;
-  border-bottom: 1px solid #eee;
+  cursor: pointer;
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const ContentTitle = styled.h2`
@@ -107,4 +121,36 @@ export const KeywordItem = styled.button`
   border: 1.5px solid ${Colors.primaryColor};
   border-radius: 20px;
   font-size: 12px;
+`;
+
+export const BtnContainer = styled.div`
+  position: relative;
+  margin-bottom: 200px;
+
+  span {
+    width: 100%;
+    border: 0.3px solid #eee;
+    position: absolute;
+    top: 50%;
+  }
+
+  button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #eee;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    &:hover {
+      transition: all 0.3s;
+      opacity: 0.6;
+    }
+  }
 `;

@@ -1,16 +1,14 @@
-import Link from "next/link";
+import Head from "next/head";
 import AppLayout from "../../components/AppLayout";
 import SanchaekMain from "../../components/Sanchaek/SanchaekMain";
 
 const WalkingMate = () => {
   return (
     <>
+      <Head>
+        <title>산책메이트 | 펫메이트</title>
+      </Head>
       <AppLayout>
-        <button>
-          <Link href="/sanchaek/post">
-            <a>게시글 쓰기</a>
-          </Link>
-        </button>
         <SanchaekMain />
       </AppLayout>
     </>

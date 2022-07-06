@@ -1,3 +1,4 @@
+import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { CommunityEntity } from 'src/community/community.entity';
 import {
@@ -36,13 +37,9 @@ export class UserEntity {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @OneToMany(
-    () => CommunityEntity,
-    (post: CommunityEntity) => post.author,
-    {
-      cascade: true,
-    },
-  )
+  @OneToMany(() => CommunityEntity, (post: CommunityEntity) => post.author, {
+    cascade: true,
+  })
   posts: CommunityEntity[];
 
   @OneToMany(
@@ -53,4 +50,13 @@ export class UserEntity {
     },
   )
   likes: CommunityLikeEntity[];
+
+  @OneToMany(
+    () => CommunityCommentEntity,
+    (comment: CommunityCommentEntity) => comment.author,
+    {
+      cascade: true,
+    },
+  )
+  comments: CommunityCommentEntity[];
 }

@@ -58,14 +58,10 @@ const Header = () => {
         </div>
         <div id="menu_right">
           <form>
-            <Input
-              placeholder="검색어를 입력하세요"
-              onChange={handleValChange}
-              value={inputVal}
-            />
+            <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
             {visibile && (
               <button id="cancel_btn" onClick={clearInputVal}>
-                <img src="img/cancelbtn.png" />
+                <img src="../img/cancelBtn.png" />
               </button>
             )}
           </form>
