@@ -20,6 +20,14 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityLikeEntity.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.Column)('int', { name: 'author_id' }),
+    __metadata("design:type", Number)
+], CommunityLikeEntity.prototype, "author_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { name: 'post_id' }),
+    __metadata("design:type", Number)
+], CommunityLikeEntity.prototype, "post_id", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.likes),
     (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)

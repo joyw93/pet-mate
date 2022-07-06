@@ -27,6 +27,9 @@ let CommunityController = class CommunityController {
     async getPosts(offset, postCount) {
         return await this.communityService.getPosts(offset || 0, postCount);
     }
+    async getBestPosts() {
+        return await this.communityService.getBestPosts();
+    }
     async getOnePost(postId) {
         return await this.communityService.getOnePost(postId);
     }
@@ -66,6 +69,12 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getPosts", null);
+__decorate([
+    (0, common_1.Get)('best'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "getBestPosts", null);
 __decorate([
     (0, common_1.Get)(':postId'),
     __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),

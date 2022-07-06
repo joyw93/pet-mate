@@ -21,6 +21,9 @@ export class CommunityEntity {
   @Column('text', { name: 'content' })
   content: string;
 
+  @Column('int', {name:'author_id'})
+  author_id: number;
+
   @ManyToOne(() => UserEntity, (author: UserEntity) => author.posts, {
     onDelete: 'CASCADE',
   })

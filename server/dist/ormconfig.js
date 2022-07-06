@@ -10,7 +10,7 @@ const config = {
     database: process.env.DB_DATABASE,
     autoLoadEntities: true,
     charset: 'utf8mb4',
-    synchronize: true,
+    synchronize: false,
     logging: true,
     keepConnectionAlive: true,
 };

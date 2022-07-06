@@ -45,6 +45,22 @@ export class CommunityService {
     }
   }
 
+  async getBestPosts() {
+    try {
+      const posts = this.communityLikeRepository
+        .createQueryBuilder('like')
+        .select(['post_id','post.title, post.content'])
+        .addSelect('COUNT(post_id)', 'likeCount')
+        .groupBy('like.post_id')
+        .leftJoin('like.post','post')
+        .take(3)
+        .getRawMany();
+      return posts;
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
+
   async createPost(userId: number, createPostDto: CreatePostDto) {
     try {
       const { title, content } = createPostDto;

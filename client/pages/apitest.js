@@ -22,7 +22,7 @@ const Test = () => {
 
   const sessionCheck = () => {
     axios
-      .get("http://127.0.0.1:3000/users/test", { withCredentials: true })
+      .get("http://api.petmate.kr", { withCredentials: true })
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };

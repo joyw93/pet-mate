@@ -4,6 +4,8 @@ export declare class CommunityCommentEntity {
     id: number;
     title: string;
     content: string;
+    author_id: number;
+    post_id: number;
     author: UserEntity;
     post: CommunityEntity;
 }

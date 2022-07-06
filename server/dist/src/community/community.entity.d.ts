@@ -5,6 +5,7 @@ export declare class CommunityEntity {
     id: number;
     title: string;
     content: string;
+    author_id: number;
     author: UserEntity;
     likes: CommunityLikeEntity[];
     comments: CommunityCommentEntity[];
