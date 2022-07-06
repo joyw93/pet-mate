@@ -83,4 +83,13 @@ export class UserService {
       .getMany();
     return posts;
   }
+
+  async getCommentedPosts(userId: number) {
+    const posts = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.comments', 'comment')
+      .where('user.id=:id', { id: userId })
+      .getMany();
+    return posts;
+  }
 }

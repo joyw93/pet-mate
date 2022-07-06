@@ -45,13 +45,19 @@ export class UserController {
   }
 
   @Get('liked-posts')
-  async getLikedPost(@User() user: UserEntity) {
+  async getLikedPosts(@User() user: UserEntity) {
     const userId = user.id;
     return await this.userService.getLikedPosts(userId);
   }
 
+  @Get('commented-posts')
+  async getCommentedPosts(@User() user: UserEntity) {
+    const userId = user.id;
+    return await this.userService.getCommentedPosts(userId)
+  }
+
   @Get('loggedInTest')
   async isLoggedIn(@User() user) {
-    console.log(user)
+    console.log(user);
   }
 }
