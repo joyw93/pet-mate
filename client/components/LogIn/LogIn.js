@@ -12,6 +12,7 @@ import {
   LoginBtn,
   GoogleBtn,
   KakaoBtn,
+  CheckInput,
 } from "./styled";
 
 const LogIn = () => {
@@ -20,13 +21,18 @@ const LogIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailIsValid, setEmailIsValid] = useState(true);
 
   const emailRef = useRef();
   const passwordRef = useRef();
 
   const handleLoginSubmit = useCallback(() => {
-    if (!email) {
-      return emailRef.current.focus();
+    const emailregExp =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (emailregExp.test(email) === false || !email) {
+      setEmail("");
+      emailRef.current.focus();
+      return setEmailIsValid(false);
     }
     if (!password) {
       return passwordRef.current.focus();
@@ -34,11 +40,16 @@ const LogIn = () => {
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
 
-  useEffect(() => {
-    if (me) {
-      Router.push("/");
-    }
-  }, [me]);
+  const handleLoginEmail = (e) => {
+    setEmail(e.target.value);
+    setEmailIsValid(true);
+  };
+
+  // useEffect(() => {
+  //   if (me) {
+  //     Router.push("/");
+  //   }
+  // }, [me]);
 
   return (
     <LogInContainer>
@@ -50,8 +61,11 @@ const LogIn = () => {
             type="email"
             value={email}
             ref={emailRef}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleLoginEmail}
           ></UserInput>
+          {!emailIsValid && (
+            <CheckInput color="red">유효하지 않은 이메일입니다.</CheckInput>
+          )}
         </InputWrapper>
         <InputWrapper>
           <label>비밀번호</label>

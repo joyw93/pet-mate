@@ -36,9 +36,21 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const [checkbox1, setCheckbox1] = useState(false);
-  const [checkbox2, setCheckbox2] = useState(false);
-  const [checkbox3, setCheckbox3] = useState(false);
+  //체크박스
+  const [checkbox, setCheckbox] = useState({
+    check1: false,
+    check2: false,
+    check3: false,
+  });
+  const [checkboxIsValid, setCheckboxIsValid] = useState(true);
+
+  const handleCheckbox = (e) => {
+    const { checked, name } = e.target;
+    setCheckbox({
+      ...checkbox,
+      [name]: checked,
+    });
+  };
 
   const nameRef = useRef();
   const nicknameRef = useRef();
@@ -87,6 +99,12 @@ const SignUp = () => {
     if (nickname.length === 0) setNicknameIsInvalid(true);
 
     //닉네임 유효성 검사 추가 하기
+    const nicknameregExp = /^[가-힣|a-zA-Z|0-9|]{2,10}$/;
+    if (nicknameregExp.test(nickname) === false) {
+      return setNicknameIsInvalid(true);
+    } else {
+      return setNicknameIsValid(true);
+    }
 
     // nickname valid check to backend
     axios
@@ -98,15 +116,30 @@ const SignUp = () => {
   }, [nickname]);
 
   const handleValidEmail = () => {
-    //이메일 양식 안 맞을 때
-    if (email.search("@") === -1) {
-      return setGoblin(true);
+    //이메일 유효성 검사
+    const emailregExp =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (emailregExp.test(email) === false) {
+      setEmailIsInvalid(true);
+      setGoblin(true);
+    } else {
+      // setEmailIsValid(true);
+      // setGoblin(false);
+      axios
+        .post(`${serverUrl}/users/emailCheck`, {
+          email,
+        })
+        .then(() => {
+          setEmailIsValid(true);
+          setGoblin(false);
+        })
+        .catch(() => {
+          setEmailIsInvalid(true);
+          setGoblin(false);
+        });
     }
-    /* 
-    이메일 유효성 검사 추가 하기 ...
-    */
 
-    // email valid check to backend
+    //email valid check to backend
     axios
       .post(`${serverUrl}/users/emailCheck`, {
         email,
@@ -122,23 +155,26 @@ const SignUp = () => {
   };
 
   const handleSignUpSubmit = useCallback(() => {
+    //이름 유효성 검사
+    const nameregExp = /^[가-힣|a-zA-Z|]{2,6}$/;
+    if (nameregExp.test(nickname) === false || !name) {
+      setName("");
+      return nameRef.current.focus();
+    }
     //반려될 때
-    // if (!name) {
-    //   return nameRef.current.focus();
-    // }
-    // if (!nickname) {
-    //   return nicknameRef.current.focus();
-    // }
-    // if (!emailRef) {
-    //   return emailRef.current.focus();
-    // }
-    // if (!password) {
-    //   return passwordRef.current.focus();
-    // }
-    if (checkbox1 === true && checkbox2 === true && checkbox3 === true) {
-      return console.log("체크 완료");
+    if (!nickname) {
+      return nicknameRef.current.focus();
+    }
+    if (!emailRef) {
+      return emailRef.current.focus();
+    }
+    if (!password) {
+      return passwordRef.current.focus();
+    }
+    if (checkbox.check1 && checkbox.check2 && checkbox.check3) {
+      setCheckboxIsValid(true);
     } else {
-      return console.log("부족함");
+      return setCheckboxIsValid(false);
     }
     // 버그 fix
     if (password !== password2) {
@@ -151,7 +187,7 @@ const SignUp = () => {
     }
 
     //dispatch(signupRequestAction({ name, nickname, email, password }));
-  }, [name, nickname, email, password]);
+  }, [name, nickname, email, password, checkbox]);
 
   return (
     <SignUpContainer>
@@ -227,28 +263,34 @@ const SignUp = () => {
         <CheckContainer>
           <label>
             <input
-              value={checkbox1}
+              name="check1"
+              value={checkbox.check1}
               type="checkbox"
-              onClick={(e) => setCheckbox1(e.target.checked)}
+              onChange={handleCheckbox}
             ></input>
             모든 약관에 동의
           </label>
           <label>
             <input
-              value={checkbox2}
-              onClick={(e) => setCheckbox2(e.target.checked)}
+              name="check2"
+              value={checkbox.check2}
+              onChange={handleCheckbox}
               type="checkbox"
             ></input>
             개인정보처리방침에 동의 (필수)
           </label>
           <label>
             <input
-              value={checkbox3}
-              onClick={(e) => setCheckbox3(e.target.checked)}
+              name="check3"
+              value={checkbox.check3}
+              onChange={handleCheckbox}
               type="checkbox"
             ></input>
             이용약관에 동의 (필수)
           </label>
+          {!checkboxIsValid && (
+            <CheckInput color="red">약관에 동의해주세요.</CheckInput>
+          )}
         </CheckContainer>
         <SignupBtn onClick={handleSignUpSubmit}>회원가입</SignupBtn>
       </FormWrapper>

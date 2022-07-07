@@ -1,4 +1,4 @@
-import { PostCardContainer, Title, MateContainter, ComuContainer } from "./styled";
+import { PostCardContainer, Title, PostContainer } from "./styled";
 import Link from "next/link";
 import PostItem from "./PostItem";
 
