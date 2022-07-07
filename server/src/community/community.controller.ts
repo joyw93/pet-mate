@@ -29,6 +29,11 @@ export class CommunityController {
     return await this.communityService.getPosts(offset || 0, postCount);
   }
 
+  @Get('best')
+  async getBestPosts() {
+    return await this.communityService.getBestPosts();
+  }
+
   @Get(':postId')
   async getOnePost(@Param('postId', ParseIntPipe) postId: number) {
     return await this.communityService.getOnePost(postId);

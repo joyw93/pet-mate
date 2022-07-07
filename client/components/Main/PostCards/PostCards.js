@@ -1,6 +1,5 @@
+import { PostCardContainer, Title, MateContainter, ComuContainer } from "./styled";
 import Link from "next/link";
-
-import { PostCardContainer, Title, PostContainer } from "./styled";
 import PostItem from "./PostItem";
 
 const PostCards = () => {

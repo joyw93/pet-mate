@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
-import LoadingButton from "@mui/lab/LoadingButton";
 
-export const Button = styled(LoadingButton)`
+export const Button = styled.button`
   font-size: 0.9rem;
   width: 60px;
   height: 35px;

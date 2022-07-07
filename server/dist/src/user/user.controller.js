@@ -39,9 +39,13 @@ let UserController = class UserController {
         res.clearCookie('connect.sid', { httpOnly: true });
         return res.send('ok');
     }
-    async getLikedPost(user) {
+    async getLikedPosts(user) {
         const userId = user.id;
         return await this.userService.getLikedPosts(userId);
+    }
+    async getCommentedPosts(user) {
+        const userId = user.id;
+        return await this.userService.getCommentedPosts(userId);
     }
     async isLoggedIn(user) {
         console.log(user);
@@ -89,7 +93,14 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getLikedPost", null);
+], UserController.prototype, "getLikedPosts", null);
+__decorate([
+    (0, common_1.Get)('commented-posts'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getCommentedPosts", null);
 __decorate([
     (0, common_1.Get)('loggedInTest'),
     __param(0, (0, user_decorator_1.User)()),
