@@ -13,6 +13,28 @@ const CommunityPost = () => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [FileImages, setFileImages] = useState([]);
+
+  const handleAddImages = (event) => {
+    const imageLists = event.target.files;
+    let imageUrlLists = [...FileImages];
+
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+    }
+
+    if (imageUrlLists.length > 3) {
+      imageUrlLists = imageUrlLists.slice(0, 3);
+      alert("이미지는 3장까지 업로드 할 수 있습니다.");
+    }
+    setFileImages(imageUrlLists);
+  };
+
+  const handleDeleteImage = (id) => {
+    setFileImages(FileImages.filter((_, index) => index !== id));
+    window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
+  };
 
   const post = useCallback(() => {
     dispatch(postRequestAction({ title, content }));
@@ -45,12 +67,29 @@ const CommunityPost = () => {
           <h2>사진 추가(최대 3장)</h2>
           <div id="photos">
             <div id="add_photo">
-              <input type="file" id="add_file" />
-              <label htmlFor="add_file"> + </label>
+              <label htmlFor="add_file" onChange={handleAddImages}>
+                <input type="file" id="add_file" />
+                <img src="../img/photo.png" alt="이미지 업로드" />
+              </label>
             </div>
-            <div id="photo1"></div>
-            <div id="photo2"></div>
-            <div id="photo3"></div>
+            {FileImages.map((image, id) => (
+              <div key={id} className="photo_preview">
+                <img src={image} alt={`${image}-${id}`} />
+                <button onClick={() => handleDeleteImage(id)}>
+                  {/* <img src="../img/close-btn.png" alt="이미지 삭제" /> */}
+                  <svg
+                    className="delete-icon"
+                    width="12"
+                    height="12"
+                    fill="currentColor"
+                    viewBox="0 0 12 12"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+                  </svg>
+                </button>
+              </div>
+            ))}
           </div>
         </AddPhotoWrapper>
 

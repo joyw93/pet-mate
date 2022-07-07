@@ -137,7 +137,7 @@ export const ToggleMenuWrapper = styled.div`
   @media (max-width: 699px) {
     display: block;
     #toggle_menu {
-      display: none;
+      display: ${(props) => props.display};
     }
     #toggle_btn {
       display: block;

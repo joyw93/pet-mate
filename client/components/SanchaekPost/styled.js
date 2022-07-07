@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
+import LoadingButton from "@mui/lab/LoadingButton";
 
-export const Button = styled.button`
+export const Button = styled(LoadingButton)`
   font-size: 0.9rem;
   width: 60px;
   height: 35px;
@@ -154,51 +155,43 @@ export const AddPhotoWrapper = styled.div`
   }
 `;
 
-export const KeywordWrapper = styled.div`
+export const MapWrapper = styled.div`
   margin: 40px 0;
+
   h2 {
     font-size: 1.1rem;
     font-weight: bold;
     color: #444;
-    margin-bottom: 10px;
   }
-  .keyword_item {
-    margin-right: 10px;
-    padding-right: 10px;
+  #map_search {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  #map_search_input {
+    width: 100%;
+    height: 35px;
+    border: none;
+    border-bottom: 2px solid #ddd;
+  }
+  #map_search_input::placeholder {
+    font-weight: bold;
+    color: #ddd;
+    font-size: 1.2rem;
+  }
+  #map_search_btn {
+    width: 80px;
+    height: 35px;
+    background-color: #000;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
     cursor: pointer;
   }
-  .keyword_item span {
-    padding: 0 7px 0 2px;
-  }
-  .keyword_item:hover svg {
-    fill: ${Colors.primaryColor};
-    transition: all 0.3s;
-  }
-  #keyword_input,
-  .keyword_item {
-    display: inline-block;
-    position: relative;
-  }
-  #keyword_input::after,
-  .keyword_item::before {
-    content: "#";
-    position: absolute;
-    left: 12px;
-    top: 0;
-    line-height: 32px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #757575;
-  }
-  #keyword_input input,
-  .keyword_item {
-    border-radius: 20px;
-    height: 32px;
-    padding-left: 24px;
-    border: none;
-    background-color: #f9f9f9;
-    font-size: 1.2rem;
-    /* font-weight: bold; */
-    color: #757575;
+  #map_view {
+    width: 100%;
+    height: 400px;
+    background-color: #eee;
   }
 `;
