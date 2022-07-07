@@ -7,9 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put,
   Query,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/common/decorators/user.decorator';
 import { HashtagService } from 'src/hashtag/hashtag.service';
 import { UserEntity } from 'src/user/user.entity';
@@ -17,6 +20,12 @@ import { CommunityService } from './community.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
+import * as multerS3 from 'multer-s3';
+import * as AWS from 'aws-sdk';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const s3 = new AWS.S3();
 
 @Controller('community')
 export class CommunityController {
@@ -54,6 +63,7 @@ export class CommunityController {
 
   @Post()
   async createPost(
+    @UploadedFiles() files: Express.Multer.File,
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {

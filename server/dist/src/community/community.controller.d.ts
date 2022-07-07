@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { HashtagService } from 'src/hashtag/hashtag.service';
 import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
@@ -12,7 +13,7 @@ export declare class CommunityController {
     getHotPosts(): Promise<any[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
-    createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
+    createPost(files: Express.Multer.File, user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;

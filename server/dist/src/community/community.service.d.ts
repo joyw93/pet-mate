@@ -44,4 +44,5 @@ export declare class CommunityService {
         post: CommunityEntity;
     } & CommunityCommentEntity>;
     deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
+    uploadImage(files: any): Promise<string>;
 }

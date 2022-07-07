@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityService = void 0;
+const AWS = require("aws-sdk");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
@@ -22,6 +23,11 @@ const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
+    region: process.env.AWS_REGION,
+});
 let CommunityService = class CommunityService {
     constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, hashtagRepository, communityHashtagRepository) {
         this.communityRepository = communityRepository;
@@ -169,6 +175,9 @@ let CommunityService = class CommunityService {
         catch (err) {
             throw new common_1.HttpException(err, 500);
         }
+    }
+    async uploadImage(files) {
+        return 'SUCCESS';
     }
 };
 CommunityService = __decorate([

@@ -21,6 +21,10 @@ const community_service_1 = require("./community.service");
 const create_comment_dto_1 = require("./dto/create-comment.dto");
 const create_post_dto_1 = require("./dto/create-post.dto");
 const edit_post_dto_1 = require("./dto/edit-post.dto");
+const AWS = require("aws-sdk");
+const dotenv = require("dotenv");
+dotenv.config();
+const s3 = new AWS.S3();
 let CommunityController = class CommunityController {
     constructor(communityService, hashtagService) {
         this.communityService = communityService;
@@ -39,7 +43,7 @@ let CommunityController = class CommunityController {
         const userId = user.id;
         return await this.communityService.likePost(userId, postId);
     }
-    async createPost(user, createPostDto) {
+    async createPost(files, user, createPostDto) {
         const post = await this.communityService.createPost(user.id, createPostDto);
         await this.hashtagService.addTags(post, createPostDto);
         return post;
@@ -95,10 +99,11 @@ __decorate([
 ], CommunityController.prototype, "likePost", null);
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.UploadedFiles)()),
+    __param(1, (0, user_decorator_1.User)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.UserEntity,
+    __metadata("design:paramtypes", [Object, user_entity_1.UserEntity,
         create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);

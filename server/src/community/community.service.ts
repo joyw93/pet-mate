@@ -1,3 +1,4 @@
+import * as AWS from 'aws-sdk';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
@@ -10,6 +11,12 @@ import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
+  region: process.env.AWS_REGION,
+});
 
 @Injectable()
 export class CommunityService {
@@ -71,12 +78,12 @@ export class CommunityService {
     try {
       const { title, content, hashtags } = createPostDto;
       const user = await this.userRepository.findOne({ where: { id: userId } });
-      
+
       const post = new CommunityEntity();
       post.title = title;
       post.content = content;
       post.author = user;
-      
+
       return await this.communityRepository.save(post);
     } catch (err) {
       throw new HttpException(err, 500);
@@ -109,7 +116,7 @@ export class CommunityService {
       const user = await this.userRepository.findOne({ where: { id: userId } });
       const post = await this.communityRepository.findOne({
         where: { id: postId },
-      });                           
+      });
       const communityLike = new CommunityLikeEntity();
       communityLike.author = user;
       communityLike.post = post;
@@ -170,5 +177,9 @@ export class CommunityService {
     } catch (err) {
       throw new HttpException(err, 500);
     }
+  }
+
+  async uploadImage(files) {
+    return 'SUCCESS';
   }
 }
