@@ -10,14 +10,22 @@ import { UserEntity } from './user/user.entity';
 import { CommunityModule } from './community/community.module';
 import { CommunityEntity } from './community/community.entity';
 import { CommunityLikeEntity } from './common/entities/community-like.entity';
+import { HashtagModule } from './hashtag/hashtag.module';
+import { CommunityHashtagEntity } from './common/entities/community-hashtag.entity';
 
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forRoot(ormconfig),
-    TypeOrmModule.forFeature([UserEntity, CommunityEntity, CommunityLikeEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      CommunityEntity,
+      CommunityLikeEntity,
+      CommunityHashtagEntity,
+    ]),
     AuthModule,
     CommunityModule,
+    HashtagModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

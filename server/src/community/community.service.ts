@@ -1,7 +1,9 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
+import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
+import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
@@ -20,6 +22,10 @@ export class CommunityService {
     private communityLikeRepository: Repository<CommunityLikeEntity>,
     @InjectRepository(CommunityCommentEntity)
     private communityCommentRepository: Repository<CommunityCommentEntity>,
+    @InjectRepository(HashtagEntity)
+    private hashtagRepository: Repository<HashtagEntity>,
+    @InjectRepository(CommunityHashtagEntity)
+    private communityHashtagRepository: Repository<CommunityHashtagEntity>,
   ) {}
 
   async getPosts(offset: number, postCount: number) {
@@ -45,14 +51,14 @@ export class CommunityService {
     }
   }
 
-  async getBestPosts() {
+  async getHotPosts() {
     try {
       const posts = this.communityLikeRepository
         .createQueryBuilder('like')
-        .select(['post_id','post.title, post.content'])
+        .select(['post_id', 'post.title, post.content'])
         .addSelect('COUNT(post_id)', 'likeCount')
         .groupBy('like.post_id')
-        .leftJoin('like.post','post')
+        .leftJoin('like.post', 'post')
         .take(3)
         .getRawMany();
       return posts;
@@ -63,12 +69,14 @@ export class CommunityService {
 
   async createPost(userId: number, createPostDto: CreatePostDto) {
     try {
-      const { title, content } = createPostDto;
+      const { title, content, hashtags } = createPostDto;
       const user = await this.userRepository.findOne({ where: { id: userId } });
+      
       const post = new CommunityEntity();
       post.title = title;
       post.content = content;
       post.author = user;
+      
       return await this.communityRepository.save(post);
     } catch (err) {
       throw new HttpException(err, 500);
@@ -101,7 +109,7 @@ export class CommunityService {
       const user = await this.userRepository.findOne({ where: { id: userId } });
       const post = await this.communityRepository.findOne({
         where: { id: postId },
-      });
+      });                           
       const communityLike = new CommunityLikeEntity();
       communityLike.author = user;
       communityLike.post = post;
