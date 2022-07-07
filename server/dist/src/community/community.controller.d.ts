@@ -7,6 +7,7 @@ export declare class CommunityController {
     private readonly communityService;
     constructor(communityService: CommunityService);
     getPosts(offset: number, postCount: number): Promise<import("./community.entity").CommunityEntity[]>;
+    getBestPosts(): Promise<any[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
@@ -14,6 +15,7 @@ export declare class CommunityController {
         title: string;
         content: string;
         id: number;
+        author_id: number;
         author: UserEntity;
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
@@ -25,6 +27,8 @@ export declare class CommunityController {
         content: string;
         id: number;
         title: string;
+        author_id: number;
+        post_id: number;
         author: UserEntity;
         post: import("./community.entity").CommunityEntity;
     } & import("../common/entities/community-comment.entity").CommunityCommentEntity>;

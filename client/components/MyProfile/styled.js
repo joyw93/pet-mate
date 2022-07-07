@@ -32,7 +32,7 @@ export const UserContent = styled.div`
 export const ProfileInfo = styled.div`
   width: 280px;
   height: 480px;
-  padding: 60px;
+  padding: 60px 30px;
 `;
 export const ProfileImg = styled.div`
   width: 160px;

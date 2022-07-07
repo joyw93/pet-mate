@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import AppLayout from "../../components/AppLayout";
+import Head from "next/head";
+
+import CommunityMain from "../../components/CommunityMain/CommunityMain";
 
 const Community = () => {
   const { me } = useSelector((state) => state.user);
+
   return (
     <>
+      <Head>
+        <title>커뮤니티 | 펫메이트</title>
+      </Head>
       <AppLayout>
-        <div>커뮤니티 목록</div>
         {me ? (
           <button>
             <Link href="/community/post">
@@ -15,6 +21,7 @@ const Community = () => {
             </Link>
           </button>
         ) : null}
+        <CommunityMain />
       </AppLayout>
     </>
   );

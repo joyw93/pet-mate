@@ -20,6 +20,7 @@ export declare class UserController {
     }>;
     login(user: UserEntity): Promise<UserEntity>;
     logout(res: any): Promise<any>;
-    getLikedPost(user: UserEntity): Promise<UserEntity[]>;
+    getLikedPosts(user: UserEntity): Promise<UserEntity[]>;
+    getCommentedPosts(user: UserEntity): Promise<UserEntity[]>;
     isLoggedIn(user: any): Promise<void>;
 }

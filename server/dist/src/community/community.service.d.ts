@@ -14,11 +14,13 @@ export declare class CommunityService {
     constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>);
     getPosts(offset: number, postCount: number): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
+    getBestPosts(): Promise<any[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
         id: number;
+        author_id: number;
         author: UserEntity;
         likes: CommunityLikeEntity[];
         comments: CommunityCommentEntity[];
@@ -31,6 +33,8 @@ export declare class CommunityService {
         content: string;
         id: number;
         title: string;
+        author_id: number;
+        post_id: number;
         author: UserEntity;
         post: CommunityEntity;
     } & CommunityCommentEntity>;

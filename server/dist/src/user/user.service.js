@@ -88,6 +88,14 @@ let UserService = class UserService {
             .getMany();
         return posts;
     }
+    async getCommentedPosts(userId) {
+        const posts = this.userRepository
+            .createQueryBuilder('user')
+            .leftJoinAndSelect('user.comments', 'comment')
+            .where('user.id=:id', { id: userId })
+            .getMany();
+        return posts;
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

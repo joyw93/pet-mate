@@ -23,4 +23,5 @@ export declare class UserService {
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     getLikedPosts(userId: number): Promise<UserEntity[]>;
+    getCommentedPosts(userId: number): Promise<UserEntity[]>;
 }

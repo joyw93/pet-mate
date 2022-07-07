@@ -1,5 +1,5 @@
 import { PostCardContainer, Title, MateContainter, ComuContainer } from "./styled";
-
+import Link from "next/link";
 import PostItem from "./PostItem";
 
 const PostCards = () => {
@@ -53,18 +53,26 @@ const PostCards = () => {
     <>
       <PostCardContainer>
         <Title>인기 게시글</Title>
-        <h2>산책 메이트</h2>
-        <MateContainter>
+        <Link href="/sanchaek">
+          <a>
+            <h2>산책 메이트</h2>
+          </a>
+        </Link>
+        <PostContainer>
           {MateItems.map((item) => (
             <PostItem key={item.id} {...item} />
           ))}
-        </MateContainter>
-        <h2>커뮤니티</h2>
-        <ComuContainer>
+        </PostContainer>
+        <Link href="/community">
+          <a>
+            <h2>커뮤니티</h2>
+          </a>
+        </Link>
+        <PostContainer>
           {CommunityItems.map((item) => (
             <PostItem key={item.id} {...item} />
           ))}
-        </ComuContainer>
+        </PostContainer>
       </PostCardContainer>
     </>
   );

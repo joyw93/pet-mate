@@ -29,6 +29,10 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "content", void 0);
 __decorate([
+    (0, typeorm_1.Column)('int', { name: 'author_id' }),
+    __metadata("design:type", Number)
+], CommunityEntity.prototype, "author_id", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.posts, {
         onDelete: 'CASCADE',
     }),

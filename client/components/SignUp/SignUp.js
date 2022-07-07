@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useState, useRef,useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SignUpContainer,
@@ -81,9 +81,8 @@ const SignUp = () => {
 
   const handleValidNickname = useCallback(() => {
     if (nickname.length === 0) setNicknameIsInvalid(true);
-    /* 
-    닉네임 유효성 검사 추가 하기 ...
-    */
+
+    //닉네임 유효성 검사 추가 하기
 
     // nickname valid check to backend
     axios
