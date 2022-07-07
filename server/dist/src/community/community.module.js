@@ -10,7 +10,10 @@ exports.CommunityModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
+const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const hashtag_entity_1 = require("../hashtag/hashtag.entity");
+const hashtag_service_1 = require("../hashtag/hashtag.service");
 const user_entity_1 = require("../user/user.entity");
 const community_controller_1 = require("./community.controller");
 const community_entity_1 = require("./community.entity");
@@ -24,11 +27,13 @@ CommunityModule = __decorate([
                 community_entity_1.CommunityEntity,
                 community_comment_entity_1.CommunityCommentEntity,
                 community_like_entity_1.CommunityLikeEntity,
+                community_hashtag_entity_1.CommunityHashtagEntity,
+                hashtag_entity_1.HashtagEntity,
                 user_entity_1.UserEntity,
             ]),
         ],
         controllers: [community_controller_1.CommunityController],
-        providers: [community_service_1.CommunityService],
+        providers: [community_service_1.CommunityService, hashtag_service_1.HashtagService],
     })
 ], CommunityModule);
 exports.CommunityModule = CommunityModule;

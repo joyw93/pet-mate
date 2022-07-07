@@ -1,5 +1,7 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
+import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
+import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
@@ -11,10 +13,12 @@ export declare class CommunityService {
     private userRepository;
     private communityLikeRepository;
     private communityCommentRepository;
-    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>);
+    private hashtagRepository;
+    private communityHashtagRepository;
+    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, hashtagRepository: Repository<HashtagEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>);
     getPosts(offset: number, postCount: number): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
-    getBestPosts(): Promise<any[]>;
+    getHotPosts(): Promise<any[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{
         title: string;
@@ -24,6 +28,7 @@ export declare class CommunityService {
         author: UserEntity;
         likes: CommunityLikeEntity[];
         comments: CommunityCommentEntity[];
+        tags: CommunityHashtagEntity[];
     } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
