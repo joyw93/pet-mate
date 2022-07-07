@@ -36,6 +36,10 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
+  const [checkbox1, setCheckbox1] = useState(false);
+  const [checkbox2, setCheckbox2] = useState(false);
+  const [checkbox3, setCheckbox3] = useState(false);
+
   const nameRef = useRef();
   const nicknameRef = useRef();
   const emailRef = useRef();
@@ -119,17 +123,22 @@ const SignUp = () => {
 
   const handleSignUpSubmit = useCallback(() => {
     //반려될 때
-    if (!name) {
-      return nameRef.current.focus();
-    }
-    if (!nickname) {
-      return nicknameRef.current.focus();
-    }
-    if (!emailRef) {
-      return emailRef.current.focus();
-    }
-    if (!password) {
-      return passwordRef.current.focus();
+    // if (!name) {
+    //   return nameRef.current.focus();
+    // }
+    // if (!nickname) {
+    //   return nicknameRef.current.focus();
+    // }
+    // if (!emailRef) {
+    //   return emailRef.current.focus();
+    // }
+    // if (!password) {
+    //   return passwordRef.current.focus();
+    // }
+    if (checkbox1 === true && checkbox2 === true && checkbox3 === true) {
+      return console.log("체크 완료");
+    } else {
+      return console.log("부족함");
     }
     // 버그 fix
     if (password !== password2) {
@@ -141,7 +150,7 @@ const SignUp = () => {
       setPwConfirm(false);
     }
 
-    dispatch(signupRequestAction({ name, nickname, email, password }));
+    //dispatch(signupRequestAction({ name, nickname, email, password }));
   }, [name, nickname, email, password]);
 
   return (
@@ -217,15 +226,27 @@ const SignUp = () => {
         </InputWrapper>
         <CheckContainer>
           <label>
-            <input type="checkbox" onClick={(e) => console.log(e)}></input>
+            <input
+              value={checkbox1}
+              type="checkbox"
+              onClick={(e) => setCheckbox1(e.target.checked)}
+            ></input>
             모든 약관에 동의
           </label>
           <label>
-            <input type="checkbox"></input>
+            <input
+              value={checkbox2}
+              onClick={(e) => setCheckbox2(e.target.checked)}
+              type="checkbox"
+            ></input>
             개인정보처리방침에 동의 (필수)
           </label>
           <label>
-            <input type="checkbox"></input>
+            <input
+              value={checkbox3}
+              onClick={(e) => setCheckbox3(e.target.checked)}
+              type="checkbox"
+            ></input>
             이용약관에 동의 (필수)
           </label>
         </CheckContainer>
