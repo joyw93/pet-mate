@@ -21,5 +21,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreatePostDto.prototype, "content", void 0);
+__decorate([
+    (0, class_validator_1.IsArray)(),
+    __metadata("design:type", Array)
+], CreatePostDto.prototype, "hashtags", void 0);
 exports.CreatePostDto = CreatePostDto;
 //# sourceMappingURL=create-post.dto.js.map

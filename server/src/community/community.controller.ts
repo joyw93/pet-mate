@@ -11,6 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
+import { HashtagService } from 'src/hashtag/hashtag.service';
 import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -19,7 +20,10 @@ import { EditPostDto } from './dto/edit-post.dto';
 
 @Controller('community')
 export class CommunityController {
-  constructor(private readonly communityService: CommunityService) {}
+  constructor(
+    private readonly communityService: CommunityService,
+    private readonly hashtagService: HashtagService,
+  ) {}
 
   @Get()
   async getPosts(
@@ -29,9 +33,9 @@ export class CommunityController {
     return await this.communityService.getPosts(offset || 0, postCount);
   }
 
-  @Get('best')
-  async getBestPosts() {
-    return await this.communityService.getBestPosts();
+  @Get('hot-posts')
+  async getHotPosts() {
+    return await this.communityService.getHotPosts();
   }
 
   @Get(':postId')
@@ -53,8 +57,9 @@ export class CommunityController {
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
-    const userId = user.id;
-    return await this.communityService.createPost(userId, createPostDto);
+    const post = await this.communityService.createPost(user.id, createPostDto);
+    await this.hashtagService.addTags(post, createPostDto);
+    return post;
   }
 
   @Patch(':postId')

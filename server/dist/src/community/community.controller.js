@@ -15,20 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityController = void 0;
 const common_1 = require("@nestjs/common");
 const user_decorator_1 = require("../common/decorators/user.decorator");
+const hashtag_service_1 = require("../hashtag/hashtag.service");
 const user_entity_1 = require("../user/user.entity");
 const community_service_1 = require("./community.service");
 const create_comment_dto_1 = require("./dto/create-comment.dto");
 const create_post_dto_1 = require("./dto/create-post.dto");
 const edit_post_dto_1 = require("./dto/edit-post.dto");
 let CommunityController = class CommunityController {
-    constructor(communityService) {
+    constructor(communityService, hashtagService) {
         this.communityService = communityService;
+        this.hashtagService = hashtagService;
     }
     async getPosts(offset, postCount) {
         return await this.communityService.getPosts(offset || 0, postCount);
     }
-    async getBestPosts() {
-        return await this.communityService.getBestPosts();
+    async getHotPosts() {
+        return await this.communityService.getHotPosts();
     }
     async getOnePost(postId) {
         return await this.communityService.getOnePost(postId);
@@ -38,8 +40,9 @@ let CommunityController = class CommunityController {
         return await this.communityService.likePost(userId, postId);
     }
     async createPost(user, createPostDto) {
-        const userId = user.id;
-        return await this.communityService.createPost(userId, createPostDto);
+        const post = await this.communityService.createPost(user.id, createPostDto);
+        await this.hashtagService.addTags(post, createPostDto);
+        return post;
     }
     async editPost(postId, editPostDto) {
         return await this.communityService.editPost(postId, editPostDto);
@@ -70,11 +73,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getPosts", null);
 __decorate([
-    (0, common_1.Get)('best'),
+    (0, common_1.Get)('hot-posts'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], CommunityController.prototype, "getBestPosts", null);
+], CommunityController.prototype, "getHotPosts", null);
 __decorate([
     (0, common_1.Get)(':postId'),
     __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
@@ -147,7 +150,8 @@ __decorate([
 ], CommunityController.prototype, "deleteComment", null);
 CommunityController = __decorate([
     (0, common_1.Controller)('community'),
-    __metadata("design:paramtypes", [community_service_1.CommunityService])
+    __metadata("design:paramtypes", [community_service_1.CommunityService,
+        hashtag_service_1.HashtagService])
 ], CommunityController);
 exports.CommunityController = CommunityController;
 //# sourceMappingURL=community.controller.js.map

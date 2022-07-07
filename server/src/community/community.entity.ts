@@ -1,4 +1,5 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
+import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 import {
@@ -21,7 +22,7 @@ export class CommunityEntity {
   @Column('text', { name: 'content' })
   content: string;
 
-  @Column('int', {name:'author_id'})
+  @Column('int', { name: 'author_id' })
   author_id: number;
 
   @ManyToOne(() => UserEntity, (author: UserEntity) => author.posts, {
@@ -50,4 +51,11 @@ export class CommunityEntity {
     { cascade: true },
   )
   comments: CommunityCommentEntity[];
+
+  @OneToMany(
+    () => CommunityHashtagEntity,
+    (tag: CommunityHashtagEntity) => tag.post,
+    { cascade: true },
+  )
+  tags: CommunityHashtagEntity[];
 }

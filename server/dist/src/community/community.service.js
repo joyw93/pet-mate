@@ -16,16 +16,20 @@ exports.CommunityService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
+const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 let CommunityService = class CommunityService {
-    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository) {
+    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, hashtagRepository, communityHashtagRepository) {
         this.communityRepository = communityRepository;
         this.userRepository = userRepository;
         this.communityLikeRepository = communityLikeRepository;
         this.communityCommentRepository = communityCommentRepository;
+        this.hashtagRepository = hashtagRepository;
+        this.communityHashtagRepository = communityHashtagRepository;
     }
     async getPosts(offset, postCount) {
         try {
@@ -51,7 +55,7 @@ let CommunityService = class CommunityService {
             throw new common_1.HttpException(err, 500);
         }
     }
-    async getBestPosts() {
+    async getHotPosts() {
         try {
             const posts = this.communityLikeRepository
                 .createQueryBuilder('like')
@@ -69,7 +73,7 @@ let CommunityService = class CommunityService {
     }
     async createPost(userId, createPostDto) {
         try {
-            const { title, content } = createPostDto;
+            const { title, content, hashtags } = createPostDto;
             const user = await this.userRepository.findOne({ where: { id: userId } });
             const post = new community_entity_1.CommunityEntity();
             post.title = title;
@@ -173,7 +177,11 @@ CommunityService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
     __param(3, (0, typeorm_1.InjectRepository)(community_comment_entity_1.CommunityCommentEntity)),
+    __param(4, (0, typeorm_1.InjectRepository)(hashtag_entity_1.HashtagEntity)),
+    __param(5, (0, typeorm_1.InjectRepository)(community_hashtag_entity_1.CommunityHashtagEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
