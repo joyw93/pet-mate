@@ -124,6 +124,7 @@ const Header = () => {
               <ul>
                 <li>
                   <Tab>
+                    aa
                     <Link href="/walking-mate">
                       <a>산책메이트</a>
                     </Link>

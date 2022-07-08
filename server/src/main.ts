@@ -9,16 +9,21 @@ import * as session from 'express-session';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(new SuccessInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookieParser(process.env.COOKIE_SECRET));
   app.enableCors({
-    origin: ['http://127.0.0.1:800', 'http://petmate.kr'],
+    origin: [
+      'http://127.0.0.1:800',
+      'http://localhost:800',
+      'http://petmate.kr',
+    ],
     credentials: true,
   });
-  app.use(cookieParser(process.env.COOKIE_SECRET));
   app.use(
     session({
       resave: false,
@@ -35,7 +40,7 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  const PORT = process.env.PORT || 3000
+  const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
 }
 bootstrap();

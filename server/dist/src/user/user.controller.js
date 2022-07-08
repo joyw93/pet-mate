@@ -23,11 +23,11 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    async nicknameCheck(body) {
-        return await this.userService.isValidNickname(body.nickname);
+    async checkNickname(data) {
+        return await this.userService.checkNickname(data.nickname);
     }
-    async emailCheck(body) {
-        return await this.userService.isValidEmail(body.email);
+    async emailCheck(data) {
+        return await this.userService.checkEmail(data.email);
     }
     async signup(createUserDto) {
         return await this.userService.createUser(createUserDto);
@@ -35,31 +35,38 @@ let UserController = class UserController {
     async login(user) {
         return user;
     }
-    async logout(res) {
-        res.clearCookie('connect.sid', { httpOnly: true });
-        return res.send('ok');
+    async logout(response) {
+        try {
+            response.clearCookie('connect.sid', { httpOnly: true });
+            return response.send({
+                success: true,
+                timestamp: new Date().toISOString(),
+            });
+        }
+        catch (err) {
+            throw new common_1.InternalServerErrorException();
+        }
     }
     async getLikedPosts(user) {
-        const userId = user.id;
-        return await this.userService.getLikedPosts(userId);
+        return await this.userService.getLikedPosts(user.id);
     }
     async getCommentedPosts(user) {
-        const userId = user.id;
-        return await this.userService.getCommentedPosts(userId);
+        return await this.userService.getCommentedPosts(user.id);
     }
-    async isLoggedIn(user) {
+    async isLoggedIn(user, req) {
         console.log(user);
+        console.log(req.session);
     }
 };
 __decorate([
-    (0, common_1.Post)('nicknameCheck'),
+    (0, common_1.Post)('nickname-check'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "nicknameCheck", null);
+], UserController.prototype, "checkNickname", null);
 __decorate([
-    (0, common_1.Post)('emailCheck'),
+    (0, common_1.Post)('email-check'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -81,7 +88,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('logout'),
+    (0, common_1.Get)('logout'),
     __param(0, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -102,14 +109,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getCommentedPosts", null);
 __decorate([
-    (0, common_1.Get)('loggedInTest'),
+    (0, common_1.Get)('session'),
     __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "isLoggedIn", null);
 UserController = __decorate([
-    (0, common_1.Controller)('users'),
+    (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

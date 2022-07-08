@@ -29,6 +29,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const bcrypt = require("bcrypt");
+const res = require("../common/responses/message");
 let AuthService = class AuthService {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -46,7 +47,7 @@ let AuthService = class AuthService {
             const { password } = user, userWithoutPassword = __rest(user, ["password"]);
             return userWithoutPassword;
         }
-        throw new common_1.HttpException('비밀번호 불일치', 401);
+        throw new common_1.UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
     }
 };
 AuthService = __decorate([

@@ -1,8 +1,9 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import * as res from '../common/responses/message';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,6 @@ export class AuthService {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     }
-    throw new HttpException('비밀번호 불일치', 401);
+    throw new UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
   }
 }
