@@ -72,6 +72,25 @@ export class CommunityController {
     return post;
   }
 
+  // 테스트
+  @Post('image')
+  @UseInterceptors(
+    FilesInterceptor('images', 3, {
+      storage: multerS3({
+        s3,
+        bucket: process.env.AWS_S3_BUCKET_NAME,
+        acl: 'public-read',
+        key: (req, file, cb) => {
+          cb(null, file.originalname);
+        },
+      }),
+    }),
+  )
+  async uploadImage(@UploadedFiles() files: Express.Multer.File) {
+    console.log(files);
+    return await this.communityService.uploadImage(files)
+  }
+
   @Patch(':postId')
   async editPost(
     @Param('postId', ParseIntPipe) postId: number,

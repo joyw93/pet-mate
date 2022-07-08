@@ -28,6 +28,7 @@ AWS.config.update({
     secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
     region: process.env.AWS_REGION,
 });
+const s3 = new AWS.S3();
 let CommunityService = class CommunityService {
     constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, hashtagRepository, communityHashtagRepository) {
         this.communityRepository = communityRepository;
