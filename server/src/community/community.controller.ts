@@ -9,9 +9,10 @@ import {
   Post,
   Query,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/common/decorators/user.decorator';
 import { HashtagService } from 'src/hashtag/hashtag.service';
 import { UserEntity } from 'src/user/user.entity';
@@ -68,14 +69,11 @@ export class CommunityController {
         s3,
         bucket: process.env.AWS_S3_BUCKET_NAME,
         acl: 'public-read',
-        key: (req, file, cb) => {
+        key: (_, file, cb) =>
           cb(
             null,
-            `petmate/community/images/${Date.now()}_${path.basename(
-              file.originalname
-            )}`,
-          );
-        },
+            `petmate/community/images/${Date.now()}_${path.basename(file.originalname)}`,
+          ),
       }),
     }),
   )
@@ -84,6 +82,8 @@ export class CommunityController {
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
+    console.log(files);
+    
     const post = await this.communityService.createPost(user.id, createPostDto);
     await this.hashtagService.addTags(post, createPostDto);
     await this.communityService.uploadImage(post, files);
@@ -98,9 +98,11 @@ export class CommunityController {
     return await this.communityService.editPost(postId, editPostDto);
   }
 
-  // Todo: 인가처리
   @Delete(':postId')
-  async deletePost(@Param('postId', ParseIntPipe) postId: number) {
+  async deletePost(
+    @User() user: UserEntity,
+    @Param('postId', ParseIntPipe) postId: number,
+  ) {
     return await this.communityService.deletePost(postId);
   }
 

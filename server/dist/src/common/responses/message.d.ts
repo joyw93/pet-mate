@@ -3,6 +3,7 @@ export declare const msg: {
     SIGNUP_REDUNDANT_EMAIL: string;
     LOGIN_USER_NOT_EXIST: string;
     LOGIN_PASSWORD_WRONG: string;
+    LOGIN_REQUIRED: string;
     LOGOUT_SUCCESS: string;
     INTERNAL_SERVER_ERROR: string;
 };

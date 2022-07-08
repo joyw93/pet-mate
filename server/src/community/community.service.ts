@@ -1,11 +1,8 @@
 import * as AWS from 'aws-sdk';
-import * as multerS3 from 'multer-s3';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
-import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
-import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
@@ -13,7 +10,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
-import { String } from 'aws-sdk/clients/appstream';
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -80,7 +76,7 @@ export class CommunityService {
 
   async createPost(userId: number, createPostDto: CreatePostDto) {
     try {
-      const { title, content, hashtags } = createPostDto;
+      const { title, content } = createPostDto;
       const user = await this.userRepository.findOne({ where: { id: userId } });
 
       const post = new CommunityEntity();

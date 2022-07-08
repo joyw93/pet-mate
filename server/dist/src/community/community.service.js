@@ -80,7 +80,7 @@ let CommunityService = class CommunityService {
     }
     async createPost(userId, createPostDto) {
         try {
-            const { title, content, hashtags } = createPostDto;
+            const { title, content } = createPostDto;
             const user = await this.userRepository.findOne({ where: { id: userId } });
             const post = new community_entity_1.CommunityEntity();
             post.title = title;

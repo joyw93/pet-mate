@@ -1,6 +1,5 @@
 /// <reference types="multer" />
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
-import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -28,7 +27,7 @@ export declare class CommunityService {
         author: UserEntity;
         likes: CommunityLikeEntity[];
         comments: CommunityCommentEntity[];
-        tags: CommunityHashtagEntity[];
+        tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
         imgUrls: CommunityImageEntity[];
     } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;

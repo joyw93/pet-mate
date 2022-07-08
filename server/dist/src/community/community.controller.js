@@ -47,6 +47,7 @@ let CommunityController = class CommunityController {
         return await this.communityService.likePost(userId, postId);
     }
     async createPost(files, user, createPostDto) {
+        console.log(files);
         const post = await this.communityService.createPost(user.id, createPostDto);
         await this.hashtagService.addTags(post, createPostDto);
         await this.communityService.uploadImage(post, files);
@@ -55,7 +56,7 @@ let CommunityController = class CommunityController {
     async editPost(postId, editPostDto) {
         return await this.communityService.editPost(postId, editPostDto);
     }
-    async deletePost(postId) {
+    async deletePost(user, postId) {
         return await this.communityService.deletePost(postId);
     }
     async getAllComments(postId) {
@@ -108,9 +109,7 @@ __decorate([
             s3,
             bucket: process.env.AWS_S3_BUCKET_NAME,
             acl: 'public-read',
-            key: (req, file, cb) => {
-                cb(null, `petmate/community/images/${Date.now()}_${path.basename(file.originalname)}`);
-            },
+            key: (_, file, cb) => cb(null, `petmate/community/images/${Date.now()}_${path.basename(file.originalname)}`),
         }),
     })),
     __param(0, (0, common_1.UploadedFiles)()),
@@ -131,9 +130,10 @@ __decorate([
 ], CommunityController.prototype, "editPost", null);
 __decorate([
     (0, common_1.Delete)(':postId'),
-    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "deletePost", null);
 __decorate([

@@ -25,7 +25,7 @@ export declare class CommunityController {
         tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
         imgUrls: import("../common/entities/community-image.entity").CommunityImageEntity[];
     } & import("./community.entity").CommunityEntity>;
-    deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
+    deletePost(user: UserEntity, postId: number): Promise<import("typeorm").DeleteResult>;
     getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
     createComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
     editComment(commentId: number, commentContent: string): Promise<{
