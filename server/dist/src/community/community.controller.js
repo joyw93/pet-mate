@@ -25,6 +25,7 @@ const edit_post_dto_1 = require("./dto/edit-post.dto");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
+const path = require("path");
 dotenv.config();
 const s3 = new AWS.S3();
 let CommunityController = class CommunityController {
@@ -48,11 +49,8 @@ let CommunityController = class CommunityController {
     async createPost(files, user, createPostDto) {
         const post = await this.communityService.createPost(user.id, createPostDto);
         await this.hashtagService.addTags(post, createPostDto);
+        await this.communityService.uploadImage(post, files);
         return post;
-    }
-    async uploadImage(files) {
-        console.log(files);
-        return await this.communityService.uploadImage(files);
     }
     async editPost(postId, editPostDto) {
         return await this.communityService.editPost(postId, editPostDto);
@@ -105,6 +103,16 @@ __decorate([
 ], CommunityController.prototype, "likePost", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, {
+        storage: multerS3({
+            s3,
+            bucket: process.env.AWS_S3_BUCKET_NAME,
+            acl: 'public-read',
+            key: (req, file, cb) => {
+                cb(null, `petmate/community/images/${Date.now()}_${path.basename(file.originalname)}`);
+            },
+        }),
+    })),
     __param(0, (0, common_1.UploadedFiles)()),
     __param(1, (0, user_decorator_1.User)()),
     __param(2, (0, common_1.Body)()),
@@ -113,23 +121,6 @@ __decorate([
         create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
-__decorate([
-    (0, common_1.Post)('image'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, {
-        storage: multerS3({
-            s3,
-            bucket: process.env.AWS_S3_BUCKET_NAME,
-            acl: 'public-read',
-            key: (req, file, cb) => {
-                cb(null, file.originalname);
-            },
-        }),
-    })),
-    __param(0, (0, common_1.UploadedFiles)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], CommunityController.prototype, "uploadImage", null);
 __decorate([
     (0, common_1.Patch)(':postId'),
     __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),

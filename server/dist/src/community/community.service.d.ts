@@ -1,21 +1,21 @@
+/// <reference types="multer" />
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
-import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
+import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 export declare class CommunityService {
     private communityRepository;
     private userRepository;
     private communityLikeRepository;
     private communityCommentRepository;
-    private hashtagRepository;
-    private communityHashtagRepository;
-    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, hashtagRepository: Repository<HashtagEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>);
+    private communityImageRepository;
+    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>);
     getPosts(offset: number, postCount: number): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<any[]>;
@@ -29,6 +29,7 @@ export declare class CommunityService {
         likes: CommunityLikeEntity[];
         comments: CommunityCommentEntity[];
         tags: CommunityHashtagEntity[];
+        imgUrls: CommunityImageEntity[];
     } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
@@ -44,5 +45,5 @@ export declare class CommunityService {
         post: CommunityEntity;
     } & CommunityCommentEntity>;
     deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
-    uploadImage(files: any): Promise<string>;
+    uploadImage(post: CommunityEntity, files: Express.Multer.File): Promise<PromiseSettledResult<any>[]>;
 }

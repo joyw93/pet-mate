@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
+const community_image_entity_1 = require("../common/entities/community-image.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
 const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const hashtag_service_1 = require("../hashtag/hashtag.service");
@@ -28,6 +29,7 @@ CommunityModule = __decorate([
                 community_comment_entity_1.CommunityCommentEntity,
                 community_like_entity_1.CommunityLikeEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,
+                community_image_entity_1.CommunityImageEntity,
                 hashtag_entity_1.HashtagEntity,
                 user_entity_1.UserEntity,
             ]),

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityEntity = void 0;
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
+const community_image_entity_1 = require("../common/entities/community-image.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_1 = require("typeorm");
@@ -59,6 +60,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => community_hashtag_entity_1.CommunityHashtagEntity, (tag) => tag.post, { cascade: true }),
     __metadata("design:type", Array)
 ], CommunityEntity.prototype, "tags", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => community_image_entity_1.CommunityImageEntity, (imgUrl) => imgUrl.post, { cascade: true }),
+    __metadata("design:type", Array)
+], CommunityEntity.prototype, "imgUrls", void 0);
 CommunityEntity = __decorate([
     (0, typeorm_1.Entity)('Community')
 ], CommunityEntity);

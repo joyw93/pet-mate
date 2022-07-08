@@ -1,5 +1,6 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
+import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 export declare class CommunityEntity {
@@ -11,4 +12,5 @@ export declare class CommunityEntity {
     likes: CommunityLikeEntity[];
     comments: CommunityCommentEntity[];
     tags: CommunityHashtagEntity[];
+    imgUrls: CommunityImageEntity[];
 }

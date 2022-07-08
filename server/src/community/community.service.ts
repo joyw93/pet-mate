@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import * as multerS3 from 'multer-s3';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
@@ -11,14 +12,14 @@ import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
+import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
+import { String } from 'aws-sdk/clients/appstream';
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
   region: process.env.AWS_REGION,
 });
-
-const s3 = new AWS.S3();
 
 @Injectable()
 export class CommunityService {
@@ -31,21 +32,22 @@ export class CommunityService {
     private communityLikeRepository: Repository<CommunityLikeEntity>,
     @InjectRepository(CommunityCommentEntity)
     private communityCommentRepository: Repository<CommunityCommentEntity>,
-    @InjectRepository(HashtagEntity)
-    private hashtagRepository: Repository<HashtagEntity>,
-    @InjectRepository(CommunityHashtagEntity)
-    private communityHashtagRepository: Repository<CommunityHashtagEntity>,
+    @InjectRepository(CommunityImageEntity)
+    private communityImageRepository: Repository<CommunityImageEntity>,
   ) {}
 
   async getPosts(offset: number, postCount: number) {
     try {
       if (postCount) {
         return await this.communityRepository.find({
+          relations: ['imgUrls', 'tags', 'comments'],
           skip: offset,
           take: postCount,
         });
       } else {
-        return await this.communityRepository.find();
+        return await this.communityRepository.find({
+          relations: ['imgUrls', 'tags', 'comments'],
+        });
       }
     } catch (err) {
       throw new HttpException(err, 500);
@@ -181,7 +183,16 @@ export class CommunityService {
     }
   }
 
-  async uploadImage(files) {
-    return 'SUCCESS';
+  async uploadImage(post: CommunityEntity, files: Express.Multer.File) {
+    const imgUrls = [].map.call(files, (file) => file.location);
+    const result = Promise.allSettled(
+      imgUrls.map((imgUrl: string) => {
+        const img = new CommunityImageEntity();
+        img.post = post;
+        img.url = imgUrl;
+        this.communityImageRepository.save(img);
+      }),
+    );
+    return result;
   }
 }

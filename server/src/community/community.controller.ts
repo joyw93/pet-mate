@@ -8,7 +8,6 @@ import {
   Patch,
   Post,
   Query,
-  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -23,6 +22,7 @@ import { EditPostDto } from './dto/edit-post.dto';
 import * as multerS3 from 'multer-s3';
 import * as AWS from 'aws-sdk';
 import * as dotenv from 'dotenv';
+import * as path from 'path';
 dotenv.config();
 
 const s3 = new AWS.S3();
@@ -62,18 +62,6 @@ export class CommunityController {
   }
 
   @Post()
-  async createPost(
-    @UploadedFiles() files: Express.Multer.File,
-    @User() user: UserEntity,
-    @Body() createPostDto: CreatePostDto,
-  ) {
-    const post = await this.communityService.createPost(user.id, createPostDto);
-    await this.hashtagService.addTags(post, createPostDto);
-    return post;
-  }
-
-  // 테스트
-  @Post('image')
   @UseInterceptors(
     FilesInterceptor('images', 3, {
       storage: multerS3({
@@ -81,14 +69,25 @@ export class CommunityController {
         bucket: process.env.AWS_S3_BUCKET_NAME,
         acl: 'public-read',
         key: (req, file, cb) => {
-          cb(null, file.originalname);
+          cb(
+            null,
+            `petmate/community/images/${Date.now()}_${path.basename(
+              file.originalname
+            )}`,
+          );
         },
       }),
     }),
   )
-  async uploadImage(@UploadedFiles() files: Express.Multer.File) {
-    console.log(files);
-    return await this.communityService.uploadImage(files)
+  async createPost(
+    @UploadedFiles() files: Express.Multer.File,
+    @User() user: UserEntity,
+    @Body() createPostDto: CreatePostDto,
+  ) {
+    const post = await this.communityService.createPost(user.id, createPostDto);
+    await this.hashtagService.addTags(post, createPostDto);
+    await this.communityService.uploadImage(post, files);
+    return post;
   }
 
   @Patch(':postId')

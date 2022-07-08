@@ -1,5 +1,6 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
+import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
 import {
@@ -58,4 +59,11 @@ export class CommunityEntity {
     { cascade: true },
   )
   tags: CommunityHashtagEntity[];
+
+  @OneToMany(
+    () => CommunityImageEntity,
+    (imgUrl: CommunityImageEntity) => imgUrl.post,
+    { cascade: true },
+  )
+  imgUrls: CommunityImageEntity[];
 }

@@ -17,37 +17,37 @@ const AWS = require("aws-sdk");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
-const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
-const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
+const community_image_entity_1 = require("../common/entities/community-image.entity");
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
     region: process.env.AWS_REGION,
 });
-const s3 = new AWS.S3();
 let CommunityService = class CommunityService {
-    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, hashtagRepository, communityHashtagRepository) {
+    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, communityImageRepository) {
         this.communityRepository = communityRepository;
         this.userRepository = userRepository;
         this.communityLikeRepository = communityLikeRepository;
         this.communityCommentRepository = communityCommentRepository;
-        this.hashtagRepository = hashtagRepository;
-        this.communityHashtagRepository = communityHashtagRepository;
+        this.communityImageRepository = communityImageRepository;
     }
     async getPosts(offset, postCount) {
         try {
             if (postCount) {
                 return await this.communityRepository.find({
+                    relations: ['imgUrls', 'tags', 'comments'],
                     skip: offset,
                     take: postCount,
                 });
             }
             else {
-                return await this.communityRepository.find();
+                return await this.communityRepository.find({
+                    relations: ['imgUrls', 'tags', 'comments'],
+                });
             }
         }
         catch (err) {
@@ -177,8 +177,15 @@ let CommunityService = class CommunityService {
             throw new common_1.HttpException(err, 500);
         }
     }
-    async uploadImage(files) {
-        return 'SUCCESS';
+    async uploadImage(post, files) {
+        const imgUrls = [].map.call(files, (file) => file.location);
+        const result = Promise.allSettled(imgUrls.map((imgUrl) => {
+            const img = new community_image_entity_1.CommunityImageEntity();
+            img.post = post;
+            img.url = imgUrl;
+            this.communityImageRepository.save(img);
+        }));
+        return result;
     }
 };
 CommunityService = __decorate([
@@ -187,10 +194,8 @@ CommunityService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
     __param(3, (0, typeorm_1.InjectRepository)(community_comment_entity_1.CommunityCommentEntity)),
-    __param(4, (0, typeorm_1.InjectRepository)(hashtag_entity_1.HashtagEntity)),
-    __param(5, (0, typeorm_1.InjectRepository)(community_hashtag_entity_1.CommunityHashtagEntity)),
+    __param(4, (0, typeorm_1.InjectRepository)(community_image_entity_1.CommunityImageEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,

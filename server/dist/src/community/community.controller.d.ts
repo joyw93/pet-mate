@@ -14,7 +14,6 @@ export declare class CommunityController {
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(files: Express.Multer.File, user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
-    uploadImage(files: Express.Multer.File): Promise<string>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
@@ -24,6 +23,7 @@ export declare class CommunityController {
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
         tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
+        imgUrls: import("../common/entities/community-image.entity").CommunityImageEntity[];
     } & import("./community.entity").CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
