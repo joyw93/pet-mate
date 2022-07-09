@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityController = void 0;
 const common_1 = require("@nestjs/common");
+const uuid_1 = require("uuid");
 const platform_express_1 = require("@nestjs/platform-express");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const hashtag_service_1 = require("../hashtag/hashtag.service");
@@ -109,7 +110,9 @@ __decorate([
             s3,
             bucket: process.env.AWS_S3_BUCKET_NAME,
             acl: 'public-read',
-            key: (_, file, cb) => cb(null, `petmate/community/images/${Date.now()}_${path.basename(file.originalname)}`),
+            key: (req, file, cb) => {
+                cb(null, `petmate/community/images/${req.user.id}/${(0, uuid_1.v4)()}${path.extname(file.originalname)}`);
+            },
         }),
     })),
     __param(0, (0, common_1.UploadedFiles)()),

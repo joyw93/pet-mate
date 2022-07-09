@@ -12,6 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/common/decorators/user.decorator';
 import { HashtagService } from 'src/hashtag/hashtag.service';
@@ -69,11 +70,14 @@ export class CommunityController {
         s3,
         bucket: process.env.AWS_S3_BUCKET_NAME,
         acl: 'public-read',
-        key: (_, file, cb) =>
+        key: (req, file, cb) => {
           cb(
             null,
-            `petmate/community/images/${Date.now()}_${path.basename(file.originalname)}`,
-          ),
+            `petmate/community/images/${req.user.id}/${uuid()}${path.extname(
+              file.originalname
+            )}`,
+          );
+        },
       }),
     }),
   )
@@ -83,7 +87,7 @@ export class CommunityController {
     @Body() createPostDto: CreatePostDto,
   ) {
     console.log(files);
-    
+
     const post = await this.communityService.createPost(user.id, createPostDto);
     await this.hashtagService.addTags(post, createPostDto);
     await this.communityService.uploadImage(post, files);

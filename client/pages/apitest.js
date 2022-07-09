@@ -9,7 +9,7 @@ const Test = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [FileImages, setFileImages] = useState([]);
-  const [images, setImages] = useState('');
+  const [images, setImages] = useState([]);
 
   const submit = (e) => {
     axios
@@ -33,10 +33,9 @@ const Test = () => {
 
   const handleAddImages = (e) => {
     const imagesFile = e.target.files[0];
-    console.log(imagesFile);
-    const imageArray = [];
-    imageArray.push(imagesFile);
-    setImages(imageArray);
+    const temp = [...images];
+    temp.push(imagesFile);
+    setImages(temp);
   };
 
   const post = async (e) => {
@@ -49,12 +48,12 @@ const Test = () => {
       body.append("images", img);
     });
 
-    await axios.post("http://127.0.0.1:3000/community", body, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    await axios
+      .post("http://127.0.0.1:3000/community", body, {
+        withCredentials: true,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
   return (
     <AppLayout>
@@ -88,8 +87,11 @@ const Test = () => {
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
-      <input type="file" multiple onChange={handleAddImages} />
+      <input type="file" onChange={handleAddImages} />
       <button onClick={post}>제출</button>
+      <form>
+        <input />
+      </form>
     </AppLayout>
   );
 };
