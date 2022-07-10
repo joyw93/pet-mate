@@ -31,7 +31,7 @@ export declare class CommunityService {
         likes: CommunityLikeEntity[];
         comments: CommunityCommentEntity[];
         tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
-        imgUrls: CommunityImageEntity[];
+        images: CommunityImageEntity[];
     } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
@@ -40,9 +40,6 @@ export declare class CommunityService {
     editComment(commentId: number, content: string): Promise<{
         content: string;
         id: number;
-        title: string;
-        author_id: number;
-        post_id: number;
         author: UserEntity;
         post: CommunityEntity;
     } & CommunityCommentEntity>;

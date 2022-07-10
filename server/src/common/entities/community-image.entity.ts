@@ -18,7 +18,7 @@ export class CommunityImageEntity {
   @Column('int', { name: 'post_id' })
   post_id: number;
 
-  @ManyToOne(() => CommunityEntity, (post) => post.imgUrls, {
+  @ManyToOne(() => CommunityEntity, (post) => post.images, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })

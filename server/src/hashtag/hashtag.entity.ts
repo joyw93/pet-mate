@@ -6,8 +6,8 @@ export class HashtagEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('varchar', { name: 'tag' })
-  tag: string;
+  @Column('varchar', { name: 'keyword' })
+  keyword: string;
 
   @OneToMany(
     () => CommunityHashtagEntity,

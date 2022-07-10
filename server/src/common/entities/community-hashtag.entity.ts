@@ -13,12 +13,6 @@ export class CommunityHashtagEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('int', { name: 'post_id' })
-  post_id: number;
-
-  @Column('int', { name: 'tag_id' })
-  tag_id: number;
-
   @ManyToOne(() => CommunityEntity, (post) => post.tags, {
     onDelete: 'CASCADE',
   })

@@ -49,12 +49,13 @@ let CommunityService = class CommunityService {
                 const posts = this.communityRepository
                     .createQueryBuilder('post')
                     .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
-                    .addSelect(['comments.content'])
-                    .addSelect(['imgUrls.url'])
+                    .addSelect(['comments.content', 'commentAuthor.nickname'])
+                    .addSelect(['images.url'])
                     .addSelect(['tags.id'])
-                    .addSelect(['hashtag.tag'])
+                    .addSelect(['hashtag.keyword'])
                     .leftJoin('post.comments', 'comments')
-                    .leftJoin('post.imgUrls', 'imgUrls')
+                    .leftJoin('comments.author', 'commentAuthor')
+                    .leftJoin('post.images', 'images')
                     .leftJoin('post.tags', 'tags')
                     .leftJoin('tags.hashtag', 'hashtag')
                     .getMany();
@@ -154,7 +155,7 @@ let CommunityService = class CommunityService {
     }
     async createComment(userId, postId, createCommentDto) {
         try {
-            const { title, content } = createCommentDto;
+            const { content } = createCommentDto;
             const user = await this.userRepository.findOne({ where: { id: userId } });
             const post = await this.communityRepository.findOne({
                 where: { id: postId },
@@ -162,7 +163,6 @@ let CommunityService = class CommunityService {
             const comment = new community_comment_entity_1.CommunityCommentEntity();
             comment.author = user;
             comment.post = post;
-            comment.title = title;
             comment.content = content;
             return await this.communityCommentRepository.save(comment);
         }

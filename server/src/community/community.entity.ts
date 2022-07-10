@@ -74,8 +74,8 @@ export class CommunityEntity {
 
   @OneToMany(
     () => CommunityImageEntity,
-    (imgUrl: CommunityImageEntity) => imgUrl.post,
+    (image: CommunityImageEntity) => image.post,
     { cascade: true },
   )
-  imgUrls: CommunityImageEntity[];
+  images: CommunityImageEntity[];
 }

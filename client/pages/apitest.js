@@ -55,6 +55,31 @@ const Test = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
+
+  const postType = {
+    id: 1,
+    author: "용용원",
+    title: "저희집 댕댕이를 보세요",
+    like: 0,
+    view: 0,
+    content: "정말 귀엽쥬? ㅋ",
+    createdAt: "2022.03.17",
+    images: ["http://image1", "http://image2", "http://image3"],
+    tags: ["강아지", "댕댕이", "귀여움"],
+    comments: [
+      {
+        author: "곽곽이",
+        content: "댕댕이가 귀엽네요",
+        createdAt: "2022.03.18"
+      },
+      {
+        author: "유경손",
+        content: "정말 부럽군요",
+        createdAt: "2022.03.18"
+      }
+    ],
+  };
+
   return (
     <AppLayout>
       이메일

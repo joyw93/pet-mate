@@ -16,10 +16,6 @@ class CreateCommentDto {
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateCommentDto.prototype, "title", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
 ], CreateCommentDto.prototype, "content", void 0);
 exports.CreateCommentDto = CreateCommentDto;
 //# sourceMappingURL=create-comment.dto.js.map

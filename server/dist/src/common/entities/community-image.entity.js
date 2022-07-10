@@ -27,7 +27,7 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityImageEntity.prototype, "post_id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.imgUrls, {
+    (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.images, {
         onDelete: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),

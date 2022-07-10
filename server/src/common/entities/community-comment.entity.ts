@@ -7,17 +7,8 @@ export class CommunityCommentEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('varchar', { name: 'title' })
-  title: string;
-
   @Column('text', { name: 'content' })
   content: string;
-
-  @Column('int', {name:'author_id'})
-  author_id: number;
-
-  @Column('int', {name:'post_id'})
-  post_id: number;
 
   @ManyToOne(() => UserEntity, (author) => author.comments, {
     onDelete: 'CASCADE'

@@ -20,14 +20,6 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityHashtagEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'post_id' }),
-    __metadata("design:type", Number)
-], CommunityHashtagEntity.prototype, "post_id", void 0);
-__decorate([
-    (0, typeorm_1.Column)('int', { name: 'tag_id' }),
-    __metadata("design:type", Number)
-], CommunityHashtagEntity.prototype, "tag_id", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.tags, {
         onDelete: 'CASCADE',
     }),

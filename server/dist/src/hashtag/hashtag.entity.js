@@ -19,9 +19,9 @@ __decorate([
     __metadata("design:type", Number)
 ], HashtagEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('varchar', { name: 'tag' }),
+    (0, typeorm_1.Column)('varchar', { name: 'keyword' }),
     __metadata("design:type", String)
-], HashtagEntity.prototype, "tag", void 0);
+], HashtagEntity.prototype, "keyword", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => community_hashtag_entity_1.CommunityHashtagEntity, (tag) => tag.hashtag, { cascade: true }),
     __metadata("design:type", Array)

@@ -15,5 +15,5 @@ export declare class CommunityEntity {
     likes: CommunityLikeEntity[];
     comments: CommunityCommentEntity[];
     tags: CommunityHashtagEntity[];
-    imgUrls: CommunityImageEntity[];
+    images: CommunityImageEntity[];
 }

@@ -73,9 +73,9 @@ __decorate([
     __metadata("design:type", Array)
 ], CommunityEntity.prototype, "tags", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => community_image_entity_1.CommunityImageEntity, (imgUrl) => imgUrl.post, { cascade: true }),
+    (0, typeorm_1.OneToMany)(() => community_image_entity_1.CommunityImageEntity, (image) => image.post, { cascade: true }),
     __metadata("design:type", Array)
-], CommunityEntity.prototype, "imgUrls", void 0);
+], CommunityEntity.prototype, "images", void 0);
 CommunityEntity = __decorate([
     (0, typeorm_1.Entity)('Community')
 ], CommunityEntity);

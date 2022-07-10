@@ -22,12 +22,12 @@ export class HashtagService {
       const result =  await Promise.all(
         hashtags.map(async (hashtag) => {
           const hashtagFound = await this.hashtagRepository.findOne({
-            where: { tag: hashtag },
+            where: { keyword: hashtag },
           });
           const communityHashtag = new CommunityHashtagEntity();
           communityHashtag.post = post;
           if (!hashtagFound) {
-            const newTag = await this.hashtagRepository.save({ tag: hashtag });
+            const newTag = await this.hashtagRepository.save({ keyword: hashtag });
             communityHashtag.hashtag = newTag;
           } else {
             communityHashtag.hashtag = hashtagFound;
