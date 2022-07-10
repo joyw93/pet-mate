@@ -24,6 +24,9 @@ export declare class CommunityService {
         content: string;
         id: number;
         author_id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
         author: UserEntity;
         likes: CommunityLikeEntity[];
         comments: CommunityCommentEntity[];
@@ -44,5 +47,5 @@ export declare class CommunityService {
         post: CommunityEntity;
     } & CommunityCommentEntity>;
     deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
-    uploadImage(post: CommunityEntity, files: Express.Multer.File): Promise<PromiseSettledResult<any>[]>;
+    uploadImages(post: CommunityEntity, files: Express.Multer.File): Promise<any[]>;
 }

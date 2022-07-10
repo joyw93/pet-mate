@@ -8,6 +8,9 @@ export declare class CommunityEntity {
     title: string;
     content: string;
     author_id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
     author: UserEntity;
     likes: CommunityLikeEntity[];
     comments: CommunityCommentEntity[];

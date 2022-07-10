@@ -19,6 +19,9 @@ export declare class CommunityController {
         content: string;
         id: number;
         author_id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
         author: UserEntity;
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];

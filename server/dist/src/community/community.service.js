@@ -22,6 +22,7 @@ const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
+const res = require("../common/responses/message");
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
@@ -45,13 +46,24 @@ let CommunityService = class CommunityService {
                 });
             }
             else {
-                return await this.communityRepository.find({
-                    relations: ['imgUrls', 'tags', 'comments'],
-                });
+                const posts = this.communityRepository
+                    .createQueryBuilder('post')
+                    .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
+                    .addSelect(['comments.content'])
+                    .addSelect(['imgUrls.url'])
+                    .addSelect(['tags.id'])
+                    .addSelect(['hashtag.tag'])
+                    .leftJoin('post.comments', 'comments')
+                    .leftJoin('post.imgUrls', 'imgUrls')
+                    .leftJoin('post.tags', 'tags')
+                    .leftJoin('tags.hashtag', 'hashtag')
+                    .getMany();
+                return posts;
             }
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.GET_POST_FAIL);
         }
     }
     async getOnePost(postId) {
@@ -64,7 +76,7 @@ let CommunityService = class CommunityService {
     }
     async getHotPosts() {
         try {
-            const posts = this.communityLikeRepository
+            const posts = await this.communityLikeRepository
                 .createQueryBuilder('like')
                 .select(['post_id', 'post.title, post.content'])
                 .addSelect('COUNT(post_id)', 'likeCount')
@@ -89,7 +101,8 @@ let CommunityService = class CommunityService {
             return await this.communityRepository.save(post);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.CREATE_POST_FAIL);
         }
     }
     async editPost(postId, editPostDto) {
@@ -177,15 +190,21 @@ let CommunityService = class CommunityService {
             throw new common_1.HttpException(err, 500);
         }
     }
-    async uploadImage(post, files) {
+    async uploadImages(post, files) {
         const imgUrls = [].map.call(files, (file) => file.location);
-        const result = Promise.allSettled(imgUrls.map((imgUrl) => {
-            const img = new community_image_entity_1.CommunityImageEntity();
-            img.post = post;
-            img.url = imgUrl;
-            this.communityImageRepository.save(img);
-        }));
-        return result;
+        try {
+            const result = Promise.all(imgUrls.map((imgUrl) => {
+                const img = new community_image_entity_1.CommunityImageEntity();
+                img.post = post;
+                img.url = imgUrl;
+                return this.communityImageRepository.save(img);
+            }));
+            return result;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.ADD_IMAGE_FAIL);
+        }
     }
 };
 CommunityService = __decorate([

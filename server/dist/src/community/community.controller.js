@@ -44,14 +44,12 @@ let CommunityController = class CommunityController {
         return await this.communityService.getOnePost(postId);
     }
     async likePost(user, postId) {
-        const userId = user.id;
-        return await this.communityService.likePost(userId, postId);
+        return await this.communityService.likePost(user.id, postId);
     }
     async createPost(files, user, createPostDto) {
-        console.log(files);
         const post = await this.communityService.createPost(user.id, createPostDto);
         await this.hashtagService.addTags(post, createPostDto);
-        await this.communityService.uploadImage(post, files);
+        await this.communityService.uploadImages(post, files);
         return post;
     }
     async editPost(postId, editPostDto) {
@@ -64,8 +62,7 @@ let CommunityController = class CommunityController {
         return await this.communityService.getAllComments(postId);
     }
     async createComment(user, postId, createCommentDto) {
-        const userId = user.id;
-        return await this.communityService.createComment(userId, postId, createCommentDto);
+        return await this.communityService.createComment(user.id, postId, createCommentDto);
     }
     async editComment(commentId, commentContent) {
         return await this.communityService.editComment(commentId, commentContent);
@@ -111,7 +108,7 @@ __decorate([
             bucket: process.env.AWS_S3_BUCKET_NAME,
             acl: 'public-read',
             key: (req, file, cb) => {
-                cb(null, `petmate/community/images/${req.user.id}/${(0, uuid_1.v4)()}${path.extname(file.originalname)}`);
+                cb(null, `petmate/community/images/${(0, uuid_1.v4)()}${path.extname(file.originalname)}`);
             },
         }),
     })),

@@ -9,7 +9,6 @@ import {
   Post,
   Query,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
@@ -59,8 +58,7 @@ export class CommunityController {
     @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
   ) {
-    const userId = user.id;
-    return await this.communityService.likePost(userId, postId);
+    return await this.communityService.likePost(user.id, postId);
   }
 
   @Post()
@@ -73,7 +71,7 @@ export class CommunityController {
         key: (req, file, cb) => {
           cb(
             null,
-            `petmate/community/images/${req.user.id}/${uuid()}${path.extname(
+            `petmate/community/images/${uuid()}${path.extname(
               file.originalname
             )}`,
           );
@@ -86,11 +84,9 @@ export class CommunityController {
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
-    console.log(files);
-
     const post = await this.communityService.createPost(user.id, createPostDto);
     await this.hashtagService.addTags(post, createPostDto);
-    await this.communityService.uploadImage(post, files);
+    await this.communityService.uploadImages(post, files);
     return post;
   }
 
@@ -121,9 +117,8 @@ export class CommunityController {
     @Param('postId', ParseIntPipe) postId: number,
     @Body() createCommentDto: CreateCommentDto,
   ) {
-    const userId = user.id;
     return await this.communityService.createComment(
-      userId,
+      user.id,
       postId,
       createCommentDto,
     );
@@ -141,4 +136,6 @@ export class CommunityController {
   async deleteComment(@Param('commentId', ParseIntPipe) commentId: number) {
     return await this.communityService.deleteComment(commentId);
   }
+
+ 
 }

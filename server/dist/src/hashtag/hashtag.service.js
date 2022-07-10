@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const typeorm_2 = require("typeorm");
 const hashtag_entity_1 = require("./hashtag.entity");
+const res = require("../common/responses/message");
 let HashtagService = class HashtagService {
     constructor(communityHashtagRepository, hashtagRepository) {
         this.communityHashtagRepository = communityHashtagRepository;
@@ -25,22 +26,28 @@ let HashtagService = class HashtagService {
     }
     async addTags(post, createPostDto) {
         const { hashtags } = createPostDto;
-        const result = hashtags.map(async (hashtag) => {
-            const hashtagFound = await this.hashtagRepository.findOne({
-                where: { tag: hashtag },
-            });
-            const communityHashtag = new community_hashtag_entity_1.CommunityHashtagEntity();
-            communityHashtag.post = post;
-            if (!hashtagFound) {
-                const newTag = await this.hashtagRepository.save({ tag: hashtag });
-                communityHashtag.hashtag = newTag;
-            }
-            else {
-                communityHashtag.hashtag = hashtagFound;
-            }
-            await this.communityHashtagRepository.save(communityHashtag);
-        });
-        return result;
+        try {
+            const result = await Promise.all(hashtags.map(async (hashtag) => {
+                const hashtagFound = await this.hashtagRepository.findOne({
+                    where: { tag: hashtag },
+                });
+                const communityHashtag = new community_hashtag_entity_1.CommunityHashtagEntity();
+                communityHashtag.post = post;
+                if (!hashtagFound) {
+                    const newTag = await this.hashtagRepository.save({ tag: hashtag });
+                    communityHashtag.hashtag = newTag;
+                }
+                else {
+                    communityHashtag.hashtag = hashtagFound;
+                }
+                return await this.communityHashtagRepository.save(communityHashtag);
+            }));
+            return result;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.ADD_HASHTAG_FAIL);
+        }
     }
     async getPosts(tag) {
         const posts = await this.hashtagRepository

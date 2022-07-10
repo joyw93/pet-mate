@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)('varchar', { name: 'password' }),
+    (0, typeorm_1.Column)('varchar', { name: 'password', select: false }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 __decorate([

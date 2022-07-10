@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityEntity } from 'src/community/community.entity';
 import { CreatePostDto } from 'src/community/dto/create-post.dto';
 import { Repository } from 'typeorm';
 import { HashtagEntity } from './hashtag.entity';
+import * as res from '../common/responses/message';
 
 @Injectable()
 export class HashtagService {
@@ -17,21 +18,28 @@ export class HashtagService {
 
   async addTags(post: CommunityEntity, createPostDto: CreatePostDto) {
     const { hashtags } = createPostDto;
-    const result = hashtags.map(async (hashtag) => {
-      const hashtagFound = await this.hashtagRepository.findOne({
-        where: { tag: hashtag },
-      });
-      const communityHashtag = new CommunityHashtagEntity();
-      communityHashtag.post = post;
-      if (!hashtagFound) {
-        const newTag = await this.hashtagRepository.save({ tag: hashtag });
-        communityHashtag.hashtag = newTag;
-      } else {
-        communityHashtag.hashtag = hashtagFound;
-      }
-      await this.communityHashtagRepository.save(communityHashtag);
-    });
-    return result;
+    try {
+      const result =  await Promise.all(
+        hashtags.map(async (hashtag) => {
+          const hashtagFound = await this.hashtagRepository.findOne({
+            where: { tag: hashtag },
+          });
+          const communityHashtag = new CommunityHashtagEntity();
+          communityHashtag.post = post;
+          if (!hashtagFound) {
+            const newTag = await this.hashtagRepository.save({ tag: hashtag });
+            communityHashtag.hashtag = newTag;
+          } else {
+            communityHashtag.hashtag = hashtagFound;
+          }
+          return await this.communityHashtagRepository.save(communityHashtag);
+        }),
+      );
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.ADD_HASHTAG_FAIL)
+    }
   }
 
   async getPosts(tag: string) {

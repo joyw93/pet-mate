@@ -7,6 +7,6 @@ export declare class HashtagService {
     private communityHashtagRepository;
     private hashtagRepository;
     constructor(communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>);
-    addTags(post: CommunityEntity, createPostDto: CreatePostDto): Promise<Promise<void>[]>;
+    addTags(post: CommunityEntity, createPostDto: CreatePostDto): Promise<CommunityHashtagEntity[]>;
     getPosts(tag: string): Promise<HashtagEntity[]>;
 }

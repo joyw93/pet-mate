@@ -1,5 +1,9 @@
 import * as AWS from 'aws-sdk';
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
@@ -10,6 +14,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
+import * as res from '../common/responses/message';
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -34,6 +39,7 @@ export class CommunityService {
 
   async getPosts(offset: number, postCount: number) {
     try {
+      // let posts: CommunityEntity[];
       if (postCount) {
         return await this.communityRepository.find({
           relations: ['imgUrls', 'tags', 'comments'],
@@ -41,12 +47,28 @@ export class CommunityService {
           take: postCount,
         });
       } else {
-        return await this.communityRepository.find({
-          relations: ['imgUrls', 'tags', 'comments'],
-        });
+        // posts = await this.communityRepository.find({
+        //   relations: ['imgUrls', 'tags', 'comments'],
+        // });
+        const posts = this.communityRepository
+          .createQueryBuilder('post')
+          .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
+          .addSelect(['comments.content'])
+          .addSelect(['imgUrls.url'])
+          .addSelect(['tags.id'])
+          .addSelect(['hashtag.tag'])
+          .leftJoin('post.comments', 'comments')
+          .leftJoin('post.imgUrls', 'imgUrls')
+          .leftJoin('post.tags', 'tags')
+          .leftJoin('tags.hashtag', 'hashtag')
+          .getMany();
+        return posts;
       }
+
+      // return posts;
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
     }
   }
 
@@ -60,7 +82,7 @@ export class CommunityService {
 
   async getHotPosts() {
     try {
-      const posts = this.communityLikeRepository
+      const posts = await this.communityLikeRepository
         .createQueryBuilder('like')
         .select(['post_id', 'post.title, post.content'])
         .addSelect('COUNT(post_id)', 'likeCount')
@@ -78,15 +100,14 @@ export class CommunityService {
     try {
       const { title, content } = createPostDto;
       const user = await this.userRepository.findOne({ where: { id: userId } });
-
       const post = new CommunityEntity();
       post.title = title;
       post.content = content;
       post.author = user;
-
       return await this.communityRepository.save(post);
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.CREATE_POST_FAIL);
     }
   }
 
@@ -179,16 +200,21 @@ export class CommunityService {
     }
   }
 
-  async uploadImage(post: CommunityEntity, files: Express.Multer.File) {
+  async uploadImages(post: CommunityEntity, files: Express.Multer.File) {
     const imgUrls = [].map.call(files, (file) => file.location);
-    const result = Promise.allSettled(
-      imgUrls.map((imgUrl: string) => {
-        const img = new CommunityImageEntity();
-        img.post = post;
-        img.url = imgUrl;
-        this.communityImageRepository.save(img);
-      }),
-    );
-    return result;
+    try {
+      const result = Promise.all(
+        imgUrls.map((imgUrl: string) => {
+          const img = new CommunityImageEntity();
+          img.post = post;
+          img.url = imgUrl;
+          return this.communityImageRepository.save(img);
+        }),
+      );
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.ADD_IMAGE_FAIL);
+    }
   }
 }
