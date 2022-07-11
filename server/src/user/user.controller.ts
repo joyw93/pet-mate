@@ -2,10 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  Response,
   Post,
-  Request,
   UseGuards,
+  Res,
+  Req,
+  Response,
+  UseInterceptors,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
@@ -13,18 +16,18 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('nicknameCheck')
-  async nicknameCheck(@Body() body) {
-    return await this.userService.isValidNickname(body.nickname);
+  @Post('nickname-check')
+  async checkNickname(@Body() data: { nickname: string }) {
+    return await this.userService.checkNickname(data.nickname);
   }
 
-  @Post('emailCheck')
-  async emailCheck(@Body() body) {
-    return await this.userService.isValidEmail(body.email);
+  @Post('email-check')
+  async emailCheck(@Body() data: { email: string }) {
+    return await this.userService.checkEmail(data.email);
   }
 
   @Post('signup')
@@ -38,26 +41,32 @@ export class UserController {
     return user;
   }
 
-  @Post('logout')
-  async logout(@Response() res) {
-    res.clearCookie('connect.sid', { httpOnly: true });
-    return res.send('ok');
+  @Get('logout')
+  async logout(@Response() response) {
+    try {
+      response.clearCookie('connect.sid', { httpOnly: true });
+      return response.send({
+        success: true,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (err) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @Get('liked-posts')
   async getLikedPosts(@User() user: UserEntity) {
-    const userId = user.id;
-    return await this.userService.getLikedPosts(userId);
+    return await this.userService.getLikedPosts(user.id);
   }
 
   @Get('commented-posts')
   async getCommentedPosts(@User() user: UserEntity) {
-    const userId = user.id;
-    return await this.userService.getCommentedPosts(userId)
+    return await this.userService.getCommentedPosts(user.id);
   }
 
-  @Get('loggedInTest')
-  async isLoggedIn(@User() user) {
+  @Get('session')
+  async isLoggedIn(@User() user: UserEntity, @Req() req) {
     console.log(user);
+    console.log(req.session);
   }
 }

@@ -50,4 +50,8 @@ export const BannerItem = styled.div`
     border-radius: 25px;
     margin-top: 60px;
   }
+  .banner_item_box span:hover {
+    opacity: 0.8;
+    transition: all 0.3s;
+  }
 `;

@@ -1,10 +1,10 @@
 import AppLayout from "../../components/AppLayout";
-import WalkingMatePostDetail from "../../components/WalkingMatePostDetail/WalkingMatePostDetail";
+import SanchaekPostDetail from "../../components/SanchaekPostDetail/SanchaekPostDetail";
 
 const PostPage = () => {
   return (
     <AppLayout>
-      <WalkingMatePostDetail />
+      <SanchaekPostDetail />
     </AppLayout>
   );
 };

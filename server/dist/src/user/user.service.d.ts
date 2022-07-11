@@ -1,15 +1,11 @@
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
-import { CommunityEntity } from 'src/community/community.entity';
-import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 export declare class UserService {
     private userRepository;
-    private communityRepository;
-    private communityLikeRepository;
-    constructor(userRepository: Repository<UserEntity>, communityRepository: Repository<CommunityEntity>, communityLikeRepository: Repository<CommunityLikeEntity>);
-    isValidNickname(nickname: string): Promise<void>;
-    isValidEmail(email: string): Promise<void>;
+    constructor(userRepository: Repository<UserEntity>);
+    checkNickname(nickname: string): Promise<void>;
+    checkEmail(email: string): Promise<void>;
     createUser(createUserDto: CreateUserDto): Promise<{
         email: string;
         name: string;
@@ -18,8 +14,8 @@ export declare class UserService {
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
-        posts: CommunityEntity[];
-        likes: CommunityLikeEntity[];
+        posts: import("../community/community.entity").CommunityEntity[];
+        likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     getLikedPosts(userId: number): Promise<UserEntity[]>;

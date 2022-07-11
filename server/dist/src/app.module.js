@@ -19,6 +19,8 @@ const user_entity_1 = require("./user/user.entity");
 const community_module_1 = require("./community/community.module");
 const community_entity_1 = require("./community/community.entity");
 const community_like_entity_1 = require("./common/entities/community-like.entity");
+const hashtag_module_1 = require("./hashtag/hashtag.module");
+const community_hashtag_entity_1 = require("./common/entities/community-hashtag.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -26,9 +28,15 @@ AppModule = __decorate([
         imports: [
             user_module_1.UserModule,
             typeorm_1.TypeOrmModule.forRoot(ormconfig),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, community_entity_1.CommunityEntity, community_like_entity_1.CommunityLikeEntity]),
+            typeorm_1.TypeOrmModule.forFeature([
+                user_entity_1.UserEntity,
+                community_entity_1.CommunityEntity,
+                community_like_entity_1.CommunityLikeEntity,
+                community_hashtag_entity_1.CommunityHashtagEntity,
+            ]),
             auth_module_1.AuthModule,
             community_module_1.CommunityModule,
+            hashtag_module_1.HashtagModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, user_service_1.UserService],

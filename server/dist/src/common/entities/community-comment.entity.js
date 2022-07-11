@@ -20,21 +20,9 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityCommentEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('varchar', { name: 'title' }),
-    __metadata("design:type", String)
-], CommunityCommentEntity.prototype, "title", void 0);
-__decorate([
     (0, typeorm_1.Column)('text', { name: 'content' }),
     __metadata("design:type", String)
 ], CommunityCommentEntity.prototype, "content", void 0);
-__decorate([
-    (0, typeorm_1.Column)('int', { name: 'author_id' }),
-    __metadata("design:type", Number)
-], CommunityCommentEntity.prototype, "author_id", void 0);
-__decorate([
-    (0, typeorm_1.Column)('int', { name: 'post_id' }),
-    __metadata("design:type", Number)
-], CommunityCommentEntity.prototype, "post_id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.comments, {
         onDelete: 'CASCADE'

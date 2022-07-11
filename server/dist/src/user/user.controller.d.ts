@@ -4,8 +4,12 @@ import { UserService } from './user.service';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    nicknameCheck(body: any): Promise<void>;
-    emailCheck(body: any): Promise<void>;
+    checkNickname(data: {
+        nickname: string;
+    }): Promise<void>;
+    emailCheck(data: {
+        email: string;
+    }): Promise<void>;
     signup(createUserDto: CreateUserDto): Promise<{
         email: string;
         name: string;
@@ -19,8 +23,8 @@ export declare class UserController {
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
-    logout(res: any): Promise<any>;
+    logout(response: any): Promise<any>;
     getLikedPosts(user: UserEntity): Promise<UserEntity[]>;
     getCommentedPosts(user: UserEntity): Promise<UserEntity[]>;
-    isLoggedIn(user: any): Promise<void>;
+    isLoggedIn(user: UserEntity, req: any): Promise<void>;
 }

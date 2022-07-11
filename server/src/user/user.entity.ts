@@ -25,7 +25,7 @@ export class UserEntity {
   @Column('varchar', { name: 'email' })
   email: string;
 
-  @Column('varchar', { name: 'password' })
+  @Column('varchar', { name: 'password', select: false })
   password: string;
 
   @CreateDateColumn()

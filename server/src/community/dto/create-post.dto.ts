@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
@@ -6,4 +6,7 @@ export class CreatePostDto {
 
   @IsString()
   public content: string;
+
+  @IsArray()
+  public hashtags: string[]
 }

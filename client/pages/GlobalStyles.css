@@ -1,17 +1,14 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap");
 
-const GlobalStyles = createGlobalStyle`
-    ${reset};
-    
 * {
   margin: 0;
   padding: 0;
+  font-family: "Noto Sans KR", sans-serif;
 }
 body {
-  font-family: 'Noto Sans KR', sans-serif; 
   box-sizing: border-box;
   font-size: 0.8rem;
+  font-weight: normal;
   line-height: 1;
 }
 
@@ -27,7 +24,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 table {
@@ -41,6 +38,3 @@ a {
   color: #000;
   text-decoration: none;
 }
-`;
-
-export default GlobalStyles;

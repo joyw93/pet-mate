@@ -29,28 +29,25 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 const bcrypt = require("bcrypt");
-const community_entity_1 = require("../community/community.entity");
-const community_like_entity_1 = require("../common/entities/community-like.entity");
+const res = require("../common/responses/message");
 let UserService = class UserService {
-    constructor(userRepository, communityRepository, communityLikeRepository) {
+    constructor(userRepository) {
         this.userRepository = userRepository;
-        this.communityRepository = communityRepository;
-        this.communityLikeRepository = communityLikeRepository;
     }
-    async isValidNickname(nickname) {
+    async checkNickname(nickname) {
         const userByNickname = await this.userRepository.findOne({
             where: { nickname },
         });
         if (userByNickname) {
-            throw new common_1.UnauthorizedException('해당 닉네임은 이미 존재합니다.');
+            throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
         }
     }
-    async isValidEmail(email) {
+    async checkEmail(email) {
         const userByEmail = await this.userRepository.findOne({
             where: { email },
         });
         if (userByEmail) {
-            throw new common_1.UnauthorizedException('해당 이메일은 이미 존재합니다.');
+            throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_EMAIL);
         }
     }
     async createUser(createUserDto) {
@@ -59,13 +56,13 @@ let UserService = class UserService {
             where: { email },
         });
         if (userByEmail) {
-            throw new common_1.UnauthorizedException('해당 이메일은 이미 존재합니다.');
+            throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_EMAIL);
         }
         const userByNickname = await this.userRepository.findOne({
             where: { nickname },
         });
         if (userByNickname) {
-            throw new common_1.UnauthorizedException('해당 닉네임은 이미 존재합니다.');
+            throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
         }
         const hashedPassword = await bcrypt.hash(password, 12);
         try {
@@ -75,11 +72,11 @@ let UserService = class UserService {
         }
         catch (error) {
             console.error(error);
-            throw new common_1.HttpException('Internal Server Error', 500);
+            throw new common_1.InternalServerErrorException();
         }
     }
     async getLikedPosts(userId) {
-        const posts = this.userRepository
+        const posts = await this.userRepository
             .createQueryBuilder('user')
             .select(['user.id'])
             .leftJoinAndSelect('user.likes', 'like')
@@ -89,7 +86,7 @@ let UserService = class UserService {
         return posts;
     }
     async getCommentedPosts(userId) {
-        const posts = this.userRepository
+        const posts = await this.userRepository
             .createQueryBuilder('user')
             .leftJoinAndSelect('user.comments', 'comment')
             .where('user.id=:id', { id: userId })
@@ -100,11 +97,7 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __param(1, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
-    __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository,
-        typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

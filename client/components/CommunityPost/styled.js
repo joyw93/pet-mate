@@ -92,19 +92,15 @@ export const AddPhotoWrapper = styled.div`
   #photos {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+
     flex-wrap: wrap;
     margin-top: 10px;
   }
   #photos > div {
-    width: 172px;
-    height: 172px;
+    width: 171px;
+    height: 171px;
   }
-  #photo1,
-  #photo2,
-  #photo3 {
-    background-color: #e2ecff;
-  }
+
   #add_photo {
     position: relative;
     background-color: #eee;
@@ -114,14 +110,47 @@ export const AddPhotoWrapper = styled.div`
     display: none;
   }
   #add_photo label {
-    display: block;
+    display: flex;
     width: 100%;
     height: 100%;
-    line-height: 172px;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
     font-size: 3rem;
     color: #aaa;
     cursor: pointer;
+    img {
+      width: 30%;
+      height: 30%;
+    }
+  }
+  .photo_preview {
+    width: 171px;
+    height: 171px;
+    margin-left: 12px;
+    position: relative;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    button {
+      width: 22px;
+      height: 22px;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      z-index: 2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      svg {
+        fill: #fff;
+        line-height: 22px;
+        text-align: center;
+      }
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50px;
+    }
   }
 `;
 

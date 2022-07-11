@@ -15,11 +15,15 @@ async function bootstrap() {
     app.useGlobalInterceptors(new success_interceptors_1.SuccessInterceptor());
     app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
     app.useGlobalPipes(new common_1.ValidationPipe());
+    app.use(cookieParser(process.env.COOKIE_SECRET));
     app.enableCors({
-        origin: ['http://127.0.0.1:800', 'http://petmate.kr'],
+        origin: [
+            'http://127.0.0.1:800',
+            'http://localhost:800',
+            'http://petmate.kr',
+        ],
         credentials: true,
     });
-    app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(session({
         resave: false,
         saveUninitialized: false,

@@ -2,6 +2,7 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import * as res from '../common/responses/message';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -12,7 +13,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(email: string, password: string, done: CallableFunction) {
     const user = await this.authService.validateUser(email, password);
     if (!user) {
-      throw new UnauthorizedException('존재하지 않는 유저');
+      throw new UnauthorizedException(res.msg.LOGIN_USER_NOT_EXIST);
     }
     return done(null, user);
   }

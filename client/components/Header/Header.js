@@ -8,7 +8,7 @@ import { NavContainer, Tab, Input, AuthTab, ToggleMenuWrapper } from "./styled";
 const Header = () => {
   const [inputVal, setInputVal] = useState("");
   const [visibile, setVisibile] = useState(false);
-  const [toggleVisible, setToggleVisible] = useState(false);
+  const [toggleVisible, setToggleVisible] = useState("none");
 
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
@@ -32,7 +32,11 @@ const Header = () => {
   };
 
   const handleToggleVisible = () => {
-    setToggleVisible(!toggleVisible);
+    if (toggleVisible === "none") {
+      setToggleVisible("block");
+    } else {
+      setToggleVisible("none");
+    }
   };
 
   return (
@@ -100,68 +104,67 @@ const Header = () => {
         </div>
 
         {/* toggle menu */}
-        <ToggleMenuWrapper>
+        <ToggleMenuWrapper display={toggleVisible}>
           <div id="toggle_btn" onClick={handleToggleVisible}>
             <img src="../img/toggle-menu-btn.png" alt="메뉴" />
           </div>
-          {toggleVisible ? (
-            <div id="toggle_menu">
-              <div id="close_btn">
-                <img src="../img/close-btn.png" alt="메뉴" />
-              </div>
-              <form id="search_input">
-                <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
-                {visibile && (
-                  <button className="toggle_cancel_btn" onClick={clearInputVal}>
-                    <img src="../img/cancel-btn.png" />
-                  </button>
-                )}
-              </form>
-              <div id="menu_list">
-                <ul>
-                  <li>
-                    <Tab>
-                      <Link href="/walking-mate">
-                        <a>산책메이트</a>
-                      </Link>
-                    </Tab>
-                  </li>
-                  <li>
-                    <Tab>
-                      <Link href="/community">
-                        <a>커뮤니티</a>
-                      </Link>
-                    </Tab>
-                  </li>
-                  {me ? (
-                    <>
-                      <AuthTab>
-                        <Link href="/profile">
-                          <a>프로필</a>
-                        </Link>
-                      </AuthTab>
-                      <AuthTab>
-                        <span onClick={logOut}>로그아웃</span>
-                      </AuthTab>
-                    </>
-                  ) : (
-                    <>
-                      <AuthTab>
-                        <Link href="/login">
-                          <a>로그인</a>
-                        </Link>
-                      </AuthTab>
-                      <AuthTab>
-                        <Link href="/signup">
-                          <a>회원가입</a>
-                        </Link>
-                      </AuthTab>
-                    </>
-                  )}
-                </ul>
-              </div>
+          <div id="toggle_menu">
+            <div id="close_btn" onClick={handleToggleVisible}>
+              <img src="../img/close-btn.png" alt="메뉴" />
             </div>
-          ) : null}
+            <form id="search_input">
+              <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+              {visibile && (
+                <button className="toggle_cancel_btn" onClick={clearInputVal}>
+                  <img src="../img/cancel-btn.png" />
+                </button>
+              )}
+            </form>
+            <div id="menu_list">
+              <ul>
+                <li>
+                  <Tab>
+                    aa
+                    <Link href="/walking-mate">
+                      <a>산책메이트</a>
+                    </Link>
+                  </Tab>
+                </li>
+                <li>
+                  <Tab>
+                    <Link href="/community">
+                      <a>커뮤니티</a>
+                    </Link>
+                  </Tab>
+                </li>
+                {me ? (
+                  <>
+                    <AuthTab>
+                      <Link href="/profile">
+                        <a>프로필</a>
+                      </Link>
+                    </AuthTab>
+                    <AuthTab>
+                      <span onClick={logOut}>로그아웃</span>
+                    </AuthTab>
+                  </>
+                ) : (
+                  <>
+                    <AuthTab>
+                      <Link href="/login">
+                        <a>로그인</a>
+                      </Link>
+                    </AuthTab>
+                    <AuthTab>
+                      <Link href="/signup">
+                        <a>회원가입</a>
+                      </Link>
+                    </AuthTab>
+                  </>
+                )}
+              </ul>
+            </div>
+          </div>
         </ToggleMenuWrapper>
       </NavContainer>
     </>
