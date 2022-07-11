@@ -36,6 +36,20 @@ const CommunityPost = () => {
     window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
   };
 
+  const [hashTagVal, setHashTagVal] = useState("");
+  const [hashArr, setHashArr] = useState([]);
+
+  const handleHash = (e) => {
+    setHashTagVal(e.target.value);
+  };
+  const keyUp = (e) => {
+    if (e.keyCode === 13 && e.target.value.trim() !== "") {
+      setHashArr([...hashArr, { id: new Date().getTime(), content: hashTagVal }]);
+      setHashTagVal("");
+      console.log(hashArr);
+    }
+  };
+
   const post = useCallback(() => {
     dispatch(postRequestAction({ title, content }));
   }, [title, content]);
@@ -96,22 +110,24 @@ const CommunityPost = () => {
         <KeywordWrapper>
           <h2>키워드 등록</h2>
           <div id="keyword_area">
-            <button className="keyword_item">
-              <span>hi</span>
-              <svg
-                className="delete-icon"
-                width="12"
-                height="12"
-                fill="currentColor"
-                viewBox="0 0 12 12"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
-              </svg>
-            </button>
+            {hashArr.map((it) => (
+              <button key={it.id} className="keyword_item">
+                <span>{it.content}</span>
+                <svg
+                  className="delete-icon"
+                  width="12"
+                  height="12"
+                  fill="currentColor"
+                  viewBox="0 0 12 12"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+                </svg>
+              </button>
+            ))}
 
             <div id="keyword_input">
-              <input type="text" placeholder="키워드" />
+              <input onKeyUp={keyUp} value={hashTagVal} onChange={handleHash} type="text" placeholder="키워드" />
             </div>
           </div>
         </KeywordWrapper>

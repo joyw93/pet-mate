@@ -196,7 +196,7 @@ export const KeywordWrapper = styled.div`
     height: 32px;
     padding-left: 24px;
     border: none;
-    background-color: #f9f9f9;
+
     font-size: 1.2rem;
     /* font-weight: bold; */
     color: #757575;
