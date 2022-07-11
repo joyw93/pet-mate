@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const google_auth_guard_1 = require("../auth/google-auth.guard");
 const local_auth_guard_1 = require("../auth/local-auth.guard");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const create_user_dto_1 = require("./dto/create-user.dto");
@@ -34,6 +35,21 @@ let UserController = class UserController {
     }
     async login(user) {
         return user;
+    }
+    async googleLogin(req) { }
+    async googleLoginCallback(req, res) {
+        if (!req.user) {
+            res.send('실패');
+            return 'no user from google';
+        }
+        else {
+            console.log(req.user.accessToken);
+            res.redirect('http://127.0.0.1:800');
+            return {
+                message: 'User info from Google',
+                user: req.user,
+            };
+        }
     }
     async logout(response) {
         try {
@@ -56,6 +72,11 @@ let UserController = class UserController {
     async isLoggedIn(user, req) {
         console.log(user);
         console.log(req.session);
+    }
+    async test(req, res) {
+        console.log(req.user);
+        console.log(req.session);
+        res.send("req.user");
     }
 };
 __decorate([
@@ -88,6 +109,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
+    (0, common_1.Get)('google'),
+    (0, common_1.UseGuards)(google_auth_guard_1.GoogleAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "googleLogin", null);
+__decorate([
+    (0, common_1.Get)('google/callback'),
+    (0, common_1.UseGuards)(google_auth_guard_1.GoogleAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "googleLoginCallback", null);
+__decorate([
     (0, common_1.Get)('logout'),
     __param(0, (0, common_1.Response)()),
     __metadata("design:type", Function),
@@ -116,6 +154,14 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "isLoggedIn", null);
+__decorate([
+    (0, common_1.Get)('googletest'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "test", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

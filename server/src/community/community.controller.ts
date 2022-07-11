@@ -72,7 +72,7 @@ export class CommunityController {
           cb(
             null,
             `petmate/community/images/${uuid()}${path.extname(
-              file.originalname,
+              file.originalname
             )}`,
           );
         },

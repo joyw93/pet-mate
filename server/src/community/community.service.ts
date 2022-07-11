@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import {
+  BadRequestException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -41,16 +42,26 @@ export class CommunityService {
     try {
       const posts = this.communityRepository
         .createQueryBuilder('post')
-        .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
-        .addSelect(['comments.content', 'commentAuthor.nickname'])
-        .addSelect(['images.url'])
-        .addSelect(['tags.id'])
-        .addSelect(['hashtag.keyword'])
+        .select([
+          'post.id',
+          'post.title',
+          'post.content',
+          'post.createdAt',
+          'comments.id',
+          'comments.content',
+          'commentAuthor.nickname',
+          'images.id',
+          'images.url',
+          'tags.id',
+          'hashtag.keyword',
+        ])
         .leftJoin('post.comments', 'comments')
         .leftJoin('comments.author', 'commentAuthor')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('tags.hashtag', 'hashtag')
+        .skip(offset)
+        .take(postCount)
         .getMany();
       return posts;
     } catch (err) {
@@ -107,7 +118,8 @@ export class CommunityService {
       const newPost = { ...oldPost, title, content };
       return await this.communityRepository.save(newPost);
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      // throw new InternalServerErrorException(res.msg.CREATE_POST_FAIL);
     }
   }
 
@@ -150,19 +162,21 @@ export class CommunityService {
     postId: number,
     createCommentDto: CreateCommentDto,
   ) {
+    const { content } = createCommentDto;
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const post = await this.communityRepository.findOne({
+      where: { id: postId },
+    });
+    if (!post) throw new BadRequestException(res.msg.POST_NOT_EXIST);
     try {
-      const { content } = createCommentDto;
-      const user = await this.userRepository.findOne({ where: { id: userId } });
-      const post = await this.communityRepository.findOne({
-        where: { id: postId },
-      });
       const comment = new CommunityCommentEntity();
       comment.author = user;
       comment.post = post;
       comment.content = content;
       return await this.communityCommentRepository.save(comment);
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err)
+      throw new InternalServerErrorException(res.msg.CREATE_COMMENT_FAIL);
     }
   }
 
