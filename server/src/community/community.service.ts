@@ -39,51 +39,20 @@ export class CommunityService {
 
   async getPosts(offset: number, postCount: number) {
     try {
-      // let posts: CommunityEntity[];
-      if (postCount) {
-        return await this.communityRepository.find({
-          relations: ['imgUrls', 'tags', 'comments'],
-          skip: offset,
-          take: postCount,
-        });
-      } else {
-        // posts = await this.communityRepository.find({
-        //   relations: ['imgUrls', 'tags', 'comments'],
-        // });
-
-        //1 .
-        // const posts = this.communityRepository
-        //   .createQueryBuilder('post')
-        //   .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
-        //   .addSelect(['comments.content'])
-        //   .addSelect(['imgUrls.url'])
-        //   .addSelect(['tags.id'])
-        //   .addSelect(['hashtag.tag'])
-        //   .leftJoin('post.comments', 'comments')
-        //   .leftJoin('post.imgUrls', 'imgUrls')
-        //   .leftJoin('post.tags', 'tags')
-        //   .leftJoin('tags.hashtag', 'hashtag')
-        //   .getMany();
-        // return posts;
-
-        //2.
-        const posts = this.communityRepository
-          .createQueryBuilder('post')
-          .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
-          .addSelect(['comments.content','commentAuthor.nickname'])
-          .addSelect(['images.url'])
-          .addSelect(['tags.id'])
-          .addSelect(['hashtag.keyword'])
-          .leftJoin('post.comments', 'comments')
-          .leftJoin('comments.author', 'commentAuthor')
-          .leftJoin('post.images', 'images')
-          .leftJoin('post.tags', 'tags')
-          .leftJoin('tags.hashtag', 'hashtag')
-          .getMany();
-        return posts;
-      }
-
-      // return posts;
+      const posts = this.communityRepository
+        .createQueryBuilder('post')
+        .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
+        .addSelect(['comments.content', 'commentAuthor.nickname'])
+        .addSelect(['images.url'])
+        .addSelect(['tags.id'])
+        .addSelect(['hashtag.keyword'])
+        .leftJoin('post.comments', 'comments')
+        .leftJoin('comments.author', 'commentAuthor')
+        .leftJoin('post.images', 'images')
+        .leftJoin('post.tags', 'tags')
+        .leftJoin('tags.hashtag', 'hashtag')
+        .getMany();
+      return posts;
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(res.msg.GET_POST_FAIL);

@@ -38,29 +38,21 @@ let CommunityService = class CommunityService {
     }
     async getPosts(offset, postCount) {
         try {
-            if (postCount) {
-                return await this.communityRepository.find({
-                    relations: ['imgUrls', 'tags', 'comments'],
-                    skip: offset,
-                    take: postCount,
-                });
-            }
-            else {
-                const posts = this.communityRepository
-                    .createQueryBuilder('post')
-                    .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
-                    .addSelect(['comments.content', 'commentAuthor.nickname'])
-                    .addSelect(['images.url'])
-                    .addSelect(['tags.id'])
-                    .addSelect(['hashtag.keyword'])
-                    .leftJoin('post.comments', 'comments')
-                    .leftJoin('comments.author', 'commentAuthor')
-                    .leftJoin('post.images', 'images')
-                    .leftJoin('post.tags', 'tags')
-                    .leftJoin('tags.hashtag', 'hashtag')
-                    .getMany();
-                return posts;
-            }
+            const posts = this.communityRepository
+                .createQueryBuilder('post')
+                .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
+                .addSelect(['comments.content', 'commentAuthor.nickname'])
+                .addSelect(['images.url'])
+                .addSelect(['tags.id'])
+                .addSelect(['hashtag.keyword'])
+                .leftJoin('post.comments', 'comments')
+                .leftJoin('comments.author', 'commentAuthor')
+                .leftJoin('post.images', 'images')
+                .leftJoin('post.tags', 'tags')
+                .leftJoin('tags.hashtag', 'hashtag')
+                .take(200)
+                .getMany();
+            return posts;
         }
         catch (err) {
             console.error(err);

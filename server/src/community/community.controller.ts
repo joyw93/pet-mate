@@ -40,7 +40,7 @@ export class CommunityController {
     @Query('offset') offset: number,
     @Query('count') postCount: number,
   ) {
-    return await this.communityService.getPosts(offset || 0, postCount);
+    return await this.communityService.getPosts(offset || 0, postCount || 20);
   }
 
   @Get('hot-posts')
@@ -72,7 +72,7 @@ export class CommunityController {
           cb(
             null,
             `petmate/community/images/${uuid()}${path.extname(
-              file.originalname
+              file.originalname,
             )}`,
           );
         },
@@ -136,6 +136,4 @@ export class CommunityController {
   async deleteComment(@Param('commentId', ParseIntPipe) commentId: number) {
     return await this.communityService.deleteComment(commentId);
   }
-
- 
 }

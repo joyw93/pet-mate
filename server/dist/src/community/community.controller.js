@@ -35,7 +35,7 @@ let CommunityController = class CommunityController {
         this.hashtagService = hashtagService;
     }
     async getPosts(offset, postCount) {
-        return await this.communityService.getPosts(offset || 0, postCount);
+        return await this.communityService.getPosts(offset || 0, postCount || 20);
     }
     async getHotPosts() {
         return await this.communityService.getHotPosts();
