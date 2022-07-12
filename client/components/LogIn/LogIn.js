@@ -15,6 +15,8 @@ import {
   CheckInput,
 } from "./styled";
 
+const serverUrl = 'http://127.0.0.1:3000'
+
 const LogIn = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
@@ -40,6 +42,7 @@ const LogIn = () => {
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
 
+
   const handleLoginEmail = (e) => {
     setEmail(e.target.value);
     setEmailIsValid(true);
@@ -50,6 +53,22 @@ const LogIn = () => {
   //     Router.push("/");
   //   }
   // }, [me]);
+
+  const handleGoogleLoginSubmit = useCallback(()=>{
+    Router.push(`${serverUrl}/user/google`)
+  },[])
+
+
+  const handleKakaoLoginSubmit = useCallback(()=>{
+    Router.push(`${serverUrl}/user/kakao`)
+  },[])
+
+  useEffect(() => {
+    if (me) {
+      Router.push("/");
+    }
+  }, [me]);
+
 
   return (
     <LogInContainer>
@@ -77,8 +96,8 @@ const LogIn = () => {
           ></UserInput>
         </InputWrapper>
         <LoginBtn onClick={handleLoginSubmit}>로그인</LoginBtn>
-        <GoogleBtn>구글 로그인</GoogleBtn>
-        <KakaoBtn>카카오 로그인</KakaoBtn>
+        <GoogleBtn onClick={handleGoogleLoginSubmit}>구글 로그인</GoogleBtn>
+        <KakaoBtn onClick={handleKakaoLoginSubmit}>카카오 로그인</KakaoBtn>
       </FormWrapper>
       <p>
         <Link href="/signup">

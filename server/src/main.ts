@@ -29,6 +29,9 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       secret: process.env.COOKIE_SECRET,
+      cookie: {
+        maxAge: 86400000
+      }
       // 배포 때 주석 풀기!
       // cookie: {
       //   httpOnly: true,

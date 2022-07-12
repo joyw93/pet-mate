@@ -15,7 +15,6 @@ import { CommunityHashtagEntity } from './common/entities/community-hashtag.enti
 
 @Module({
   imports: [
-    UserModule,
     TypeOrmModule.forRoot(ormconfig),
     TypeOrmModule.forFeature([
       UserEntity,
@@ -23,6 +22,7 @@ import { CommunityHashtagEntity } from './common/entities/community-hashtag.enti
       CommunityLikeEntity,
       CommunityHashtagEntity,
     ]),
+    UserModule,
     AuthModule,
     CommunityModule,
     HashtagModule,

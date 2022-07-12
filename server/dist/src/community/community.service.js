@@ -40,17 +40,26 @@ let CommunityService = class CommunityService {
         try {
             const posts = this.communityRepository
                 .createQueryBuilder('post')
-                .select(['post.id', 'post.title', 'post.content', 'post.createdAt'])
-                .addSelect(['comments.content', 'commentAuthor.nickname'])
-                .addSelect(['images.url'])
-                .addSelect(['tags.id'])
-                .addSelect(['hashtag.keyword'])
+                .select([
+                'post.id',
+                'post.title',
+                'post.content',
+                'post.createdAt',
+                'comments.id',
+                'comments.content',
+                'commentAuthor.nickname',
+                'images.id',
+                'images.url',
+                'tags.id',
+                'hashtag.keyword',
+            ])
                 .leftJoin('post.comments', 'comments')
                 .leftJoin('comments.author', 'commentAuthor')
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('tags.hashtag', 'hashtag')
-                .take(200)
+                .skip(offset)
+                .take(postCount)
                 .getMany();
             return posts;
         }
@@ -108,7 +117,7 @@ let CommunityService = class CommunityService {
             return await this.communityRepository.save(newPost);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
         }
     }
     async deletePost(postId) {
@@ -146,12 +155,14 @@ let CommunityService = class CommunityService {
         }
     }
     async createComment(userId, postId, createCommentDto) {
+        const { content } = createCommentDto;
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        const post = await this.communityRepository.findOne({
+            where: { id: postId },
+        });
+        if (!post)
+            throw new common_1.BadRequestException(res.msg.POST_NOT_EXIST);
         try {
-            const { content } = createCommentDto;
-            const user = await this.userRepository.findOne({ where: { id: userId } });
-            const post = await this.communityRepository.findOne({
-                where: { id: postId },
-            });
             const comment = new community_comment_entity_1.CommunityCommentEntity();
             comment.author = user;
             comment.post = post;
@@ -159,7 +170,8 @@ let CommunityService = class CommunityService {
             return await this.communityCommentRepository.save(comment);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.CREATE_COMMENT_FAIL);
         }
     }
     async editComment(commentId, content) {

@@ -1,4 +1,8 @@
-import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -15,7 +19,7 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     const user = await this.userRepository.findOne({
       where: { email },
-      select: ['id', 'email', 'nickname','password'],
+      select: ['id', 'email', 'nickname', 'password'],
     });
     if (!user) {
       return null;
@@ -26,5 +30,12 @@ export class AuthService {
       return userWithoutPassword;
     }
     throw new UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
+  }
+
+  async findGoogleUser(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+    return user;
   }
 }

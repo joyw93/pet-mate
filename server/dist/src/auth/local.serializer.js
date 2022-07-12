@@ -12,40 +12,37 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LocalSerializer = void 0;
+exports.Serializer = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const auth_service_1 = require("./auth.service");
-let LocalSerializer = class LocalSerializer extends passport_1.PassportSerializer {
+let Serializer = class Serializer extends passport_1.PassportSerializer {
     constructor(authService, userRepository) {
         super();
         this.authService = authService;
         this.userRepository = userRepository;
     }
     serializeUser(user, done) {
-        done(null, user.id);
+        console.log(user);
+        done(null, user.email);
     }
-    async deserializeUser(userId, done) {
-        return await this.userRepository
-            .findOne({
-            where: { id: userId },
-        })
-            .then((user) => {
-            done(null, user);
-        })
-            .catch((error) => {
-            done(error);
+    async deserializeUser(userEmail, done) {
+        console.log(userEmail);
+        const user = await this.userRepository.findOne({
+            where: { email: userEmail },
         });
+        console.log(user);
+        done(null, user);
     }
 };
-LocalSerializer = __decorate([
+Serializer = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         typeorm_2.Repository])
-], LocalSerializer);
-exports.LocalSerializer = LocalSerializer;
+], Serializer);
+exports.Serializer = Serializer;
 //# sourceMappingURL=local.serializer.js.map

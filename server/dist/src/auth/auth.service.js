@@ -49,6 +49,12 @@ let AuthService = class AuthService {
         }
         throw new common_1.UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
     }
+    async findGoogleUser(email) {
+        const user = await this.userRepository.findOne({
+            where: { email },
+        });
+        return user;
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),

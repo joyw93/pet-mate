@@ -23,8 +23,14 @@ export declare class UserController {
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
+    googleLogin(req: any): Promise<void>;
+    googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
+        message: string;
+        user: any;
+    }>;
     logout(response: any): Promise<any>;
     getLikedPosts(user: UserEntity): Promise<UserEntity[]>;
     getCommentedPosts(user: UserEntity): Promise<UserEntity[]>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;
+    test(req: any, res: any): Promise<void>;
 }

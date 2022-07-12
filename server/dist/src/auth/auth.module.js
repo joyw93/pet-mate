@@ -13,7 +13,8 @@ const auth_service_1 = require("./auth.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
 const local_strategy_1 = require("./local.strategy");
-const local_serializer_1 = require("./local.serializer");
+const serializer_1 = require("./serializer");
+const google_strategy_1 = require("./google.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -22,7 +23,12 @@ AuthModule = __decorate([
             passport_1.PassportModule.register({ session: true }),
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity]),
         ],
-        providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, local_serializer_1.LocalSerializer],
+        providers: [
+            auth_service_1.AuthService,
+            local_strategy_1.LocalStrategy,
+            serializer_1.Serializer,
+            google_strategy_1.GoogleStrategy,
+        ],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

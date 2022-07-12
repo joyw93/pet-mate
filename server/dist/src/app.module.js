@@ -26,7 +26,6 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            user_module_1.UserModule,
             typeorm_1.TypeOrmModule.forRoot(ormconfig),
             typeorm_1.TypeOrmModule.forFeature([
                 user_entity_1.UserEntity,
@@ -34,6 +33,7 @@ AppModule = __decorate([
                 community_like_entity_1.CommunityLikeEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,
             ]),
+            user_module_1.UserModule,
             auth_module_1.AuthModule,
             community_module_1.CommunityModule,
             hashtag_module_1.HashtagModule,
