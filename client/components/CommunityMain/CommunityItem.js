@@ -13,7 +13,7 @@ import {
   ItemWrapper,
 } from "./styled";
 
-const CommunityItem = (item) => {
+const CommunityItem = (item, onClick) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -31,6 +31,7 @@ const CommunityItem = (item) => {
     setImagesrc(image_src);
     setKeyword(keyword);
   }, []);
+
   return (
     <ItemContainer>
       <ItemWrapper>

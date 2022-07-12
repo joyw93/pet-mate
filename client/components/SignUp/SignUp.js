@@ -43,26 +43,45 @@ const SignUp = () => {
     check2: false,
     check3: false,
   });
+
+  const [entireCheck, setEntireCheck] = useState(false);
+  const [restCheck1, setRestCheck1] = useState(false);
+  const [restCheck2, setRestCheck2] = useState(false);
   const [checkboxIsValid, setCheckboxIsValid] = useState(true);
 
   const handleCheckbox = (e) => {
+    console.log(e.target);
     const { checked, name } = e.target;
-    setCheckbox({
-      ...checkbox,
-      [name]: checked,
-    });
-  };
-
-  useEffect(() => {
-    if (checkbox.check1 === true) {
-      setCheckbox({
-        check1: true,
-        check2: true,
-        check3: true,
-      });
+    //전체 동의
+    if (name === "check1" && checked === true) {
+      setEntireCheck(true);
+      setRestCheck1(true);
+      setRestCheck2(true);
     }
-    console.log(checkbox);
-  }, []);
+    //전체 동의 안 할 때
+    if (name === "check1" && checked === false) {
+      setEntireCheck(false);
+      setRestCheck1(false);
+      setRestCheck2(false);
+    }
+
+    //따로따로
+    if (name === "check2") {
+      if (checked === true) {
+        return setRestCheck1(true);
+      } else {
+        return setRestCheck1(false);
+      }
+    }
+
+    if (name === "check3") {
+      if (checked === true) {
+        return setRestCheck2(true);
+      } else {
+        return setRestCheck2(false);
+      }
+    }
+  };
 
   const nameRef = useRef();
   const nicknameRef = useRef();
@@ -93,7 +112,7 @@ const SignUp = () => {
     if (password2.length < 5) {
       setPwConfirm(false);
     }
-  }, [nickname, email]);
+  }, [nickname, email, password2]);
 
   const checkNickname = (e) => {
     setNickname(e.target.value);
@@ -114,11 +133,8 @@ const SignUp = () => {
     const nicknameregExp = /^[가-힣|a-zA-Z|0-9|]{2,10}$/;
     if (nicknameregExp.test(nickname) === false) {
       return setNicknameIsInvalid(true);
-    } else {
-      return setNicknameIsValid(true);
     }
 
-    //닉네임 중복확인 to backend
     axios
       .post(`${serverUrl}/user/nickname-check`, {
         nickname,
@@ -150,20 +166,6 @@ const SignUp = () => {
       });
   };
 
-  //email valid check to backend
-  // axios
-  //   .post(`${serverUrl}/users/emailCheck`, {
-  //     email,
-  //   })
-  //   .then(() => {
-  //     setEmailIsValid(true);
-  //     setGoblin(false);
-  //   })
-  //   .catch(() => {
-  //     setEmailIsInvalid(true);
-  //     setGoblin(false);
-  //   });
-
   const handleSignUpSubmit = useCallback(() => {
     //이름 유효성 검사
     const nameregExp = /^[가-힣|a-zA-Z|]{2,6}$/;
@@ -172,29 +174,38 @@ const SignUp = () => {
       return nameRef.current.focus();
     }
 
-    // //반려될 때
+    // 반려될 때
     if (!nickname) {
       return nicknameRef.current.focus();
+    } else {
+      handleValidNickname();
     }
+
     if (!emailRef) {
       return emailRef.current.focus();
+    } else {
+      handleValidEmail();
     }
+
     if (!password) {
       return passwordRef.current.focus();
     }
-    if (checkbox.check1 && checkbox.check2 && checkbox.check3) {
-      setCheckboxIsValid(true);
-    } else {
-      return setCheckboxIsValid(false);
-    }
+
     // 버그 fix
     if (password !== password2) {
-      passwordRef.current.focus();
       setPassword2("");
       setPwConfirm(true);
+      passwordRef.current.focus();
+      return;
     } else if (password === password2) {
       //비번 일치할 때
       setPwConfirm(false);
+    }
+
+    if (entireCheck && restCheck1 && restCheck2) {
+      setCheckboxIsValid(true);
+    } else {
+      return setCheckboxIsValid(false);
     }
 
     const newUser = {
@@ -205,7 +216,16 @@ const SignUp = () => {
     };
 
     dispatch(signupRequestAction(newUser));
-  }, [name, nickname, email, password, checkbox]);
+  }, [
+    name,
+    nickname,
+    email,
+    password,
+    password2,
+    entireCheck,
+    restCheck1,
+    restCheck2,
+  ]);
 
   return (
     <SignUpContainer>
@@ -282,27 +302,30 @@ const SignUp = () => {
           <label>
             <input
               name="check1"
-              value={checkbox.check1}
+              value={entireCheck}
               type="checkbox"
               onChange={handleCheckbox}
+              checked={entireCheck}
             ></input>
             모든 약관에 동의
           </label>
           <label>
             <input
               name="check2"
-              value={checkbox.check2}
+              value={restCheck1}
               onChange={handleCheckbox}
               type="checkbox"
+              checked={restCheck1}
             ></input>
             개인정보처리방침에 동의 (필수)
           </label>
           <label>
             <input
               name="check3"
-              value={checkbox.check3}
+              value={restCheck2}
               onChange={handleCheckbox}
               type="checkbox"
+              checked={restCheck2}
             ></input>
             이용약관에 동의 (필수)
           </label>

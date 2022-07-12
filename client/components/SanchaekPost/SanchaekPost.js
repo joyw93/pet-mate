@@ -37,8 +37,20 @@ const SanchaekPost = () => {
       </TitleWrapper>
 
       <TextEditWrapper>
-        <input type="text" placeholder="제목을 입력해 주세요." />
-        <textarea placeholder="내용을 입력해 주세요"></textarea>
+        <input
+          autoFocus
+          maxLength="40"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="제목을 입력해 주세요."
+        />
+        <textarea
+          maxLength="350"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="내용을 입력해 주세요"
+        ></textarea>
       </TextEditWrapper>
 
       <AddPhotoWrapper>
@@ -54,7 +66,6 @@ const SanchaekPost = () => {
             <div key={id} className="photo_preview">
               <img src={image} alt={`${image}-${id}`} />
               <button onClick={() => handleDeleteImage(id)}>
-                {/* <img src="../img/close-btn.png" alt="이미지 삭제" /> */}
                 <svg
                   className="delete-icon"
                   width="12"

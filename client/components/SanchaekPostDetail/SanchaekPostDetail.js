@@ -1,11 +1,38 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { PostDetailContainer, Images, Title, PostInfo, MapWrapper, CommentWrapper, Button } from "./styled";
 
 const SanchaekPostDetail = () => {
+  const [cmtContent, setCmtContent] = useState("");
+  const [cmtContentArr, setCmtContentArr] = useState([]);
+
+  const handleCmtContent = () => {
+    if (cmtContent) {
+      setCmtContentArr([...cmtContentArr, { id: new Date().getTime(), author: "멍멍아 야옹해봐", content: cmtContent }]);
+    }
+    setCmtContent("");
+  };
+
+  const handleDeletCmt = (id) => {
+    setCmtContentArr(cmtContentArr.filter((it) => it.id !== id));
+  };
+
+  const keyUp = (e) => {
+    if (e.keyCode === 13 && e.target.value.trim() !== "") {
+      if (cmtContent) {
+        setCmtContentArr([...cmtContentArr, { id: new Date().getTime(), author: "멍멍아 야옹해봐", content: cmtContent }]);
+      }
+      setCmtContent("");
+    }
+  };
+
+  useEffect(() => {
+    console.log(cmtContentArr);
+  }, [cmtContentArr]);
+
   const postItem = {
     id: "1",
     title: "울집 댕댕이랑 산책하실 분 구함",
@@ -18,15 +45,20 @@ const SanchaekPostDetail = () => {
       lat: 37.5207,
       lng: 127.012304,
     },
-    comments: [
+    comments: [...cmtContentArr],
+    hashtag: [
       {
-        author: "멍멍아야옹해봐",
-        content: "아니글쎄~~~~~댓글~~~~",
+        id: "111",
+        keyword: "사료",
       },
       {
-        author: "야옹아멍멍해봐",
-        content:
-          "댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글~~~~",
+        id: "222",
+        keyword: "어쩌고",
+      },
+
+      {
+        id: "333",
+        keyword: "무엇이든 물어보세요",
       },
     ],
   };
@@ -95,15 +127,27 @@ const SanchaekPostDetail = () => {
           <h2>
             댓글 <span>{postItem.comments.length}</span>
           </h2>
-          <form id="cmt_input">
-            <input type="text" placeholder="댓글을 남겨보세요." />
-            <Button>입력</Button>
-          </form>
+          <div id="cmt_input">
+            <input
+              onKeyUp={keyUp}
+              onChange={(e) => setCmtContent(e.target.value)}
+              value={cmtContent}
+              type="text"
+              placeholder="댓글을 남겨보세요."
+            />
+            <Button onClick={handleCmtContent}>입력</Button>
+          </div>
           <div id="cmts_area">
             {postItem.comments.map((it) => (
-              <div className="cmts">
+              <div key={it.id} className="cmts">
                 <h3>{it.author}</h3>
                 <p>{it.content}</p>
+                <div>
+                  <span>시간</span>
+                  <span onClick={() => handleDeletCmt(it.id)} id="delete_btn">
+                    삭제
+                  </span>
+                </div>
               </div>
             ))}
           </div>

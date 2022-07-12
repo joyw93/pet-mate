@@ -138,6 +138,7 @@ export const CommentWrapper = styled.div`
       width: 100%;
       height: 35px;
       border: 1px solid #ddd;
+      padding-left: 10px;
     }
 
     button {
@@ -147,18 +148,39 @@ export const CommentWrapper = styled.div`
   }
 
   #cmts_area {
+    width: 100%;
     margin-top: 30px;
     padding-right: 80px;
+    display: flex;
+    flex-direction: column-reverse;
 
     .cmts {
+      width: 100%;
       margin-bottom: 32px;
       h3 {
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-weight: bold;
-        margin-bottom: 18px;
+        margin-bottom: 12px;
       }
       p {
-        font-size: 0.9rem;
+        width: 90%;
+        font-size: 1rem;
+      }
+      div {
+        margin-top: 18px;
+        span {
+          color: #888;
+          font-size: 0.8rem;
+          font-weight: bold;
+        }
+        #delete_btn {
+          cursor: pointer;
+          margin-left: 10px;
+        }
+        #delete_btn:hover {
+          color: ${Colors.primaryColor};
+          transition: all 0.1s;
+        }
       }
     }
   }

@@ -29,7 +29,9 @@ const CommunityPost = () => {
     if (hashArr.length > 5) {
       setHashArr(hashArr.slice(0, 5));
       alert("키워드는 5개까지 등록할 수 있습니다.");
+      return;
     }
+    // console.log(hashArr);
   }, [hashArr]);
 
   //AddPhotoWrapper
@@ -61,6 +63,11 @@ const CommunityPost = () => {
 
   const keyUp = (e) => {
     if (e.keyCode === 13 && e.target.value.trim() !== "") {
+      if (hashArr.find((it) => it.content === e.target.value)) {
+        alert("같은 키워드를 입력하셨습니다.");
+        setHashTagVal("");
+        return;
+      }
       setHashArr([
         ...hashArr,
         { id: new Date().getTime(), content: hashTagVal },
@@ -69,9 +76,9 @@ const CommunityPost = () => {
     }
   };
 
-  const removeHash = (id) => {
+  const handleDeletHash = (id) => {
     setHashArr(hashArr.filter((it) => it.id !== id));
-    console.log(id);
+    // console.log(id);
   };
 
   const post = useCallback(() => {
@@ -136,7 +143,6 @@ const CommunityPost = () => {
               <div key={id} className="photo_preview">
                 <img src={image} alt={`${image}-${id}`} />
                 <button onClick={() => handleDeleteImage(id)}>
-                  {/* <img src="../img/close-btn.png" alt="이미지 삭제" /> */}
                   <svg
                     className="delete-icon"
                     width="12"
@@ -160,7 +166,7 @@ const CommunityPost = () => {
               <button
                 key={it.id}
                 className="keyword_item"
-                onClick={() => removeHash(it.id)}
+                onClick={() => handleDeletHash(it.id)}
               >
                 <span>{it.content}</span>
                 <svg
