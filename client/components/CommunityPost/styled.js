@@ -71,13 +71,20 @@ export const TextEditWrapper = styled.form`
     height: 350px;
     border: none;
     resize: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     outline: none;
     margin-top: 10px;
+    word-break: break-word;
   }
   textarea::placeholder {
     font-weight: bold;
     color: #ddd;
+  }
+  @media (max-width: 767px) {
+    input, textarea {
+      width: 97%;
+      margin: 0 auto;
+    }
   }
 `;
 
@@ -92,21 +99,19 @@ export const AddPhotoWrapper = styled.div`
   #photos {
     width: 100%;
     display: flex;
-
     flex-wrap: wrap;
     margin-top: 10px;
   }
-  #photos > div {
-    width: 171px;
-    height: 171px;
-  }
-
-  #add_photo {
-    position: relative;
+  #add_photo, .photo_preview {
+    flex-basis: 20%;
+    flex-shrink: 1;
+    flex-grow: 1;
+    min-height: 150px;
+    max-width: 171px;
+    flex-wrap: wrap;
     background-color: #eee;
   }
   #add_file {
-    position: absolute;
     display: none;
   }
   #add_photo label {
@@ -124,8 +129,7 @@ export const AddPhotoWrapper = styled.div`
     }
   }
   .photo_preview {
-    width: 171px;
-    height: 171px;
+
     margin-left: 12px;
     position: relative;
     img {
@@ -156,6 +160,11 @@ export const AddPhotoWrapper = styled.div`
 
 export const KeywordWrapper = styled.div`
   margin: 40px 0;
+  .keyword_area {
+  width: 100%;
+  display: grid;
+  }
+
   h2 {
     font-size: 1.1rem;
     font-weight: bold;
@@ -163,7 +172,7 @@ export const KeywordWrapper = styled.div`
     margin-bottom: 10px;
   }
   .keyword_item {
-    margin-right: 10px;
+    margin: 10px 10px 10px 0;
     padding-right: 10px;
     cursor: pointer;
   }
@@ -172,7 +181,7 @@ export const KeywordWrapper = styled.div`
   }
   .keyword_item:hover svg {
     fill: ${Colors.primaryColor};
-    transition: all 0.3s;
+    transition: all 0.2s;
   }
   #keyword_input,
   .keyword_item {
@@ -186,18 +195,20 @@ export const KeywordWrapper = styled.div`
     left: 12px;
     top: 0;
     line-height: 32px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #757575;
+  }
+  #keyword_input::after {
+    color: ${Colors.primaryColor};
   }
   #keyword_input input,
   .keyword_item {
     border-radius: 20px;
     height: 32px;
-    padding-left: 24px;
+    padding-left: 28px;
     border: none;
-
-    font-size: 1.2rem;
+    font-size: 1rem;
     /* font-weight: bold; */
     color: #757575;
   }
