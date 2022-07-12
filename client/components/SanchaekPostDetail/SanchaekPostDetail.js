@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { PostDetailContainer, Images, Title, PostInfo, MapWrapper, CommentWrapper, Button } from "./styled";
 
+
 const SanchaekPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);

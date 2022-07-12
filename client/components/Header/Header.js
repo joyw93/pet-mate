@@ -1,6 +1,11 @@
 import Link from "next/link";
 import Router from "next/router";
-import { useCallback, useEffect, useState, useLayoutEffect } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
 import {
@@ -10,11 +15,13 @@ import {
   AuthTab,
   ToggleMenuWrapper,
   SanchaekWrapper,
-  CommunityWrapper
+  CommunityWrapper,
 } from "./styled";
 import { useRouter } from "next/router";
 
 const Header = () => {
+  const canUseDOM = typeof window !== "undefined";
+  const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
   const router = useRouter();
   const currentPath = router.pathname;
   const [pathCheck, setPathCheck] = useState(currentPath);
@@ -25,7 +32,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");
     } else if (pathCheck.includes("community")) {
