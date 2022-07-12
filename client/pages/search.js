@@ -1,6 +1,7 @@
 import Head from "next/head";
 
 import AppLayout from "../components/AppLayout";
+import SearchResult from "../components/SearchResult/SearchResult";
 const SearchPage = () => {
   return (
     <>
@@ -8,7 +9,7 @@ const SearchPage = () => {
         <title>검색결과 | 펫메이트</title>
       </Head>
       <AppLayout>
-        <div>검색결과 페이지</div>
+        <SearchResult />
       </AppLayout>
     </>
   );

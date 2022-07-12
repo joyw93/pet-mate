@@ -30,14 +30,32 @@ export const Selection = styled.select`
   }
 `;
 
-export const NoticeBtn = styled.button`
+export const HeadWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Btn = styled.button`
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+`;
+
+export const PostBtn = styled(Btn)`
+  width: 85px;
+  height: 35px;
+  background-color: ${Colors.btnGray};
+  color: #000;
+  cursor: pointer;
+`;
+
+export const NoticeBtn = styled(Btn)`
   width: 60px;
   height: 35px;
   background-color: ${Colors.primaryColor};
-  font-size: 16px;
   color: #fff;
-  border: none;
-  border-radius: 20px;
   margin-right: 10px;
 `;
 

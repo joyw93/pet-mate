@@ -98,7 +98,7 @@ const SignUp = () => {
   const handleValidNickname = useCallback(() => {
     if (nickname.length === 0) setNicknameIsInvalid(true);
 
-    //닉네임 유효성 검사 추가 하기
+    //닉네임 유효성 검사
     const nicknameregExp = /^[가-힣|a-zA-Z|0-9|]{2,10}$/;
     if (nicknameregExp.test(nickname) === false) {
       return setNicknameIsInvalid(true);
@@ -106,7 +106,7 @@ const SignUp = () => {
       return setNicknameIsValid(true);
     }
 
-    // nickname valid check to backend
+    //닉네임 중복확인 to backend
     axios
       .post(`${serverUrl}/users/nicknameCheck`, {
         nickname,
@@ -115,8 +115,8 @@ const SignUp = () => {
       .catch(() => setNicknameIsInvalid(true));
   }, [nickname]);
 
+  //이메일 유효성 검사
   const handleValidEmail = () => {
-    //이메일 유효성 검사
     const emailregExp =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     if (emailregExp.test(email) === false) {
