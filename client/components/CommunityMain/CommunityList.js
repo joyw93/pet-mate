@@ -114,11 +114,13 @@ const DUMMY_POSTS = [
 ];
 
 const CommunityList = () => {
+
+  
   return (
     <>
       <ListContainer>
-        {DUMMY_POSTS.map((item) => (
-          <CommunityItem key={item.id} {...item} />
+        {DUMMY_POSTS.map((post) => (
+          <CommunityItem key={post.id} {...post}/>
         ))}
         <BtnContainer>
           <span></span>

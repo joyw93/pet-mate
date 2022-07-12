@@ -13,6 +13,7 @@ import {
   ItemWrapper,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
+import Router from "next/router";
 
 const CommunityItem = (item) => {
   const currentTime = new Date().getTime();
@@ -37,8 +38,12 @@ const CommunityItem = (item) => {
   useEffect(() => {
     getElapsedTime(created_date);
   }, []);
+
+  const itemSelect = () => {
+    Router.push(`community/${item.id}`)
+  }
   return (
-    <ItemContainer>
+    <ItemContainer onClick={itemSelect}>
       <ItemWrapper>
         <ContentWrapper>
           <ContentTitle>{title}</ContentTitle>
