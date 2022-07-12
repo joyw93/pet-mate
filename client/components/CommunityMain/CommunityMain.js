@@ -2,10 +2,13 @@ import {
   CommunityCon,
   Title,
   NoticeBtn,
+  PostBtn,
+  HeadWrapper,
   NoticeWrapper,
   Selection,
 } from "./styled";
 import CommunityList from "./CommunityList";
+import Link from "next/link";
 
 const SelectOptions = [
   { id: "latest", name: "최신 순" },
@@ -54,7 +57,14 @@ const CommunityMain = () => {
   return (
     <CommunityCon>
       <Title>커뮤니티</Title>
-      <ListSelection />
+      <HeadWrapper>
+        <ListSelection />
+        <PostBtn>
+          <Link href="/community/post">
+            <a>글쓰기</a>
+          </Link>
+        </PostBtn>
+      </HeadWrapper>
       <Notice />
       <CommunityList />
     </CommunityCon>

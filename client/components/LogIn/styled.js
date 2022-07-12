@@ -37,23 +37,13 @@ export const FormWrapper = styled.div`
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   margin-bottom: 30px;
   width: 100%;
 
   label {
     font-size: 16px;
     margin-bottom: 10px;
-  }
-
-  /* input {
-    height: 40px;
-    width: 100%;
-    border-radius: 5px;
-    border: 0.5px solid ${Colors.btnGray};
-  } */
-
-  p {
-    padding-top: 10px;
   }
 `;
 
@@ -88,4 +78,8 @@ export const GoogleBtn = styled(MainBtn)`
 export const KakaoBtn = styled(MainBtn)`
   background-color: #fff;
   border: 2px solid ${Colors.profileYellow};
+`;
+
+export const CheckInput = styled.p`
+  color: ${(props) => props.color || "black"};
 `;

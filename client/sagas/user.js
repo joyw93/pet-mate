@@ -24,7 +24,7 @@ function signUpAPI(data) {
 function* signUp(action) {
   try {
     const result = yield call(signUpAPI, action.data);
-    const payload = result.data
+    const payload = result.data;
     yield put({
       type: SIGN_UP_SUCCESS,
       data: payload.data,
