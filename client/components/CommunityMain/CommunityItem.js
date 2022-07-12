@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import {
   ItemContainer,
@@ -12,8 +12,10 @@ import {
   KeywordItem,
   ItemWrapper,
 } from "./styled";
+import { getElapsedTime } from "../../utils";
 
 const CommunityItem = (item) => {
+  const currentTime = new Date().getTime();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -31,6 +33,10 @@ const CommunityItem = (item) => {
     setImagesrc(image_src);
     setKeyword(keyword);
   }, []);
+
+  useEffect(() => {
+    getElapsedTime(created_date);
+  }, []);
   return (
     <ItemContainer>
       <ItemWrapper>
@@ -39,7 +45,7 @@ const CommunityItem = (item) => {
           <Content>{content}</Content>
           <ContentInfo>
             <Author>{author}</Author>
-            <span>{created_date}</span>
+            <span>{getElapsedTime(created_date)}</span>
           </ContentInfo>
           <KeywordWrapper>
             {keyword &&
