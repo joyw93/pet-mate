@@ -6,10 +6,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GoogleAuthGuard = void 0;
+exports.KakaoAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
-let GoogleAuthGuard = class GoogleAuthGuard extends (0, passport_1.AuthGuard)('google') {
+let KakaoAuthGuard = class KakaoAuthGuard extends (0, passport_1.AuthGuard)('kakao') {
     async canActivate(context) {
         const activate = (await super.canActivate(context));
         const request = context.switchToHttp().getRequest();
@@ -17,8 +17,8 @@ let GoogleAuthGuard = class GoogleAuthGuard extends (0, passport_1.AuthGuard)('g
         return activate;
     }
 };
-GoogleAuthGuard = __decorate([
+KakaoAuthGuard = __decorate([
     (0, common_1.Injectable)()
-], GoogleAuthGuard);
-exports.GoogleAuthGuard = GoogleAuthGuard;
-//# sourceMappingURL=google-auth.guard.js.map
+], KakaoAuthGuard);
+exports.KakaoAuthGuard = KakaoAuthGuard;
+//# sourceMappingURL=kakao-auth.guard.js.map

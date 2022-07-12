@@ -6,6 +6,7 @@ import { UserEntity } from '../user/user.entity';
 import { LocalStrategy } from './local/local.strategy';
 import { Serializer } from './serializer';
 import { GoogleStrategy } from './google/google.strategy';
+import { KakaoStrategy } from './kakao/kakao.strategy';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { GoogleStrategy } from './google/google.strategy';
     LocalStrategy,
     Serializer,
     GoogleStrategy,
+    KakaoStrategy
   ],
 })
 export class AuthModule {}

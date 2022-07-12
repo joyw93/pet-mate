@@ -1,4 +1,3 @@
-/// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -28,6 +27,11 @@ export declare class UserController {
     googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
         message: string;
         user: Express.User;
+    }>;
+    kakaoLogin(req: any): Promise<void>;
+    kakaoLoginCallback(req: any, res: any): Promise<"no user from kakao" | {
+        message: string;
+        user: any;
     }>;
     logout(response: any): Promise<any>;
     getLikedPosts(user: UserEntity): Promise<UserEntity[]>;

@@ -18,7 +18,8 @@ import {
 // const serverUrl = 'http://127.0.0.1:3000';
 
 const LogIn = () => {
-  const serverUrl = "http://api.petmate.kr";
+  // const serverUrl = "http://api.petmate.kr";
+  const serverUrl = 'http://127.0.0.1:3000';
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
 
