@@ -6,6 +6,7 @@ import React, {
   useState,
   useLayoutEffect,
 } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
 import {
@@ -32,6 +33,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
 
+
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");
@@ -40,8 +42,11 @@ const Header = () => {
     }
   }, [pathCheck]);
 
+
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
+    Router.replace("/");
+    alert("로그아웃되었습니다!");
   }, []);
 
   const handleValChange = (event) => {

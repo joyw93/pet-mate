@@ -15,6 +15,7 @@ import {
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
 
+
 const CommunityItem = (item) => {
   const currentTime = new Date().getTime();
   const [title, setTitle] = useState("");
@@ -35,6 +36,7 @@ const CommunityItem = (item) => {
     setKeyword(keyword);
   }, []);
 
+
   useEffect(() => {
     getElapsedTime(created_date);
   }, []);
@@ -42,6 +44,7 @@ const CommunityItem = (item) => {
   const itemSelect = () => {
     Router.push(`community/${item.id}`)
   }
+
   return (
     <ItemContainer onClick={itemSelect}>
       <ItemWrapper>

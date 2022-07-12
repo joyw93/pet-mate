@@ -7,8 +7,10 @@ import {
   NoticeWrapper,
   Selection,
 } from "./styled";
+import { useSelector } from "react-redux";
 import CommunityList from "./CommunityList";
 import Link from "next/link";
+import Router from "next/router";
 
 const SelectOptions = [
   { id: "latest", name: "최신 순" },
@@ -54,15 +56,25 @@ const Notice = () => {
 };
 
 const CommunityMain = () => {
+  const { me } = useSelector((state) => state.user);
+
+  const goToNew = () => {
+    if (!me) {
+      Router.replace("/login");
+    } else {
+      Router.replace("/community/new");
+    }
+  };
   return (
     <CommunityCon>
       <Title>커뮤니티</Title>
       <HeadWrapper>
         <ListSelection />
-        <PostBtn>
-          <Link href="/community/post">
+        <PostBtn onClick={goToNew}>
+          {/* <Link href="/community/new">
             <a>글쓰기</a>
-          </Link>
+          </Link> */}
+          <span>글쓰기</span>
         </PostBtn>
       </HeadWrapper>
       <Notice />

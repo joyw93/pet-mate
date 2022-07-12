@@ -1,4 +1,4 @@
-import { all, call, delay, fork, put, takeLatest } from "redux-saga/effects";
+import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 import {
   SIGN_UP_FAILURE,
@@ -12,13 +12,14 @@ import {
   LOG_OUT_SUCCESS,
 } from "../reducers/user";
 
-const serverUrl =
-  process.env.NODE_ENV === "production"
-    ? "http://api.petmate.kr"
-    : "http://127.0.0.1:3000";
+const serverUrl = `http://api.petmate.kr`;
+// process.env.NODE_ENV === "production"
+//   ? "http://api.petmate.kr"
+//   : "http://127.0.0.1:3000";
 
 function signUpAPI(data) {
-  return axios.post(`${serverUrl}/users/signup`, data);
+  console.log(data);
+  return axios.post(`${serverUrl}/user/signup`, data);
 }
 
 function* signUp(action) {
