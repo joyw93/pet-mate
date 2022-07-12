@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
+import { Request, Response } from 'express';
 export declare class UserService {
     private userRepository;
     constructor(userRepository: Repository<UserEntity>);
@@ -17,6 +18,10 @@ export declare class UserService {
         posts: import("../community/community.entity").CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+    }>;
+    googleLoginCallback(req: Request, res: Response): Promise<"no user from google" | {
+        message: string;
+        user: Express.User;
     }>;
     getLikedPosts(userId: number): Promise<UserEntity[]>;
     getCommentedPosts(userId: number): Promise<UserEntity[]>;

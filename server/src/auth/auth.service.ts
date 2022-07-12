@@ -32,10 +32,20 @@ export class AuthService {
     throw new UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
   }
 
-  async findGoogleUser(email: string) {
-    const user = await this.userRepository.findOne({
+  async validateGoogleUser(email: string, name: string, accessToken: string) {
+    const exUser = await this.userRepository.findOne({
       where: { email },
     });
-    return user;
+    if (exUser) {
+      return exUser;
+    } else {
+      const newUser = await this.userRepository.save({
+        email,
+        name,
+        nickname: name,
+        password: accessToken
+      });
+      return newUser;
+    }
   }
 }

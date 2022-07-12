@@ -15,27 +15,14 @@ export class Serializer extends PassportSerializer {
     super();
   }
 
-  serializeUser(user, done: CallableFunction) {
-    console.log(user);
-    done(null, user.email);
+  serializeUser(user:UserEntity, done: CallableFunction) {
+    done(null, user.id);
   }
 
-  async deserializeUser(userEmail: string, done) {
-    console.log(userEmail);
+  async deserializeUser(userId: number, done: CallableFunction) {
     const user = await this.userRepository.findOne({
-      where: { email: userEmail },
+      where: { id: userId },
     });
-    console.log(user)
     done(null, user);
-    // return await this.userRepository
-    //   .findOne({
-    //     where: { email: userEmail },
-    //   })
-    //   .then((user) => {
-    //     done(null, user);
-    //   })
-    //   .catch((error) => {
-    //     done(error);
-    //   });
   }
 }

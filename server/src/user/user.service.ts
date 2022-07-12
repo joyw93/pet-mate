@@ -10,6 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import * as res from '../common/responses/message';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -51,7 +52,7 @@ export class UserService {
     const userByNickname = await this.userRepository.findOne({
       where: { nickname },
     });
-    
+
     if (userByNickname) {
       throw new UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
     }
@@ -66,6 +67,19 @@ export class UserService {
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException();
+    }
+  }
+
+  async googleLoginCallback(req: Request, res: Response) {
+    if (!req.user) {
+      res.send('login error');
+      return 'no user from google';
+    } else {
+      res.redirect('http://127.0.0.1:800');
+      return {
+        message: 'User info from Google',
+        user: req.user,
+      };
     }
   }
 

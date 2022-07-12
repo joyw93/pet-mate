@@ -15,10 +15,8 @@ import { signupRequestAction, signupResetAction } from "../../reducers/user";
 import Router from "next/router";
 
 const SignUp = () => {
-  const serverUrl =
-    process.env.NODE_ENV === "production"
-      ? "http://api.petmate.kr"
-      : "http://127.0.0.1:3000";
+  const serverUrl = "http://api.petmate.kr";
+
   const dispatch = useDispatch();
   const { signUpDone } = useSelector((state) => state.user);
 
@@ -108,7 +106,7 @@ const SignUp = () => {
 
     //닉네임 중복확인 to backend
     axios
-      .post(`${serverUrl}/users/nicknameCheck`, {
+      .post(`${serverUrl}/user/nickname-check`, {
         nickname,
       })
       .then(() => setNicknameIsValid(true))
@@ -126,7 +124,7 @@ const SignUp = () => {
       // setEmailIsValid(true);
       // setGoblin(false);
       axios
-        .post(`${serverUrl}/users/emailCheck`, {
+        .post(`${serverUrl}/user/email-check`, {
           email,
         })
         .then(() => {
@@ -141,7 +139,7 @@ const SignUp = () => {
 
     //email valid check to backend
     axios
-      .post(`${serverUrl}/users/emailCheck`, {
+      .post(`${serverUrl}/user/email-check`, {
         email,
       })
       .then(() => {

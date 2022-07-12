@@ -24,7 +24,7 @@ const CommunityPostDetail = () => {
         content: "아니글쎄~~~~~댓글~~~~",
       },
       {
-        author: "야옹아멍멍해봐",
+        author: "멍멍아야옹해봐",
         content:
           "댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글~~~~",
       },
@@ -74,9 +74,9 @@ const CommunityPostDetail = () => {
       <div id="content">
         <Images>
           <Slider {...settings}>
-            {postItem.src.map((it) => (
-              <div>
-                <img src={it} alt="이미지" />
+            {postItem.src.map((image, index) => (
+              <div key={index}>
+                <img src={image} alt="이미지" />
               </div>
             ))}
           </Slider>
@@ -106,10 +106,10 @@ const CommunityPostDetail = () => {
             <Button>입력</Button>
           </form>
           <div id="cmts_area">
-            {postItem.comments.map((it) => (
-              <div className="cmts">
-                <h3>{it.author}</h3>
-                <p>{it.content}</p>
+            {postItem.comments.map((comment, index) => (
+              <div key={index} className="cmts">
+                <h3>{comment.author}</h3>
+                <p>{comment.content}</p>
               </div>
             ))}
           </div>

@@ -26,11 +26,10 @@ export declare class UserController {
     googleLogin(req: any): Promise<void>;
     googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
         message: string;
-        user: any;
+        user: Express.User;
     }>;
     logout(response: any): Promise<any>;
     getLikedPosts(user: UserEntity): Promise<UserEntity[]>;
     getCommentedPosts(user: UserEntity): Promise<UserEntity[]>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;
-    test(req: any, res: any): Promise<void>;
 }

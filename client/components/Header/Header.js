@@ -1,17 +1,38 @@
 import Link from "next/link";
 import Router from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
-import { NavContainer, Tab, Input, AuthTab, ToggleMenuWrapper } from "./styled";
+import {
+  NavContainer,
+  Tab,
+  Input,
+  AuthTab,
+  ToggleMenuWrapper,
+  SanchaekWrapper,
+  CommunityWrapper
+} from "./styled";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+  const currentPath = router.pathname;
+  const [pathCheck, setPathCheck] = useState(currentPath);
   const [inputVal, setInputVal] = useState("");
   const [visibile, setVisibile] = useState(false);
   const [toggleVisible, setToggleVisible] = useState("none");
 
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+
+  useLayoutEffect(() => {
+    if (pathCheck.includes("sanchaek")) {
+      setPathCheck("sanchaek");
+    } else if (pathCheck.includes("community")) {
+      setPathCheck("community");
+    }
+  }, [pathCheck]);
+
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
   }, []);
@@ -44,22 +65,24 @@ const Header = () => {
       <NavContainer>
         <div id="menu_left">
           <div id="logo_wrapper">
-            <Link href="/">
-              <div id="logo"></div>
+            <Link href="/" passHref>
+              <a>
+                <div id="logo"></div>
+              </a>
             </Link>
           </div>
           <ul id="lnb">
             <li>
               <Tab>
-                <Link href="/sanchaek">
-                  <a>산책메이트</a>
+                <Link href="/sanchaek" passHref>
+                  <SanchaekWrapper path={pathCheck}>산책메이트</SanchaekWrapper>
                 </Link>
               </Tab>
             </li>
             <li>
               <Tab>
-                <Link href="/community">
-                  <a>커뮤니티</a>
+                <Link href="/community" passHref>
+                  <CommunityWrapper path={pathCheck}>커뮤니티</CommunityWrapper>
                 </Link>
               </Tab>
             </li>
@@ -67,7 +90,11 @@ const Header = () => {
         </div>
         <div id="menu_right">
           <form>
-            <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+            <Input
+              placeholder="검색어를 입력하세요"
+              onChange={handleValChange}
+              value={inputVal}
+            />
             {visibile && (
               <button className="cancel_btn" onClick={clearInputVal}>
                 <img src="../img/cancel-btn.png" />
@@ -78,7 +105,7 @@ const Header = () => {
             {me ? (
               <>
                 <AuthTab>
-                  <Link href="/profile">
+                  <Link href="/profile" passHref>
                     <a>프로필</a>
                   </Link>
                 </AuthTab>
@@ -89,12 +116,12 @@ const Header = () => {
             ) : (
               <>
                 <AuthTab>
-                  <Link href="/login">
+                  <Link href="/login" passHref>
                     <a>로그인</a>
                   </Link>
                 </AuthTab>
                 <AuthTab>
-                  <Link href="/signup">
+                  <Link href="/signup" passHref>
                     <a>회원가입</a>
                   </Link>
                 </AuthTab>
@@ -113,7 +140,11 @@ const Header = () => {
               <img src="../img/close-btn.png" alt="메뉴" />
             </div>
             <form id="search_input">
-              <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+              <Input
+                placeholder="검색어를 입력하세요"
+                onChange={handleValChange}
+                value={inputVal}
+              />
               {visibile && (
                 <button className="toggle_cancel_btn" onClick={clearInputVal}>
                   <img src="../img/cancel-btn.png" />
@@ -124,23 +155,23 @@ const Header = () => {
               <ul>
                 <li>
                   <Tab>
-                    <Link href="/walking-mate">
-                      <a>산책메이트</a>
+                    <Link href="/sanchaek" passHref>
+                      <SanchaekWrapper>산책메이트</SanchaekWrapper>
                     </Link>
                   </Tab>
                 </li>
                 <li>
                   <Tab>
-                    <Link href="/community">
-                      <a>커뮤니티</a>
+                    <Link href="/community" passHref>
+                      <CommunityWrapper>커뮤니티</CommunityWrapper>
                     </Link>
                   </Tab>
                 </li>
                 {me ? (
                   <>
                     <AuthTab>
-                      <Link href="/profile">
-                        <a>프로필</a>
+                      <Link href="/profile" passHref>
+                        프로필
                       </Link>
                     </AuthTab>
                     <AuthTab>
@@ -150,12 +181,12 @@ const Header = () => {
                 ) : (
                   <>
                     <AuthTab>
-                      <Link href="/login">
+                      <Link href="/login" passHref>
                         <a>로그인</a>
                       </Link>
                     </AuthTab>
                     <AuthTab>
-                      <Link href="/signup">
+                      <Link href="/signup" passHref>
                         <a>회원가입</a>
                       </Link>
                     </AuthTab>

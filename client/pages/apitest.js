@@ -3,7 +3,8 @@ import { useState, useRef } from "react";
 import axios from "axios";
 
 const Test = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
@@ -11,12 +12,13 @@ const Test = () => {
   const [FileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
 
+  const serverUrl = "http://api.petmate.kr";
+
   const submit = (e) => {
     axios
       .post(
-        "http://127.0.0.1:3000/user/login",
-        { email, password },
-        { withCredentials: true }
+        `${serverUrl}/user/signup`,
+        { name, nickname, email, password },
       )
       .then((res) => console.log(res.data))
       .catch((err) => {
@@ -70,13 +72,13 @@ const Test = () => {
       {
         author: "곽곽이",
         content: "댕댕이가 귀엽네요",
-        createdAt: "2022.03.18"
+        createdAt: "2022.03.18",
       },
       {
         author: "유경손",
         content: "정말 부럽군요",
-        createdAt: "2022.03.18"
-      }
+        createdAt: "2022.03.18",
+      },
     ],
   };
 
@@ -94,7 +96,19 @@ const Test = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={submit}>테스트</button>
+      이름
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      닉네임
+      <input
+        type="text"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+      />
+      <button onClick={submit}>회원가입</button>
       <button onClick={sessionCheck}>세션확인</button>
       <div>
         제목

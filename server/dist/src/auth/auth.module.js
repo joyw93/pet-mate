@@ -12,9 +12,9 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
-const local_strategy_1 = require("./local.strategy");
+const local_strategy_1 = require("./local/local.strategy");
 const serializer_1 = require("./serializer");
-const google_strategy_1 = require("./google.strategy");
+const google_strategy_1 = require("./google/google.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([

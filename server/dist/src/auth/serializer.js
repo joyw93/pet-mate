@@ -26,15 +26,12 @@ let Serializer = class Serializer extends passport_1.PassportSerializer {
         this.userRepository = userRepository;
     }
     serializeUser(user, done) {
-        console.log(user);
-        done(null, user.email);
+        done(null, user.id);
     }
-    async deserializeUser(userEmail, done) {
-        console.log(userEmail);
+    async deserializeUser(userId, done) {
         const user = await this.userRepository.findOne({
-            where: { email: userEmail },
+            where: { id: userId },
         });
-        console.log(user);
         done(null, user);
     }
 };

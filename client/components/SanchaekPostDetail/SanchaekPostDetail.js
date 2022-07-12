@@ -56,7 +56,7 @@ const SanchaekPostDetail = () => {
       <Title>
         <h2>{postItem.title}</h2>
         <div>
-          <Link href={"/walking-mate/post"}>
+          <Link href={"/sanchaek/post"}>
             <Button>수정</Button>
           </Link>
           <Button>삭제</Button>
@@ -74,9 +74,9 @@ const SanchaekPostDetail = () => {
       <div id="content">
         <Images>
           <Slider {...settings}>
-            {postItem.src.map((it) => (
-              <div>
-                <img src={it} alt="이미지" />
+            {postItem.src.map((image, index) => (
+              <div key={index}>
+                <img src={image} alt="이미지" />
               </div>
             ))}
           </Slider>
@@ -100,10 +100,10 @@ const SanchaekPostDetail = () => {
             <Button>입력</Button>
           </form>
           <div id="cmts_area">
-            {postItem.comments.map((it) => (
-              <div className="cmts">
-                <h3>{it.author}</h3>
-                <p>{it.content}</p>
+            {postItem.comments.map((comment, index) => (
+              <div key={index} className="cmts">
+                <h3>{comment.author}</h3>
+                <p>{comment.content}</p>
               </div>
             ))}
           </div>
