@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
+import Link from "next/link";
 
 export const NavContainer = styled.header`
   display: flex;
@@ -168,6 +169,24 @@ export const AuthTab = styled.li`
   margin-left: 20px;
   font-weight: bold;
   font-size: 1.2em;
+  &:hover {
+    cursor: pointer;
+    color: ${Colors.primaryColor};
+    transition: 0.2s all;
+  }
+`;
+
+export const SanchaekWrapper = styled.a`
+  color: ${(props) => (props.path === "sanchaek" ? Colors.primaryColor : "black")};
+  &:hover {
+    cursor: pointer;
+    color: ${Colors.primaryColor};
+    transition: 0.2s all;
+  }
+`;
+
+export const CommunityWrapper = styled.a`
+  color: ${(props) => (props.path === "community" ? Colors.primaryColor : "black")};
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};

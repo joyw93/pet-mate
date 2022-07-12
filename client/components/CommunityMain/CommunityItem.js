@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import {
   ItemContainer,
@@ -12,8 +12,12 @@ import {
   KeywordItem,
   ItemWrapper,
 } from "./styled";
+import { getElapsedTime } from "../../utils";
+import Router from "next/router";
 
-const CommunityItem = (item, onClick) => {
+
+const CommunityItem = (item) => {
+  const currentTime = new Date().getTime();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -32,15 +36,24 @@ const CommunityItem = (item, onClick) => {
     setKeyword(keyword);
   }, []);
 
+
+  useEffect(() => {
+    getElapsedTime(created_date);
+  }, []);
+
+  const itemSelect = () => {
+    Router.push(`community/${item.id}`)
+  }
+
   return (
-    <ItemContainer>
+    <ItemContainer onClick={itemSelect}>
       <ItemWrapper>
         <ContentWrapper>
           <ContentTitle>{title}</ContentTitle>
           <Content>{content}</Content>
           <ContentInfo>
             <Author>{author}</Author>
-            <span>{created_date}</span>
+            <span>{getElapsedTime(created_date)}</span>
           </ContentInfo>
           <KeywordWrapper>
             {keyword &&

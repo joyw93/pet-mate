@@ -7,12 +7,10 @@ import {
   Res,
   Req,
   Response,
-  UseInterceptors,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { GoogleAuthGuard } from 'src/auth/google-auth.guard';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
+import { LocalAuthGuard } from 'src/auth/local/local-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -50,17 +48,7 @@ export class UserController {
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleLoginCallback(@Req() req, @Res() res) {
-    if (!req.user) {
-      res.send('실패');
-      return 'no user from google';
-    } else {
-      console.log(req.user.accessToken)
-      res.redirect('http://127.0.0.1:800');
-      return {
-        message: 'User info from Google',
-        user: req.user,
-      };
-    }
+    return this.userService.googleLoginCallback(req, res);
   }
 
   @Get('logout')
@@ -92,10 +80,4 @@ export class UserController {
     console.log(req.session);
   }
 
-  @Get('googletest')
-  async test(@Req() req, @Res() res) {
-    console.log(req.user)
-    console.log(req.session)
-    res.send("req.user")
-  }
 }

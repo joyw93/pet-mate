@@ -11,6 +11,7 @@ const serverUrl = `http://api.petmate.kr`;
 //   ? "http://api.petmate.kr"
 //   : "http://127.0.0.1:3000";
 
+
 function postAPI(data) {
   return axios.post(`${serverUrl}/community`, data, {
     withCredentials: true,

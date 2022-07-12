@@ -75,6 +75,19 @@ let UserService = class UserService {
             throw new common_1.InternalServerErrorException();
         }
     }
+    async googleLoginCallback(req, res) {
+        if (!req.user) {
+            res.send('login error');
+            return 'no user from google';
+        }
+        else {
+            res.redirect('http://127.0.0.1:800');
+            return {
+                message: 'User info from Google',
+                user: req.user,
+            };
+        }
+    }
     async getLikedPosts(userId) {
         const posts = await this.userRepository
             .createQueryBuilder('user')

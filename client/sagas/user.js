@@ -25,7 +25,7 @@ function signUpAPI(data) {
 function* signUp(action) {
   try {
     const result = yield call(signUpAPI, action.data);
-    const payload = result.data;
+    const payload = result.data
     yield put({
       type: SIGN_UP_SUCCESS,
       data: payload.data,
@@ -40,7 +40,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post(`${serverUrl}/user/login`, data, {
+  return axios.post(`${serverUrl}/users/login`, data, {
     withCredentials: true,
   });
 }
@@ -63,7 +63,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.get(`${serverUrl}/user/logout`);
+  return axios.post(`${serverUrl}/users/logout`);
 }
 
 function* logOut() {

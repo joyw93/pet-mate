@@ -6,6 +6,6 @@ export declare class Serializer extends PassportSerializer {
     private readonly authService;
     private userRepository;
     constructor(authService: AuthService, userRepository: Repository<UserEntity>);
-    serializeUser(user: any, done: CallableFunction): void;
-    deserializeUser(userEmail: string, done: any): Promise<void>;
+    serializeUser(user: UserEntity, done: CallableFunction): void;
+    deserializeUser(userId: number, done: CallableFunction): Promise<void>;
 }
