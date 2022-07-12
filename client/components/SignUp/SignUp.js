@@ -15,10 +15,10 @@ import { signupRequestAction, signupResetAction } from "../../reducers/user";
 import Router from "next/router";
 
 const SignUp = () => {
-  const serverUrl =
-    process.env.NODE_ENV === "production"
-      ? "http://api.petmate.kr"
-      : "http://127.0.0.1:3000";
+  const serverUrl = "http://api.petmate.kr";
+  // process.env.NODE_ENV === "production"
+  //   ? "http://api.petmate.kr"
+  //   : "http://127.0.0.1:3000";
   const dispatch = useDispatch();
   const { signUpDone } = useSelector((state) => state.user);
 
@@ -26,6 +26,7 @@ const SignUp = () => {
     if (signUpDone) {
       dispatch(signupResetAction());
       Router.replace("/");
+      alert("환영합니다! 가입완료되었습니다.");
     }
   }, [signUpDone]);
 
@@ -51,6 +52,17 @@ const SignUp = () => {
       [name]: checked,
     });
   };
+
+  useEffect(() => {
+    if (checkbox.check1 === true) {
+      setCheckbox({
+        check1: true,
+        check2: true,
+        check3: true,
+      });
+    }
+    console.log(checkbox);
+  }, []);
 
   const nameRef = useRef();
   const nicknameRef = useRef();
@@ -108,7 +120,7 @@ const SignUp = () => {
 
     //닉네임 중복확인 to backend
     axios
-      .post(`${serverUrl}/users/nicknameCheck`, {
+      .post(`${serverUrl}/user/nickname-check`, {
         nickname,
       })
       .then(() => setNicknameIsValid(true))
@@ -121,27 +133,11 @@ const SignUp = () => {
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     if (emailregExp.test(email) === false) {
       setEmailIsInvalid(true);
-      setGoblin(true);
-    } else {
-      // setEmailIsValid(true);
-      // setGoblin(false);
-      axios
-        .post(`${serverUrl}/users/emailCheck`, {
-          email,
-        })
-        .then(() => {
-          setEmailIsValid(true);
-          setGoblin(false);
-        })
-        .catch(() => {
-          setEmailIsInvalid(true);
-          setGoblin(false);
-        });
+      return setGoblin(true);
     }
 
-    //email valid check to backend
     axios
-      .post(`${serverUrl}/users/emailCheck`, {
+      .post(`${serverUrl}/user/email-check`, {
         email,
       })
       .then(() => {
@@ -154,14 +150,29 @@ const SignUp = () => {
       });
   };
 
+  //email valid check to backend
+  // axios
+  //   .post(`${serverUrl}/users/emailCheck`, {
+  //     email,
+  //   })
+  //   .then(() => {
+  //     setEmailIsValid(true);
+  //     setGoblin(false);
+  //   })
+  //   .catch(() => {
+  //     setEmailIsInvalid(true);
+  //     setGoblin(false);
+  //   });
+
   const handleSignUpSubmit = useCallback(() => {
     //이름 유효성 검사
     const nameregExp = /^[가-힣|a-zA-Z|]{2,6}$/;
-    if (nameregExp.test(nickname) === false || !name) {
+    if (nameregExp.test(name) === false || !name) {
       setName("");
       return nameRef.current.focus();
     }
-    //반려될 때
+
+    // //반려될 때
     if (!nickname) {
       return nicknameRef.current.focus();
     }
@@ -186,7 +197,14 @@ const SignUp = () => {
       setPwConfirm(false);
     }
 
-    //dispatch(signupRequestAction({ name, nickname, email, password }));
+    const newUser = {
+      name,
+      nickname,
+      email,
+      password,
+    };
+
+    dispatch(signupRequestAction(newUser));
   }, [name, nickname, email, password, checkbox]);
 
   return (

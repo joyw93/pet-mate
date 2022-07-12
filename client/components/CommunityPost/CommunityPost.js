@@ -5,7 +5,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
-import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, KeywordWrapper, Button } from "./styled";
+import {
+  TitleWrapper,
+  TextEditWrapper,
+  AddPhotoWrapper,
+  KeywordWrapper,
+  Button,
+} from "./styled";
 
 const CommunityPost = () => {
   const dispatch = useDispatch();
@@ -19,12 +25,12 @@ const CommunityPost = () => {
 
   const [hashArr, setHashArr] = useState([]);
 
-  useEffect(()=>{
-    if(hashArr.length > 5) {
-      setHashArr(hashArr.slice(0,5))
-      alert('키워드는 5개까지 등록할 수 있습니다.')
+  useEffect(() => {
+    if (hashArr.length > 5) {
+      setHashArr(hashArr.slice(0, 5));
+      alert("키워드는 5개까지 등록할 수 있습니다.");
     }
-  },[hashArr])
+  }, [hashArr]);
 
   //AddPhotoWrapper
   const handleAddImages = (event) => {
@@ -48,26 +54,37 @@ const CommunityPost = () => {
     window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
   };
 
-  //KeywordWrapper 
+  //KeywordWrapper
   const handleHash = (e) => {
     setHashTagVal(e.target.value);
   };
 
   const keyUp = (e) => {
     if (e.keyCode === 13 && e.target.value.trim() !== "") {
-      setHashArr([...hashArr, { id: new Date().getTime(), content: hashTagVal }]);
+      setHashArr([
+        ...hashArr,
+        { id: new Date().getTime(), content: hashTagVal },
+      ]);
       setHashTagVal("");
     }
   };
 
-
   const removeHash = (id) => {
     setHashArr(hashArr.filter((it) => it.id !== id));
-    console.log(id)
-  }
+    console.log(id);
+  };
 
   const post = useCallback(() => {
-    dispatch(postRequestAction({ title, content }));
+    const body = new FormData();
+    body.append("title", title);
+    body.append("content", content);
+    // body.append("hashtags", hashTagVal);
+
+    // [].forEach.call(imageUrlLists, (img) => {
+    //   body.append("imageUrlLists", img);
+    // });
+
+    dispatch(postRequestAction(post));
   }, [title, content]);
 
   useEffect(() => {
@@ -89,8 +106,20 @@ const CommunityPost = () => {
         </TitleWrapper>
 
         <TextEditWrapper>
-          <input autoFocus maxLength='40' type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력해 주세요." />
-          <textarea maxLength='350' value={content} onChange={(e) => setContent(e.target.value)} placeholder="내용을 입력해 주세요"></textarea>
+          <input
+            autoFocus
+            maxLength="40"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력해 주세요."
+          />
+          <textarea
+            maxLength="350"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="내용을 입력해 주세요"
+          ></textarea>
         </TextEditWrapper>
 
         <AddPhotoWrapper>
@@ -102,26 +131,25 @@ const CommunityPost = () => {
                 <img src="../img/photo.png" alt="이미지 업로드" />
               </label>
             </div>
-      
-              {FileImages.map((image, id) => (
-                <div key={id} className="photo_preview">
-                  <img src={image} alt={`${image}-${id}`} />
-                  <button onClick={() => handleDeleteImage(id)}>
-                    {/* <img src="../img/close-btn.png" alt="이미지 삭제" /> */}
-                    <svg
-                      className="delete-icon"
-                      width="12"
-                      height="12"
-                      fill="currentColor"
-                      viewBox="0 0 12 12"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
-                    </svg>
-                  </button>
-                </div>
-              ))}
-        
+
+            {FileImages.map((image, id) => (
+              <div key={id} className="photo_preview">
+                <img src={image} alt={`${image}-${id}`} />
+                <button onClick={() => handleDeleteImage(id)}>
+                  {/* <img src="../img/close-btn.png" alt="이미지 삭제" /> */}
+                  <svg
+                    className="delete-icon"
+                    width="12"
+                    height="12"
+                    fill="currentColor"
+                    viewBox="0 0 12 12"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+                  </svg>
+                </button>
+              </div>
+            ))}
           </div>
         </AddPhotoWrapper>
 
@@ -129,7 +157,11 @@ const CommunityPost = () => {
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
             {hashArr.map((it) => (
-              <button key={it.id} className="keyword_item" onClick={()=>removeHash(it.id)}>
+              <button
+                key={it.id}
+                className="keyword_item"
+                onClick={() => removeHash(it.id)}
+              >
                 <span>{it.content}</span>
                 <svg
                   className="delete-icon"
@@ -145,7 +177,15 @@ const CommunityPost = () => {
             ))}
 
             <div id="keyword_input">
-              <input onKeyUp={keyUp} value={hashTagVal} size='14' maxLength='10' onChange={handleHash} type="text" placeholder="키워드(10자 이내)" />
+              <input
+                onKeyUp={keyUp}
+                value={hashTagVal}
+                size="14"
+                maxLength="10"
+                onChange={handleHash}
+                type="text"
+                placeholder="키워드(10자 이내)"
+              />
             </div>
           </div>
         </KeywordWrapper>

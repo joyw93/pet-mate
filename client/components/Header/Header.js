@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Router from "next/router";
-import { useCallback, useEffect, useState } from "react";
+
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
 import { NavContainer, Tab, Input, AuthTab, ToggleMenuWrapper } from "./styled";
@@ -12,8 +13,11 @@ const Header = () => {
 
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
+    Router.replace("/");
+    alert("로그아웃되었습니다!");
   }, []);
 
   const handleValChange = (event) => {
@@ -67,7 +71,11 @@ const Header = () => {
         </div>
         <div id="menu_right">
           <form>
-            <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+            <Input
+              placeholder="검색어를 입력하세요"
+              onChange={handleValChange}
+              value={inputVal}
+            />
             {visibile && (
               <button className="cancel_btn" onClick={clearInputVal}>
                 <img src="../img/cancel-btn.png" />
@@ -113,7 +121,11 @@ const Header = () => {
               <img src="../img/close-btn.png" alt="메뉴" />
             </div>
             <form id="search_input">
-              <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+              <Input
+                placeholder="검색어를 입력하세요"
+                onChange={handleValChange}
+                value={inputVal}
+              />
               {visibile && (
                 <button className="toggle_cancel_btn" onClick={clearInputVal}>
                   <img src="../img/cancel-btn.png" />

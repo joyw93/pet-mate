@@ -12,13 +12,14 @@ import {
   LOG_OUT_SUCCESS,
 } from "../reducers/user";
 
-const serverUrl =
-  process.env.NODE_ENV === "production"
-    ? "http://api.petmate.kr"
-    : "http://127.0.0.1:3000";
+const serverUrl = `http://api.petmate.kr`;
+// process.env.NODE_ENV === "production"
+//   ? "http://api.petmate.kr"
+//   : "http://127.0.0.1:3000";
 
 function signUpAPI(data) {
-  return axios.post(`${serverUrl}/users/signup`, data);
+  console.log(data);
+  return axios.post(`${serverUrl}/user/signup`, data);
 }
 
 function* signUp(action) {
@@ -39,7 +40,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post(`${serverUrl}/users/login`, data, {
+  return axios.post(`${serverUrl}/user/login`, data, {
     withCredentials: true,
   });
 }
@@ -62,7 +63,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post(`${serverUrl}/users/logout`);
+  return axios.get(`${serverUrl}/user/logout`);
 }
 
 function* logOut() {
