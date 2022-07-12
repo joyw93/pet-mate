@@ -18,7 +18,7 @@ const serverUrl =
     : "http://127.0.0.1:3000";
 
 function signUpAPI(data) {
-  return axios.post(`${serverUrl}/users/signup`, data);
+  return axios.post(`${serverUrl}/user/signup`, data);
 }
 
 function* signUp(action) {
@@ -39,7 +39,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post(`${serverUrl}/users/login`, data, {
+  return axios.post(`${serverUrl}/user/login`, data, {
     withCredentials: true,
   });
 }
@@ -62,7 +62,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post(`${serverUrl}/users/logout`);
+  return axios.get(`${serverUrl}/user/logout`);
 }
 
 function* logOut() {

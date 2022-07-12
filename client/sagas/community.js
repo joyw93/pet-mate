@@ -6,10 +6,7 @@ import {
   POST_FAILURE,
 } from "../reducers/community";
 
-const serverUrl =
-  process.env.NODE_ENV === "production"
-    ? "http://api.petmate.kr"
-    : "http://127.0.0.1:3000";
+const serverUrl = "http://api.petmate.kr";
 
 function postAPI(data) {
   return axios.post(`${serverUrl}/community/post`, data, {
