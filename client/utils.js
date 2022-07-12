@@ -1,8 +1,6 @@
-import axios from "axios";
-
 export const getElapsedTime = (createdAt) => {
-  const ParsedTime = Date.parse(createdAt);
   const currentTime = new Date().getTime();
+  const ParsedTime = Date.parse(createdAt);
   const diffTime = currentTime - ParsedTime;
 
   const second = parseInt(diffTime / 1000);

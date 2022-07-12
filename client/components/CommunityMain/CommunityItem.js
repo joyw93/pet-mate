@@ -15,9 +15,7 @@ import {
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
 
-
 const CommunityItem = (item) => {
-  const currentTime = new Date().getTime();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -28,22 +26,18 @@ const CommunityItem = (item) => {
   //렌더 문제 있어서 초기화값 설정
   useEffect(() => {
     const { title, content, author, created_date, image_src, keyword } = item;
+    const convertedTime = getElapsedTime(created_date);
     setTitle(title);
     setContent(content);
     setAuthor(author);
-    setCreatedate(created_date);
+    setCreatedate(convertedTime);
     setImagesrc(image_src);
     setKeyword(keyword);
   }, []);
 
-
-  useEffect(() => {
-    getElapsedTime(created_date);
-  }, []);
-
   const itemSelect = () => {
-    Router.push(`community/${item.id}`)
-  }
+    Router.push(`community/${item.id}`);
+  };
 
   return (
     <ItemContainer onClick={itemSelect}>
@@ -53,7 +47,7 @@ const CommunityItem = (item) => {
           <Content>{content}</Content>
           <ContentInfo>
             <Author>{author}</Author>
-            <span>{getElapsedTime(created_date)}</span>
+            <span>{created_date}</span>
           </ContentInfo>
           <KeywordWrapper>
             {keyword &&

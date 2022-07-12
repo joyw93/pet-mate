@@ -177,7 +177,8 @@ export const AuthTab = styled.li`
 `;
 
 export const SanchaekWrapper = styled.a`
-  color: ${(props) => (props.path === "sanchaek" ? Colors.primaryColor : "black")};
+  color: ${(props) =>
+    props.path === "sanchaek" ? Colors.primaryColor : "black"};
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};
@@ -186,7 +187,16 @@ export const SanchaekWrapper = styled.a`
 `;
 
 export const CommunityWrapper = styled.a`
-  color: ${(props) => (props.path === "community" ? Colors.primaryColor : "black")};
+  color: ${(props) =>
+    props.path === "community" ? Colors.primaryColor : "black"};
+  &:hover {
+    cursor: pointer;
+    color: ${Colors.primaryColor};
+    transition: 0.2s all;
+  }
+`;
+
+export const LinkWrapper = styled.a`
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};

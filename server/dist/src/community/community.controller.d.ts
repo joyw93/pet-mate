@@ -34,6 +34,8 @@ export declare class CommunityController {
     editComment(commentId: number, commentContent: string): Promise<{
         content: string;
         id: number;
+        createdAt: Date;
+        deletedAt: Date;
         author: UserEntity;
         post: import("./community.entity").CommunityEntity;
     } & import("../common/entities/community-comment.entity").CommunityCommentEntity>;

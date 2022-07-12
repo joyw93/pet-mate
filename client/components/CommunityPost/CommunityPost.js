@@ -76,7 +76,7 @@ const CommunityPost = () => {
     }
   };
 
-  const handleDeletHash = (id) => {
+  const handleDeleteHash = (id) => {
     setHashArr(hashArr.filter((it) => it.id !== id));
     // console.log(id);
   };
@@ -166,7 +166,7 @@ const CommunityPost = () => {
               <button
                 key={it.id}
                 className="keyword_item"
-                onClick={() => handleDeletHash(it.id)}
+                onClick={() => handleDeleteHash(it.id)}
               >
                 <span>{it.content}</span>
                 <svg

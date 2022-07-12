@@ -24,6 +24,14 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityCommentEntity.prototype, "content", void 0);
 __decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], CommunityCommentEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], CommunityCommentEntity.prototype, "deletedAt", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.comments, {
         onDelete: 'CASCADE'
     }),

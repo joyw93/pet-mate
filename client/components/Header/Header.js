@@ -14,6 +14,7 @@ import {
   Tab,
   Input,
   AuthTab,
+  LinkWrapper,
   ToggleMenuWrapper,
   SanchaekWrapper,
   CommunityWrapper,
@@ -33,7 +34,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
 
-
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");
@@ -41,7 +41,6 @@ const Header = () => {
       setPathCheck("community");
     }
   }, [pathCheck]);
-
 
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
@@ -118,7 +117,7 @@ const Header = () => {
               <>
                 <AuthTab>
                   <Link href="/profile" passHref>
-                    <a>프로필</a>
+                    <LinkWrapper>프로필</LinkWrapper>
                   </Link>
                 </AuthTab>
                 <AuthTab>
@@ -129,12 +128,12 @@ const Header = () => {
               <>
                 <AuthTab>
                   <Link href="/login" passHref>
-                    <a>로그인</a>
+                    <LinkWrapper>로그인</LinkWrapper>
                   </Link>
                 </AuthTab>
                 <AuthTab>
                   <Link href="/signup" passHref>
-                    <a>회원가입</a>
+                    <LinkWrapper>회원가입</LinkWrapper>
                   </Link>
                 </AuthTab>
               </>
@@ -183,7 +182,7 @@ const Header = () => {
                   <>
                     <AuthTab>
                       <Link href="/profile" passHref>
-                        프로필
+                        <LinkWrapper>프로필</LinkWrapper>
                       </Link>
                     </AuthTab>
                     <AuthTab>
@@ -194,12 +193,12 @@ const Header = () => {
                   <>
                     <AuthTab>
                       <Link href="/login" passHref>
-                        <a>로그인</a>
+                        <LinkWrapper>로그인</LinkWrapper>
                       </Link>
                     </AuthTab>
                     <AuthTab>
                       <Link href="/signup" passHref>
-                        <a>회원가입</a>
+                        <LinkWrapper>회원가입</LinkWrapper>
                       </Link>
                     </AuthTab>
                   </>

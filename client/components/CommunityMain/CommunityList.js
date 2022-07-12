@@ -115,7 +115,6 @@ const DUMMY_POSTS = [
 
 const CommunityList = () => {
 
-  
   return (
     <>
       <ListContainer>

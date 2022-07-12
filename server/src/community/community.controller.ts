@@ -72,7 +72,7 @@ export class CommunityController {
           cb(
             null,
             `petmate/community/images/${uuid()}${path.extname(
-              file.originalname
+              file.originalname,
             )}`,
           );
         },
@@ -85,8 +85,12 @@ export class CommunityController {
     @Body() createPostDto: CreatePostDto,
   ) {
     const post = await this.communityService.createPost(user.id, createPostDto);
-    await this.hashtagService.addTags(post, createPostDto);
-    await this.communityService.uploadImages(post, files);
+    if (createPostDto.hashtags) {
+      await this.hashtagService.addTags(post, createPostDto);
+    }
+    if (files) {
+      await this.communityService.uploadImages(post, files);
+    }
     return post;
   }
 

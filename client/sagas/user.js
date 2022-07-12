@@ -13,9 +13,7 @@ import {
 } from "../reducers/user";
 
 const serverUrl = `http://api.petmate.kr`;
-// process.env.NODE_ENV === "production"
-//   ? "http://api.petmate.kr"
-//   : "http://127.0.0.1:3000";
+
 
 function signUpAPI(data) {
   console.log(data);
@@ -40,7 +38,7 @@ function* signUp(action) {
 }
 
 function logInAPI(data) {
-  return axios.post(`${serverUrl}/users/login`, data, {
+  return axios.post(`${serverUrl}/user/login`, data, {
     withCredentials: true,
   });
 }
@@ -63,7 +61,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post(`${serverUrl}/users/logout`);
+  return axios.get(`${serverUrl}/user/logout`);
 }
 
 function* logOut() {
