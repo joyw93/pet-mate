@@ -72,13 +72,21 @@ export const TextEditWrapper = styled.form`
     height: 350px;
     border: none;
     resize: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     outline: none;
     margin-top: 10px;
+    word-break: break-word;
   }
   textarea::placeholder {
     font-weight: bold;
     color: #ddd;
+  }
+  @media (max-width: 767px) {
+    input,
+    textarea {
+      width: 97%;
+      margin: 0 auto;
+    }
   }
 `;
 
@@ -93,21 +101,17 @@ export const AddPhotoWrapper = styled.div`
   #photos {
     width: 100%;
     display: flex;
-
     flex-wrap: wrap;
     margin-top: 10px;
   }
-  #photos > div {
-    width: 171px;
+  #add_photo,
+  .photo_preview {
     height: 171px;
-  }
-
-  #add_photo {
-    position: relative;
+    width: 171px;
+    flex-wrap: wrap;
     background-color: #eee;
   }
   #add_file {
-    position: absolute;
     display: none;
   }
   #add_photo label {
@@ -125,10 +129,9 @@ export const AddPhotoWrapper = styled.div`
     }
   }
   .photo_preview {
-    width: 171px;
-    height: 171px;
     margin-left: 12px;
     position: relative;
+    background-color: #fff;
     img {
       width: 100%;
       height: 100%;

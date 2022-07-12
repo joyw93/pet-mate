@@ -81,7 +81,8 @@ export const TextEditWrapper = styled.form`
     color: #ddd;
   }
   @media (max-width: 767px) {
-    input, textarea {
+    input,
+    textarea {
       width: 97%;
       margin: 0 auto;
     }
@@ -102,12 +103,10 @@ export const AddPhotoWrapper = styled.div`
     flex-wrap: wrap;
     margin-top: 10px;
   }
-  #add_photo, .photo_preview {
-    flex-basis: 20%;
-    flex-shrink: 1;
-    flex-grow: 1;
-    min-height: 150px;
-    max-width: 171px;
+  #add_photo,
+  .photo_preview {
+    height: 171px;
+    width: 171px;
     flex-wrap: wrap;
     background-color: #eee;
   }
@@ -129,9 +128,9 @@ export const AddPhotoWrapper = styled.div`
     }
   }
   .photo_preview {
-
     margin-left: 12px;
     position: relative;
+    background-color: #fff;
     img {
       width: 100%;
       height: 100%;
@@ -161,8 +160,8 @@ export const AddPhotoWrapper = styled.div`
 export const KeywordWrapper = styled.div`
   margin: 40px 0;
   .keyword_area {
-  width: 100%;
-  display: grid;
+    width: 100%;
+    display: grid;
   }
 
   h2 {
