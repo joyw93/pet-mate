@@ -114,19 +114,19 @@ const MyProfile = () => {
                 <p>{me?.email}</p>
               </UserInfo>
               <UserFeed>
-                <div class="list_wrapper">
+                <div className="list_wrapper">
                   <p>내가 쓴 게시글</p>
                   <p>
                     <span>{MyPostItems.length}</span>개
                   </p>
                 </div>{" "}
-                <div class="list_wrapper">
+                <div className="list_wrapper">
                   <p>내가 쓴 댓글</p>
                   <p>
                     <span>{MyCommentItems.length}</span>개
                   </p>
                 </div>
-                <div class="list_wrapper">
+                <div className="list_wrapper">
                   <p>좋아요</p>
                   <p>
                     <span>{MyLikedItems.length}</span>개
