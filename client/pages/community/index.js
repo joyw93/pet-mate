@@ -14,13 +14,13 @@ const Community = () => {
         <title>커뮤니티 | 펫메이트</title>
       </Head>
       <AppLayout>
-        {me ? (
+        {/* {me ? (
           <button>
             <Link href="/community/post">
               <a>게시글 쓰기</a>
             </Link>
           </button>
-        ) : null}
+        ) : null} */}
         <CommunityMain />
       </AppLayout>
     </>

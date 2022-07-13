@@ -16,14 +16,22 @@ import {
 const CommunityPost = () => {
   const dispatch = useDispatch();
   const { postDone } = useSelector((state) => state.community);
+  const { me } = useSelector((state) => state.user);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const [FileImages, setFileImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [hashTagVal, setHashTagVal] = useState("");
 
   const [hashArr, setHashArr] = useState([]);
+
+  useEffect(() => {
+    if (!me) {
+      Router.push("/login");
+    }
+  }, []);
 
   useEffect(() => {
     if (hashArr.length > 5) {
@@ -31,68 +39,85 @@ const CommunityPost = () => {
       alert("키워드는 5개까지 등록할 수 있습니다.");
       return;
     }
-    // console.log(hashArr);
   }, [hashArr]);
 
   //AddPhotoWrapper
-  const handleAddImages = (event) => {
-    const imageLists = event.target.files;
-    let imageUrlLists = [...FileImages];
-
-    for (let i = 0; i < imageLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
-    }
-
-    if (imageUrlLists.length > 3) {
-      imageUrlLists = imageUrlLists.slice(0, 3);
-      alert("이미지는 3장까지 업로드 할 수 있습니다.");
-    }
-    setFileImages(imageUrlLists);
-  };
-
-  const handleDeleteImage = (id) => {
-    setFileImages(FileImages.filter((_, index) => index !== id));
-    window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
-  };
+  const handleAddImages = useCallback(
+    (event) => {
+      const imageLists = event.target.files;
+      let imageUrlLists = [...FileImages];
+      for (let i = 0; i < imageLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imageLists[i]);
+        imageUrlLists.push(currentImageUrl);
+      }
+      if (imageUrlLists.length > 3) {
+        imageUrlLists = imageUrlLists.slice(0, 3);
+        alert("이미지는 3장까지 업로드 할 수 있습니다.");
+      }
+      const imagesFile = event.target.files[0];
+      const temp = [...images];
+      temp.push(imagesFile);
+      setImages(temp);
+      setFileImages(imageUrlLists);
+    },
+    [FileImages]
+  );
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
+  const handleDeleteImage = useCallback(
+    (id) => {
+      setFileImages(FileImages.filter((_, index) => index !== id));
+      setImages(images.filter((_, index) => index !== id));
+      window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
+    },
+    [FileImages]
+  );
 
   //KeywordWrapper
-  const handleHash = (e) => {
-    setHashTagVal(e.target.value);
-  };
 
-  const keyUp = (e) => {
-    if (e.keyCode === 13 && e.target.value.trim() !== "") {
-      if (hashArr.find((it) => it.content === e.target.value)) {
-        alert("같은 키워드를 입력하셨습니다.");
+  const handleHash = useCallback(
+    (e) => {
+      setHashTagVal(e.target.value);
+    },
+    [hashTagVal, hashArr]
+  );
+  const keyUp = useCallback(
+    (e) => {
+      if (e.keyCode === 13 && e.target.value.trim() !== "") {
+        if (hashArr.find((it) => it === e.target.value)) {
+          alert("같은 키워드를 입력하셨습니다.");
+          setHashTagVal("");
+          return;
+        }
+        setHashArr([...hashArr, hashTagVal]);
         setHashTagVal("");
-        return;
       }
-      setHashArr([
-        ...hashArr,
-        { id: new Date().getTime(), content: hashTagVal },
-      ]);
-      setHashTagVal("");
-    }
-  };
+    },
+    [hashTagVal, hashArr]
+  );
+  const handleDeleteHash = useCallback(
+    (idx) => {
+      setHashArr(hashArr.filter((_, index) => index !== idx));
+    },
+    [hashArr]
+  );
 
-  const handleDeleteHash = (id) => {
-    setHashArr(hashArr.filter((it) => it.id !== id));
-    // console.log(id);
-  };
-
-  const post = useCallback(() => {
+  const post = () => {
     const body = new FormData();
     body.append("title", title);
     body.append("content", content);
-    // body.append("hashtags", hashTagVal);
 
-    // [].forEach.call(imageUrlLists, (img) => {
-    //   body.append("imageUrlLists", img);
-    // });
+    for (let i = 0; i < hashArr.length; i++) {
+      body.append("hashtags", hashArr[i]);
+    }
 
-    dispatch(postRequestAction(post));
-  }, [title, content]);
+    [].forEach.call(images, (img) => {
+      body.append("images", img);
+    });
+
+    dispatch(postRequestAction(body));
+  };
 
   useEffect(() => {
     if (postDone) {
@@ -162,13 +187,13 @@ const CommunityPost = () => {
         <KeywordWrapper>
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
-            {hashArr.map((it) => (
+            {hashArr.map((it, index) => (
               <button
-                key={it.id}
+                key={index}
                 className="keyword_item"
-                onClick={() => handleDeleteHash(it.id)}
+                onClick={() => handleDeleteHash(index)}
               >
-                <span>{it.content}</span>
+                <span>{it}</span>
                 <svg
                   className="delete-icon"
                   width="13"
@@ -181,7 +206,6 @@ const CommunityPost = () => {
                 </svg>
               </button>
             ))}
-
             <div id="keyword_input">
               <input
                 onKeyUp={keyUp}

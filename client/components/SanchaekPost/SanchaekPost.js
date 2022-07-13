@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CreatePostContainer } from "./styled";
-import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, MapWrapper, Button } from "./styled";
+import {
+  TitleWrapper,
+  TextEditWrapper,
+  AddPhotoWrapper,
+  MapWrapper,
+  Button,
+} from "./styled";
 
 const SanchaekPost = () => {
   const [FileImages, setFileImages] = useState([]);
+  const { me } = useSelector((state) => state.user);
+
+  // useEffect(() => {
+  //   if (!me) {
+  //     Router.push("/login");
+  //   }
+  // }, []);
 
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
@@ -81,11 +94,14 @@ const SanchaekPost = () => {
           ))}
         </div>
       </AddPhotoWrapper>
-
       <MapWrapper>
         <h2>지도 등록</h2>
         <form id="map_search">
-          <input id="map_search_input" type="search" placeholder="주소를 입력해 주세요" />
+          <input
+            id="map_search_input"
+            type="search"
+            placeholder="주소를 입력해 주세요"
+          />
           <button id="map_search_btn">검색</button>
         </form>
         <div id="map_view"></div>
