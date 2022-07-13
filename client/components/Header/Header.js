@@ -19,6 +19,7 @@ import {
   SanchaekWrapper,
   CommunityWrapper,
 } from "./styled";
+
 import { useRouter } from "next/router";
 
 const Header = () => {
@@ -28,7 +29,7 @@ const Header = () => {
   const currentPath = router.pathname;
   const [pathCheck, setPathCheck] = useState(currentPath);
   const [inputVal, setInputVal] = useState("");
-  const [visibile, setVisibile] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [toggleVisible, setToggleVisible] = useState("none");
 
   const dispatch = useDispatch();
@@ -48,28 +49,28 @@ const Header = () => {
     alert("로그아웃되었습니다!");
   }, []);
 
-  const handleValChange = (event) => {
+  const handleValChange = useCallback((event) => {
     if (event.target.value !== "") {
-      setVisibile(true);
+      setVisible(true);
     } else {
-      setVisibile(false);
+      setVisible(false);
     }
     setInputVal(event.target.value);
-  };
+  }, []);
 
-  const clearInputVal = (e) => {
+  const clearInputVal = useCallback((e) => {
     e.preventDefault();
     setInputVal("");
-    setVisibile(false);
-  };
+    setVisible(false);
+  }, []);
 
-  const handleToggleVisible = () => {
+  const handleToggleVisible = useCallback(() => {
     if (toggleVisible === "none") {
       setToggleVisible("block");
     } else {
       setToggleVisible("none");
     }
-  };
+  }, [toggleVisible]);
 
   return (
     <>
@@ -101,12 +102,8 @@ const Header = () => {
         </div>
         <div id="menu_right">
           <form>
-            <Input
-              placeholder="검색어를 입력하세요"
-              onChange={handleValChange}
-              value={inputVal}
-            />
-            {visibile && (
+            <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+            {visible && (
               <button className="cancel_btn" onClick={clearInputVal}>
                 <img src="../img/cancel-btn.png" />
               </button>
@@ -151,12 +148,8 @@ const Header = () => {
               <img src="../img/close-btn.png" alt="메뉴" />
             </div>
             <form id="search_input">
-              <Input
-                placeholder="검색어를 입력하세요"
-                onChange={handleValChange}
-                value={inputVal}
-              />
-              {visibile && (
+              <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+              {visible && (
                 <button className="toggle_cancel_btn" onClick={clearInputVal}>
                   <img src="../img/cancel-btn.png" />
                 </button>

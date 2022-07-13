@@ -13,10 +13,11 @@ const Test = () => {
   const [images, setImages] = useState([]);
 
   const serverUrl = "http://api.petmate.kr";
+  const localServerUrl = "http://127.0.0.1:3000";
 
   const sessionCheck = () => {
     axios
-      .get(`${serverUrl}/user/session`, { withCredentials: true })
+      .get(`${localServerUrl}/user/session`, { withCredentials: true })
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };
@@ -46,6 +47,15 @@ const Test = () => {
       .catch((err) => console.log(err));
   };
 
+  const login = async () => {
+    const result = await axios.post(
+      `${localServerUrl}/user/login`,
+      { email, password },
+      { withCredentials: true }
+    );
+    console.log(result)
+  };
+
   return (
     <AppLayout>
       <button onClick={sessionCheck}>세션확인</button>
@@ -54,15 +64,16 @@ const Test = () => {
         <span>이메일</span>
         <input
           type="email"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <span>비밀번호</span>
         <input
           type="password"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
+        <button onClick={login}>로그인</button>
       </div>
       <div>
         제목

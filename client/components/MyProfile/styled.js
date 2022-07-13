@@ -33,7 +33,11 @@ export const ProfileInfo = styled.div`
   width: 280px;
   height: 480px;
   padding: 60px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
+
 export const ProfileImg = styled.div`
   width: 160px;
   height: 160px;
@@ -59,14 +63,41 @@ export const UserInfo = styled.div`
   }
 `;
 export const UserFeed = styled.div`
-  margin-top: 40px;
+  width: 77%;
+  margin-top: 20px;
 
-  p {
-    font-size: 1.2rem;
-    margin: 18px 0;
+  .list_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    p {
+      font-size: 1rem;
+      margin: 14px 0;
+      span {
+        margin-right: 5px;
+      }
+    }
   }
-  span {
-    float: right;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  width: 80%;
+  button {
+    margin-top: 15px;
+    display: block;
+    padding: 7px 0;
+    width: 100%;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background-color: #eee;
+    &:hover {
+      background-color: #ccc;
+      transition: ease-in 0.2s;
+    }
   }
 `;
 
@@ -79,7 +110,7 @@ export const TabList = styled.ul`
   display: flex;
 
   li {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     margin-right: 15px;
     padding-bottom: 5px;

@@ -1,3 +1,4 @@
+import axios from "axios";
 import Router from "next/router";
 import { useEffect } from "react";
 import { useCallback } from "react";
@@ -46,10 +47,12 @@ const CommunityPost = () => {
     (event) => {
       const imageLists = event.target.files;
       let imageUrlLists = [...FileImages];
+
       for (let i = 0; i < imageLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
         imageUrlLists.push(currentImageUrl);
       }
+
       if (imageUrlLists.length > 3) {
         imageUrlLists = imageUrlLists.slice(0, 3);
         alert("이미지는 3장까지 업로드 할 수 있습니다.");
@@ -62,9 +65,13 @@ const CommunityPost = () => {
     },
     [FileImages]
   );
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
+
+
+  // useEffect(() => {
+  //   console.log(images);
+  // }, [images]);
+
+
   const handleDeleteImage = useCallback(
     (id) => {
       setFileImages(FileImages.filter((_, index) => index !== id));
@@ -76,6 +83,7 @@ const CommunityPost = () => {
 
   //KeywordWrapper
 
+
   const handleHash = useCallback(
     (e) => {
       setHashTagVal(e.target.value);
@@ -86,10 +94,12 @@ const CommunityPost = () => {
     (e) => {
       if (e.keyCode === 13 && e.target.value.trim() !== "") {
         if (hashArr.find((it) => it === e.target.value)) {
+
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
           return;
         }
+
         setHashArr([...hashArr, hashTagVal]);
         setHashTagVal("");
       }
@@ -102,6 +112,7 @@ const CommunityPost = () => {
     },
     [hashArr]
   );
+
 
   const post = () => {
     const body = new FormData();
@@ -125,11 +136,17 @@ const CommunityPost = () => {
       Router.replace("/community");
     }
   }, [postDone]);
-
+  const test = () => {
+    axios.post(
+      "http://127.0.0.1:3000/community",{title:'a',content:'1'},
+      { withCredentials: true }
+    );
+  };
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
+          <button onClick={test}>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
           <div id="buttons">
             <Button onClick={post}>등록</Button>
@@ -194,6 +211,7 @@ const CommunityPost = () => {
                 onClick={() => handleDeleteHash(index)}
               >
                 <span>{it}</span>
+
                 <svg
                   className="delete-icon"
                   width="13"
