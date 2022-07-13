@@ -12,8 +12,9 @@ import {
   LOG_OUT_SUCCESS,
 } from "../reducers/user";
 
-const serverUrl = `http://api.petmate.kr`;
 
+// const serverUrl = `http://api.petmate.kr`;
+const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
   console.log(data);

@@ -102,8 +102,8 @@ const CommunityPost = () => {
     }
   }, [postDone]);
   const test = () => {
-    axios.get(
-      "http://api.petmate.kr/user/session",
+    axios.post(
+      "http://127.0.0.1:3000/community",{title:'a',content:'1'},
       { withCredentials: true }
     );
   };
