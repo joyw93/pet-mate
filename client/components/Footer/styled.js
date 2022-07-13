@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
   display: flex;
@@ -27,7 +27,7 @@ export const FooterContainer = styled.footer`
   }
   #members p {
     margin-top: 7px;
-    font-size: 0.9rem;
+    font-size: 0.9em;
   }
   #members p:nth-of-type(1) {
     font-weight: bold;
@@ -48,15 +48,15 @@ export const FooterContainer = styled.footer`
   }
 
   #kwak_face {
-    background-image: url('../img/kwak.jpg');
+    background-image: url("../img/kwak.jpg");
   }
 
   #son_face {
-    background-image: url('../img/son.png');
+    background-image: url("../img/son.png");
   }
 
   #jo_face {
-    background-image: url('../img/jo.png');
+    background-image: url("../img/jo.png");
     background-color: #fff;
   }
   #copyright {

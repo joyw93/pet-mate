@@ -152,7 +152,7 @@ export const CommentWrapper = styled.div`
     margin-top: 30px;
     padding-right: 80px;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 
     .cmts {
       width: 100%;
