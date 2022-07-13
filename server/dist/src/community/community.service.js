@@ -45,16 +45,12 @@ let CommunityService = class CommunityService {
                 'post.title',
                 'post.content',
                 'post.createdAt',
-                'comments.id',
-                'comments.content',
-                'commentAuthor.nickname',
-                'images.id',
+                'author.nickname',
                 'images.url',
                 'tags.id',
                 'hashtag.keyword',
             ])
-                .leftJoin('post.comments', 'comments')
-                .leftJoin('comments.author', 'commentAuthor')
+                .leftJoin('post.author', 'author')
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('tags.hashtag', 'hashtag')
@@ -69,11 +65,43 @@ let CommunityService = class CommunityService {
         }
     }
     async getOnePost(postId) {
+        const post = await this.communityRepository.findOne({
+            where: { id: postId },
+        });
+        if (!post) {
+            throw new common_1.NotFoundException(res.msg.POST_NOT_EXIST);
+        }
         try {
-            return await this.communityRepository.findOne({ where: { id: postId } });
+            const post = this.communityRepository
+                .createQueryBuilder('post')
+                .select([
+                'post.id',
+                'post.title',
+                'post.content',
+                'post.createdAt',
+                'author.nickname',
+                'images.id',
+                'images.url',
+                'comments.id',
+                'comments.content',
+                'comments.createdAt',
+                'commentAuthor.nickname',
+                'tags.id',
+                'hashtag.keyword',
+            ])
+                .leftJoin('post.author', 'author')
+                .leftJoin('post.comments', 'comments')
+                .leftJoin('comments.author', 'commentAuthor')
+                .leftJoin('post.images', 'images')
+                .leftJoin('post.tags', 'tags')
+                .leftJoin('tags.hashtag', 'hashtag')
+                .where('post.id = :id', { id: postId })
+                .getOne();
+            return post;
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.GET_POST_FAIL);
         }
     }
     async getHotPosts() {

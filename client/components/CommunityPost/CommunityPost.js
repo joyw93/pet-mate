@@ -1,3 +1,4 @@
+import axios from "axios";
 import Router from "next/router";
 import { useEffect } from "react";
 import { useCallback } from "react";
@@ -5,7 +6,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
-import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, KeywordWrapper, Button } from "./styled";
+import {
+  TitleWrapper,
+  TextEditWrapper,
+  AddPhotoWrapper,
+  KeywordWrapper,
+  Button,
+} from "./styled";
 
 const CommunityPost = () => {
   const dispatch = useDispatch();
@@ -85,6 +92,7 @@ const CommunityPost = () => {
         setHashArr([...hashArr, { id: new Date().getTime(), content: hashTagVal }]);
         setHashTagVal("");
       }
+
     },
     [hashTagVal]
   );
@@ -97,8 +105,18 @@ const CommunityPost = () => {
     [hashArr]
   );
 
+
   const post = useCallback(() => {
-    dispatch(postRequestAction({ title, content }));
+    const body = new FormData();
+    body.append("title", title);
+    body.append("content", content);
+    // body.append("hashtags", hashTagVal);
+
+    // [].forEach.call(imageUrlLists, (img) => {
+    //   body.append("imageUrlLists", img);
+    // });
+
+    dispatch(postRequestAction(post));
   }, [title, content]);
 
   useEffect(() => {
@@ -107,11 +125,17 @@ const CommunityPost = () => {
       Router.replace("/community");
     }
   }, [postDone]);
-
+  const test = () => {
+    axios.post(
+      "http://127.0.0.1:3000/community",{title:'a',content:'1'},
+      { withCredentials: true }
+    );
+  };
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
+          <button onClick={test}>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
           <div id="buttons">
             <Button onClick={post}>등록</Button>
@@ -170,7 +194,9 @@ const CommunityPost = () => {
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
             {hashArr.map((it) => (
+
               <button key={it.id} className="keyword_item" onClick={() => handleDeleteHash(it.id)}>
+
                 <span>{it.content}</span>
                 <svg
                   className="delete-icon"

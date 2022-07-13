@@ -22,6 +22,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePostDto.prototype, "content", void 0);
 __decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], CreatePostDto.prototype, "hashtags", void 0);

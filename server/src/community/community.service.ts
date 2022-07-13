@@ -4,6 +4,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
@@ -47,16 +48,12 @@ export class CommunityService {
           'post.title',
           'post.content',
           'post.createdAt',
-          'comments.id',
-          'comments.content',
-          'commentAuthor.nickname',
-          'images.id',
+          'author.nickname',
           'images.url',
           'tags.id',
           'hashtag.keyword',
         ])
-        .leftJoin('post.comments', 'comments')
-        .leftJoin('comments.author', 'commentAuthor')
+        .leftJoin('post.author', 'author')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('tags.hashtag', 'hashtag')
@@ -71,10 +68,42 @@ export class CommunityService {
   }
 
   async getOnePost(postId: number) {
+    const post = await this.communityRepository.findOne({
+      where: { id: postId },
+    });
+    if (!post) {
+      throw new NotFoundException(res.msg.POST_NOT_EXIST);
+    }
     try {
-      return await this.communityRepository.findOne({ where: { id: postId } });
+      const post = this.communityRepository
+        .createQueryBuilder('post')
+        .select([
+          'post.id',
+          'post.title',
+          'post.content',
+          'post.createdAt',
+          'author.nickname',
+          'images.id',
+          'images.url',
+          'comments.id',
+          'comments.content',
+          'comments.createdAt',
+          'commentAuthor.nickname',
+          'tags.id',
+          'hashtag.keyword',
+        ])
+        .leftJoin('post.author', 'author')
+        .leftJoin('post.comments', 'comments')
+        .leftJoin('comments.author', 'commentAuthor')
+        .leftJoin('post.images', 'images')
+        .leftJoin('post.tags', 'tags')
+        .leftJoin('tags.hashtag', 'hashtag')
+        .where('post.id = :id', { id: postId })
+        .getOne();
+      return post;
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
     }
   }
 
@@ -175,7 +204,7 @@ export class CommunityService {
       comment.content = content;
       return await this.communityCommentRepository.save(comment);
     } catch (err) {
-      console.error(err)
+      console.error(err);
       throw new InternalServerErrorException(res.msg.CREATE_COMMENT_FAIL);
     }
   }

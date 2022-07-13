@@ -1,3 +1,4 @@
+/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -22,6 +23,10 @@ export declare class UserService {
     googleLoginCallback(req: Request, res: Response): Promise<"no user from google" | {
         message: string;
         user: Express.User;
+    }>;
+    kakaoLoginCallback(req: any, res: any): Promise<"no user from kakao" | {
+        message: string;
+        user: any;
     }>;
     getLikedPosts(userId: number): Promise<UserEntity[]>;
     getCommentedPosts(userId: number): Promise<UserEntity[]>;

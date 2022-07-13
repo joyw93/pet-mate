@@ -1,9 +1,25 @@
 import Link from "next/link";
 import Router from "next/router";
-import React, { useCallback, useEffect, useState, useLayoutEffect } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
-import { NavContainer, Tab, Input, AuthTab, ToggleMenuWrapper, SanchaekWrapper, CommunityWrapper } from "./styled";
+import {
+  NavContainer,
+  Tab,
+  Input,
+  AuthTab,
+  LinkWrapper,
+  ToggleMenuWrapper,
+  SanchaekWrapper,
+  CommunityWrapper,
+} from "./styled";
+
 import { useRouter } from "next/router";
 
 const Header = () => {
@@ -29,6 +45,8 @@ const Header = () => {
 
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
+    Router.replace("/");
+    alert("로그아웃되었습니다!");
   }, []);
 
   const handleValChange = useCallback((event) => {
@@ -96,7 +114,7 @@ const Header = () => {
               <>
                 <AuthTab>
                   <Link href="/profile" passHref>
-                    <a>프로필</a>
+                    <LinkWrapper>프로필</LinkWrapper>
                   </Link>
                 </AuthTab>
                 <AuthTab>
@@ -107,12 +125,12 @@ const Header = () => {
               <>
                 <AuthTab>
                   <Link href="/login" passHref>
-                    <a>로그인</a>
+                    <LinkWrapper>로그인</LinkWrapper>
                   </Link>
                 </AuthTab>
                 <AuthTab>
                   <Link href="/signup" passHref>
-                    <a>회원가입</a>
+                    <LinkWrapper>회원가입</LinkWrapper>
                   </Link>
                 </AuthTab>
               </>
@@ -157,7 +175,7 @@ const Header = () => {
                   <>
                     <AuthTab>
                       <Link href="/profile" passHref>
-                        프로필
+                        <LinkWrapper>프로필</LinkWrapper>
                       </Link>
                     </AuthTab>
                     <AuthTab>
@@ -168,12 +186,12 @@ const Header = () => {
                   <>
                     <AuthTab>
                       <Link href="/login" passHref>
-                        <a>로그인</a>
+                        <LinkWrapper>로그인</LinkWrapper>
                       </Link>
                     </AuthTab>
                     <AuthTab>
                       <Link href="/signup" passHref>
-                        <a>회원가입</a>
+                        <LinkWrapper>회원가입</LinkWrapper>
                       </Link>
                     </AuthTab>
                   </>

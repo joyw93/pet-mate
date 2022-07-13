@@ -83,6 +83,19 @@ export class UserService {
     }
   }
 
+  async kakaoLoginCallback(req, res) {
+    if (!req.user) {
+      res.send('login error');
+      return 'no user from kakao';
+    } else {
+      res.redirect('http://127.0.0.1:800');
+      return {
+        message: 'User info from Kakao',
+        user: req.user,
+      };
+    }
+  }
+
   async getLikedPosts(userId: number) {
     const posts = await this.userRepository
       .createQueryBuilder('user')

@@ -10,6 +10,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
+import { KakaoAuthGuard } from 'src/auth/kakao/kakao-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local/local-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -49,6 +50,16 @@ export class UserController {
   @UseGuards(GoogleAuthGuard)
   async googleLoginCallback(@Req() req, @Res() res) {
     return this.userService.googleLoginCallback(req, res);
+  }
+
+  @Get('kakao')
+  @UseGuards(KakaoAuthGuard)
+  async kakaoLogin(@Req() req) {}
+
+  @Get('kakao/callback')
+  @UseGuards(KakaoAuthGuard)
+  async kakaoLoginCallback(@Req() req, @Res() res ) {
+    return this.userService.kakaoLoginCallback(req, res)
   }
 
   @Get('logout')

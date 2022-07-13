@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const google_auth_guard_1 = require("../auth/google/google-auth.guard");
+const kakao_auth_guard_1 = require("../auth/kakao/kakao-auth.guard");
 const local_auth_guard_1 = require("../auth/local/local-auth.guard");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const create_user_dto_1 = require("./dto/create-user.dto");
@@ -39,6 +40,10 @@ let UserController = class UserController {
     async googleLogin(req) { }
     async googleLoginCallback(req, res) {
         return this.userService.googleLoginCallback(req, res);
+    }
+    async kakaoLogin(req) { }
+    async kakaoLoginCallback(req, res) {
+        return this.userService.kakaoLoginCallback(req, res);
     }
     async logout(response) {
         try {
@@ -109,6 +114,23 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "googleLoginCallback", null);
+__decorate([
+    (0, common_1.Get)('kakao'),
+    (0, common_1.UseGuards)(kakao_auth_guard_1.KakaoAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "kakaoLogin", null);
+__decorate([
+    (0, common_1.Get)('kakao/callback'),
+    (0, common_1.UseGuards)(kakao_auth_guard_1.KakaoAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "kakaoLoginCallback", null);
 __decorate([
     (0, common_1.Get)('logout'),
     __param(0, (0, common_1.Response)()),

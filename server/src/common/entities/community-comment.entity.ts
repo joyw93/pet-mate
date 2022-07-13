@@ -1,6 +1,6 @@
 import { CommunityEntity } from 'src/community/community.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('CommunityComment')
 export class CommunityCommentEntity {
@@ -9,6 +9,12 @@ export class CommunityCommentEntity {
 
   @Column('text', { name: 'content' })
   content: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 
   @ManyToOne(() => UserEntity, (author) => author.comments, {
     onDelete: 'CASCADE'

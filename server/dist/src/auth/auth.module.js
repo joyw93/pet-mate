@@ -15,6 +15,7 @@ const user_entity_1 = require("../user/user.entity");
 const local_strategy_1 = require("./local/local.strategy");
 const serializer_1 = require("./serializer");
 const google_strategy_1 = require("./google/google.strategy");
+const kakao_strategy_1 = require("./kakao/kakao.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -28,6 +29,7 @@ AuthModule = __decorate([
             local_strategy_1.LocalStrategy,
             serializer_1.Serializer,
             google_strategy_1.GoogleStrategy,
+            kakao_strategy_1.KakaoStrategy
         ],
     })
 ], AuthModule);

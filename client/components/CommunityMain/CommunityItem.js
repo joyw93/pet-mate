@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import {
   ItemContainer,
@@ -12,6 +12,8 @@ import {
   KeywordItem,
   ItemWrapper,
 } from "./styled";
+import { getElapsedTime } from "../../utils";
+import Router from "next/router";
 
 const CommunityItem = (item) => {
   const [title, setTitle] = useState("");
@@ -24,15 +26,21 @@ const CommunityItem = (item) => {
   //렌더 문제 있어서 초기화값 설정
   useEffect(() => {
     const { title, content, author, created_date, image_src, keyword } = item;
+    const convertedTime = getElapsedTime(created_date);
     setTitle(title);
     setContent(content);
     setAuthor(author);
-    setCreatedate(created_date);
+    setCreatedate(convertedTime);
     setImagesrc(image_src);
     setKeyword(keyword);
   }, []);
+
+  const itemSelect = () => {
+    Router.push(`community/${item.id}`);
+  };
+
   return (
-    <ItemContainer>
+    <ItemContainer onClick={itemSelect}>
       <ItemWrapper>
         <ContentWrapper>
           <ContentTitle>{title}</ContentTitle>

@@ -15,9 +15,11 @@ import {
   CheckInput,
 } from "./styled";
 
-const serverUrl = 'http://127.0.0.1:3000'
+// const serverUrl = 'http://127.0.0.1:3000';
 
 const LogIn = () => {
+  // const serverUrl = "http://api.petmate.kr";
+  const serverUrl = 'http://127.0.0.1:3000';
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
 
@@ -39,36 +41,33 @@ const LogIn = () => {
     if (!password) {
       return passwordRef.current.focus();
     }
-    dispatch(loginRequestAction({ email, password }));
-  }, [email, password]);
 
+    const newUser = {
+      email,
+      password,
+    };
+
+    dispatch(loginRequestAction(newUser));
+  }, [email, password]);
 
   const handleLoginEmail = (e) => {
     setEmail(e.target.value);
     setEmailIsValid(true);
   };
 
-  // useEffect(() => {
-  //   if (me) {
-  //     Router.push("/");
-  //   }
-  // }, [me]);
+  const handleGoogleLoginSubmit = useCallback(() => {
+    Router.push(`${serverUrl}/user/google`);
+  }, []);
 
-  const handleGoogleLoginSubmit = useCallback(()=>{
-    Router.push(`${serverUrl}/user/google`)
-  },[])
-
-
-  const handleKakaoLoginSubmit = useCallback(()=>{
-    Router.push(`${serverUrl}/user/kakao`)
-  },[])
+  const handleKakaoLoginSubmit = useCallback(() => {
+    Router.push(`${serverUrl}/user/kakao`);
+  }, []);
 
   useEffect(() => {
     if (me) {
       Router.push("/");
     }
   }, [me]);
-
 
   return (
     <LogInContainer>
