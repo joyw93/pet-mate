@@ -1,3 +1,4 @@
+import axios from "axios";
 import Router from "next/router";
 import { useEffect } from "react";
 import { useCallback } from "react";
@@ -100,11 +101,17 @@ const CommunityPost = () => {
       Router.replace("/community");
     }
   }, [postDone]);
-
+  const test = () => {
+    axios.get(
+      "http://api.petmate.kr/user/session",
+      { withCredentials: true }
+    );
+  };
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
+          <button onClick={test}>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
           <div id="buttons">
             <Button onClick={post}>등록</Button>
