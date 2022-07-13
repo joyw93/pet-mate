@@ -15,6 +15,7 @@ const CommunityPost = () => {
   const [content, setContent] = useState("");
 
   const [FileImages, setFileImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [hashTagVal, setHashTagVal] = useState("");
 
   const [hashArr, setHashArr] = useState([]);
@@ -29,48 +30,72 @@ const CommunityPost = () => {
   }, [hashArr]);
 
   //AddPhotoWrapper
-  const handleAddImages = (event) => {
-    const imageLists = event.target.files;
-    let imageUrlLists = [...FileImages];
+  const handleAddImages = useCallback(
+    (event) => {
+      const imageLists = event.target.files;
+      let imageUrlLists = [...FileImages];
 
-    for (let i = 0; i < imageLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
-    }
+      for (let i = 0; i < imageLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imageLists[i]);
+        imageUrlLists.push(currentImageUrl);
+      }
 
-    if (imageUrlLists.length > 3) {
-      imageUrlLists = imageUrlLists.slice(0, 3);
-      alert("이미지는 3장까지 업로드 할 수 있습니다.");
-    }
-    setFileImages(imageUrlLists);
-  };
+      if (imageUrlLists.length > 3) {
+        imageUrlLists = imageUrlLists.slice(0, 3);
+        alert("이미지는 3장까지 업로드 할 수 있습니다.");
+      }
+      const imagesFile = event.target.files[0];
+      const temp = [...images];
+      temp.push(imagesFile);
+      setImages(temp);
+      setFileImages(imageUrlLists);
+    },
+    [FileImages]
+  );
 
-  const handleDeleteImage = (id) => {
-    setFileImages(FileImages.filter((_, index) => index !== id));
-    window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
-  };
+  // useEffect(() => {
+  //   console.log(images);
+  // }, [images]);
+
+  const handleDeleteImage = useCallback(
+    (id) => {
+      setFileImages(FileImages.filter((_, index) => index !== id));
+      setImages(images.filter((_, index) => index !== id));
+      window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
+    },
+    [FileImages]
+  );
 
   //KeywordWrapper
-  const handleHash = (e) => {
-    setHashTagVal(e.target.value);
-  };
+  const handleHash = useCallback(
+    (e) => {
+      setHashTagVal(e.target.value);
+    },
+    [hashTagVal]
+  );
 
-  const keyUp = (e) => {
-    if (e.keyCode === 13 && e.target.value.trim() !== "") {
-      if (hashArr.find((it) => it.content === e.target.value)) {
-        alert("같은 키워드를 입력하셨습니다.");
+  const keyUp = useCallback(
+    (e) => {
+      if (e.keyCode === 13 && e.target.value.trim() !== "") {
+        if (hashArr.find((it) => it.content === e.target.value)) {
+          alert("같은 키워드를 입력하셨습니다.");
+          setHashTagVal("");
+          return;
+        }
+        setHashArr([...hashArr, { id: new Date().getTime(), content: hashTagVal }]);
         setHashTagVal("");
-        return;
       }
-      setHashArr([...hashArr, { id: new Date().getTime(), content: hashTagVal }]);
-      setHashTagVal("");
-    }
-  };
+    },
+    [hashTagVal]
+  );
 
-  const handleDeletHash = (id) => {
-    setHashArr(hashArr.filter((it) => it.id !== id));
-    // console.log(id);
-  };
+  const handleDeleteHash = useCallback(
+    (id) => {
+      setHashArr(hashArr.filter((it) => it.id !== id));
+      // console.log(id);
+    },
+    [hashArr]
+  );
 
   const post = useCallback(() => {
     dispatch(postRequestAction({ title, content }));
@@ -145,7 +170,7 @@ const CommunityPost = () => {
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
             {hashArr.map((it) => (
-              <button key={it.id} className="keyword_item" onClick={() => handleDeletHash(it.id)}>
+              <button key={it.id} className="keyword_item" onClick={() => handleDeleteHash(it.id)}>
                 <span>{it.content}</span>
                 <svg
                   className="delete-icon"

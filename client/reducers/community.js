@@ -5,6 +5,38 @@ export const initialState = {
   postLoading: false,
   postDone: false,
   postError: null,
+  mainPosts: [
+    {
+      id: 1,
+      title: "post title",
+      content: "post content",
+      createdAt: "2022-07-11T00:33:58.241Z",
+      author: {
+        nickname: "user nickname",
+      },
+      images: [
+        {
+          url: "https://image.png",
+        },
+      ],
+      tags: [
+        {
+          id: 1,
+          hashtag: {
+            keyword: "hashtag keyword",
+          },
+        },
+      ],
+      comments: [
+        {
+          id: 1,
+          content: "댓글내용",
+          createdAt: "시간",
+          author: { id: 1, nickname: "용용" },
+        },
+      ],
+    },
+  ],
 };
 
 export const POST_REQUEST = "POST_REQUEST";

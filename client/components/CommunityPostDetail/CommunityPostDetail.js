@@ -3,57 +3,13 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {
-  PostDetailContainer,
-  Images,
-  Title,
-  PostInfo,
-  KeywordWrapper,
-  CommentWrapper,
-  Button,
-} from "./styled";
+import { PostDetailContainer, Images, Title, PostInfo, KeywordWrapper, CommentWrapper, Button } from "./styled";
+import { useCallback } from "react";
 
 const CommunityPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);
-
-  const handleCmtContent = () => {
-    if (cmtContent) {
-      setCmtContentArr([
-        ...cmtContentArr,
-        {
-          id: new Date().getTime(),
-          author: "멍멍아 야옹해봐",
-          content: cmtContent,
-        },
-      ]);
-    }
-    setCmtContent("");
-  };
-
-  const handleDeletCmt = (id) => {
-    setCmtContentArr(cmtContentArr.filter((it) => it.id !== id));
-  };
-
-  const keyUp = (e) => {
-    if (e.keyCode === 13 && e.target.value.trim() !== "") {
-      if (cmtContent) {
-        setCmtContentArr([
-          ...cmtContentArr,
-          {
-            id: new Date().getTime(),
-            author: "멍멍아 야옹해봐",
-            content: cmtContent,
-          },
-        ]);
-      }
-      setCmtContent("");
-    }
-  };
-
-  useEffect(() => {
-    console.log(cmtContentArr);
-  }, [cmtContentArr]);
+  const [like, setLike] = useState("../img/heart2.png");
 
   const postItem = {
     id: "1",
@@ -84,6 +40,7 @@ const CommunityPostDetail = () => {
     ],
   };
 
+  //carousel
   const settings = {
     arrows: true,
     dots: true,
@@ -93,15 +50,54 @@ const CommunityPostDetail = () => {
     slidesToScroll: 1,
   };
 
-  const [like, setLike] = useState("../img/heart2.png");
+  const handleCmtContent = useCallback(() => {
+    if (cmtContent) {
+      setCmtContentArr([
+        ...cmtContentArr,
+        {
+          id: new Date().getTime(),
+          author: "멍멍아 야옹해봐",
+          content: cmtContent,
+        },
+      ]);
+    }
+    setCmtContent("");
+  }, [cmtContent]);
 
-  const handlelike = () => {
+  // const handleDeleteCmt = (id) => {
+  //   setCmtContentArr(cmtContentArr.filter((it) => it.id !== id));
+  // };
+
+  const keyUp = useCallback(
+    (e) => {
+      if (e.keyCode === 13 && e.target.value.trim() !== "") {
+        if (cmtContent) {
+          setCmtContentArr([
+            ...cmtContentArr,
+            {
+              id: new Date().getTime(),
+              author: "멍멍아 야옹해봐",
+              content: cmtContent,
+            },
+          ]);
+        }
+        setCmtContent("");
+      }
+    },
+    [cmtContent]
+  );
+
+  useEffect(() => {
+    console.log(cmtContentArr);
+  }, [cmtContentArr]);
+
+  const handleLike = useCallback(() => {
     if (like === "../img/heart2.png") {
       setLike("../img/filled_heart2.png");
     } else if (like === "../img/filled_heart2.png") {
       setLike("../img/heart2.png");
     }
-  };
+  }, [like]);
 
   return (
     <PostDetailContainer>
@@ -120,7 +116,7 @@ const CommunityPostDetail = () => {
           <span id="post_author">{postItem.author}</span>
           <span id="post_created_time">{postItem.created_time}</span>
         </div>
-        <button onClick={handlelike}>
+        <button onClick={handleLike}>
           <img src={like} alt="좋아요" />
         </button>
       </PostInfo>
@@ -165,7 +161,7 @@ const CommunityPostDetail = () => {
             <Button onClick={handleCmtContent}>입력</Button>
           </div>
           <div id="cmts_area">
-            {postItem.comments.map((comment, index) => (
+            {postItem.comments.reverse().map((comment, index) => (
               <div key={index} className="cmts">
                 <h3>{comment.author}</h3>
                 <p>{comment.content}</p>

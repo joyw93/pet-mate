@@ -102,6 +102,8 @@ export const AddPhotoWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
+    align-items: center;
+    justify-content: start;
   }
   #add_photo,
   .photo_preview {
@@ -109,6 +111,11 @@ export const AddPhotoWrapper = styled.div`
     width: 171px;
     flex-wrap: wrap;
     background-color: #eee;
+    margin-bottom: 10px;
+  }
+  #add_photo::after,
+  .photo_preview::after {
+    padding-bottom: 100%;
   }
   #add_file {
     display: none;
@@ -128,7 +135,7 @@ export const AddPhotoWrapper = styled.div`
     }
   }
   .photo_preview {
-    margin-left: 12px;
+    margin-left: 10px;
     position: relative;
     background-color: #fff;
     img {
