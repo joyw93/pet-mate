@@ -1,12 +1,12 @@
-import { all, call, fork, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, fork, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 import {
-  ADD_POST_REQUEST,
-  ADD_POST_SUCCESS,
-  ADD_POST_FAILURE,
+  POST_REQUEST,
+  POST_SUCCESS,
+  POST_FAILURE,
 } from "../reducers/community";
 
-const serverUrl = "http://api.petmate.kr";
+const serverUrl = `http://api.petmate.kr`;
 
 // function postAPI(data) {
 //   return axios.post(`${serverUrl}/community`, data, {
@@ -15,9 +15,13 @@ const serverUrl = "http://api.petmate.kr";
 // }
 
 function postAPI(data) {
-  return axios.post(`${serverUrl}/community`, data, {
-    withCredentials: true,
-  });
+  return axios.post(
+    `${serverUrl}/community`,
+    { title: "aa", content: "asdf" },
+    {
+      withCredentials: true,
+    }
+  );
 }
 
 function* post(action) {
@@ -26,22 +30,22 @@ function* post(action) {
     console.log(action.data);
     const payload = result.data;
     yield put({
-      type: ADD_POST_SUCCESS,
+      type: POST_SUCCESS,
       data: payload.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: ADD_POST_FAILURE,
+      type: POST_FAILURE,
       error: err.response.data,
     });
   }
 }
 
-function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, post);
+function* watchPost() {
+  yield takeLatest(POST_REQUEST, post);
 }
 
 export default function* communitySaga() {
-  yield all([fork(watchAddPost)]);
+  yield all([fork(watchPost)]);
 }

@@ -10,7 +10,9 @@ import {
 import { useSelector } from "react-redux";
 import CommunityList from "./CommunityList";
 import Link from "next/link";
+import axios from "axios";
 import Router from "next/router";
+import { useEffect } from "react";
 
 const SelectOptions = [
   { id: "latest", name: "최신 순" },
@@ -65,17 +67,23 @@ const CommunityMain = () => {
       Router.replace("/community/new");
     }
   };
+
+  const loadPosts = async () => {
+    const result = await axios.get("http://api.petmate.kr/community/53");
+    const data = result.data.data;
+    console.log(data);
+  };
   return (
     <CommunityCon>
+      <button onClick={loadPosts}>게시글 불러오기</button>
       <Title>커뮤니티</Title>
       <HeadWrapper>
         <ListSelection />
-        <PostBtn onClick={goToNew}>
-          {/* <Link href="/community/new">
-            <a>글쓰기</a>
-          </Link> */}
-          <span>글쓰기</span>
-        </PostBtn>
+        {me ? (
+          <PostBtn onClick={goToNew}>
+            <span>글쓰기</span>
+          </PostBtn>
+        ) : null}
       </HeadWrapper>
       <Notice />
       <CommunityList />
