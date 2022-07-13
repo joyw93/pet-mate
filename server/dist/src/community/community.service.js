@@ -36,7 +36,14 @@ let CommunityService = class CommunityService {
         this.communityCommentRepository = communityCommentRepository;
         this.communityImageRepository = communityImageRepository;
     }
-    async getPosts(offset, postCount) {
+    async getPosts(offset, postCount, orderBy) {
+        let cond;
+        if (orderBy === 'new') {
+            cond = { 'post.createdAt': 'DESC' };
+        }
+        else if (orderBy === 'old') {
+            cond = { 'post.createdAt': 'ASC' };
+        }
         try {
             const posts = this.communityRepository
                 .createQueryBuilder('post')
@@ -56,6 +63,7 @@ let CommunityService = class CommunityService {
                 .leftJoin('tags.hashtag', 'hashtag')
                 .skip(offset)
                 .take(postCount)
+                .orderBy(cond)
                 .getMany();
             return posts;
         }
@@ -168,7 +176,7 @@ let CommunityService = class CommunityService {
             return await this.communityLikeRepository.save(communityLike);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            throw new common_1.InternalServerErrorException();
         }
     }
     async getAllComments(postId) {

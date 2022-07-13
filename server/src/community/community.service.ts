@@ -39,7 +39,13 @@ export class CommunityService {
     private communityImageRepository: Repository<CommunityImageEntity>,
   ) {}
 
-  async getPosts(offset: number, postCount: number) {
+  async getPosts(offset: number, postCount: number, orderBy: string) {
+    let cond;
+    if (orderBy === 'new') {
+      cond = { 'post.createdAt': 'DESC' };
+    } else if (orderBy === 'old') {
+      cond = { 'post.createdAt': 'ASC' };
+    }
     try {
       const posts = this.communityRepository
         .createQueryBuilder('post')
@@ -59,6 +65,7 @@ export class CommunityService {
         .leftJoin('tags.hashtag', 'hashtag')
         .skip(offset)
         .take(postCount)
+        .orderBy(cond)
         .getMany();
       return posts;
     } catch (err) {
@@ -171,7 +178,7 @@ export class CommunityService {
       communityLike.post = post;
       return await this.communityLikeRepository.save(communityLike);
     } catch (err) {
-      throw new HttpException(err, 500);
+      throw new InternalServerErrorException();
     }
   }
 

@@ -39,8 +39,13 @@ export class CommunityController {
   async getPosts(
     @Query('offset') offset: number,
     @Query('count') postCount: number,
+    @Query('orderBy') orderBy: string,
   ) {
-    return await this.communityService.getPosts(offset || 0, postCount || 20);
+    return await this.communityService.getPosts(
+      offset || 0,
+      postCount || 10,
+      orderBy || 'new',
+    );
   }
 
   @Get('hot-posts')
