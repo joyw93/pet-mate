@@ -35,6 +35,10 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityEntity.prototype, "author_id", void 0);
 __decorate([
+    (0, typeorm_1.Column)('int', { name: 'views' }),
+    __metadata("design:type", Number)
+], CommunityEntity.prototype, "views", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], CommunityEntity.prototype, "createdAt", void 0);

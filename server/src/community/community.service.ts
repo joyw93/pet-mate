@@ -47,6 +47,8 @@ export class CommunityService {
       cond = { 'post.createdAt': 'ASC' };
     } else if (orderBy === 'like') {
       cond = { likeCount: 'DESC' };
+    } else if (orderBy === 'views') {
+      cond = { 'post.views': 'DESC' };
     }
     try {
       const posts = this.communityRepository
@@ -56,23 +58,23 @@ export class CommunityService {
           'post.title',
           'post.content',
           'post.createdAt',
+          'post.views',
           'author.nickname',
           'images.url',
           'tags.id',
           'hashtag.keyword',
         ])
-        .addSelect('COUNT(distinct likes.id)', 'likeCount')
         .leftJoin('post.author', 'author')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
-        .groupBy('post.id')
         .skip(offset)
         .take(postCount)
         .orderBy(cond)
         .getMany();
       return posts;
+      
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
@@ -85,15 +87,20 @@ export class CommunityService {
     });
     if (!post) {
       throw new NotFoundException(res.msg.POST_NOT_EXIST);
+    } else {
+      // 게시물 조회수 1 증가
+      post.views++;
+      await this.communityRepository.save(post);
     }
     try {
-      const post = this.communityRepository
+      const post = await this.communityRepository
         .createQueryBuilder('post')
         .select([
           'post.id',
           'post.title',
           'post.content',
           'post.createdAt',
+          'post.views',
           'author.nickname',
           'images.id',
           'images.url',
@@ -110,6 +117,7 @@ export class CommunityService {
         .leftJoin('comments.author', 'commentAuthor')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
+        .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
         .where('post.id = :id', { id: postId })
         .getOne();
@@ -129,7 +137,7 @@ export class CommunityService {
         .groupBy('likes.post_id')
         .leftJoin('post.likes', 'likes')
         .take(2)
-        .orderBy({ 'likeCount': 'DESC', 'post.createdAt': 'DESC' })
+        .orderBy({ likeCount: 'DESC', 'post.createdAt': 'DESC' })
         .getMany();
       return posts;
     } catch (err) {
@@ -145,6 +153,7 @@ export class CommunityService {
       post.title = title;
       post.content = content;
       post.author = user;
+      post.views = 0;
       return await this.communityRepository.save(post);
     } catch (err) {
       console.error(err);

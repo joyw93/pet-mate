@@ -19,6 +19,7 @@ export declare class CommunityController {
         content: string;
         id: number;
         author_id: number;
+        views: number;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;

@@ -2,11 +2,9 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityEntity } from 'src/community/community.entity';
-import { CreatePostDto } from 'src/community/dto/create-post.dto';
 import { Repository } from 'typeorm';
 import { HashtagEntity } from './hashtag.entity';
 import * as res from '../common/responses/message';
-import { type } from 'os';
 
 @Injectable()
 export class HashtagService {

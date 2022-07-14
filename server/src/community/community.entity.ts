@@ -29,6 +29,9 @@ export class CommunityEntity {
   @Column('int', { name: 'author_id' })
   author_id: number;
 
+  @Column('int', {name: 'views'})
+  views: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
