@@ -47,9 +47,10 @@ let CommunityController = class CommunityController {
         return await this.communityService.likePost(user.id, postId);
     }
     async createPost(files, user, createPostDto) {
+        const { hashtags } = createPostDto;
         const post = await this.communityService.createPost(user.id, createPostDto);
-        if (createPostDto.hashtags) {
-            await this.hashtagService.addTags(post, createPostDto);
+        if (hashtags) {
+            await this.hashtagService.addTags(post, [...hashtags]);
         }
         if (files) {
             await this.communityService.uploadImages(post, files);

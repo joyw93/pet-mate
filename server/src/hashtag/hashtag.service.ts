@@ -6,6 +6,7 @@ import { CreatePostDto } from 'src/community/dto/create-post.dto';
 import { Repository } from 'typeorm';
 import { HashtagEntity } from './hashtag.entity';
 import * as res from '../common/responses/message';
+import { type } from 'os';
 
 @Injectable()
 export class HashtagService {
@@ -16,18 +17,19 @@ export class HashtagService {
     private hashtagRepository: Repository<HashtagEntity>,
   ) {}
 
-  async addTags(post: CommunityEntity, createPostDto: CreatePostDto) {
-    const { hashtags } = createPostDto;
+  async addTags(post: CommunityEntity, hashtags: string[]) {
     try {
-      const result =  await Promise.all(
-        hashtags.map(async (hashtag) => {
+      const result = await Promise.all(
+        hashtags.map(async (hashtag: string) => {
           const hashtagFound = await this.hashtagRepository.findOne({
             where: { keyword: hashtag },
           });
           const communityHashtag = new CommunityHashtagEntity();
           communityHashtag.post = post;
           if (!hashtagFound) {
-            const newTag = await this.hashtagRepository.save({ keyword: hashtag });
+            const newTag = await this.hashtagRepository.save({
+              keyword: hashtag,
+            });
             communityHashtag.hashtag = newTag;
           } else {
             communityHashtag.hashtag = hashtagFound;
@@ -38,7 +40,7 @@ export class HashtagService {
       return result;
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.ADD_HASHTAG_FAIL)
+      throw new InternalServerErrorException(res.msg.ADD_HASHTAG_FAIL);
     }
   }
 

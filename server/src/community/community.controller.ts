@@ -89,9 +89,10 @@ export class CommunityController {
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
+    const { hashtags } = createPostDto;
     const post = await this.communityService.createPost(user.id, createPostDto);
-    if (createPostDto.hashtags) {
-      await this.hashtagService.addTags(post, createPostDto);
+    if (hashtags) {
+      await this.hashtagService.addTags(post, [...hashtags]); // 해쉬태그 한개일때 배열화
     }
     if (files) {
       await this.communityService.uploadImages(post, files);
