@@ -10,13 +10,11 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import CommunityList from "./CommunityList";
-import Link from "next/link";
 import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
 import { loadPostsRequestAction } from "../../reducers/community";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 const SelectOptions = [
   { id: "latest", name: "최신 순" },
@@ -63,13 +61,23 @@ const Notice = () => {
 
 const CommunityMain = (data) => {
   const { me } = useSelector((state) => state.user);
-
+  const { postDone, posts } = useSelector((state) => state.community);
   const dispatch = useDispatch();
-  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    setPosts(data.props.data);
+    if (postDone) {
+      dispatch({ type: POST_RESET });
+      console.log("글 리셋");
+    }
+  }, [postDone]);
+
+  //const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    dispatch(loadPostsRequestAction());
   }, []);
+
+  console.log(posts);
 
   const goToNew = () => {
     if (!me) {
@@ -102,6 +110,7 @@ const CommunityMain = (data) => {
         ) : null}
       </HeadWrapper>
       <Notice />
+
       {/* {posts && posts.map((item) => <div key={item.id}>{item.content}</div>)} */}
       <CommunityList posts={posts} />
     </CommunityCon>

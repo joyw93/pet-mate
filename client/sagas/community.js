@@ -9,8 +9,6 @@ import {
   ADD_POST_FAILURE,
 } from "../reducers/community";
 
-
-const serverUrl = "http://api.petmate.kr";
 //const serverUrl = "http://127.0.0.1:3000";
 
 // function postAPI(data) {
@@ -48,7 +46,7 @@ function* post(action) {
 
 //글 보여주기
 function loadPostsAPI(data) {
-  return axios.get(`${serverUrl}/community?offset=10&count=10`, data, {
+  return axios.get(`${serverUrl}/community?orderBy=old`, data, {
     withCredentials: true,
   });
 }

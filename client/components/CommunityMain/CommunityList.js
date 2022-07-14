@@ -6,14 +6,15 @@ import { ListContainer, BtnContainer } from "./styled";
 import { loadPostsRequestAction } from "../../reducers/community";
 
 const CommunityList = (posts) => {
+  // console.log(posts.posts);
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     setList(posts.posts);
-  }, [list]);
+  }, [posts]);
 
-  const postlist = useSelector((state) => state.community);
-  console.log(postlist);
+  console.log(list);
 
   const handleMorePosts = () => {
     const community = dispatch(loadPostsRequestAction());
@@ -22,7 +23,8 @@ const CommunityList = (posts) => {
   return (
     <>
       <ListContainer>
-        {list && list.map((item) => <CommunityItem key={item.id} {...item} />)}
+        {list &&
+          list.map((item, index) => <CommunityItem key={index} {...item} />)}
         <BtnContainer>
           <span></span>
           <button onClick={handleMorePosts}>더보기</button>

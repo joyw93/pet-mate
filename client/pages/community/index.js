@@ -5,7 +5,7 @@ import Head from "next/head";
 
 import CommunityMain from "../../components/CommunityMain/CommunityMain";
 
-const Community = ({ data }) => {
+const Community = () => {
   const { me } = useSelector((state) => state.user);
 
   return (
@@ -21,20 +21,20 @@ const Community = ({ data }) => {
             </Link>
           </button>
         ) : null} */}
-        <CommunityMain props={data} />
+        <CommunityMain />
       </AppLayout>
     </>
   );
 };
 
-export const getServerSideProps = async () => {
-  // Fetch data from external API
-  const result = await fetch("http://api.petmate.kr/community");
-  const data = await result.json();
+// export const getServerSideProps = async () => {
+//   // Fetch data from external API
+//   const result = await fetch("http://api.petmate.kr/community");
+//   const data = await result.json();
 
-  console.log(data);
-  // Pass data to the page via props
-  return { props: { data } };
-};
+//   console.log(data);
+//   // Pass data to the page via props
+//   return { props: { data } };
+// };
 
 export default Community;
