@@ -2,6 +2,10 @@ import produce from "immer";
 
 export const initialState = {
   posts: [],
+  hasMorePosts: true,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -12,6 +16,10 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
+export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
+export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -35,6 +43,10 @@ export const postResetAction = () => ({
   type: POST_RESET,
 });
 
+export const loadPostsRequestAction = () => ({
+  type: LOAD_POSTS_REQUEST,
+});
+
 export const removePostRequestAction = (data) => ({
   type: REMOVE_POST_REQUEST,
   data,
@@ -48,6 +60,25 @@ export const addCommentRequestAction = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //글 보여주기
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        //draft.posts = action.data.concat(draft.posts);
+        // draft.posts = action.data;
+        draft.posts = action.data.push(draft.posts);
+        // draft.hasMorePosts = draft.posts.length < 100;
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
+
       //글 추가
       case ADD_POST_REQUEST:
         draft.postLoading = true;

@@ -7,12 +7,16 @@ import {
   NoticeWrapper,
   Selection,
 } from "./styled";
-import { useSelector } from "react-redux";
+
+import { useSelector, useDispatch } from "react-redux";
 import CommunityList from "./CommunityList";
 import Link from "next/link";
 import axios from "axios";
 import Router from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import { loadPostsRequestAction } from "../../reducers/community";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const SelectOptions = [
   { id: "latest", name: "최신 순" },
@@ -57,8 +61,15 @@ const Notice = () => {
   );
 };
 
-const CommunityMain = () => {
+const CommunityMain = (data) => {
   const { me } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    setPosts(data.props.data);
+  }, []);
 
   const goToNew = () => {
     if (!me) {
@@ -69,13 +80,18 @@ const CommunityMain = () => {
   };
 
   const loadPosts = async () => {
-    const result = await axios.get("http://api.petmate.kr/community/53");
+    const result = await axios.get("http://api.petmate.kr/community?count=100");
     const data = result.data.data;
-    console.log(data);
   };
+
+  const handleLoading = () => {
+    dispatch(loadPostsRequestAction());
+  };
+
   return (
     <CommunityCon>
       <button onClick={loadPosts}>게시글 불러오기</button>
+      <button onClick={handleLoading}>커뮤니티 게시글 보기</button>
       <Title>커뮤니티</Title>
       <HeadWrapper>
         <ListSelection />
@@ -86,7 +102,8 @@ const CommunityMain = () => {
         ) : null}
       </HeadWrapper>
       <Notice />
-      <CommunityList />
+      {/* {posts && posts.map((item) => <div key={item.id}>{item.content}</div>)} */}
+      <CommunityList posts={posts} />
     </CommunityCon>
   );
 };
