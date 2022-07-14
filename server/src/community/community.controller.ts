@@ -92,7 +92,9 @@ export class CommunityController {
     const { hashtags } = createPostDto;
     const post = await this.communityService.createPost(user.id, createPostDto);
     if (hashtags) {
-      await this.hashtagService.addTags(post, [...hashtags]); // 해쉬태그 한개일때 배열화
+      // 해쉬태그 한개일때 배열화
+      const hashtagArr = (typeof hashtags === 'string') ? [hashtags] : hashtags; 
+      await this.hashtagService.addTags(post, hashtagArr); 
     }
     if (files) {
       await this.communityService.uploadImages(post, files);

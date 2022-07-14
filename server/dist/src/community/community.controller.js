@@ -50,7 +50,8 @@ let CommunityController = class CommunityController {
         const { hashtags } = createPostDto;
         const post = await this.communityService.createPost(user.id, createPostDto);
         if (hashtags) {
-            await this.hashtagService.addTags(post, [...hashtags]);
+            const hashtagArr = (typeof hashtags === 'string') ? [hashtags] : hashtags;
+            await this.hashtagService.addTags(post, hashtagArr);
         }
         if (files) {
             await this.communityService.uploadImages(post, files);
