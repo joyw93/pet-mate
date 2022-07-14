@@ -12,8 +12,7 @@ const MyMap = () => {
     setInputText(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     setPlace(inputText);
     setInputText("");
   };
@@ -21,14 +20,22 @@ const MyMap = () => {
   return (
     <AppLayout>
       <div>어쩌구</div>
-      <form className="inputForm" onSubmit={handleSubmit}>
+      {/* <form className="inputForm" onSubmit={handleSubmit}>
         <input
           placeholder="검색어를 입력하세요"
           onChange={onChange}
           value={inputText}
         />
         <button type="submit">검색</button>
-      </form>
+      </form> */}
+      <div className="inputForm">
+        <input
+          placeholder="검색어를 입력하세요"
+          onChange={onChange}
+          value={inputText}
+        />
+        <button onClick={handleSubmit}>검색</button>
+      </div>
       <Kakaomap place={place} />
     </AppLayout>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,7 +15,6 @@ import {
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 
-
 const CommunityPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);
@@ -25,7 +24,7 @@ const CommunityPostDetail = () => {
     id: "1",
     title: "울집 댕댕이랑 산책하실 분 구함",
     author: "댕댕이네",
-    created_time: '2022-07-10T00:33:58.241Z',
+    created_time: "2022-07-10T00:33:58.241Z",
     src: ["../img/pet1.jpg", "../img/pet2.jpg", "../img/pet3.jpg"],
     content: `아니글쎄 우리 댕댕이가~~어쩌구 저쩌구~~~~~~~ 
     보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. 보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다.보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. 보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다.보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. 보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. `,
@@ -124,7 +123,9 @@ const CommunityPostDetail = () => {
       <PostInfo>
         <div>
           <span id="post_author">{postItem.author}</span>
-          <span id="post_created_time">{getElapsedTime(postItem.created_time)}</span>
+          <span id="post_created_time">
+            {getElapsedTime(postItem.created_time)}
+          </span>
         </div>
         <button onClick={handleLike}>
           <img src={like} alt="좋아요" />

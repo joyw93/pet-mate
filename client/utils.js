@@ -21,6 +21,6 @@ export const getElapsedTime = (createdAt) => {
   } else if (minute >= 1) {
     return `${minute}분 전`;
   } else {
-    return "방금";
+    return "방금 전";
   }
 };

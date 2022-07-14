@@ -21,18 +21,18 @@ const CommunityItem = (item) => {
   const [author, setAuthor] = useState("");
   const [created_date, setCreatedate] = useState("");
   const [image_src, setImagesrc] = useState("");
-  const [keyword, setKeyword] = useState("");
+  const [tags, setTags] = useState("");
 
   //렌더 문제 있어서 초기화값 설정
   useEffect(() => {
-    const { title, content, author, created_date, image_src, keyword } = item;
-    const convertedTime = getElapsedTime(created_date);
+    const { title, content, author, createdAt, images, tags } = item;
+    const convertedTime = getElapsedTime(createdAt);
     setTitle(title);
     setContent(content);
-    setAuthor(author);
+    setAuthor(author.nickname);
     setCreatedate(convertedTime);
-    setImagesrc(image_src);
-    setKeyword(keyword);
+    setImagesrc(images[0]);
+    setTags(tags);
   }, []);
 
   const itemSelect = () => {
@@ -41,23 +41,25 @@ const CommunityItem = (item) => {
 
   return (
     <ItemContainer onClick={itemSelect}>
-      <ItemWrapper>
-        <ContentWrapper>
-          <ContentTitle>{title}</ContentTitle>
-          <Content>{content}</Content>
-          <ContentInfo>
-            <Author>{author}</Author>
-            <span>{created_date}</span>
-          </ContentInfo>
-          <KeywordWrapper>
-            {keyword &&
-              keyword.map((word, index) => (
-                <KeywordItem key={index}>{word}</KeywordItem>
-              ))}
-          </KeywordWrapper>
-        </ContentWrapper>
-        <div>{image_src && <ItemImage src={image_src} />}</div>
-      </ItemWrapper>
+      {
+        <ItemWrapper>
+          <ContentWrapper>
+            <ContentTitle>{title}</ContentTitle>
+            <Content>{content}</Content>
+            <ContentInfo>
+              <Author>{author}</Author>
+              <span>{created_date}</span>
+            </ContentInfo>
+            <KeywordWrapper>
+              {tags &&
+                tags.map((word, index) => (
+                  <KeywordItem key={index}>{word.hashtag.keyword}</KeywordItem>
+                ))}
+            </KeywordWrapper>
+          </ContentWrapper>
+          <div>{image_src && <ItemImage src={image_src.url} />}</div>
+        </ItemWrapper>
+      }
     </ItemContainer>
   );
 };

@@ -12,9 +12,8 @@ import {
   LOG_OUT_SUCCESS,
 } from "../reducers/user";
 
-
-// const serverUrl = `http://api.petmate.kr`;
-const serverUrl = `http://127.0.0.1:3000`;
+const serverUrl = `http://api.petmate.kr`;
+// const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
   console.log(data);
@@ -24,7 +23,7 @@ function signUpAPI(data) {
 function* signUp(action) {
   try {
     const result = yield call(signUpAPI, action.data);
-    const payload = result.data
+    const payload = result.data;
     yield put({
       type: SIGN_UP_SUCCESS,
       data: payload.data,

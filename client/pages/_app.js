@@ -5,7 +5,7 @@ import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import Script from "next/script";
 
-const App = ({ Component }) => {
+const App = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
@@ -21,7 +21,7 @@ const App = ({ Component }) => {
           strategy="beforeInteractive"
         />
       </Head>
-      <Component />
+      <Component {...pageProps} />
     </>
   );
 };
