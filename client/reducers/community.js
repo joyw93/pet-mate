@@ -69,9 +69,9 @@ const reducer = (state = initialState, action) =>
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        //draft.posts = action.data.concat(draft.posts);
+        draft.posts = action.data.concat(action.data);
         // draft.posts = action.data;
-        draft.posts = action.data.push(draft.posts);
+        //draft.posts = action.data.push(draft.posts);
         // draft.hasMorePosts = draft.posts.length < 100;
         break;
       case LOAD_POSTS_FAILURE:
@@ -89,7 +89,6 @@ const reducer = (state = initialState, action) =>
         draft.postLoading = false;
         draft.postDone = true;
         draft.posts.unshift(action.data);
-        break;
       case ADD_POST_FAILURE:
         draft.postLoading = false;
         draft.postError = action.error;
