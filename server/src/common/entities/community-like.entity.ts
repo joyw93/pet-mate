@@ -23,7 +23,9 @@ export class CommunityLikeEntity {
   @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
   post: CommunityEntity;
 
-  @ManyToOne(() => UserEntity, (author) => author.likes)
+  @ManyToOne(() => UserEntity, (author) => author.likes,{
+    onDelete: "CASCADE"
+  })
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
   author: UserEntity;
 }

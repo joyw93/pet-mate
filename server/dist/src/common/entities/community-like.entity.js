@@ -33,7 +33,9 @@ __decorate([
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityLikeEntity.prototype, "post", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.likes),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.likes, {
+        onDelete: "CASCADE"
+    }),
     (0, typeorm_1.JoinColumn)({ name: 'author_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], CommunityLikeEntity.prototype, "author", void 0);

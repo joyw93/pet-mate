@@ -136,6 +136,7 @@ const CommunityPost = () => {
       Router.replace("/community");
     }
   }, [postDone]);
+  
   const test = () => {
     axios.post(
       "http://127.0.0.1:3000/community",{title:'a',content:'1'},

@@ -39,7 +39,15 @@ export class CommunityService {
     private communityImageRepository: Repository<CommunityImageEntity>,
   ) {}
 
-  async getPosts(offset: number, postCount: number) {
+  async getPosts(offset: number, postCount: number, orderBy: string) {
+    let cond;
+    if (orderBy === 'new') {
+      cond = { 'post.createdAt': 'DESC' };
+    } else if (orderBy === 'old') {
+      cond = { 'post.createdAt': 'ASC' };
+    } else if (orderBy === 'like') {
+      cond = { likeCount: 'DESC' };
+    }
     try {
       const posts = this.communityRepository
         .createQueryBuilder('post')
@@ -53,12 +61,16 @@ export class CommunityService {
           'tags.id',
           'hashtag.keyword',
         ])
+        .addSelect('COUNT(distinct likes.id)', 'likeCount')
         .leftJoin('post.author', 'author')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
+        .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
+        .groupBy('post.id')
         .skip(offset)
         .take(postCount)
+        .orderBy(cond)
         .getMany();
       return posts;
     } catch (err) {
@@ -92,6 +104,7 @@ export class CommunityService {
           'tags.id',
           'hashtag.keyword',
         ])
+        .addSelect('COUNT(distinct likes.id)', 'likeCount')
         .leftJoin('post.author', 'author')
         .leftJoin('post.comments', 'comments')
         .leftJoin('comments.author', 'commentAuthor')
@@ -109,17 +122,18 @@ export class CommunityService {
 
   async getHotPosts() {
     try {
-      const posts = await this.communityLikeRepository
-        .createQueryBuilder('like')
-        .select(['post_id', 'post.title, post.content'])
-        .addSelect('COUNT(post_id)', 'likeCount')
-        .groupBy('like.post_id')
-        .leftJoin('like.post', 'post')
-        .take(3)
-        .getRawMany();
+      const posts = await this.communityRepository
+        .createQueryBuilder('post')
+        .select(['post.id', 'post.title', 'post.createdAt'])
+        .addSelect('COUNT(post.id)', 'likeCount')
+        .groupBy('likes.post_id')
+        .leftJoin('post.likes', 'likes')
+        .take(2)
+        .orderBy({ 'likeCount': 'DESC', 'post.createdAt': 'DESC' })
+        .getMany();
       return posts;
     } catch (err) {
-      throw new HttpException(err, 500);
+      throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
     }
   }
 
@@ -171,7 +185,7 @@ export class CommunityService {
       communityLike.post = post;
       return await this.communityLikeRepository.save(communityLike);
     } catch (err) {
-      throw new HttpException(err, 500);
+      throw new InternalServerErrorException();
     }
   }
 

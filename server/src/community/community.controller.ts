@@ -39,8 +39,13 @@ export class CommunityController {
   async getPosts(
     @Query('offset') offset: number,
     @Query('count') postCount: number,
+    @Query('orderBy') orderBy: string,
   ) {
-    return await this.communityService.getPosts(offset || 0, postCount || 20);
+    return await this.communityService.getPosts(
+      offset ?? 0,
+      postCount ?? 10,
+      orderBy ?? 'new',
+    );
   }
 
   @Get('hot-posts')
@@ -84,9 +89,12 @@ export class CommunityController {
     @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ) {
+    const { hashtags } = createPostDto;
     const post = await this.communityService.createPost(user.id, createPostDto);
-    if (createPostDto.hashtags) {
-      await this.hashtagService.addTags(post, createPostDto);
+    if (hashtags) {
+      // 해쉬태그 한개일때 배열화
+      const hashtagArr = (typeof hashtags === 'string') ? [hashtags] : hashtags; 
+      await this.hashtagService.addTags(post, hashtagArr); 
     }
     if (files) {
       await this.communityService.uploadImages(post, files);

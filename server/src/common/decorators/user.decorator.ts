@@ -14,7 +14,7 @@ export const User = createParamDecorator(
     // }
     // return request.user;
 
-    const user = { id: 1, email: 'joyw93@naver.com' };
+    const user = { id: 2, email: 'mdlife94@gmail.com' };
     return user;
   },
 );

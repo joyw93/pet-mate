@@ -34,8 +34,8 @@ let CommunityController = class CommunityController {
         this.communityService = communityService;
         this.hashtagService = hashtagService;
     }
-    async getPosts(offset, postCount) {
-        return await this.communityService.getPosts(offset || 0, postCount || 20);
+    async getPosts(offset, postCount, orderBy) {
+        return await this.communityService.getPosts(offset !== null && offset !== void 0 ? offset : 0, postCount !== null && postCount !== void 0 ? postCount : 10, orderBy !== null && orderBy !== void 0 ? orderBy : 'new');
     }
     async getHotPosts() {
         return await this.communityService.getHotPosts();
@@ -47,9 +47,11 @@ let CommunityController = class CommunityController {
         return await this.communityService.likePost(user.id, postId);
     }
     async createPost(files, user, createPostDto) {
+        const { hashtags } = createPostDto;
         const post = await this.communityService.createPost(user.id, createPostDto);
-        if (createPostDto.hashtags) {
-            await this.hashtagService.addTags(post, createPostDto);
+        if (hashtags) {
+            const hashtagArr = (typeof hashtags === 'string') ? [hashtags] : hashtags;
+            await this.hashtagService.addTags(post, hashtagArr);
         }
         if (files) {
             await this.communityService.uploadImages(post, files);
@@ -79,8 +81,9 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('offset')),
     __param(1, (0, common_1.Query)('count')),
+    __param(2, (0, common_1.Query)('orderBy')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:paramtypes", [Number, Number, String]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getPosts", null);
 __decorate([

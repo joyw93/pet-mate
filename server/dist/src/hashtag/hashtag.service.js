@@ -24,8 +24,7 @@ let HashtagService = class HashtagService {
         this.communityHashtagRepository = communityHashtagRepository;
         this.hashtagRepository = hashtagRepository;
     }
-    async addTags(post, createPostDto) {
-        const { hashtags } = createPostDto;
+    async addTags(post, hashtags) {
         try {
             const result = await Promise.all(hashtags.map(async (hashtag) => {
                 const hashtagFound = await this.hashtagRepository.findOne({
@@ -34,7 +33,9 @@ let HashtagService = class HashtagService {
                 const communityHashtag = new community_hashtag_entity_1.CommunityHashtagEntity();
                 communityHashtag.post = post;
                 if (!hashtagFound) {
-                    const newTag = await this.hashtagRepository.save({ keyword: hashtag });
+                    const newTag = await this.hashtagRepository.save({
+                        keyword: hashtag,
+                    });
                     communityHashtag.hashtag = newTag;
                 }
                 else {
