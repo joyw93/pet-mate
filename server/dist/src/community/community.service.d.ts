@@ -17,7 +17,7 @@ export declare class CommunityService {
     constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
-    getHotPosts(): Promise<any[]>;
+    getHotPosts(): Promise<CommunityEntity[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{
         title: string;

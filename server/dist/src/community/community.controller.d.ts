@@ -10,7 +10,7 @@ export declare class CommunityController {
     private readonly hashtagService;
     constructor(communityService: CommunityService, hashtagService: HashtagService);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<import("./community.entity").CommunityEntity[]>;
-    getHotPosts(): Promise<any[]>;
+    getHotPosts(): Promise<import("./community.entity").CommunityEntity[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(files: Express.Multer.File, user: UserEntity, createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;

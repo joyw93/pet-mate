@@ -42,9 +42,9 @@ export class CommunityController {
     @Query('orderBy') orderBy: string,
   ) {
     return await this.communityService.getPosts(
-      offset || 0,
-      postCount || 10,
-      orderBy || 'new',
+      offset ?? 0,
+      postCount ?? 10,
+      orderBy ?? 'new',
     );
   }
 
