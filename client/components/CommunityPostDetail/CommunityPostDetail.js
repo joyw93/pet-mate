@@ -18,6 +18,8 @@ const CommunityPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);
   const [like, setLike] = useState("../img/heart2.png");
+  const [likeCount, setLikeCount] = useState(0);
+  const [views, setViews] = useState(0);
 
   const postItem = {
     id: "1",
@@ -125,10 +127,14 @@ const CommunityPostDetail = () => {
           <span id="post_created_time">
             {getElapsedTime(postItem.created_time)}
           </span>
+          <span id="views">조회수 {views}</span>
         </div>
-        <button onClick={handleLike}>
-          <img src={like} alt="좋아요" />
-        </button>
+        <div id="like_wrapper">
+          <button onClick={handleLike}>
+            <img src={like} alt="좋아요" />
+          </button>
+          <span id="like_count">{likeCount}</span>
+        </div>
       </PostInfo>
       <div id="content">
         <Images>

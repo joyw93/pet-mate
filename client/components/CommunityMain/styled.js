@@ -3,7 +3,7 @@ import { Colors } from "../../styles/ColorVariable";
 
 //CommunityMain
 export const CommunityCon = styled.div`
-  max-width: 1200px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 14px;
 `;
@@ -88,7 +88,6 @@ export const ItemContainer = styled.div`
 export const ItemWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
 `;
 
 export const ContentWrapper = styled.div`
@@ -96,7 +95,13 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-
+export const TitleContentWrapper = styled.div`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.6;
+    transition: ease-in 0.1s;
+  }
+`;
 export const ContentTitle = styled.h2`
   font-size: 20px;
   font-weight: bold;
@@ -114,14 +119,30 @@ export const Content = styled.div`
 export const Author = styled.span`
   display: inline-block;
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: 5px;
 `;
 export const ContentInfo = styled.div`
   display: flex;
   font-size: 14px;
   margin-bottom: 10px;
+
+  /* span {
+    margin-left: 5px;
+  } */
 `;
 
+export const ContentDetail = styled.span`
+  margin-left: 5px;
+`;
+export const ImageWrapper = styled.div`
+  width: 220px;
+  height: 180px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.6;
+    transition: ease-in 0.1s;
+  }
+`;
 export const ItemImage = styled.img`
   width: 220px;
   height: 180px;
@@ -135,10 +156,18 @@ export const KeywordWrapper = styled.div``;
 export const KeywordItem = styled.button`
   padding: 5px 10px;
   margin-right: 5px;
-  background-color: #ffff;
+  background-color: #fff;
   border: 1.5px solid ${Colors.primaryColor};
   border-radius: 20px;
   font-size: 12px;
+  cursor: pointer;
+  span {
+    font-size: 14px;
+  }
+  &:hover {
+    opacity: 0.5;
+    transition: ease-in 0.1s;
+  }
 `;
 
 export const BtnContainer = styled.div`

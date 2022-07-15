@@ -11,6 +11,9 @@ import {
   KeywordWrapper,
   KeywordItem,
   ItemWrapper,
+  ContentDetail,
+  ImageWrapper,
+  TitleContentWrapper,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
@@ -22,17 +25,35 @@ const CommunityItem = (item) => {
   const [created_date, setCreatedate] = useState("");
   const [image_src, setImagesrc] = useState("");
   const [tags, setTags] = useState("");
+  const [views, setViews] = useState("");
+  const [likeCount, setLikeCount] = useState(0);
 
   //렌더 문제 있어서 초기화값 설정
   useEffect(() => {
-    const { title, content, author, createdAt, images, tags } = item;
+    const {
+      title,
+      content,
+      author,
+      createdAt,
+      images,
+      tags,
+      views,
+      likeCount,
+    } = item;
     const convertedTime = getElapsedTime(createdAt);
     setTitle(title);
     setContent(content);
     setAuthor(author.nickname);
     setCreatedate(convertedTime);
-    setImagesrc(images[0]);
     setTags(tags);
+    setViews(views);
+    setLikeCount(likeCount);
+
+    if (images && images.length !== 0) {
+      setImagesrc(images[0]);
+    } else {
+      setImagesrc(null);
+    }
   }, []);
 
   const itemSelect = () => {
@@ -40,26 +61,35 @@ const CommunityItem = (item) => {
   };
 
   return (
-    <ItemContainer onClick={itemSelect}>
-      {
-        <ItemWrapper>
-          <ContentWrapper>
+    <ItemContainer>
+      <ItemWrapper>
+        <ContentWrapper>
+          <TitleContentWrapper onClick={itemSelect}>
             <ContentTitle>{title}</ContentTitle>
             <Content>{content}</Content>
-            <ContentInfo>
-              <Author>{author}</Author>
-              <span>{created_date}</span>
-            </ContentInfo>
-            <KeywordWrapper>
-              {tags &&
-                tags.map((word, index) => (
-                  <KeywordItem key={index}>{word.hashtag.keyword}</KeywordItem>
-                ))}
-            </KeywordWrapper>
-          </ContentWrapper>
-          <div>{image_src && <ItemImage src={image_src.url} />}</div>
-        </ItemWrapper>
-      }
+          </TitleContentWrapper>
+          <ContentInfo>
+            <Author>{author}</Author>
+            <ContentDetail>{created_date}</ContentDetail>
+            <ContentDetail>·</ContentDetail>
+            <ContentDetail>조회수 {views}</ContentDetail>
+            <ContentDetail>·</ContentDetail>
+            <ContentDetail>좋아요 {likeCount}</ContentDetail>
+          </ContentInfo>
+          <KeywordWrapper>
+            {tags &&
+              tags.map((word, index) => (
+                <KeywordItem key={index}>
+                  <span>#</span>
+                  {word.hashtag.keyword}
+                </KeywordItem>
+              ))}
+          </KeywordWrapper>
+        </ContentWrapper>
+        <ImageWrapper onClick={itemSelect}>
+          {image_src && <ItemImage src={image_src.url} />}
+        </ImageWrapper>
+      </ItemWrapper>
     </ItemContainer>
   );
 };

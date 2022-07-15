@@ -90,6 +90,7 @@ const CommunityMain = (data) => {
   const loadPosts = async () => {
     const result = await axios.get("http://api.petmate.kr/community?count=100");
     const data = result.data.data;
+    console.log(data);
   };
 
   const handleLoading = () => {
