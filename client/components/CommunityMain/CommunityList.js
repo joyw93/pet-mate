@@ -1,25 +1,42 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
 import { ListContainer, BtnContainer } from "./styled";
-import { loadPostsRequestAction } from "../../reducers/community";
+import { loadMorePostsAction } from "../../reducers/community";
+import axios from "axios";
 
-const CommunityList = (posts) => {
-  // console.log(posts.posts);
+const CommunityList = () => {
+  const posts = useSelector((state) => state.community.posts);
+  const loadPostsDone = useSelector(
+    (state) => state.community.posts,
+    shallowEqual
+  );
+
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setList(posts.posts);
+    console.log("??", posts);
+    if (loadPostsDone) {
+      setList(posts);
+    }
   }, [posts]);
 
-  console.log(list);
-
   const handleMorePosts = () => {
-    const community = dispatch(loadPostsRequestAction());
-    console.log(community.data);
+    // const result = await axios.get(
+    //   "http://api.petmate.kr/community?offset=10&count=10"
+    // );
+    // const data = result.data.data;
+    // console.log(data);
+    dispatch(loadMorePostsAction());
   };
+
+  // const handleMorePosts = () => {
+  //   const community = dispatch(loadPostsRequestAction());
+  //   console.log(community.data);
+  // };
+
   return (
     <>
       <ListContainer>

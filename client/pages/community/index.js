@@ -5,7 +5,7 @@ import Head from "next/head";
 
 import CommunityMain from "../../components/CommunityMain/CommunityMain";
 
-const Community = () => {
+const Community = ({ hotdata }) => {
   const { me } = useSelector((state) => state.user);
 
   return (
@@ -14,27 +14,27 @@ const Community = () => {
         <title>커뮤니티 | 펫메이트</title>
       </Head>
       <AppLayout>
-        {/* {me ? (
+        {me ? (
           <button>
             <Link href="/community/post">
               <a>게시글 쓰기</a>
             </Link>
           </button>
-        ) : null} */}
-        <CommunityMain />
+        ) : null}
+        <CommunityMain hotdata={hotdata} />
       </AppLayout>
     </>
   );
 };
 
-// export const getServerSideProps = async () => {
-//   // Fetch data from external API
-//   const result = await fetch("http://api.petmate.kr/community");
-//   const data = await result.json();
+export const getServerSideProps = async () => {
+  // Fetch data from external API
+  const result = await fetch("http://api.petmate.kr/community/hot-posts");
+  const hotdata = await result.json();
 
-//   console.log(data);
-//   // Pass data to the page via props
-//   return { props: { data } };
-// };
+  console.log(hotdata);
+  // Pass data to the page via props
+  return { props: { hotdata } };
+};
 
 export default Community;
