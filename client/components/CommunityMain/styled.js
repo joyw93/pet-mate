@@ -160,6 +160,7 @@ export const KeywordItem = styled.button`
   border: 1.5px solid ${Colors.primaryColor};
   border-radius: 20px;
   font-size: 12px;
+
   cursor: pointer;
   span {
     font-size: 14px;

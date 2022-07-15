@@ -14,18 +14,21 @@ import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-import { loadPostsRequestAction } from "../../reducers/community";
+import {
+  loadPostsRequestAction,
+  showOldPostAction,
+} from "../../reducers/community";
 
 const SelectOptions = [
-  { id: "latest", name: "최신 순" },
-  { id: "oldest", name: "오래된 순" },
+  { id: "latest", name: "new" },
+  { id: "oldest", name: "old" },
   { id: "view", name: "조회 순" },
   { id: "like", name: "좋아요 순" },
 ];
 
-const ListSelection = () => {
+const ListSelection = ({ onChange }) => {
   return (
-    <Selection>
+    <Selection onChange={onChange}>
       {SelectOptions.map((item) => (
         <option key={item.id}>{item.name}</option>
       ))}
@@ -33,33 +36,28 @@ const ListSelection = () => {
   );
 };
 
-const NoticeList = [
-  {
-    id: 1,
-    title:
-      "공지1 어쩌구 저쩌구 집에 가고싶어여 근데 왜 안 끝나나요 오늘 안 놀았는데;;킹받",
-  },
-  {
-    id: 2,
-    title:
-      "공지2 어쩌구 저쩌구 집에 가고싶어여 근데 왜 안 끝나나요 오늘 안 놀았는데;;킹받",
-  },
-];
+const Notice = (hotdata) => {
+  const [noticeList, setNoticeList] = useState([]);
+  //console.log(hotdata.hotdata.hotdata.data);
+  useEffect(() => {
+    setNoticeList(hotdata.hotdata.hotdata.data);
+  }, []);
 
-const Notice = () => {
   return (
     <>
-      {NoticeList.map((notice) => (
-        <NoticeWrapper key={notice.id}>
-          <NoticeBtn>인기</NoticeBtn>
-          <span>{notice.title}</span>
-        </NoticeWrapper>
-      ))}
+      {noticeList &&
+        noticeList.map((notice) => (
+          <NoticeWrapper key={notice.id}>
+            <NoticeBtn>인기</NoticeBtn>
+            <span>{notice.title}</span>
+          </NoticeWrapper>
+        ))}
     </>
   );
 };
 
-const CommunityMain = (data) => {
+const CommunityMain = (hotdata) => {
+  const [filterCond, setFilterCond] = useState("new");
   const { me } = useSelector((state) => state.user);
   const { postDone, posts } = useSelector((state) => state.community);
   const dispatch = useDispatch();
@@ -71,13 +69,14 @@ const CommunityMain = (data) => {
     }
   }, [postDone]);
 
-  //const [posts, setPosts] = useState([]);
+  // useEffect(() => {
+  //   dispatch(loadPostsRequestAction());
+  //   //dispatch(showOldPostAction());
+  // }, []);
 
   useEffect(() => {
-    dispatch(loadPostsRequestAction());
-  }, []);
-
-  console.log(posts);
+    dispatch(loadPostsRequestAction(filterCond));
+  }, [filterCond]);
 
   const goToNew = () => {
     if (!me) {
@@ -97,23 +96,34 @@ const CommunityMain = (data) => {
     dispatch(loadPostsRequestAction());
   };
 
+  const handleListSelect = (e) => {
+    const selectedCond = e.target.value;
+    setFilterCond(selectedCond);
+    console.log(e.target.value);
+
+    //const selectedValue = e.target.value;
+    // if (e.target.value === "오래된 순") {
+    //   dispatch(showOldPostAction());
+    // }
+  };
+
   return (
     <CommunityCon>
       <button onClick={loadPosts}>게시글 불러오기</button>
       <button onClick={handleLoading}>커뮤니티 게시글 보기</button>
       <Title>커뮤니티</Title>
       <HeadWrapper>
-        <ListSelection />
+        <ListSelection onChange={handleListSelect} />
         {me ? (
           <PostBtn onClick={goToNew}>
             <span>글쓰기</span>
           </PostBtn>
         ) : null}
       </HeadWrapper>
-      <Notice />
+      <Notice hotdata={hotdata} />
 
       {/* {posts && posts.map((item) => <div key={item.id}>{item.content}</div>)} */}
-      <CommunityList posts={posts} />
+      <CommunityList filterCond={filterCond} />
     </CommunityCon>
   );
 };

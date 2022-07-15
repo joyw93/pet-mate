@@ -15,6 +15,7 @@ import {
 import { getElapsedTime } from "../../utils";
 
 const CommunityPostDetail = () => {
+  console.log(post);
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);
   const [like, setLike] = useState("../img/heart2.png");
