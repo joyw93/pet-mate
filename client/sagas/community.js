@@ -7,6 +7,9 @@ import {
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
+  LOAD_POST_DETAIL_REQUEST,
+  LOAD_POST_DETAIL_SUCCESS,
+  LOAD_POST_DETAIL_FAILURE,
   SHOW_OLD_POSTS_REQUEST,
   SHOW_OLD_POSTS_SUCCESS,
   SHOW_OLD_POSTS_FAILURE,
@@ -80,11 +83,36 @@ function* loadPosts(action) {
   }
 }
 
+//디테일 페이지
+function loadPostDetailAPI(data) {
+  return axios.get(`${serverUrl}/community/${data}`, data, {
+    withCredentials: true,
+  });
+}
+
 //글 더 불러오기
 function loadMoreAPI(data) {
   return axios.get(`${serverUrl}/community?offset=10&count=10`, data, {
     withCredentials: true,
   });
+}
+
+function* loadPostDetail(action) {
+  try {
+    const result = yield call(loadPostDetailAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: LOAD_POST_DETAIL_SUCCESS,
+      data: payload.data,
+    });
+    //console.log(payload);
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_POST_DETAIL_FAILURE,
+      data: err.response.data,
+    });
+  }
 }
 
 function* loadMorePosts(action) {
@@ -93,6 +121,7 @@ function* loadMorePosts(action) {
     const payload = result.data;
     yield put({
       type: LOAD_MORE_SUCCESS,
+
       data: payload.data,
     });
     //console.log(payload);
@@ -125,6 +154,7 @@ function* loadOldPosts(action) {
     console.error(err);
     yield put({
       type: SHOW_OLD_POSTS_FAILURE,
+
       data: err.response.data,
     });
   }
@@ -136,6 +166,9 @@ function* watchAddPost() {
 
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+}
+function* watchLoadPostDetail() {
+  yield throttle(5000, LOAD_POST_DETAIL_REQUEST, loadPostDetail);
 }
 
 function* watchMorePosts() {
@@ -149,10 +182,5 @@ function* watchLoadOldPosts() {
 SHOW_OLD_POSTS_REQUEST;
 
 export default function* communitySaga() {
-  yield all([
-    fork(watchAddPost),
-    fork(watchLoadPosts),
-    fork(watchMorePosts),
-    fork(watchLoadOldPosts),
-  ]);
+  yield all([fork(watchAddPost), fork(watchLoadPosts), fork(watchMorePosts), fork(watchLoadOldPosts), fork(watchLoadPostDetail)]);
 }

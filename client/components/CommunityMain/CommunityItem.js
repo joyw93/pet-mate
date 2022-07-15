@@ -25,21 +25,12 @@ const CommunityItem = (item) => {
   const [created_date, setCreatedate] = useState("");
   const [image_src, setImagesrc] = useState("");
   const [tags, setTags] = useState("");
-  const [views, setViews] = useState("");
+  const [views, setViews] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
 
   //렌더 문제 있어서 초기화값 설정
   useEffect(() => {
-    const {
-      title,
-      content,
-      author,
-      createdAt,
-      images,
-      tags,
-      views,
-      likeCount,
-    } = item;
+    const { title, content, author, createdAt, images, tags, views, likeCount } = item;
     const convertedTime = getElapsedTime(createdAt);
     setTitle(title);
     setContent(content);
@@ -86,9 +77,7 @@ const CommunityItem = (item) => {
               ))}
           </KeywordWrapper>
         </ContentWrapper>
-        <ImageWrapper onClick={itemSelect}>
-          {image_src && <ItemImage src={image_src.url} />}
-        </ImageWrapper>
+        <ImageWrapper onClick={itemSelect}>{image_src && <ItemImage src={image_src.url} />}</ImageWrapper>
       </ItemWrapper>
     </ItemContainer>
   );
