@@ -84,6 +84,7 @@ export const CheckContainer = styled.div`
     accent-color: ${Colors.primaryColor};
     cursor: pointer;
     margin-bottom: 10px;
+    margin-right: 5px;
   }
   label {
     font-size: 14px;

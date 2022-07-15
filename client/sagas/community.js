@@ -46,7 +46,7 @@ function* post(action) {
 
 //글 보여주기
 function loadPostsAPI(data) {
-  return axios.get(`${serverUrl}/community?orderBy=old`, data, {
+  return axios.get(`${serverUrl}/community`, data, {
     withCredentials: true,
   });
 }

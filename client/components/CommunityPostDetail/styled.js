@@ -53,6 +53,7 @@ export const PostInfo = styled.div`
   margin: 10px 0 30px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   line-height: 32px;
   font-size: 0.8rem;
 
@@ -64,18 +65,34 @@ export const PostInfo = styled.div`
     color: #fff;
     padding: 0 15px;
     border-radius: 20px;
-    margin-right: 10px;
+  }
+  #post_created_time,
+  #views {
+    margin-left: 10px;
+  }
+  #like_wrapper {
+    display: flex;
+
+    #like_count {
+      margin-left: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: ${Colors.primaryColor};
+    }
   }
   button {
-    width: 32px;
+    display: block;
+    width: 28px;
     height: 32px;
     cursor: pointer;
     background: none;
     border: none;
 
     img {
+      display: block;
       width: 28px;
       height: 26px;
+      margin: auto;
     }
   }
 `;
