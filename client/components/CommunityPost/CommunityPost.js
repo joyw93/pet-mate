@@ -1,18 +1,12 @@
 import axios from "axios";
 import Router from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
-import {
-  TitleWrapper,
-  TextEditWrapper,
-  AddPhotoWrapper,
-  KeywordWrapper,
-  Button,
-} from "./styled";
+import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, KeywordWrapper, Button } from "./styled";
 
 const CommunityPost = () => {
   const dispatch = useDispatch();
@@ -24,9 +18,12 @@ const CommunityPost = () => {
 
   const [FileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
-  const [hashTagVal, setHashTagVal] = useState("");
 
+  const [hashTagVal, setHashTagVal] = useState("");
   const [hashArr, setHashArr] = useState([]);
+
+  const titleRef = useRef();
+  const contentRef = useRef();
 
   useEffect(() => {
     if (!me) {
@@ -66,11 +63,9 @@ const CommunityPost = () => {
     [FileImages]
   );
 
-
   // useEffect(() => {
   //   console.log(images);
   // }, [images]);
-
 
   const handleDeleteImage = useCallback(
     (id) => {
@@ -83,7 +78,6 @@ const CommunityPost = () => {
 
   //KeywordWrapper
 
-
   const handleHash = useCallback(
     (e) => {
       setHashTagVal(e.target.value);
@@ -94,7 +88,6 @@ const CommunityPost = () => {
     (e) => {
       if (e.keyCode === 13 && e.target.value.trim() !== "") {
         if (hashArr.find((it) => it === e.target.value)) {
-
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
           return;
@@ -113,8 +106,13 @@ const CommunityPost = () => {
     [hashArr]
   );
 
-
   const post = () => {
+    if (!title) {
+      return titleRef.current.focus();
+    }
+    if (!content) {
+      return contentRef.current.focus();
+    }
     const body = new FormData();
     body.append("title", title);
     body.append("content", content);
@@ -136,12 +134,9 @@ const CommunityPost = () => {
       Router.replace("/community");
     }
   }, [postDone]);
-  
+
   const test = () => {
-    axios.post(
-      "http://127.0.0.1:3000/community",{title:'a',content:'1'},
-      { withCredentials: true }
-    );
+    axios.post("http://127.0.0.1:3000/community", { title: "a", content: "1" }, { withCredentials: true });
   };
   return (
     <>
@@ -157,6 +152,7 @@ const CommunityPost = () => {
 
         <TextEditWrapper>
           <input
+            ref={titleRef}
             autoFocus
             maxLength="40"
             type="text"
@@ -165,6 +161,7 @@ const CommunityPost = () => {
             placeholder="제목을 입력해 주세요."
           />
           <textarea
+            ref={contentRef}
             maxLength="350"
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -206,11 +203,7 @@ const CommunityPost = () => {
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
             {hashArr.map((it, index) => (
-              <button
-                key={index}
-                className="keyword_item"
-                onClick={() => handleDeleteHash(index)}
-              >
+              <button key={index} className="keyword_item" onClick={() => handleDeleteHash(index)}>
                 <span>{it}</span>
 
                 <svg

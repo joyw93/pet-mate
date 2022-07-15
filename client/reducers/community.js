@@ -2,7 +2,11 @@ import produce from "immer";
 
 export const initialState = {
   posts: [],
+  singlePost: null,
   hasMorePosts: true,
+  loadPostDetailLoading: false,
+  loadPostDetailDone: false,
+  loadPostDetailError: null,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -16,6 +20,10 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+export const LOAD_POST_DETAIL_REQUEST = "LOAD_POST_DETAIL_REQUEST";
+export const LOAD_POST_DETAIL_SUCCESS = "LOAD_POST_DETAIL_SUCCESS";
+export const LOAD_POST_DETAIL_FAILURE = "LOAD_POST_DETAIL_FAILURE";
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -43,6 +51,11 @@ export const postResetAction = () => ({
   type: POST_RESET,
 });
 
+export const loadPostDetailRequestAction = (data) => ({
+  type: LOAD_POST_DETAIL_REQUEST,
+  data,
+});
+
 export const loadPostsRequestAction = () => ({
   type: LOAD_POSTS_REQUEST,
 });
@@ -60,6 +73,21 @@ export const addCommentRequestAction = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //디테일 페이지
+      case LOAD_POST_DETAIL_REQUEST:
+        draft.loadPostDetailLoading = true;
+        draft.loadPostDetailDone = false;
+        draft.loadPostDetailError = null;
+        break;
+      case LOAD_POST_DETAIL_SUCCESS:
+        draft.loadPostDetailLoading = false;
+        draft.loadPostDetailDone = true;
+        draft.singlePost = action.data;
+        break;
+      case LOAD_POST_DETAIL_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
       //글 보여주기
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;

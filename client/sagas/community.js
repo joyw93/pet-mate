@@ -4,6 +4,9 @@ import {
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
+  LOAD_POST_DETAIL_REQUEST,
+  LOAD_POST_DETAIL_SUCCESS,
+  LOAD_POST_DETAIL_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
@@ -69,6 +72,31 @@ function* loadPosts(action) {
   }
 }
 
+//디테일 페이지
+function loadPostDetailAPI(data) {
+  return axios.get(`${serverUrl}/community/${data}`, data, {
+    withCredentials: true,
+  });
+}
+
+function* loadPostDetail(action) {
+  try {
+    const result = yield call(loadPostDetailAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: LOAD_POST_DETAIL_SUCCESS,
+      data: payload.data,
+    });
+    //console.log(payload);
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_POST_DETAIL_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, post);
 }
@@ -76,7 +104,10 @@ function* watchAddPost() {
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
+function* watchLoadPostDetail() {
+  yield throttle(5000, LOAD_POST_DETAIL_REQUEST, loadPostDetail);
+}
 
 export default function* communitySaga() {
-  yield all([fork(watchAddPost), fork(watchLoadPosts)]);
+  yield all([fork(watchAddPost), fork(watchLoadPosts), fork(watchLoadPostDetail)]);
 }
