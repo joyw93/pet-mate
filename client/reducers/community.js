@@ -2,11 +2,21 @@ import produce from "immer";
 
 export const initialState = {
   posts: [],
+
   singlePost: null,
   hasMorePosts: true,
   loadPostDetailLoading: false,
   loadPostDetailDone: false,
   loadPostDetailError: null,
+
+  showOldPostsLoading: false,
+  showOldPostsDone: false,
+  showOldPostsError: null,
+  hasMorePosts: true,
+  loadMoreLoading: false,
+  loadMoreDone: false,
+  loadMoreError: null,
+
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -28,6 +38,14 @@ export const LOAD_POST_DETAIL_FAILURE = "LOAD_POST_DETAIL_FAILURE";
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
 export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
+
+export const LOAD_MORE_REQUEST = "LOAD_MORE_REQUEST";
+export const LOAD_MORE_SUCCESS = "LOAD_MORE_SUCCESS";
+export const LOAD_MORE_FAILURE = "LOAD_MORE_FAILURE";
+
+export const SHOW_OLD_POSTS_REQUEST = "SHOW_OLD_POSTS_REQUEST";
+export const SHOW_OLD_POSTS_SUCCESS = "SHOW_OLD_POSTS_SUCCESS";
+export const SHOW_OLD_POSTS_FAILURE = "SHOW_OLD_POSTS_FAILURE";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -56,8 +74,17 @@ export const loadPostDetailRequestAction = (data) => ({
   data,
 });
 
-export const loadPostsRequestAction = () => ({
+export const loadPostsRequestAction = (data) => ({
   type: LOAD_POSTS_REQUEST,
+  data,
+});
+
+export const loadMorePostsAction = () => ({
+  type: LOAD_MORE_REQUEST,
+});
+
+export const showOldPostAction = () => ({
+  type: SHOW_OLD_POSTS_REQUEST,
 });
 
 export const removePostRequestAction = (data) => ({
@@ -89,6 +116,9 @@ const reducer = (state = initialState, action) =>
         draft.loadPostsError = action.error;
         break;
       //글 보여주기
+
+      //글 불러오기
+
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsDone = false;
@@ -107,6 +137,38 @@ const reducer = (state = initialState, action) =>
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
+        break;
+
+      //글 불러오기
+      case SHOW_OLD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+      case SHOW_OLD_POSTS_SUCCESS:
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.posts = action.data;
+        break;
+      case SHOW_OLD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
+
+      //글 더 불러오기
+      case LOAD_MORE_REQUEST:
+        draft.loadMoreLoading = true;
+        draft.loadMoreDone = false;
+        draft.loadMoreError = null;
+        break;
+      case LOAD_MORE_SUCCESS:
+        draft.loadMoreLoading = false;
+        draft.loadMoreDone = true;
+        draft.posts = draft.posts.concat(action.data);
+        break;
+      case LOAD_MORE_FAILURE:
+        draft.loadMoreLoading = false;
+        draft.loadMoreError = action.error;
         break;
 
       //글 추가
