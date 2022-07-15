@@ -29,7 +29,7 @@ export class CommunityEntity {
   @Column('int', { name: 'author_id' })
   author_id: number;
 
-  @Column('int', {name: 'views'})
+  @Column('int', { name: 'views', default: 0 })
   views: number;
 
   @CreateDateColumn()

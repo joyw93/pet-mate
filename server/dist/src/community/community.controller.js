@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityController = void 0;
 const common_1 = require("@nestjs/common");
-const uuid_1 = require("uuid");
 const platform_express_1 = require("@nestjs/platform-express");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const hashtag_service_1 = require("../hashtag/hashtag.service");
@@ -22,13 +21,8 @@ const user_entity_1 = require("../user/user.entity");
 const community_service_1 = require("./community.service");
 const create_comment_dto_1 = require("./dto/create-comment.dto");
 const create_post_dto_1 = require("./dto/create-post.dto");
+const s3_1 = require("../common/aws/s3");
 const edit_post_dto_1 = require("./dto/edit-post.dto");
-const multerS3 = require("multer-s3");
-const AWS = require("aws-sdk");
-const dotenv = require("dotenv");
-const path = require("path");
-dotenv.config();
-const s3 = new AWS.S3();
 let CommunityController = class CommunityController {
     constructor(communityService, hashtagService) {
         this.communityService = communityService;
@@ -50,7 +44,7 @@ let CommunityController = class CommunityController {
         const { hashtags } = createPostDto;
         const post = await this.communityService.createPost(user.id, createPostDto);
         if (hashtags) {
-            const hashtagArr = (typeof hashtags === 'string') ? [hashtags] : hashtags;
+            const hashtagArr = typeof hashtags === 'string' ? [hashtags] : hashtags;
             await this.hashtagService.addTags(post, hashtagArr);
         }
         if (files) {
@@ -58,8 +52,17 @@ let CommunityController = class CommunityController {
         }
         return post;
     }
-    async editPost(postId, editPostDto) {
-        return await this.communityService.editPost(postId, editPostDto);
+    async editPost(files, postId, user, editPostDto) {
+        const { hashtags } = editPostDto;
+        const editedPost = await this.communityService.editPost(postId, editPostDto);
+        if (hashtags) {
+            const hashtagArr = typeof hashtags === 'string' ? [hashtags] : hashtags;
+            await this.hashtagService.addTags(editedPost, hashtagArr);
+        }
+        if (files) {
+            await this.communityService.uploadImages(editedPost, files);
+        }
+        return editedPost;
     }
     async deletePost(user, postId) {
         return await this.communityService.deletePost(postId);
@@ -109,16 +112,7 @@ __decorate([
 ], CommunityController.prototype, "likePost", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, {
-        storage: multerS3({
-            s3,
-            bucket: process.env.AWS_S3_BUCKET_NAME,
-            acl: 'public-read',
-            key: (req, file, cb) => {
-                cb(null, `petmate/community/images/${(0, uuid_1.v4)()}${path.extname(file.originalname)}`);
-            },
-        }),
-    })),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.createConfig)),
     __param(0, (0, common_1.UploadedFiles)()),
     __param(1, (0, user_decorator_1.User)()),
     __param(2, (0, common_1.Body)()),
@@ -129,10 +123,14 @@ __decorate([
 ], CommunityController.prototype, "createPost", null);
 __decorate([
     (0, common_1.Patch)(':postId'),
-    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editConfig)),
+    __param(0, (0, common_1.UploadedFiles)()),
+    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(2, (0, user_decorator_1.User)()),
+    __param(3, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, edit_post_dto_1.EditPostDto]),
+    __metadata("design:paramtypes", [Object, Number, user_entity_1.UserEntity,
+        edit_post_dto_1.EditPostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "editPost", null);
 __decorate([

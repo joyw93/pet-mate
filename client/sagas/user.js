@@ -4,6 +4,9 @@ import {
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
+  SIGN_OUT_FAILURE,
+  SIGN_OUT_REQUEST,
+  SIGN_OUT_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -12,11 +15,10 @@ import {
   LOG_OUT_SUCCESS,
 } from "../reducers/user";
 
-const serverUrl = `http://api.petmate.kr`;
-// const serverUrl = `http://127.0.0.1:3000`;
+// const serverUrl = `http://api.petmate.kr`;
+const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
-  console.log(data);
   return axios.post(`${serverUrl}/user/signup`, data);
 }
 
@@ -32,6 +34,27 @@ function* signUp(action) {
     console.error(err);
     yield put({
       type: SIGN_UP_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function signOutAPI() {
+  return axios.delete(`${serverUrl}/user/signout`, { withCredentials: true });
+}
+
+function* signOut(action) {
+  try {
+    const result = yield call(signOutAPI);
+    const payload = result.data;
+    yield put({
+      type: SIGN_OUT_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: SIGN_OUT_FAILURE,
       error: err.response.data,
     });
   }
@@ -91,6 +114,15 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+function* watchSignOut() {
+  yield takeLatest(SIGN_OUT_REQUEST, signOut);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchSignUp), fork(watchLogIn), fork(watchLogOut)]);
+  yield all([
+    fork(watchSignUp),
+    fork(watchSignOut),
+    fork(watchLogIn),
+    fork(watchLogOut),
+  ]);
 }

@@ -11,12 +11,15 @@ import { UserEntity } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import * as res from '../common/responses/message';
 import { Request, Response } from 'express';
+import { CommunityEntity } from 'src/community/community.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(CommunityEntity)
+    private communityRepository: Repository<CommunityEntity>,
   ) {}
 
   async checkNickname(nickname: string) {
@@ -96,12 +99,24 @@ export class UserService {
     }
   }
 
+  async getMyPosts(userId: number) {
+    const posts = await this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.id', 'post.id', 'images.id', 'images.url'])
+      .leftJoin('user.posts', 'post')
+      .leftJoin('post.images', 'images')
+      .where('user.id = :id', { id: userId })
+      .getMany();
+    return posts;
+  }
+
   async getLikedPosts(userId: number) {
     const posts = await this.userRepository
       .createQueryBuilder('user')
-      .select(['user.id'])
-      .leftJoinAndSelect('user.likes', 'like')
-      .leftJoinAndSelect('like.post', 'post')
+      .select(['user.id', 'likes.id', 'post.id', 'images.id', 'images.url'])
+      .leftJoin('user.likes', 'likes')
+      .leftJoin('likes.post', 'post')
+      .leftJoin('post.images', 'images')
       .where('user.id = :id', { id: userId })
       .getMany();
     return posts;
@@ -110,9 +125,16 @@ export class UserService {
   async getCommentedPosts(userId: number) {
     const posts = await this.userRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.comments', 'comment')
+      .select(['user.id', 'comments.id', 'post.id', 'images.id', 'images.url'])
+      .leftJoin('user.comments', 'comments')
+      .leftJoin('comments.post', 'post')
+      .leftJoin('post.images', 'images')
       .where('user.id=:id', { id: userId })
       .getMany();
     return posts;
+  }
+
+  async signout(userId: number) {
+    return await this.userRepository.delete(userId);
   }
 }

@@ -30,9 +30,11 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 const bcrypt = require("bcrypt");
 const res = require("../common/responses/message");
+const community_entity_1 = require("../community/community.entity");
 let UserService = class UserService {
-    constructor(userRepository) {
+    constructor(userRepository, communityRepository) {
         this.userRepository = userRepository;
+        this.communityRepository = communityRepository;
     }
     async checkNickname(nickname) {
         const userByNickname = await this.userRepository.findOne({
@@ -101,12 +103,23 @@ let UserService = class UserService {
             };
         }
     }
+    async getMyPosts(userId) {
+        const posts = await this.userRepository
+            .createQueryBuilder('user')
+            .select(['user.id', 'post.id', 'images.id', 'images.url'])
+            .leftJoin('user.posts', 'post')
+            .leftJoin('post.images', 'images')
+            .where('user.id = :id', { id: userId })
+            .getMany();
+        return posts;
+    }
     async getLikedPosts(userId) {
         const posts = await this.userRepository
             .createQueryBuilder('user')
-            .select(['user.id'])
-            .leftJoinAndSelect('user.likes', 'like')
-            .leftJoinAndSelect('like.post', 'post')
+            .select(['user.id', 'likes.id', 'post.id', 'images.id', 'images.url'])
+            .leftJoin('user.likes', 'likes')
+            .leftJoin('likes.post', 'post')
+            .leftJoin('post.images', 'images')
             .where('user.id = :id', { id: userId })
             .getMany();
         return posts;
@@ -114,16 +127,24 @@ let UserService = class UserService {
     async getCommentedPosts(userId) {
         const posts = await this.userRepository
             .createQueryBuilder('user')
-            .leftJoinAndSelect('user.comments', 'comment')
+            .select(['user.id', 'comments.id', 'post.id', 'images.id', 'images.url'])
+            .leftJoin('user.comments', 'comments')
+            .leftJoin('comments.post', 'post')
+            .leftJoin('post.images', 'images')
             .where('user.id=:id', { id: userId })
             .getMany();
         return posts;
+    }
+    async signout(userId) {
+        return await this.userRepository.delete(userId);
     }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

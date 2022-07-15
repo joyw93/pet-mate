@@ -11,13 +11,11 @@ import Router from "next/router";
 import { useRouter } from "next/router";
 
 const CommunityPostDetail = () => {
-<<<<<<< HEAD
   const [post, setPost] = useState({});
   const router = useRouter();
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.community);
   const dispatch = useDispatch();
-=======
   console.log(post);
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);
@@ -101,7 +99,6 @@ const CommunityPostDetail = () => {
     [cmtContent]
   );
 
->>>>>>> 6b15f08cc5c292c6ac4d20721492b5731c16cef1
   useEffect(() => {
     if (id) {
       dispatch(loadPostDetailRequestAction(id));

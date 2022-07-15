@@ -11,7 +11,6 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/common/decorators/user.decorator';
 import { HashtagService } from 'src/hashtag/hashtag.service';
@@ -19,14 +18,8 @@ import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { createConfig, editConfig } from '../common/aws/s3';
 import { EditPostDto } from './dto/edit-post.dto';
-import * as multerS3 from 'multer-s3';
-import * as AWS from 'aws-sdk';
-import * as dotenv from 'dotenv';
-import * as path from 'path';
-dotenv.config();
-
-const s3 = new AWS.S3();
 
 @Controller('community')
 export class CommunityController {
@@ -67,23 +60,7 @@ export class CommunityController {
   }
 
   @Post()
-  @UseInterceptors(
-    FilesInterceptor('images', 3, {
-      storage: multerS3({
-        s3,
-        bucket: process.env.AWS_S3_BUCKET_NAME,
-        acl: 'public-read',
-        key: (req, file, cb) => {
-          cb(
-            null,
-            `petmate/community/images/${uuid()}${path.extname(
-              file.originalname,
-            )}`,
-          );
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FilesInterceptor('images', 3, createConfig))
   async createPost(
     @UploadedFiles() files: Express.Multer.File,
     @User() user: UserEntity,
@@ -93,8 +70,8 @@ export class CommunityController {
     const post = await this.communityService.createPost(user.id, createPostDto);
     if (hashtags) {
       // 해쉬태그 한개일때 배열화
-      const hashtagArr = (typeof hashtags === 'string') ? [hashtags] : hashtags; 
-      await this.hashtagService.addTags(post, hashtagArr); 
+      const hashtagArr = typeof hashtags === 'string' ? [hashtags] : hashtags;
+      await this.hashtagService.addTags(post, hashtagArr);
     }
     if (files) {
       await this.communityService.uploadImages(post, files);
@@ -103,11 +80,27 @@ export class CommunityController {
   }
 
   @Patch(':postId')
+  @UseInterceptors(FilesInterceptor('images', 3, editConfig))
   async editPost(
+    @UploadedFiles() files: Express.Multer.File,
     @Param('postId', ParseIntPipe) postId: number,
+    @User() user: UserEntity,
     @Body() editPostDto: EditPostDto,
   ) {
-    return await this.communityService.editPost(postId, editPostDto);
+    const { hashtags } = editPostDto;
+    const editedPost = await this.communityService.editPost(
+      postId,
+      editPostDto,
+    );
+    if (hashtags) {
+      // 해쉬태그 한개일때 배열화
+      const hashtagArr = typeof hashtags === 'string' ? [hashtags] : hashtags;
+      await this.hashtagService.addTags(editedPost, hashtagArr);
+    }
+    if (files) {
+      await this.communityService.uploadImages(editedPost, files);
+    }
+    return editedPost;
   }
 
   @Delete(':postId')

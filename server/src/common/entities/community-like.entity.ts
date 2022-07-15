@@ -13,19 +13,21 @@ export class CommunityLikeEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('int', {name:'author_id'})
-  author_id: number;
+  @Column('int', { name: 'user_id' })
+  user_id: number;
 
-  @Column('int', {name:'post_id'})
+  @Column('int', { name: 'post_id' })
   post_id: number;
 
-  @ManyToOne(() => CommunityEntity, (post) => post.likes)
+  @ManyToOne(() => CommunityEntity, (post) => post.likes, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
   post: CommunityEntity;
 
-  @ManyToOne(() => UserEntity, (author) => author.likes,{
-    onDelete: "CASCADE"
+  @ManyToOne(() => UserEntity, (user) => user.likes, {
+    onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
-  author: UserEntity;
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: UserEntity;
 }

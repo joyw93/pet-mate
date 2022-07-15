@@ -21,5 +21,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], EditPostDto.prototype, "content", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
+], EditPostDto.prototype, "hashtags", void 0);
 exports.EditPostDto = EditPostDto;
 //# sourceMappingURL=edit-post.dto.js.map

@@ -55,7 +55,7 @@ __decorate([
     __metadata("design:type", Array)
 ], UserEntity.prototype, "posts", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.author, {
+    (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.user, {
         cascade: true,
     }),
     __metadata("design:type", Array)

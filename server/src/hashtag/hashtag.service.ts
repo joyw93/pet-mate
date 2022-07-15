@@ -38,7 +38,9 @@ export class HashtagService {
       return result;
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.ADD_HASHTAG_FAIL);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_ADD_HASHTAG_FAIL,
+      );
     }
   }
 

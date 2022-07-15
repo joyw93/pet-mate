@@ -47,7 +47,7 @@ let HashtagService = class HashtagService {
         }
         catch (err) {
             console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.ADD_HASHTAG_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_ADD_HASHTAG_FAIL);
         }
     }
     async getPosts(tag) {

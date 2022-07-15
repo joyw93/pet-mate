@@ -8,6 +8,7 @@ import {
   Req,
   Response,
   InternalServerErrorException,
+  Delete,
 } from '@nestjs/common';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
 import { KakaoAuthGuard } from 'src/auth/kakao/kakao-auth.guard';
@@ -58,8 +59,8 @@ export class UserController {
 
   @Get('kakao/callback')
   @UseGuards(KakaoAuthGuard)
-  async kakaoLoginCallback(@Req() req, @Res() res ) {
-    return this.userService.kakaoLoginCallback(req, res)
+  async kakaoLoginCallback(@Req() req, @Res() res) {
+    return this.userService.kakaoLoginCallback(req, res);
   }
 
   @Get('logout')
@@ -75,6 +76,11 @@ export class UserController {
     }
   }
 
+  @Get('posts')
+  async getMyPosts(@User() user: UserEntity) {
+    return await this.userService.getMyPosts(user.id);
+  }
+
   @Get('liked-posts')
   async getLikedPosts(@User() user: UserEntity) {
     return await this.userService.getLikedPosts(user.id);
@@ -85,10 +91,14 @@ export class UserController {
     return await this.userService.getCommentedPosts(user.id);
   }
 
+  @Delete('signout')
+  async signout(@User() user: UserEntity) {
+    return await this.userService.signout(user.id);
+  }
+
   @Get('session')
   async isLoggedIn(@User() user: UserEntity, @Req() req) {
     console.log(user);
     console.log(req.session);
   }
-
 }

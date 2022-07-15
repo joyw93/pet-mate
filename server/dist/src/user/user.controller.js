@@ -57,11 +57,17 @@ let UserController = class UserController {
             throw new common_1.InternalServerErrorException();
         }
     }
+    async getMyPosts(user) {
+        return await this.userService.getMyPosts(user.id);
+    }
     async getLikedPosts(user) {
         return await this.userService.getLikedPosts(user.id);
     }
     async getCommentedPosts(user) {
         return await this.userService.getCommentedPosts(user.id);
+    }
+    async signout(user) {
+        return await this.userService.signout(user.id);
     }
     async isLoggedIn(user, req) {
         console.log(user);
@@ -139,6 +145,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "logout", null);
 __decorate([
+    (0, common_1.Get)('posts'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getMyPosts", null);
+__decorate([
     (0, common_1.Get)('liked-posts'),
     __param(0, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
@@ -152,6 +165,13 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getCommentedPosts", null);
+__decorate([
+    (0, common_1.Delete)('signout'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "signout", null);
 __decorate([
     (0, common_1.Get)('session'),
     __param(0, (0, user_decorator_1.User)()),

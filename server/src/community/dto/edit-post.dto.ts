@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class EditPostDto {
   @IsString()
@@ -6,4 +6,7 @@ export class EditPostDto {
 
   @IsString()
   public content: string;
+
+  @IsOptional()
+  public hashtags: string[] | string;
 }

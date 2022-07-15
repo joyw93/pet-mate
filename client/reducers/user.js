@@ -10,6 +10,9 @@ export const initialState = {
   signUpLoading: false, // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+  signOutLoading: false, // 회원탈퇴 시도중
+  signOutDone: false,
+  signOutError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -19,6 +22,11 @@ export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 export const SIGN_UP_RESET = "SIGN_UP_RESET";
+
+export const SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST";
+export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS";
+export const SIGN_OUT_FAILURE = "SIGN_OUT_FAILURE";
+export const SIGN_OUT_RESET = "SIGN_OUT_RESET";
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -35,6 +43,14 @@ export const signupRequestAction = (data) => ({
 
 export const signupResetAction = () => ({
   type: SIGN_UP_RESET,
+});
+
+export const signOutRequestAction = () => ({
+  type: SIGN_OUT_REQUEST,
+});
+
+export const signOutResetAction = () => ({
+  type: SIGN_OUT_RESET,
 });
 
 export const loginRequestAction = (data) => ({
@@ -63,8 +79,28 @@ const reducer = (state = initialState, action) =>
         draft.signUpError = action.error;
         break;
 
+      case SIGN_OUT_REQUEST:
+        draft.signOutLoading = true;
+        draft.signOutError = null;
+        draft.signOutDone = false;
+        break;
+      case SIGN_OUT_SUCCESS:
+        draft.signOutLoading = false;
+        draft.logOutDone = true;
+        draft.me = null;
+        draft.signOutDone = true;
+        break;
+      case SIGN_OUT_FAILURE:
+        draft.signOutLoading = false;
+        draft.signOutError = action.error;
+        break;
+
       case SIGN_UP_RESET:
         draft.signUpDone = false;
+        break;
+
+      case SIGN_OUT_RESET:
+        draft.signOutDone = false;
         break;
 
       case LOG_IN_REQUEST:

@@ -13,7 +13,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityService = void 0;
-const AWS = require("aws-sdk");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
@@ -23,11 +22,6 @@ const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
 const res = require("../common/responses/message");
-AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
-    region: process.env.AWS_REGION,
-});
 let CommunityService = class CommunityService {
     constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, communityImageRepository) {
         this.communityRepository = communityRepository;
@@ -79,7 +73,7 @@ let CommunityService = class CommunityService {
         }
         catch (err) {
             console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.GET_POST_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
         }
     }
     async getOnePost(postId) {
@@ -87,7 +81,7 @@ let CommunityService = class CommunityService {
             where: { id: postId },
         });
         if (!post) {
-            throw new common_1.NotFoundException(res.msg.POST_NOT_EXIST);
+            throw new common_1.NotFoundException(res.msg.COMMUNITY_POST_NOT_EXIST);
         }
         else {
             post.views++;
@@ -112,7 +106,6 @@ let CommunityService = class CommunityService {
                 'tags.id',
                 'hashtag.keyword',
             ])
-                .addSelect('COUNT(distinct likes.id)', 'likeCount')
                 .leftJoin('post.author', 'author')
                 .leftJoin('post.comments', 'comments')
                 .leftJoin('comments.author', 'commentAuthor')
@@ -120,13 +113,14 @@ let CommunityService = class CommunityService {
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
                 .leftJoin('tags.hashtag', 'hashtag')
+                .loadRelationCountAndMap('post.likeCount', 'post.likes')
                 .where('post.id = :id', { id: postId })
                 .getOne();
             return post;
         }
         catch (err) {
             console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.GET_POST_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
         }
     }
     async getHotPosts() {
@@ -143,7 +137,7 @@ let CommunityService = class CommunityService {
             return posts;
         }
         catch (err) {
-            throw new common_1.InternalServerErrorException(res.msg.GET_POST_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
         }
     }
     async createPost(userId, createPostDto) {
@@ -154,12 +148,11 @@ let CommunityService = class CommunityService {
             post.title = title;
             post.content = content;
             post.author = user;
-            post.views = 0;
             return await this.communityRepository.save(post);
         }
         catch (err) {
             console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.CREATE_POST_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_CREATE_POST_FAIL);
         }
     }
     async editPost(postId, editPostDto) {
@@ -168,11 +161,19 @@ let CommunityService = class CommunityService {
             const oldPost = await this.communityRepository.findOne({
                 where: { id: postId },
             });
-            const newPost = Object.assign(Object.assign({}, oldPost), { title, content });
+            const author = await this.userRepository.findOne({
+                where: { id: oldPost.author_id },
+            });
+            const newPost = new community_entity_1.CommunityEntity();
+            newPost.title = title;
+            newPost.content = content;
+            newPost.author = author;
+            await this.communityRepository.delete(postId);
             return await this.communityRepository.save(newPost);
         }
         catch (err) {
             console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_EDIT_POST_FAIL);
         }
     }
     async deletePost(postId) {
@@ -180,7 +181,8 @@ let CommunityService = class CommunityService {
             return await this.communityRepository.delete(postId);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_DELETE_POST_FAIL);
         }
     }
     async likePost(userId, postId) {
@@ -190,12 +192,13 @@ let CommunityService = class CommunityService {
                 where: { id: postId },
             });
             const communityLike = new community_like_entity_1.CommunityLikeEntity();
-            communityLike.author = user;
+            communityLike.user = user;
             communityLike.post = post;
             return await this.communityLikeRepository.save(communityLike);
         }
         catch (err) {
-            throw new common_1.InternalServerErrorException();
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
         }
     }
     async getAllComments(postId) {
@@ -206,7 +209,8 @@ let CommunityService = class CommunityService {
             });
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
         }
     }
     async createComment(userId, postId, createCommentDto) {
@@ -216,7 +220,7 @@ let CommunityService = class CommunityService {
             where: { id: postId },
         });
         if (!post)
-            throw new common_1.BadRequestException(res.msg.POST_NOT_EXIST);
+            throw new common_1.BadRequestException(res.msg.COMMUNITY_POST_NOT_EXIST);
         try {
             const comment = new community_comment_entity_1.CommunityCommentEntity();
             comment.author = user;
@@ -226,7 +230,7 @@ let CommunityService = class CommunityService {
         }
         catch (err) {
             console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.CREATE_COMMENT_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_CREATE_COMMENT_FAIL);
         }
     }
     async editComment(commentId, content) {
@@ -238,7 +242,8 @@ let CommunityService = class CommunityService {
             return await this.communityCommentRepository.save(newComment);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_COMMENT_EDIT_FAIL);
         }
     }
     async deleteComment(commentId) {
@@ -246,13 +251,14 @@ let CommunityService = class CommunityService {
             return await this.communityCommentRepository.delete(commentId);
         }
         catch (err) {
-            throw new common_1.HttpException(err, 500);
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_COMMENT_DELETE_FAIL);
         }
     }
     async uploadImages(post, files) {
         const imgUrls = [].map.call(files, (file) => file.location);
         try {
-            const result = Promise.all(imgUrls.map((imgUrl) => {
+            const result = await Promise.all(imgUrls.map((imgUrl) => {
                 const img = new community_image_entity_1.CommunityImageEntity();
                 img.post = post;
                 img.url = imgUrl;
@@ -262,7 +268,7 @@ let CommunityService = class CommunityService {
         }
         catch (err) {
             console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.ADD_IMAGE_FAIL);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_ADD_IMAGE_FAIL);
         }
     }
 };

@@ -19,21 +19,7 @@ export declare class CommunityService {
     getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<CommunityEntity[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
-    editPost(postId: number, editPostDto: EditPostDto): Promise<{
-        title: string;
-        content: string;
-        id: number;
-        author_id: number;
-        views: number;
-        createdAt: Date;
-        updatedAt: Date;
-        deletedAt: Date;
-        author: UserEntity;
-        likes: CommunityLikeEntity[];
-        comments: CommunityCommentEntity[];
-        tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
-        images: CommunityImageEntity[];
-    } & CommunityEntity>;
+    editPost(postId: number, editPostDto: EditPostDto): Promise<CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
     likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
     getAllComments(postId: number): Promise<CommunityEntity[]>;

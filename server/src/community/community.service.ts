@@ -18,12 +18,6 @@ import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import * as res from '../common/responses/message';
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY,
-  region: process.env.AWS_REGION,
-});
-
 @Injectable()
 export class CommunityService {
   constructor(
@@ -69,17 +63,16 @@ export class CommunityService {
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
-        .loadRelationCountAndMap('post.likeCount','post.likes')
-        .loadRelationCountAndMap('post.commentCount','post.comments')
+        .loadRelationCountAndMap('post.likeCount', 'post.likes')
+        .loadRelationCountAndMap('post.commentCount', 'post.comments')
         .skip(offset)
         .take(postCount)
         .orderBy(cond)
         .getMany();
       return posts;
-      
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
     }
   }
 
@@ -88,7 +81,7 @@ export class CommunityService {
       where: { id: postId },
     });
     if (!post) {
-      throw new NotFoundException(res.msg.POST_NOT_EXIST);
+      throw new NotFoundException(res.msg.COMMUNITY_POST_NOT_EXIST);
     } else {
       // 게시물 조회수 1 증가
       post.views++;
@@ -113,7 +106,6 @@ export class CommunityService {
           'tags.id',
           'hashtag.keyword',
         ])
-        .addSelect('COUNT(distinct likes.id)', 'likeCount')
         .leftJoin('post.author', 'author')
         .leftJoin('post.comments', 'comments')
         .leftJoin('comments.author', 'commentAuthor')
@@ -121,12 +113,13 @@ export class CommunityService {
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
+        .loadRelationCountAndMap('post.likeCount', 'post.likes')
         .where('post.id = :id', { id: postId })
         .getOne();
       return post;
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
     }
   }
 
@@ -143,7 +136,7 @@ export class CommunityService {
         .getMany();
       return posts;
     } catch (err) {
-      throw new InternalServerErrorException(res.msg.GET_POST_FAIL);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
     }
   }
 
@@ -155,11 +148,12 @@ export class CommunityService {
       post.title = title;
       post.content = content;
       post.author = user;
-      post.views = 0;
       return await this.communityRepository.save(post);
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.CREATE_POST_FAIL);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_CREATE_POST_FAIL,
+      );
     }
   }
 
@@ -169,11 +163,18 @@ export class CommunityService {
       const oldPost = await this.communityRepository.findOne({
         where: { id: postId },
       });
-      const newPost = { ...oldPost, title, content };
+      const author = await this.userRepository.findOne({
+        where: { id: oldPost.author_id },
+      });
+      const newPost = new CommunityEntity();
+      newPost.title = title;
+      newPost.content = content;
+      newPost.author = author;
+      await this.communityRepository.delete(postId);
       return await this.communityRepository.save(newPost);
     } catch (err) {
       console.error(err);
-      // throw new InternalServerErrorException(res.msg.CREATE_POST_FAIL);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_EDIT_POST_FAIL);
     }
   }
 
@@ -181,7 +182,10 @@ export class CommunityService {
     try {
       return await this.communityRepository.delete(postId);
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_DELETE_POST_FAIL,
+      );
     }
   }
 
@@ -192,11 +196,12 @@ export class CommunityService {
         where: { id: postId },
       });
       const communityLike = new CommunityLikeEntity();
-      communityLike.author = user;
+      communityLike.user = user;
       communityLike.post = post;
       return await this.communityLikeRepository.save(communityLike);
     } catch (err) {
-      throw new InternalServerErrorException();
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
     }
   }
 
@@ -207,7 +212,8 @@ export class CommunityService {
         relations: ['comments'],
       });
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
     }
   }
 
@@ -221,7 +227,7 @@ export class CommunityService {
     const post = await this.communityRepository.findOne({
       where: { id: postId },
     });
-    if (!post) throw new BadRequestException(res.msg.POST_NOT_EXIST);
+    if (!post) throw new BadRequestException(res.msg.COMMUNITY_POST_NOT_EXIST);
     try {
       const comment = new CommunityCommentEntity();
       comment.author = user;
@@ -230,7 +236,9 @@ export class CommunityService {
       return await this.communityCommentRepository.save(comment);
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.CREATE_COMMENT_FAIL);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_CREATE_COMMENT_FAIL,
+      );
     }
   }
 
@@ -242,22 +250,28 @@ export class CommunityService {
       const newComment = { ...oldComment, content };
       return await this.communityCommentRepository.save(newComment);
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_COMMENT_EDIT_FAIL,
+      );
     }
   }
-
+  
   async deleteComment(commentId: number) {
     try {
       return await this.communityCommentRepository.delete(commentId);
     } catch (err) {
-      throw new HttpException(err, 500);
+      console.error(err);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_COMMENT_DELETE_FAIL,
+      );
     }
   }
 
   async uploadImages(post: CommunityEntity, files: Express.Multer.File) {
     const imgUrls = [].map.call(files, (file) => file.location);
     try {
-      const result = Promise.all(
+      const result = await Promise.all(
         imgUrls.map((imgUrl: string) => {
           const img = new CommunityImageEntity();
           img.post = post;
@@ -268,7 +282,7 @@ export class CommunityService {
       return result;
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException(res.msg.ADD_IMAGE_FAIL);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_ADD_IMAGE_FAIL);
     }
   }
 }

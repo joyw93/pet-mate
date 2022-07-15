@@ -14,14 +14,15 @@ import {
   ImageWrapper,
   ButtonWrapper,
 } from "./styled";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
+import { signOutRequestAction, signOutResetAction } from "../../reducers/user";
 
 const MyProfile = () => {
+  const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me } = useSelector((state) => state.user);
-
+  const { me, signOutDone } = useSelector((state) => state.user);
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
@@ -98,6 +99,20 @@ const MyProfile = () => {
   ];
 
   const titles = [MyPostItems, MyCommentItems, MyLikedItems];
+  const signOut = () => {
+    const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
+    if (isAgreed) {
+      dispatch(signOutRequestAction());
+    }
+  };
+
+  useEffect(() => {
+    if (signOutDone) {
+      dispatch(signOutResetAction());
+      Router.push("/");
+      alert("회원탈퇴가 완료되었습니다.");
+    }
+  }, [signOutDone]);
 
   return (
     <>
@@ -135,18 +150,27 @@ const MyProfile = () => {
               </UserFeed>
               <ButtonWrapper>
                 <button>프로필 수정</button>
-                <button>회원탈퇴</button>
+                <button onClick={signOut}>회원탈퇴</button>
               </ButtonWrapper>
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
+                <li
+                  className={activeIndex === 0 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(0)}
+                >
                   내가 쓴 게시글
                 </li>
-                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
+                <li
+                  className={activeIndex === 1 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(1)}
+                >
                   내가 쓴 댓글
                 </li>
-                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickHandler(2)}>
+                <li
+                  className={activeIndex === 2 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(2)}
+                >
                   좋아요
                 </li>
               </TabList>

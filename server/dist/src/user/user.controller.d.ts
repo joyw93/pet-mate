@@ -1,4 +1,3 @@
-/// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -35,7 +34,9 @@ export declare class UserController {
         user: any;
     }>;
     logout(response: any): Promise<any>;
+    getMyPosts(user: UserEntity): Promise<UserEntity[]>;
     getLikedPosts(user: UserEntity): Promise<UserEntity[]>;
     getCommentedPosts(user: UserEntity): Promise<UserEntity[]>;
+    signout(user: UserEntity): Promise<import("typeorm").DeleteResult>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;
 }

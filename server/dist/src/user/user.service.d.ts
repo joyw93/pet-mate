@@ -1,11 +1,12 @@
-/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { Request, Response } from 'express';
+import { CommunityEntity } from 'src/community/community.entity';
 export declare class UserService {
     private userRepository;
-    constructor(userRepository: Repository<UserEntity>);
+    private communityRepository;
+    constructor(userRepository: Repository<UserEntity>, communityRepository: Repository<CommunityEntity>);
     checkNickname(nickname: string): Promise<void>;
     checkEmail(email: string): Promise<void>;
     createUser(createUserDto: CreateUserDto): Promise<{
@@ -16,7 +17,7 @@ export declare class UserService {
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
-        posts: import("../community/community.entity").CommunityEntity[];
+        posts: CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
@@ -28,6 +29,8 @@ export declare class UserService {
         message: string;
         user: any;
     }>;
+    getMyPosts(userId: number): Promise<UserEntity[]>;
     getLikedPosts(userId: number): Promise<UserEntity[]>;
     getCommentedPosts(userId: number): Promise<UserEntity[]>;
+    signout(userId: number): Promise<import("typeorm").DeleteResult>;
 }
