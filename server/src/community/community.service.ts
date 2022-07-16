@@ -165,18 +165,35 @@ export class CommunityService {
   }
 
   async editPost(postId: number, editPostDto: EditPostDto) {
-    const { title, content } = editPostDto;
+    const { title, content, savedImages } = editPostDto;
+    console.log(savedImages);
     try {
+
       const oldPost = await this.communityRepository.findOne({
         where: { id: postId },
       });
+
       const newPost = { ...oldPost, title, content };
-      await this.communityHashtagRepository.delete({
-        post_id: postId,
+
+      const oldImages = await this.communityImageRepository.find({
+        select: ['url'],
+        where: { post_id: postId },
       });
-      await this.communityImageRepository.delete({
-        post_id: postId,
+      
+      oldImages.map((oldImage) => {
+        if (!savedImages.includes(oldImage.url)) {
+          this.communityRepository.delete(oldImage);
+        }
       });
+
+      // await this.communityHashtagRepository.delete({
+      //   post_id: postId,
+      // });
+      // if (!savedImages) {
+      //   await this.communityImageRepository.delete({
+      //     post_id: postId,
+      //   });
+      // }
       return await this.communityRepository.save(newPost);
     } catch (err) {
       console.error(err);

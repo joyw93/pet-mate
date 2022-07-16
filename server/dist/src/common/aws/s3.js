@@ -29,6 +29,7 @@ exports.editPostConfig = {
         bucket: process.env.AWS_S3_BUCKET_NAME,
         acl: 'public-read',
         key: (req, file, cb) => {
+            console.log('body', req.body);
             cb(null, `petmate/community/images/${(0, uuid_1.v4)()}${path.extname(file.originalname)}`);
         },
     }),

@@ -6,17 +6,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ImageFilePipe = void 0;
+exports.CommunityEditPipe = void 0;
 const common_1 = require("@nestjs/common");
-let ImageFilePipe = class ImageFilePipe {
-    transform(files, metadata) {
-        console.log(files);
-        const imgUrls = [].map.call(files, (file) => file.location);
-        return imgUrls;
+let CommunityEditPipe = class CommunityEditPipe {
+    transform(editPostDto, metadata) {
+        const { savedImages, hashtags } = editPostDto;
+        const transformedEditPostDto = Object.assign({}, editPostDto);
+        if (typeof hashtags === 'string') {
+            transformedEditPostDto.hashtags = [hashtags];
+        }
+        if (typeof savedImages === 'string') {
+            transformedEditPostDto.savedImages = [savedImages];
+        }
+        return transformedEditPostDto;
     }
 };
-ImageFilePipe = __decorate([
+CommunityEditPipe = __decorate([
     (0, common_1.Injectable)()
-], ImageFilePipe);
-exports.ImageFilePipe = ImageFilePipe;
-//# sourceMappingURL=image-file.pipe.js.map
+], CommunityEditPipe);
+exports.CommunityEditPipe = CommunityEditPipe;
+//# sourceMappingURL=community-edit.pipe.js.map

@@ -22,6 +22,8 @@ import { createPostConfig, editPostConfig } from '../common/aws/s3';
 import { EditPostDto } from './dto/edit-post.dto';
 import { HashtagPipe } from 'src/common/pipes/hashtag.pipe';
 import { ImageFilePipe } from 'src/common/pipes/image-file.pipe';
+import { CommunityEditPipe } from 'src/common/pipes/community-edit.pipe';
+import { CommunityCreatePipe } from 'src/common/pipes/community-create.pipe';
 
 @Controller('community')
 export class CommunityController {
@@ -66,7 +68,7 @@ export class CommunityController {
   async createPost(
     @User() user: UserEntity,
     @UploadedFiles(ImageFilePipe) imgUrls: string[],
-    @Body(HashtagPipe) createPostDto: CreatePostDto,
+    @Body(CommunityCreatePipe) createPostDto: CreatePostDto,
   ) {
     const { hashtags } = createPostDto;
     const post = await this.communityService.createPost(user.id, createPostDto);
@@ -80,25 +82,26 @@ export class CommunityController {
   }
 
   @Patch(':postId')
-  @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
+  @UseInterceptors(FilesInterceptor('newImages', 3, editPostConfig))
   async editPost(
-    @User() user: UserEntity,
+    // @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
-    @UploadedFiles(ImageFilePipe) imgUrls: string[],
-    @Body(HashtagPipe) editPostDto: EditPostDto,
+    @UploadedFiles(ImageFilePipe) newImgUrls: string[],
+    @Body(CommunityEditPipe) editPostDto: EditPostDto,
   ) {
     const { hashtags } = editPostDto;
+    console.log(editPostDto)
     const editedPost = await this.communityService.editPost(
       postId,
       editPostDto,
     );
-    if (hashtags) {
-      await this.hashtagService.addTags(editedPost, hashtags);
-    }
-    if (imgUrls) {
-      await this.communityService.uploadImages(editedPost, imgUrls);
-    }
-    return editedPost;
+    // if (hashtags) {
+    //   await this.hashtagService.addTags(editedPost, hashtags);
+    // }
+    // if (newImgUrls) {
+    //   await this.communityService.uploadImages(editedPost, newImgUrls);
+    // }
+    // return editedPost;
   }
 
   @Delete(':postId')

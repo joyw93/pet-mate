@@ -23,8 +23,9 @@ const create_comment_dto_1 = require("./dto/create-comment.dto");
 const create_post_dto_1 = require("./dto/create-post.dto");
 const s3_1 = require("../common/aws/s3");
 const edit_post_dto_1 = require("./dto/edit-post.dto");
-const hashtag_pipe_1 = require("../common/pipes/hashtag.pipe");
 const image_file_pipe_1 = require("../common/pipes/image-file.pipe");
+const community_edit_pipe_1 = require("../common/pipes/community-edit.pipe");
+const community_create_pipe_1 = require("../common/pipes/community-create.pipe");
 let CommunityController = class CommunityController {
     constructor(communityService, hashtagService) {
         this.communityService = communityService;
@@ -53,16 +54,10 @@ let CommunityController = class CommunityController {
         }
         return post;
     }
-    async editPost(user, postId, imgUrls, editPostDto) {
+    async editPost(postId, newImgUrls, editPostDto) {
         const { hashtags } = editPostDto;
+        console.log(editPostDto);
         const editedPost = await this.communityService.editPost(postId, editPostDto);
-        if (hashtags) {
-            await this.hashtagService.addTags(editedPost, hashtags);
-        }
-        if (imgUrls) {
-            await this.communityService.uploadImages(editedPost, imgUrls);
-        }
-        return editedPost;
     }
     async deletePost(user, postId) {
         return await this.communityService.deletePost(postId);
@@ -115,20 +110,19 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.createPostConfig)),
     __param(0, (0, user_decorator_1.User)()),
     __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
-    __param(2, (0, common_1.Body)(hashtag_pipe_1.HashtagPipe)),
+    __param(2, (0, common_1.Body)(community_create_pipe_1.CommunityCreatePipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
 __decorate([
     (0, common_1.Patch)(':postId'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editPostConfig)),
-    __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
-    __param(2, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
-    __param(3, (0, common_1.Body)(hashtag_pipe_1.HashtagPipe)),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('newImages', 3, s3_1.editPostConfig)),
+    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
+    __param(2, (0, common_1.Body)(community_edit_pipe_1.CommunityEditPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, Array, edit_post_dto_1.EditPostDto]),
+    __metadata("design:paramtypes", [Number, Array, edit_post_dto_1.EditPostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "editPost", null);
 __decorate([

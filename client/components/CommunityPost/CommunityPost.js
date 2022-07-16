@@ -16,7 +16,7 @@ const CommunityPost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const [FileImages, setFileImages] = useState([]);
+  const [fileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
 
   const [hashTagVal, setHashTagVal] = useState("");
@@ -43,7 +43,7 @@ const CommunityPost = () => {
   const handleAddImages = useCallback(
     (event) => {
       const imageLists = event.target.files;
-      let imageUrlLists = [...FileImages];
+      const imageUrlLists = [...fileImages];
 
       for (let i = 0; i < imageLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
@@ -54,26 +54,24 @@ const CommunityPost = () => {
         imageUrlLists = imageUrlLists.slice(0, 3);
         alert("이미지는 3장까지 업로드 할 수 있습니다.");
       }
+
       const imagesFile = event.target.files[0];
-      const temp = [...images];
-      temp.push(imagesFile);
-      setImages(temp);
+      const imageFileList = [...images];
+      imageFileList.push(imagesFile);
+      setImages(imageFileList);
       setFileImages(imageUrlLists);
     },
-    [FileImages]
+    [fileImages]
   );
 
-  // useEffect(() => {
-  //   console.log(images);
-  // }, [images]);
 
   const handleDeleteImage = useCallback(
     (id) => {
-      setFileImages(FileImages.filter((_, index) => index !== id));
+      setFileImages(fileImages.filter((_, index) => index !== id));
       setImages(images.filter((_, index) => index !== id));
-      window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
+      window.URL.revokeObjectURL(fileImages.filter((_, index) => index === id));
     },
-    [FileImages]
+    [fileImages]
   );
 
   //KeywordWrapper
@@ -113,19 +111,19 @@ const CommunityPost = () => {
     if (!content) {
       return contentRef.current.focus();
     }
-    const body = new FormData();
-    body.append("title", title);
-    body.append("content", content);
+    const post = new FormData();
+    post.append("title", title);
+    post.append("content", content);
 
     for (let i = 0; i < hashArr.length; i++) {
-      body.append("hashtags", hashArr[i]);
+      post.append("hashtags", hashArr[i]);
     }
 
     [].forEach.call(images, (img) => {
-      body.append("images", img);
+      post.append("images", img);
     });
 
-    dispatch(postRequestAction(body));
+    dispatch(postRequestAction(post));
   };
 
   useEffect(() => {
@@ -135,9 +133,7 @@ const CommunityPost = () => {
     }
   }, [postDone]);
 
-  const test = () => {
-    axios.post("http://127.0.0.1:3000/community", { title: "a", content: "1" }, { withCredentials: true });
-  };
+
   return (
     <>
       <CreatePostContainer>
@@ -179,7 +175,7 @@ const CommunityPost = () => {
               </label>
             </div>
 
-            {FileImages.map((image, id) => (
+            {fileImages.map((image, id) => (
               <div key={id} className="photo_preview">
                 <img src={image} alt={`${image}-${id}`} />
                 <button onClick={() => handleDeleteImage(id)}>

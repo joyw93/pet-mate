@@ -33,6 +33,8 @@ export const editPostConfig = {
     bucket: process.env.AWS_S3_BUCKET_NAME,
     acl: 'public-read',
     key: (req, file, cb) => {
+      console.log('body',req.body)
+      // console.log(file);
       cb(
         null,
         `petmate/community/images/${uuid()}${path.extname(file.originalname)}`,
