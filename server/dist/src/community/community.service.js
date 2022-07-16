@@ -21,14 +21,19 @@ const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
+const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const res = require("../common/responses/message");
+const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 let CommunityService = class CommunityService {
-    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, communityImageRepository) {
+    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository, dataSource) {
         this.communityRepository = communityRepository;
         this.userRepository = userRepository;
         this.communityLikeRepository = communityLikeRepository;
         this.communityCommentRepository = communityCommentRepository;
         this.communityImageRepository = communityImageRepository;
+        this.communityHashtagRepository = communityHashtagRepository;
+        this.hashtagRepository = hashtagRepository;
+        this.dataSource = dataSource;
     }
     async getPosts(offset, postCount, orderBy) {
         let cond;
@@ -156,19 +161,18 @@ let CommunityService = class CommunityService {
         }
     }
     async editPost(postId, editPostDto) {
+        const { title, content } = editPostDto;
         try {
-            const { title, content } = editPostDto;
             const oldPost = await this.communityRepository.findOne({
                 where: { id: postId },
             });
-            const author = await this.userRepository.findOne({
-                where: { id: oldPost.author_id },
+            const newPost = Object.assign(Object.assign({}, oldPost), { title, content });
+            await this.communityHashtagRepository.delete({
+                post_id: postId,
             });
-            const newPost = new community_entity_1.CommunityEntity();
-            newPost.title = title;
-            newPost.content = content;
-            newPost.author = author;
-            await this.communityRepository.delete(postId);
+            await this.communityImageRepository.delete({
+                post_id: postId,
+            });
             return await this.communityRepository.save(newPost);
         }
         catch (err) {
@@ -255,8 +259,7 @@ let CommunityService = class CommunityService {
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_COMMENT_DELETE_FAIL);
         }
     }
-    async uploadImages(post, files) {
-        const imgUrls = [].map.call(files, (file) => file.location);
+    async uploadImages(post, imgUrls) {
         try {
             const result = await Promise.all(imgUrls.map((imgUrl) => {
                 const img = new community_image_entity_1.CommunityImageEntity();
@@ -279,11 +282,16 @@ CommunityService = __decorate([
     __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
     __param(3, (0, typeorm_1.InjectRepository)(community_comment_entity_1.CommunityCommentEntity)),
     __param(4, (0, typeorm_1.InjectRepository)(community_image_entity_1.CommunityImageEntity)),
+    __param(5, (0, typeorm_1.InjectRepository)(community_hashtag_entity_1.CommunityHashtagEntity)),
+    __param(6, (0, typeorm_1.InjectRepository)(hashtag_entity_1.HashtagEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.DataSource])
 ], CommunityService);
 exports.CommunityService = CommunityService;
 //# sourceMappingURL=community.service.js.map

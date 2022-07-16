@@ -23,7 +23,7 @@ __decorate([
 ], EditPostDto.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Array)
 ], EditPostDto.prototype, "hashtags", void 0);
 exports.EditPostDto = EditPostDto;
 //# sourceMappingURL=edit-post.dto.js.map

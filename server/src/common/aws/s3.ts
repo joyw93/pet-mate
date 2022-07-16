@@ -13,7 +13,7 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-export const createConfig = {
+export const createPostConfig = {
   storage: multerS3({
     s3,
     bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -27,7 +27,7 @@ export const createConfig = {
   }),
 };
 
-export const editConfig = {
+export const editPostConfig = {
   storage: multerS3({
     s3,
     bucket: process.env.AWS_S3_BUCKET_NAME,

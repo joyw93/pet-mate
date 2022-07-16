@@ -13,7 +13,6 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
-const ormconfig = require("../ormconfig");
 const user_service_1 = require("./user/user.service");
 const user_entity_1 = require("./user/user.entity");
 const community_module_1 = require("./community/community.module");
@@ -21,6 +20,7 @@ const community_entity_1 = require("./community/community.entity");
 const community_like_entity_1 = require("./common/entities/community-like.entity");
 const hashtag_module_1 = require("./hashtag/hashtag.module");
 const community_hashtag_entity_1 = require("./common/entities/community-hashtag.entity");
+const ormconfig = require("../ormconfig");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([

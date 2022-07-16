@@ -1,6 +1,6 @@
-export declare const createConfig: {
+export declare const createPostConfig: {
     storage: any;
 };
-export declare const editConfig: {
+export declare const editPostConfig: {
     storage: any;
 };

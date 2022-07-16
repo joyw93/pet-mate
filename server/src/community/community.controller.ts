@@ -18,8 +18,10 @@ import { UserEntity } from 'src/user/user.entity';
 import { CommunityService } from './community.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
-import { createConfig, editConfig } from '../common/aws/s3';
+import { createPostConfig, editPostConfig } from '../common/aws/s3';
 import { EditPostDto } from './dto/edit-post.dto';
+import { HashtagPipe } from 'src/common/pipes/hashtag.pipe';
+import { ImageFilePipe } from 'src/common/pipes/image-file.pipe';
 
 @Controller('community')
 export class CommunityController {
@@ -60,32 +62,30 @@ export class CommunityController {
   }
 
   @Post()
-  @UseInterceptors(FilesInterceptor('images', 3, createConfig))
+  @UseInterceptors(FilesInterceptor('images', 3, createPostConfig))
   async createPost(
-    @UploadedFiles() files: Express.Multer.File,
     @User() user: UserEntity,
-    @Body() createPostDto: CreatePostDto,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
+    @Body(HashtagPipe) createPostDto: CreatePostDto,
   ) {
     const { hashtags } = createPostDto;
     const post = await this.communityService.createPost(user.id, createPostDto);
     if (hashtags) {
-      // 해쉬태그 한개일때 배열화
-      const hashtagArr = typeof hashtags === 'string' ? [hashtags] : hashtags;
-      await this.hashtagService.addTags(post, hashtagArr);
+      await this.hashtagService.addTags(post, hashtags);
     }
-    if (files) {
-      await this.communityService.uploadImages(post, files);
+    if (imgUrls) {
+      await this.communityService.uploadImages(post, imgUrls);
     }
     return post;
   }
 
   @Patch(':postId')
-  @UseInterceptors(FilesInterceptor('images', 3, editConfig))
+  @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
   async editPost(
-    @UploadedFiles() files: Express.Multer.File,
-    @Param('postId', ParseIntPipe) postId: number,
     @User() user: UserEntity,
-    @Body() editPostDto: EditPostDto,
+    @Param('postId', ParseIntPipe) postId: number,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
+    @Body(HashtagPipe) editPostDto: EditPostDto,
   ) {
     const { hashtags } = editPostDto;
     const editedPost = await this.communityService.editPost(
@@ -93,12 +93,10 @@ export class CommunityController {
       editPostDto,
     );
     if (hashtags) {
-      // 해쉬태그 한개일때 배열화
-      const hashtagArr = typeof hashtags === 'string' ? [hashtags] : hashtags;
-      await this.hashtagService.addTags(editedPost, hashtagArr);
+      await this.hashtagService.addTags(editedPost, hashtags);
     }
-    if (files) {
-      await this.communityService.uploadImages(editedPost, files);
+    if (imgUrls) {
+      await this.communityService.uploadImages(editedPost, imgUrls);
     }
     return editedPost;
   }

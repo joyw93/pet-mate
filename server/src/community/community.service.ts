@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 import {
   BadRequestException,
-  HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -10,13 +9,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
+import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
+
 import * as res from '../common/responses/message';
+import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 
 @Injectable()
 export class CommunityService {
@@ -31,6 +33,11 @@ export class CommunityService {
     private communityCommentRepository: Repository<CommunityCommentEntity>,
     @InjectRepository(CommunityImageEntity)
     private communityImageRepository: Repository<CommunityImageEntity>,
+    @InjectRepository(CommunityHashtagEntity)
+    private communityHashtagRepository: Repository<CommunityHashtagEntity>,
+    @InjectRepository(HashtagEntity)
+    private hashtagRepository: Repository<HashtagEntity>,
+    private dataSource: DataSource,
   ) {}
 
   async getPosts(offset: number, postCount: number, orderBy: string) {
@@ -158,19 +165,18 @@ export class CommunityService {
   }
 
   async editPost(postId: number, editPostDto: EditPostDto) {
+    const { title, content } = editPostDto;
     try {
-      const { title, content } = editPostDto;
       const oldPost = await this.communityRepository.findOne({
         where: { id: postId },
       });
-      const author = await this.userRepository.findOne({
-        where: { id: oldPost.author_id },
+      const newPost = { ...oldPost, title, content };
+      await this.communityHashtagRepository.delete({
+        post_id: postId,
       });
-      const newPost = new CommunityEntity();
-      newPost.title = title;
-      newPost.content = content;
-      newPost.author = author;
-      await this.communityRepository.delete(postId);
+      await this.communityImageRepository.delete({
+        post_id: postId,
+      });
       return await this.communityRepository.save(newPost);
     } catch (err) {
       console.error(err);
@@ -256,7 +262,7 @@ export class CommunityService {
       );
     }
   }
-  
+
   async deleteComment(commentId: number) {
     try {
       return await this.communityCommentRepository.delete(commentId);
@@ -268,8 +274,7 @@ export class CommunityService {
     }
   }
 
-  async uploadImages(post: CommunityEntity, files: Express.Multer.File) {
-    const imgUrls = [].map.call(files, (file) => file.location);
+  async uploadImages(post: CommunityEntity, imgUrls: string[]) {
     try {
       const result = await Promise.all(
         imgUrls.map((imgUrl: string) => {

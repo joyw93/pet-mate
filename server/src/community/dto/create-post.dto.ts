@@ -8,5 +8,5 @@ export class CreatePostDto {
   public content: string;
 
   @IsOptional()
-  public hashtags: string[] | string;
+  public hashtags: string[];
 }
