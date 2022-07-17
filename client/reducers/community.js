@@ -3,7 +3,7 @@ import produce from "immer";
 export const initialState = {
   posts: [],
 
-  singlePost: null,
+  post: null,
   hasMorePosts: true,
   loadPostDetailLoading: false,
   loadPostDetailDone: false,
@@ -109,7 +109,7 @@ const reducer = (state = initialState, action) =>
       case LOAD_POST_DETAIL_SUCCESS:
         draft.loadPostDetailLoading = false;
         draft.loadPostDetailDone = true;
-        draft.singlePost = action.data;
+        draft.post = action.data;
         break;
       case LOAD_POST_DETAIL_FAILURE:
         draft.loadPostsLoading = false;
