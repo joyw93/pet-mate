@@ -114,6 +114,10 @@ const MyProfile = () => {
     }
   }, [signOutDone]);
 
+  const profileEdit = () => {
+    Router.push("/profile/edit");
+  };
+
   return (
     <>
       <ProfileContainer>
@@ -149,7 +153,7 @@ const MyProfile = () => {
                 </div>
               </UserFeed>
               <ButtonWrapper>
-                <button>프로필 수정</button>
+                <button onClick={profileEdit}>프로필 수정</button>
                 <button onClick={signOut}>회원탈퇴</button>
               </ButtonWrapper>
             </ProfileInfo>

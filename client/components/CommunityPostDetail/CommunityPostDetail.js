@@ -16,7 +16,6 @@ const CommunityPostDetail = () => {
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.community);
   const dispatch = useDispatch();
-  console.log(post);
   const [cmtContent, setCmtContent] = useState("");
   const [cmtContentArr, setCmtContentArr] = useState([]);
   const [like, setLike] = useState("../img/heart2.png");

@@ -143,3 +143,19 @@ export const ImageWrapper = styled.div`
     border-radius: 5px;
   }
 `;
+
+export const ProfileEditArea = styled.div`
+  width: 80%;
+  height: 80%;
+  margin-top: 30px;
+  padding-top: 50px;
+  padding-left: 28px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  border: 2px solid #E0E0E0
+  
+`;
+
+export const Input = styled.input`
+`
