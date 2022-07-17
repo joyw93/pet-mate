@@ -55,7 +55,6 @@ function* post(action) {
 
 //글 불러오기
 function loadPostsAPI(data) {
-  console.log("받아와지나요", data);
   return axios.get(`${serverUrl}/community?orderBy=${data}`);
 }
 
@@ -85,9 +84,7 @@ function* loadPosts(action) {
 
 //디테일 페이지
 function loadPostDetailAPI(data) {
-  return axios.get(`${serverUrl}/community/${data}`, data, {
-    withCredentials: true,
-  });
+  return axios.get(`${serverUrl}/community/${data}`);
 }
 
 //글 더 불러오기

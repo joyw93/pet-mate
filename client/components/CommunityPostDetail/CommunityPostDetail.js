@@ -3,7 +3,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { PostDetailContainer, Images, Title, PostInfo, KeywordWrapper, CommentWrapper, Button } from "./styled";
+import {
+  PostDetailContainer,
+  Images,
+  Title,
+  PostInfo,
+  KeywordWrapper,
+  CommentWrapper,
+  Button,
+} from "./styled";
 import { getElapsedTime } from "../../utils";
 import { loadPostDetailRequestAction } from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
@@ -99,16 +107,21 @@ const CommunityPostDetail = () => {
   );
 
   useEffect(() => {
-    if (id) {
-      dispatch(loadPostDetailRequestAction(id));
-      setPost(singlePost);
-      console.log("포스토요올ㅇ", post);
-    }
+    console.log("쿼리테스트", id);
+    dispatch(loadPostDetailRequestAction(id));
   }, [router.isReady]);
 
-  console.log("아이디", id);
-  console.log("포스트", singlePost);
-  console.log("포스토요올ㅇ", post);
+  useEffect(() => {
+    console.log(singlePost);
+  }, [singlePost]);
+
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(loadPostDetailRequestAction(id));
+  //     setPost(singlePost);
+  //     console.log("포스토요올ㅇ", post);
+  //   }
+  // }, [router.isReady]);
 
   // {
   //   const dispatch = useDispatch();
