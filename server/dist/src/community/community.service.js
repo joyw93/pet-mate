@@ -161,22 +161,24 @@ let CommunityService = class CommunityService {
         }
     }
     async editPost(postId, editPostDto) {
-        const { title, content, savedImages } = editPostDto;
-        console.log(savedImages);
+        const { title, content, images } = editPostDto;
         try {
             const oldPost = await this.communityRepository.findOne({
                 where: { id: postId },
             });
             const newPost = Object.assign(Object.assign({}, oldPost), { title, content });
-            const oldImages = await this.communityImageRepository.find({
-                select: ['url'],
+            const savedImages = await this.communityImageRepository.find({
                 where: { post_id: postId },
             });
-            oldImages.map((oldImage) => {
-                if (!savedImages.includes(oldImage.url)) {
-                    this.communityRepository.delete(oldImage);
-                }
-            });
+            if (savedImages.length === 0)
+                return await this.communityRepository.save(newPost);
+            if (images) {
+                const imagesToDelete = savedImages.filter((savedImage) => !images.includes(savedImage.url));
+                await this.communityImageRepository.remove(imagesToDelete);
+            }
+            else {
+                await this.communityImageRepository.delete({ post_id: postId });
+            }
             return await this.communityRepository.save(newPost);
         }
         catch (err) {

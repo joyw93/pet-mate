@@ -82,26 +82,25 @@ export class CommunityController {
   }
 
   @Patch(':postId')
-  @UseInterceptors(FilesInterceptor('newImages', 3, editPostConfig))
+  @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
   async editPost(
-    // @User() user: UserEntity,
+    @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
-    @UploadedFiles(ImageFilePipe) newImgUrls: string[],
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body(CommunityEditPipe) editPostDto: EditPostDto,
   ) {
     const { hashtags } = editPostDto;
-    console.log(editPostDto)
     const editedPost = await this.communityService.editPost(
       postId,
       editPostDto,
     );
-    // if (hashtags) {
-    //   await this.hashtagService.addTags(editedPost, hashtags);
-    // }
-    // if (newImgUrls) {
-    //   await this.communityService.uploadImages(editedPost, newImgUrls);
-    // }
-    // return editedPost;
+    if (hashtags) {
+      await this.hashtagService.addTags(editedPost, hashtags);
+    }
+    if (imgUrls) {
+      await this.communityService.uploadImages(editedPost, imgUrls);
+    }
+    return editedPost;
   }
 
   @Delete(':postId')

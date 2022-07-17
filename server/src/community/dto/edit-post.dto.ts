@@ -8,7 +8,7 @@ export class EditPostDto {
   public content: string;
 
   @IsOptional()
-  public savedImages: string[];
+  public images: string[];
 
   @IsOptional()
   public hashtags: string[];

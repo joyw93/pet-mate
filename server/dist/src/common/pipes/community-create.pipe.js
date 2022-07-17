@@ -9,13 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommunityCreatePipe = void 0;
 const common_1 = require("@nestjs/common");
 let CommunityCreatePipe = class CommunityCreatePipe {
-    transform(editPostDto, metadata) {
-        const { savedImages, hashtags } = editPostDto;
-        const transformedEditPostDto = Object.assign({}, editPostDto);
+    transform(createPostDto, metadata) {
+        const { hashtags } = createPostDto;
+        const transformedcreatePostDto = Object.assign({}, createPostDto);
         if (typeof hashtags === 'string') {
-            transformedEditPostDto.hashtags = [hashtags];
+            transformedcreatePostDto.hashtags = [hashtags];
         }
-        return transformedEditPostDto;
+        return transformedcreatePostDto;
     }
 };
 CommunityCreatePipe = __decorate([

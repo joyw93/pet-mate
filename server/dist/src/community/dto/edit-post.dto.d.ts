@@ -1,6 +1,6 @@
 export declare class EditPostDto {
     title: string;
     content: string;
-    savedImages: string[];
+    images: string[];
     hashtags: string[];
 }

@@ -24,7 +24,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
-], EditPostDto.prototype, "savedImages", void 0);
+], EditPostDto.prototype, "images", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)

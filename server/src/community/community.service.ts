@@ -165,35 +165,28 @@ export class CommunityService {
   }
 
   async editPost(postId: number, editPostDto: EditPostDto) {
-    const { title, content, savedImages } = editPostDto;
-    console.log(savedImages);
+    const { title, content, images } = editPostDto;
     try {
-
       const oldPost = await this.communityRepository.findOne({
         where: { id: postId },
       });
-
       const newPost = { ...oldPost, title, content };
 
-      const oldImages = await this.communityImageRepository.find({
-        select: ['url'],
-        where: { post_id: postId },
-      });
-      
-      oldImages.map((oldImage) => {
-        if (!savedImages.includes(oldImage.url)) {
-          this.communityRepository.delete(oldImage);
-        }
-      });
+      const savedImages: CommunityImageEntity[] = await this.communityImageRepository.find({
+          where: { post_id: postId },
+        });
 
-      // await this.communityHashtagRepository.delete({
-      //   post_id: postId,
-      // });
-      // if (!savedImages) {
-      //   await this.communityImageRepository.delete({
-      //     post_id: postId,
-      //   });
-      // }
+      if(savedImages.length === 0) return await this.communityRepository.save(newPost);
+   
+      if (images) { // 남길 이미지 있는 경우
+        const imagesToDelete = savedImages.filter(
+          (savedImage) => !images.includes(savedImage.url),
+        );
+        await this.communityImageRepository.remove(imagesToDelete);
+      } else { // 남길 이미지 없는 경우
+        await this.communityImageRepository.delete({ post_id: postId });
+      }
+
       return await this.communityRepository.save(newPost);
     } catch (err) {
       console.error(err);

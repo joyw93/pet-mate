@@ -13,7 +13,21 @@ export declare class CommunityController {
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
-    editPost(postId: number, newImgUrls: string[], editPostDto: EditPostDto): Promise<void>;
+    editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
+        title: string;
+        content: string;
+        id: number;
+        author_id: number;
+        views: number;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
+        author: UserEntity;
+        likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
+        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
+        images: import("../common/entities/community-image.entity").CommunityImageEntity[];
+    } & import("./community.entity").CommunityEntity>;
     deletePost(user: UserEntity, postId: number): Promise<import("typeorm").DeleteResult>;
     getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
     createComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;

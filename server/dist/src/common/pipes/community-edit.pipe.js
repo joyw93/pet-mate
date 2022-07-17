@@ -10,13 +10,13 @@ exports.CommunityEditPipe = void 0;
 const common_1 = require("@nestjs/common");
 let CommunityEditPipe = class CommunityEditPipe {
     transform(editPostDto, metadata) {
-        const { savedImages, hashtags } = editPostDto;
+        const { hashtags, images } = editPostDto;
         const transformedEditPostDto = Object.assign({}, editPostDto);
         if (typeof hashtags === 'string') {
             transformedEditPostDto.hashtags = [hashtags];
         }
-        if (typeof savedImages === 'string') {
-            transformedEditPostDto.savedImages = [savedImages];
+        if (typeof images === 'string') {
+            transformedEditPostDto.images = [images];
         }
         return transformedEditPostDto;
     }

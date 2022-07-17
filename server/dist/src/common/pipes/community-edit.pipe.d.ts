@@ -4,7 +4,7 @@ export declare class CommunityEditPipe implements PipeTransform {
     transform(editPostDto: EditPostDto, metadata: ArgumentMetadata): {
         title: string;
         content: string;
-        savedImages: string[];
+        images: string[];
         hashtags: string[];
     };
 }

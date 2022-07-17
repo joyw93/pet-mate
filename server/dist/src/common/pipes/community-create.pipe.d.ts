@@ -1,10 +1,9 @@
 import { PipeTransform, ArgumentMetadata } from '@nestjs/common';
-import { EditPostDto } from 'src/community/dto/edit-post.dto';
+import { CreatePostDto } from 'src/community/dto/create-post.dto';
 export declare class CommunityCreatePipe implements PipeTransform {
-    transform(editPostDto: EditPostDto, metadata: ArgumentMetadata): {
+    transform(createPostDto: CreatePostDto, metadata: ArgumentMetadata): {
         title: string;
         content: string;
-        savedImages: string[];
         hashtags: string[];
     };
 }
