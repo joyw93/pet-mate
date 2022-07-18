@@ -12,7 +12,7 @@ import {
   TabWrapper,
   TabList,
   Input,
-  ImageWrapper,
+  ConfirmButton,
   ButtonWrapper,
   ProfileEditArea,
 } from "./styled";
@@ -104,7 +104,15 @@ const MyProfile = () => {
               </TabList>
               <ProfileEditArea>
                 <h1>프로필 설정</h1>
-                <Input/>
+                  <label>닉네임</label>
+                  <Input />
+                  <label>생년월일</label>
+                  <Input />
+                  <label>한줄 소개</label>
+                  <Input />
+                <div>
+                  <ConfirmButton>설정 완료</ConfirmButton>
+                </div>
               </ProfileEditArea>
             </TabWrapper>
           </UserContent>
