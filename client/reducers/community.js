@@ -6,13 +6,11 @@ export const initialState = {
   commentId: [],
   post: null,
   hasMorePosts: true,
+  editing: false,
   loadPostDetailLoading: false,
   loadPostDetailDone: false,
   loadPostDetailError: null,
 
-  showOldPostsLoading: false,
-  showOldPostsDone: false,
-  showOldPostsError: null,
   hasMorePosts: true,
   loadMoreLoading: false,
   loadMoreDone: false,
@@ -25,6 +23,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  updatePostLoading: false,
+  updatePostDone: false,
+  updatePostError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
@@ -53,10 +54,6 @@ export const LOAD_MORE_REQUEST = "LOAD_MORE_REQUEST";
 export const LOAD_MORE_SUCCESS = "LOAD_MORE_SUCCESS";
 export const LOAD_MORE_FAILURE = "LOAD_MORE_FAILURE";
 
-export const SHOW_OLD_POSTS_REQUEST = "SHOW_OLD_POSTS_REQUEST";
-export const SHOW_OLD_POSTS_SUCCESS = "SHOW_OLD_POSTS_SUCCESS";
-export const SHOW_OLD_POSTS_FAILURE = "SHOW_OLD_POSTS_FAILURE";
-
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
@@ -65,6 +62,10 @@ export const POST_RESET = "POST_RESET";
 export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST";
 export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
 export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
+
+export const UPDATE_POST_REQUEST = "UPDATE_POST_REQUEST";
+export const UPDATE_POST_SUCCESS = "UPDATE_POST_SUCCESS";
+export const UPDATE_POST_FAILURE = "UPDATE_POST_FAILURE";
 
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
@@ -97,12 +98,9 @@ export const loadPostsRequestAction = (data) => ({
   data,
 });
 
-export const loadMorePostsAction = () => ({
+export const loadMorePostsAction = (data) => ({
   type: LOAD_MORE_REQUEST,
-});
-
-export const showOldPostAction = () => ({
-  type: SHOW_OLD_POSTS_REQUEST,
+  data,
 });
 
 export const removePostRequestAction = (data) => ({
@@ -155,29 +153,9 @@ const reducer = (state = initialState, action) =>
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.posts = action.data;
-        //draft.posts = action.data.concat(action.data);
-        //draft.posts = draft.posts.concat(action.data);
-        // draft.posts = action.data;
-        //draft.posts = action.data.push(draft.posts);
         // draft.hasMorePosts = draft.posts.length < 100;
         break;
       case LOAD_POSTS_FAILURE:
-        draft.loadPostsLoading = false;
-        draft.loadPostsError = action.error;
-        break;
-
-      //글 불러오기
-      case SHOW_OLD_POSTS_REQUEST:
-        draft.loadPostsLoading = true;
-        draft.loadPostsDone = false;
-        draft.loadPostsError = null;
-        break;
-      case SHOW_OLD_POSTS_SUCCESS:
-        draft.loadPostsLoading = false;
-        draft.loadPostsDone = true;
-        draft.posts = action.data;
-        break;
-      case SHOW_OLD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
         break;
@@ -224,13 +202,34 @@ const reducer = (state = initialState, action) =>
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS:
+<<<<<<< HEAD
+        //draft.posts = state.posts.filter((v) => v.id !== action.data);
+=======
         draft.posts = state.posts.filter((v) => v.id !== action.data);
+>>>>>>> 17030fdacb447d4e0a2f680142c8851029f9ff8d
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;
       case REMOVE_POST_FAILURE:
         draft.removePostLoading = false;
         draft.removePostError = action.error;
+        break;
+
+      //글 수정
+      case UPDATE_POST_REQUEST:
+        draft.updatePostLoading = true;
+        draft.updatePostDone = false;
+        draft.updatePostError = null;
+        break;
+      case UPDATE_POST_SUCCESS:
+        draft.updatePostLoading = false;
+        draft.updatePostDone = true;
+        draft.posts.find((v) => v.id === action.data.PostId).content =
+          action.data.content;
+        break;
+      case UPDATE_POST_FAILURE:
+        draft.updatePostLoading = false;
+        draft.updatePostError = action.error;
         break;
 
       //댓글 추가
@@ -240,7 +239,10 @@ const reducer = (state = initialState, action) =>
         draft.addCommentError = null;
         break;
       case ADD_COMMENT_SUCCESS:
+<<<<<<< HEAD
+=======
         draft.content.unshift(action.data.content);
+>>>>>>> 17030fdacb447d4e0a2f680142c8851029f9ff8d
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

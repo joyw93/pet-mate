@@ -32,7 +32,9 @@ const CommunityPostDetail = () => {
   const [like, setLike] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { post, addCommentDone, removeCommentDone, likePostDone } = useSelector((state) => state.community);
+  const { post, addCommentDone, removeCommentDone, likePostDone } = useSelector(
+    (state) => state.community
+  );
   const dispatch = useDispatch();
   //carousel
   const settings = {
@@ -84,6 +86,16 @@ const CommunityPostDetail = () => {
     }
   };
 
+  const handleDeletePost = () => {
+    if (window.confirm("글을 삭제하겠습니까?")) {
+      console.log("글 삭제");
+      dispatch(removePostRequestAction(parseInt(id)));
+      router.push(`/community`);
+    }
+  };
+
+  const editing = useSelector((state) => state.community.editing);
+
   return (
     <>
       {post && (
@@ -92,20 +104,28 @@ const CommunityPostDetail = () => {
           <Title>
             <h2>{post.title}</h2>
             <div>
-              <Link href={"/community/edit"} passHref>
+              <Link href={`/community/${id}/new`}>
                 <Button>수정</Button>
               </Link>
-              <Button>삭제</Button>
+              <Button onClick={handleDeletePost}>삭제</Button>
             </div>
           </Title>
           <PostInfo>
             <div>
               <span id="post_author">{post.author.nickname}</span>
-              <span id="post_created_time">{getElapsedTime(post.createdAt)}</span>
+              <span id="post_created_time">
+                {getElapsedTime(post.createdAt)}
+              </span>
               <span id="views">조회수 {post.views}</span>
             </div>
             <div id="like_wrapper">
-              <button onClick={handleLike}>{like ? <img src={likeIcon} alt="좋아요" /> : <img src={unlikeIcon} alt="안좋아요" />}</button>
+              <button onClick={handleLike}>
+                {like ? (
+                  <img src={likeIcon} alt="좋아요" />
+                ) : (
+                  <img src={unlikeIcon} alt="안좋아요" />
+                )}
+              </button>
               <span id="like_count">{post.likeCount}</span>
             </div>
           </PostInfo>
@@ -160,7 +180,10 @@ const CommunityPostDetail = () => {
                           <CommentContentInfo>
                             <span>{getElapsedTime(comment.createdAt)}</span>
                             <span>·</span>
-                            <span id="delete_btn" onClick={() => handleDeleteCmt(comment.id)}>
+                            <span
+                              id="delete_btn"
+                              onClick={() => handleDeleteCmt(comment.id)}
+                            >
                               삭제
                             </span>
                           </CommentContentInfo>

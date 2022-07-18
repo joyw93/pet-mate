@@ -17,11 +17,12 @@ import { useEffect, useState } from "react";
 import {
   loadPostsRequestAction,
   showOldPostAction,
+  postResetAction,
 } from "../../reducers/community";
 
 const SelectOptions = [
-  { id: "latest", name: "new" },
-  { id: "oldest", name: "old" },
+  { id: "latest", name: "최신순" },
+  { id: "oldest", name: "오래된 순" },
   { id: "view", name: "조회 순" },
   { id: "like", name: "좋아요 순" },
 ];
@@ -43,11 +44,15 @@ const Notice = (hotdata) => {
     setNoticeList(hotdata.hotdata.hotdata.data);
   }, []);
 
+  console.log(noticeList);
   return (
     <>
       {noticeList &&
         noticeList.map((notice) => (
-          <NoticeWrapper key={notice.id}>
+          <NoticeWrapper
+            key={notice.id}
+            onClick={() => Router.push(`community/${notice.id}`)}
+          >
             <NoticeBtn>인기</NoticeBtn>
             <span>{notice.title}</span>
           </NoticeWrapper>
@@ -64,19 +69,15 @@ const CommunityMain = (hotdata) => {
 
   useEffect(() => {
     if (postDone) {
-      dispatch({ type: POST_RESET });
-      console.log("글 리셋");
+      dispatch(postResetAction());
+      //console.log("글 리셋");
     }
   }, [postDone]);
 
   // useEffect(() => {
-  //   dispatch(loadPostsRequestAction());
-  //   //dispatch(showOldPostAction());
-  // }, []);
-
-  useEffect(() => {
-    dispatch(loadPostsRequestAction(filterCond));
-  }, [filterCond]);
+  //   //setFilterCond("new");
+  //   dispatch(loadPostsRequestAction(filterCond));
+  // }, [filterCond]);
 
   const goToNew = () => {
     if (!me) {
@@ -92,25 +93,23 @@ const CommunityMain = (hotdata) => {
     console.log(data);
   };
 
-  const handleLoading = () => {
-    dispatch(loadPostsRequestAction());
-  };
-
   const handleListSelect = (e) => {
     const selectedCond = e.target.value;
-    setFilterCond(selectedCond);
+    if (selectedCond === "최신순") {
+      setFilterCond("new");
+    } else if (selectedCond === "오래된 순") {
+      setFilterCond("old");
+    } else if (selectedCond === "조회 순") {
+      setFilterCond("views");
+    } else {
+      setFilterCond("like");
+    }
     console.log(e.target.value);
-
-    //const selectedValue = e.target.value;
-    // if (e.target.value === "오래된 순") {
-    //   dispatch(showOldPostAction());
-    // }
   };
 
   return (
     <CommunityCon>
       <button onClick={loadPosts}>게시글 불러오기</button>
-      <button onClick={handleLoading}>커뮤니티 게시글 보기</button>
       <Title>커뮤니티</Title>
       <HeadWrapper>
         <ListSelection onChange={handleListSelect} />
@@ -121,8 +120,6 @@ const CommunityMain = (hotdata) => {
         ) : null}
       </HeadWrapper>
       <Notice hotdata={hotdata} />
-
-      {/* {posts && posts.map((item) => <div key={item.id}>{item.content}</div>)} */}
       <CommunityList filterCond={filterCond} />
     </CommunityCon>
   );
