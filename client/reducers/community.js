@@ -202,11 +202,6 @@ const reducer = (state = initialState, action) =>
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS:
-<<<<<<< HEAD
-        //draft.posts = state.posts.filter((v) => v.id !== action.data);
-=======
-        draft.posts = state.posts.filter((v) => v.id !== action.data);
->>>>>>> 17030fdacb447d4e0a2f680142c8851029f9ff8d
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;
@@ -239,10 +234,7 @@ const reducer = (state = initialState, action) =>
         draft.addCommentError = null;
         break;
       case ADD_COMMENT_SUCCESS:
-<<<<<<< HEAD
-=======
         draft.content.unshift(action.data.content);
->>>>>>> 17030fdacb447d4e0a2f680142c8851029f9ff8d
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
