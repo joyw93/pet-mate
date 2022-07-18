@@ -40,7 +40,7 @@ export class CommunityController {
   ) {
     return await this.communityService.getPosts(
       offset ?? 0,
-      postCount ?? 10,
+      postCount ?? 30,
       orderBy ?? 'new',
     );
   }

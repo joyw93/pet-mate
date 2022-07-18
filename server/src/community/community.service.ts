@@ -47,11 +47,18 @@ export class CommunityService {
     } else if (orderBy === 'old') {
       cond = { 'post.createdAt': 'ASC' };
     } else if (orderBy === 'like') {
-      cond = { likeCount: 'DESC' };
+      cond = { 'likeCount': 'DESC' };
     } else if (orderBy === 'views') {
       cond = { 'post.views': 'DESC' };
     }
     try {
+      const likeCount = this.communityLikeRepository
+        .createQueryBuilder()
+        .subQuery()
+        .select(['post_id','COUNT(likes.user_id) AS likeCount'])
+        .from(CommunityLikeEntity, 'likes')
+        .groupBy('post_id')
+        .getQuery();
       const posts = this.communityRepository
         .createQueryBuilder('post')
         .select([
@@ -64,14 +71,16 @@ export class CommunityService {
           'images.url',
           'tags.id',
           'hashtag.keyword',
+          'LikeCount.likeCount'
         ])
         .leftJoin('post.author', 'author')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
+        .leftJoin(likeCount, 'LikeCount','LikeCount.post_id = post.id')
         .loadRelationCountAndMap('post.likeCount', 'post.likes')
-        .loadRelationCountAndMap('post.commentCount', 'post.comments')
+        // .loadRelationCountAndMap('post.commentCount', 'post.comments')
         .skip(offset)
         .take(postCount)
         .orderBy(cond)
@@ -172,18 +181,22 @@ export class CommunityService {
       });
       const newPost = { ...oldPost, title, content };
 
-      const savedImages: CommunityImageEntity[] = await this.communityImageRepository.find({
+      const savedImages: CommunityImageEntity[] =
+        await this.communityImageRepository.find({
           where: { post_id: postId },
         });
 
-      if(savedImages.length === 0) return await this.communityRepository.save(newPost);
-   
-      if (images) { // 남길 이미지 있는 경우
+      if (savedImages.length === 0)
+        return await this.communityRepository.save(newPost);
+
+      if (images) {
+        // 남길 이미지 있는 경우
         const imagesToDelete = savedImages.filter(
           (savedImage) => !images.includes(savedImage.url),
         );
         await this.communityImageRepository.remove(imagesToDelete);
-      } else { // 남길 이미지 없는 경우
+      } else {
+        // 남길 이미지 없는 경우
         await this.communityImageRepository.delete({ post_id: postId });
       }
 
