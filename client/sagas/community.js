@@ -161,18 +161,18 @@ function* watchAddPost() {
 }
 
 function* watchLoadPosts() {
-  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+  yield takeLatest( LOAD_POSTS_REQUEST, loadPosts);
 }
 function* watchLoadPostDetail() {
-  yield throttle(5000, LOAD_POST_DETAIL_REQUEST, loadPostDetail);
+  yield takeLatest( LOAD_POST_DETAIL_REQUEST, loadPostDetail);
 }
 
 function* watchMorePosts() {
-  yield throttle(5000, LOAD_MORE_REQUEST, loadMorePosts);
+  yield takeLatest( LOAD_MORE_REQUEST, loadMorePosts);
 }
 
 function* watchLoadOldPosts() {
-  yield throttle(5000, SHOW_OLD_POSTS_REQUEST, loadOldPosts);
+  yield takeLatest( SHOW_OLD_POSTS_REQUEST, loadOldPosts);
 }
 
 SHOW_OLD_POSTS_REQUEST;

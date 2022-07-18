@@ -18,6 +18,7 @@ import {
   ConfirmButton,
   ButtonWrapper,
   ProfileEditArea,
+  CalendarHeader,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
@@ -124,18 +125,12 @@ const MyProfile = () => {
                     dateFormat="yyyy-MM-dd"
                     onChange={(date) => setStartDate(date)}
                     customInput={<Input />}
-                    renderCustomHeader={({
-                      date,
-                      changeYear,
-                      changeMonth,
-                      decreaseMonth,
-                      increaseMonth,
-                      prevMonthButtonDisabled,
-                      nextMonthButtonDisabled,
-                    }) => <div className="data-customheader"></div>}
+                    // renderCustomHeader={({})=>(<CalendarHeader>
+
+                    // </CalendarHeader>)}
+
                   />
                 </label>
-
                 <label>한줄 소개</label>
                 <Input />
                 <div>

@@ -162,10 +162,20 @@ export const ProfileEditArea = styled.div`
     font-size: 1.1rem;
   }
 
-  .react-datepicker__input-container::before {
+  /* .react-datepicker__input-container::before {
     font-size: 100px;
     color: #333;
+  } */
+
+  .react-datepicker__day--selected {
+  background-color: ${Colors.primaryColor} ;
+  color: #2b2b2b ;
+}
+
+  .react-datepicker__header {
+    background-color: #fff;
   }
+
 `;
 
 export const Input = styled.input`
@@ -187,8 +197,8 @@ export const Input = styled.input`
 `;
 
 export const ConfirmButton = styled.button`
-  margin-top: 200px;
-  margin-bottom: 150px;
+  margin-top: 100px;
+  margin-bottom: 100px;
   width: 300px;
   height: 50px;
   border-radius: 5px;
@@ -201,4 +211,8 @@ export const ConfirmButton = styled.button`
     cursor: pointer;
     background-color: ${Colors.primaryColor};
   }
+`;
+
+export const CalendarHeader = styled.div`
+
 `;
