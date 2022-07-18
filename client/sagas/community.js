@@ -10,12 +10,12 @@ import {
   LOAD_POST_DETAIL_REQUEST,
   LOAD_POST_DETAIL_SUCCESS,
   LOAD_POST_DETAIL_FAILURE,
-  SHOW_OLD_POSTS_REQUEST,
-  SHOW_OLD_POSTS_SUCCESS,
-  SHOW_OLD_POSTS_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
+  REMOVE_POST_REQUEST,
+  REMOVE_POST_SUCCESS,
+  REMOVE_POST_FAILURE,
 } from "../reducers/community";
 
 //const serverUrl = "http://127.0.0.1:3000";
@@ -57,12 +57,6 @@ function loadPostsAPI(data) {
   return axios.get(`${serverUrl}/community?orderBy=${data}`);
 }
 
-// function loadPostsAPI(data) {
-//   return axios.post(`${serverUrl}/community?orderBy=${data}`, data, {
-//     withCredentials: true,
-//   });
-// }
-
 function* loadPosts(action) {
   try {
     const result = yield call(loadPostsAPI, action.data);
@@ -86,13 +80,6 @@ function loadPostDetailAPI(data) {
   return axios.get(`${serverUrl}/community/${data}`);
 }
 
-//글 더 불러오기
-function loadMoreAPI(data) {
-  return axios.get(`${serverUrl}/community?offset=10&count=10`, data, {
-    withCredentials: true,
-  });
-}
-
 function* loadPostDetail(action) {
   try {
     const result = yield call(loadPostDetailAPI, action.data);
@@ -111,13 +98,20 @@ function* loadPostDetail(action) {
   }
 }
 
+//글 더 불러오기
+function loadMoreAPI(data) {
+  return axios.get(
+    `${serverUrl}/community?offset=10&count=10&orderBy=${data}`,
+    data
+  );
+}
+
 function* loadMorePosts(action) {
   try {
     const result = yield call(loadMoreAPI, action.data);
     const payload = result.data;
     yield put({
       type: LOAD_MORE_SUCCESS,
-
       data: payload.data,
     });
     //console.log(payload);
@@ -130,27 +124,24 @@ function* loadMorePosts(action) {
   }
 }
 
-//오래된 순
-function loadOldPostsAPI(data) {
-  return axios.get(`${serverUrl}/community?orderBy=old`, data, {
-    withCredentials: true,
-  });
+//글 삭제하기
+function removePostAPI(data) {
+  return axios.delete(`${serverUrl}/community/${data}`);
 }
 
-function* loadOldPosts(action) {
+function* removepost(action) {
   try {
-    const result = yield call(loadOldPostsAPI, action.data);
+    const result = yield call(removePostAPI, action.data);
     const payload = result.data;
     yield put({
-      type: SHOW_OLD_POSTS_SUCCESS,
+      type: REMOVE_POST_SUCCESS,
       data: payload.data,
     });
     //console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({
-      type: SHOW_OLD_POSTS_FAILURE,
-
+      type: REMOVE_POST_FAILURE,
       data: err.response.data,
     });
   }
@@ -158,6 +149,10 @@ function* loadOldPosts(action) {
 
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, post);
+}
+
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removepost);
 }
 
 function* watchLoadPosts() {
@@ -171,12 +166,12 @@ function* watchMorePosts() {
   yield throttle(5000, LOAD_MORE_REQUEST, loadMorePosts);
 }
 
-function* watchLoadOldPosts() {
-  yield throttle(5000, SHOW_OLD_POSTS_REQUEST, loadOldPosts);
-}
-
-SHOW_OLD_POSTS_REQUEST;
-
 export default function* communitySaga() {
-  yield all([fork(watchAddPost), fork(watchLoadPosts), fork(watchMorePosts), fork(watchLoadOldPosts), fork(watchLoadPostDetail)]);
+  yield all([
+    fork(watchAddPost),
+    fork(watchLoadPosts),
+    fork(watchMorePosts),
+    fork(watchLoadPostDetail),
+    fork(watchRemovePost),
+  ]);
 }

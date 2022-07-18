@@ -13,7 +13,10 @@ import {
   Button,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import { loadPostDetailRequestAction } from "../../reducers/community";
+import {
+  loadPostDetailRequestAction,
+  removePostRequestAction,
+} from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -62,6 +65,16 @@ const CommunityPostDetail = () => {
     setCmtContentArr(cmtContentArr.filter((it) => it.id !== id));
   };
 
+  const handleDeletePost = () => {
+    if (window.confirm("글을 삭제하겠습니까?")) {
+      console.log("글 삭제");
+      dispatch(removePostRequestAction(parseInt(id)));
+      router.push(`/community`);
+    }
+  };
+
+  const editing = useSelector((state) => state.community.editing);
+
   return (
     <>
       {post && (
@@ -70,10 +83,10 @@ const CommunityPostDetail = () => {
           <Title>
             <h2>{post.title}</h2>
             <div>
-              <Link href={"/community/edit"}>
+              <Link href={`/community/${id}/new`}>
                 <Button>수정</Button>
               </Link>
-              <Button>삭제</Button>
+              <Button onClick={handleDeletePost}>삭제</Button>
             </div>
           </Title>
           <PostInfo>
