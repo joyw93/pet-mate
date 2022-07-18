@@ -6,12 +6,25 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
-import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, KeywordWrapper, Button } from "./styled";
+import {
+  TitleWrapper,
+  TextEditWrapper,
+  AddPhotoWrapper,
+  KeywordWrapper,
+  Button,
+} from "./styled";
+import { useRouter } from "next/router";
 
-const CommunityPost = () => {
+const CommunityPost = ({ editState }) => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [singlePost, setSinglePost] = useState("");
+
+  console.log(editState);
   const dispatch = useDispatch();
   const { postDone } = useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
+  const { posts } = useSelector((state) => state.community);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -26,10 +39,22 @@ const CommunityPost = () => {
   const contentRef = useRef();
 
   useEffect(() => {
-    if (!me) {
-      Router.push("/login");
+    if (editState) {
+      const post = posts.filter((post) => post.id === parseInt(id));
+      setSinglePost(post[0]);
+      //const { id, title, content } = singlePost;
+      setTitle(post[0].title);
+      setContent(post[0].content);
     }
-  }, []);
+  }, [editState]);
+
+  console.log(singlePost);
+
+  // useEffect(() => {
+  //   if (!me) {
+  //     Router.push("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (hashArr.length > 5) {
@@ -63,7 +88,6 @@ const CommunityPost = () => {
     },
     [fileImages]
   );
-
 
   const handleDeleteImage = useCallback(
     (id) => {
@@ -133,12 +157,11 @@ const CommunityPost = () => {
     }
   }, [postDone]);
 
-
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
-          <button onClick={test}>테스트버튼</button>
+          <button>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
           <div id="buttons">
             <Button onClick={post}>등록</Button>
@@ -199,7 +222,11 @@ const CommunityPost = () => {
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
             {hashArr.map((it, index) => (
-              <button key={index} className="keyword_item" onClick={() => handleDeleteHash(index)}>
+              <button
+                key={index}
+                className="keyword_item"
+                onClick={() => handleDeleteHash(index)}
+              >
                 <span>{it}</span>
 
                 <svg

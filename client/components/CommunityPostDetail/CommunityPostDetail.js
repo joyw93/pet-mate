@@ -11,23 +11,31 @@ import {
   KeywordWrapper,
   CommentWrapper,
   Button,
+  CommentInput,
+  CommentArea,
+  CommentContentInfo,
+  CommentHandler,
+  CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import { loadPostDetailRequestAction } from "../../reducers/community";
+import { addCommentRequestAction } from "../../reducers/community";
+import { removeCommentRequestAction } from "../../reducers/community";
+import { likePostRequestAction } from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
   const unlikeIcon = "../img/heart2.png";
+  const [cmtContent, setCmtContent] = useState("");
+  const [like, setLike] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { post } = useSelector((state) => state.community);
+  const { post, addCommentDone, removeCommentDone, likePostDone } = useSelector(
+    (state) => state.community
+  );
   const dispatch = useDispatch();
-  const [cmtContent, setCmtContent] = useState("");
-  const [cmtContentArr, setCmtContentArr] = useState([]);
-  const [like, setLike] = useState(false);
-
   //carousel
   const settings = {
     arrows: true,
@@ -42,25 +50,51 @@ const CommunityPostDetail = () => {
     if (router.isReady) {
       dispatch(loadPostDetailRequestAction(id));
     }
-  }, [router.isReady]);
+  }, [router.isReady, addCommentDone, removeCommentDone, likePostDone]);
 
   const handleLike = useCallback(() => {
     setLike(!like);
+    dispatch(likePostRequestAction(id));
+    console.log(post);
   }, [like]);
 
-  const handleCmtContent = useCallback(
+  const handleCmtContent = useCallback(() => {
+    if (!cmtContent) {
+      return alert("내용을 입력하세요");
+    }
+    dispatch(addCommentRequestAction(id));
+    setCmtContent("");
+  }, [cmtContent]);
+
+  const keyUp = useCallback(
     (e) => {
-      if (cmtContent || (e.keyCode === 13 && e.target.value.trim() !== "")) {
-        setCmtContentArr([...cmtContentArr, cmtContent]);
+      if (!e.target.value.trim()) {
+        return alert("내용을 입력하세요");
       }
-      setCmtContent("");
+
+      if (e.keyCode === 13) {
+        dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
+        setCmtContent("");
+      }
     },
     [cmtContent]
   );
 
-  const handleDeleteCmt = (id) => {
-    setCmtContentArr(cmtContentArr.filter((it) => it.id !== id));
+  const handleDeleteCmt = (commentId) => {
+    if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
+      dispatch(removeCommentRequestAction(commentId));
+    }
   };
+
+  const handleDeletePost = () => {
+    if (window.confirm("글을 삭제하겠습니까?")) {
+      console.log("글 삭제");
+      dispatch(removePostRequestAction(parseInt(id)));
+      router.push(`/community`);
+    }
+  };
+
+  const editing = useSelector((state) => state.community.editing);
 
   return (
     <>
@@ -70,10 +104,10 @@ const CommunityPostDetail = () => {
           <Title>
             <h2>{post.title}</h2>
             <div>
-              <Link href={"/community/edit"}>
+              <Link href={`/community/${id}/new`}>
                 <Button>수정</Button>
               </Link>
-              <Button>삭제</Button>
+              <Button onClick={handleDeletePost}>삭제</Button>
             </div>
           </Title>
           <PostInfo>
@@ -124,28 +158,41 @@ const CommunityPostDetail = () => {
               <h2>
                 댓글 <span>{post.comments.length}</span>
               </h2>
-              <div id="cmt_input">
+              <CommentInput>
                 <input
-                  onKeyUp={handleCmtContent}
+                  onKeyUp={keyUp}
                   onChange={(e) => setCmtContent(e.target.value)}
                   value={cmtContent}
                   type="text"
                   placeholder="댓글을 남겨보세요."
                 />
                 <Button onClick={handleCmtContent}>입력</Button>
-              </div>
-              <div id="cmts_area">
+              </CommentInput>
+              <CommentArea>
                 {post.comments &&
                   post.comments
                     .slice(0)
                     .reverse()
                     .map((comment) => (
-                      <div key={comment.id} className="cmts">
-                        <h3>{comment.author.nickname}</h3>
+                      <CommentItem key={comment.id}>
+                        <CommentHandler>
+                          <h3>{comment.author.nickname}</h3>
+                          <CommentContentInfo>
+                            <span>{getElapsedTime(comment.createdAt)}</span>
+                            <span>·</span>
+                            <span
+                              id="delete_btn"
+                              onClick={() => handleDeleteCmt(comment.id)}
+                            >
+                              삭제
+                            </span>
+                          </CommentContentInfo>
+                        </CommentHandler>
+
                         <p>{comment.content}</p>
-                      </div>
+                      </CommentItem>
                     ))}
-              </div>
+              </CommentArea>
             </CommentWrapper>
           </div>
         </PostDetailContainer>

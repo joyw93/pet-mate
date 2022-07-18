@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   font-family: "Noto Sans KR", sans-serif;
+  color: #000;
 }
 html,
 body {
@@ -35,6 +36,9 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+input {
+  color: #000;
 }
 input:focus {
   outline: none;

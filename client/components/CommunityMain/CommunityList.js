@@ -1,17 +1,23 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
 import { ListContainer, BtnContainer } from "./styled";
-import { loadMorePostsAction } from "../../reducers/community";
-import axios from "axios";
+import {
+  loadMorePostsAction,
+  loadPostsRequestAction,
+} from "../../reducers/community";
 
-const CommunityList = () => {
+const CommunityList = (filterCond) => {
   const posts = useSelector((state) => state.community.posts);
-  const loadPostsDone = useSelector(
-    (state) => state.community.posts,
-    shallowEqual
-  );
+  const loadPostsDone = useSelector((state) => state.community.loadPostsDone);
+
+  useEffect(() => {
+    //setFilterCond("new");
+    dispatch(loadPostsRequestAction(filterCond.filterCond));
+  }, [filterCond.filterCond]);
+
+  console.log(filterCond.filterCond);
 
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -23,25 +29,16 @@ const CommunityList = () => {
     }
   }, [posts]);
 
-  const handleMorePosts = () => {
-    // const result = await axios.get(
-    //   "http://api.petmate.kr/community?offset=10&count=10"
-    // );
-    // const data = result.data.data;
-    // console.log(data);
-    dispatch(loadMorePostsAction());
-  };
+  console.log(list);
 
-  // const handleMorePosts = () => {
-  //   const community = dispatch(loadPostsRequestAction());
-  //   console.log(community.data);
-  // };
+  const handleMorePosts = () => {
+    dispatch(loadMorePostsAction(filterCond.filterCond));
+  };
 
   return (
     <>
       <ListContainer>
-        {list &&
-          list.map((item, index) => <CommunityItem key={index} {...item} />)}
+        {list && list.map((item) => <CommunityItem key={item.id} {...item} />)}
         <BtnContainer>
           <span></span>
           <button onClick={handleMorePosts}>더보기</button>

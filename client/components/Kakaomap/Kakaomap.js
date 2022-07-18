@@ -7,14 +7,17 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 //   aspect-ratio: 320 / 220;
 // `;
 
-const Kakaomap = (place) => {
+const Kakaomap = ({ place }) => {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
   const [placeSearched, setPlacesSearched] = useState("");
+  const [lat, setLat] = useState();
+  const [lng, setLng] = useState();
+
+  console.log(place);
 
   useEffect(() => {
-    console.log(place);
     setPlacesSearched(place);
 
     if (!map) return;
@@ -28,7 +31,6 @@ const Kakaomap = (place) => {
         let markers = [];
 
         for (var i = 0; i < data.length; i++) {
-          // @ts-ignore
           markers.push({
             position: {
               lat: data[i].y,
@@ -36,7 +38,6 @@ const Kakaomap = (place) => {
             },
             content: data[i].place_name,
           });
-          // @ts-ignore
           bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
         }
         setMarkers(markers);
@@ -45,12 +46,19 @@ const Kakaomap = (place) => {
         map.setBounds(bounds);
       }
     });
-  }, [map]);
+  }, [map, placeSearched]);
+
+  const handleMarkerClick = (e) => {
+    console.log(e.n);
+    setLat(e.n.La);
+    setLng(e.n.Ma);
+  };
+
+  console.log(lat, lng);
 
   return (
     <>
       <span>카카오맵</span>
-
       <Map // 로드뷰를 표시할 Container
         center={{
           lat: 37.566826,
@@ -67,7 +75,9 @@ const Kakaomap = (place) => {
           <MapMarker
             key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
             position={marker.position}
-            onClick={() => setInfo(marker)}
+            onClick={() => {
+              setInfo(marker), handleMarkerClick;
+            }}
           >
             {info && info.content === marker.content && (
               <div style={{ color: "#000" }}>{marker.content}</div>
