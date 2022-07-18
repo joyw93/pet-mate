@@ -156,21 +156,30 @@ export const ProfileEditArea = styled.div`
 
   label {
     margin-top: 50px;
-    display: inline-block;
+    display: block;
     width: 300px;
     color: #424242;
     font-size: 1.1rem;
+  }
+
+  .react-datepicker__input-container::before {
+    font-size: 100px;
+    color: #333;
   }
 `;
 
 export const Input = styled.input`
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 17px;
   border-radius: 5px;
   border: 1px solid #e0e0e0;
-  line-height: 35px;
+  line-height: 40px;
   text-indent: 12px;
   width: 400px;
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: #bdbdbd;
+  }
   &:focus {
     border: 1px solid #ffa726;
     box-shadow: 0 0 5px ${Colors.primaryColor};
@@ -178,7 +187,6 @@ export const Input = styled.input`
 `;
 
 export const ConfirmButton = styled.button`
-  margin-left: 100px;
   margin-top: 200px;
   margin-bottom: 150px;
   width: 300px;
@@ -190,6 +198,7 @@ export const ConfirmButton = styled.button`
   background-color: #ffb74d;
   border: none;
   &:hover {
+    cursor: pointer;
     background-color: ${Colors.primaryColor};
   }
 `;

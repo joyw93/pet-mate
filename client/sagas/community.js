@@ -16,6 +16,15 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
   REMOVE_POST_FAILURE,
+  ADD_COMMENT_REQUEST,
+  ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_FAILURE,
+  REMOVE_COMMENT_REQUEST,
+  REMOVE_COMMENT_SUCCESS,
+  REMOVE_COMMENT_FAILURE,
+  LIKE_POST_REQUEST,
+  LIKE_POST_SUCCESS,
+  LIKE_POST_FAILURE,
 } from "../reducers/community";
 
 //const serverUrl = "http://127.0.0.1:3000";
@@ -147,6 +156,71 @@ function* removepost(action) {
   }
 }
 
+function addCommentAPI(data) {
+  return axios.post(`${serverUrl}/community/${data.postId}/comment`, data, {
+    withCredentials: true,
+  });
+}
+
+function* addComment(action) {
+  try {
+    const result = yield call(addCommentAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: ADD_COMMENT_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: ADD_COMMENT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function removeCommentAPI(data) {
+  return axios.delete(`${serverUrl}/community/comment/${data}`);
+}
+
+function* removeComment(action) {
+  try {
+    const result = yield call(removeCommentAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: REMOVE_COMMENT_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: REMOVE_COMMENT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function likePostAPI(data) {
+  return axios.get(`${serverUrl}/community/${data}/like`);
+}
+
+function* likePost(action) {
+  try {
+    const result = yield call(likePostAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: LIKE_POST_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LIKE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, post);
 }
@@ -166,6 +240,22 @@ function* watchMorePosts() {
   yield throttle(5000, LOAD_MORE_REQUEST, loadMorePosts);
 }
 
+function* watchLoadOldPosts() {
+  yield throttle(5000, SHOW_OLD_POSTS_REQUEST, loadOldPosts);
+}
+
+function* watchAddComment() {
+  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+}
+
+function* watchRemoveComment() {
+  yield takeLatest(REMOVE_COMMENT_REQUEST, removeComment);
+}
+
+function* watchLikePost() {
+  yield takeLatest(LIKE_POST_REQUEST, likePost);
+}
+
 export default function* communitySaga() {
   yield all([
     fork(watchAddPost),
@@ -173,5 +263,10 @@ export default function* communitySaga() {
     fork(watchMorePosts),
     fork(watchLoadPostDetail),
     fork(watchRemovePost),
+    fork(watchLoadOldPosts),
+    fork(watchLoadPostDetail),
+    fork(watchAddComment),
+    fork(watchRemoveComment),
+    fork(watchLikePost),
   ]);
 }

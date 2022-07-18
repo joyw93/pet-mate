@@ -32,7 +32,7 @@ let CommunityController = class CommunityController {
         this.hashtagService = hashtagService;
     }
     async getPosts(offset, postCount, orderBy) {
-        return await this.communityService.getPosts(offset !== null && offset !== void 0 ? offset : 0, postCount !== null && postCount !== void 0 ? postCount : 10, orderBy !== null && orderBy !== void 0 ? orderBy : 'new');
+        return await this.communityService.getPosts(offset !== null && offset !== void 0 ? offset : 0, postCount !== null && postCount !== void 0 ? postCount : 30, orderBy !== null && orderBy !== void 0 ? orderBy : 'new');
     }
     async getHotPosts() {
         return await this.communityService.getHotPosts();

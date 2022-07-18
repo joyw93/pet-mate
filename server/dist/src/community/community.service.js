@@ -44,12 +44,19 @@ let CommunityService = class CommunityService {
             cond = { 'post.createdAt': 'ASC' };
         }
         else if (orderBy === 'like') {
-            cond = { likeCount: 'DESC' };
+            cond = { 'likeCount': 'DESC' };
         }
         else if (orderBy === 'views') {
             cond = { 'post.views': 'DESC' };
         }
         try {
+            const likeCount = this.communityLikeRepository
+                .createQueryBuilder()
+                .subQuery()
+                .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+                .from(community_like_entity_1.CommunityLikeEntity, 'likes')
+                .groupBy('post_id')
+                .getQuery();
             const posts = this.communityRepository
                 .createQueryBuilder('post')
                 .select([
@@ -62,14 +69,15 @@ let CommunityService = class CommunityService {
                 'images.url',
                 'tags.id',
                 'hashtag.keyword',
+                'LikeCount.likeCount'
             ])
                 .leftJoin('post.author', 'author')
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
                 .leftJoin('tags.hashtag', 'hashtag')
+                .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
                 .loadRelationCountAndMap('post.likeCount', 'post.likes')
-                .loadRelationCountAndMap('post.commentCount', 'post.comments')
                 .skip(offset)
                 .take(postCount)
                 .orderBy(cond)

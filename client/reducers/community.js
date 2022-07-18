@@ -2,7 +2,8 @@ import produce from "immer";
 
 export const initialState = {
   posts: [],
-
+  content: [],
+  commentId: [],
   post: null,
   hasMorePosts: true,
   editing: false,
@@ -18,6 +19,7 @@ export const initialState = {
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -27,9 +29,17 @@ export const initialState = {
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  removeCommentLoading: false,
+  removeCommentDone: false,
+  removeCommentError: null,
+
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
 };
 
 export const LOAD_POST_DETAIL_REQUEST = "LOAD_POST_DETAIL_REQUEST";
@@ -60,6 +70,14 @@ export const UPDATE_POST_FAILURE = "UPDATE_POST_FAILURE";
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
+
+export const REMOVE_COMMENT_REQUEST = "REMOVE_COMMENT_REQUEST";
+export const REMOVE_COMMENT_SUCCESS = "REMOVE_COMMENT_SUCCESS";
+export const REMOVE_COMMENT_FAILURE = "REMOVE_COMMENT_FAILURE";
+
+export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
+export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
+export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
 
 export const postRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
@@ -95,6 +113,16 @@ export const addCommentRequestAction = (data) => ({
   data,
 });
 
+export const removeCommentRequestAction = (data) => ({
+  type: REMOVE_COMMENT_REQUEST,
+  data,
+});
+
+export const likePostRequestAction = (data) => ({
+  type: LIKE_POST_REQUEST,
+  data,
+});
+
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
@@ -116,7 +144,6 @@ const reducer = (state = initialState, action) =>
       //글 보여주기
 
       //글 불러오기
-
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsDone = false;
@@ -159,12 +186,14 @@ const reducer = (state = initialState, action) =>
         draft.postLoading = false;
         draft.postDone = true;
         draft.posts.unshift(action.data);
+        break;
       case ADD_POST_FAILURE:
         draft.postLoading = false;
         draft.postError = action.error;
         break;
       case POST_RESET:
         draft.postDone = false;
+        break;
 
       //글 삭제
       case REMOVE_POST_REQUEST:
@@ -173,7 +202,11 @@ const reducer = (state = initialState, action) =>
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS:
+<<<<<<< HEAD
         //draft.posts = state.posts.filter((v) => v.id !== action.data);
+=======
+        draft.posts = state.posts.filter((v) => v.id !== action.data);
+>>>>>>> 17030fdacb447d4e0a2f680142c8851029f9ff8d
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;
@@ -206,12 +239,47 @@ const reducer = (state = initialState, action) =>
         draft.addCommentError = null;
         break;
       case ADD_COMMENT_SUCCESS:
+<<<<<<< HEAD
+=======
+        draft.content.unshift(action.data.content);
+>>>>>>> 17030fdacb447d4e0a2f680142c8851029f9ff8d
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
         draft.addCommentError = action.error;
+        break;
+
+      //댓글 삭제
+      case REMOVE_COMMENT_REQUEST:
+        draft.removeCommentLoading = true;
+        draft.removeCommentDone = false;
+        draft.removeCommentError = null;
+        break;
+      case REMOVE_COMMENT_SUCCESS:
+        // draft.posts.comments = state.posts.comments.filter((v) => v.comment.id !== action.data);
+        draft.removeCommentLoading = false;
+        draft.removeCommentDone = true;
+        break;
+      case REMOVE_COMMENT_FAILURE:
+        draft.removeCommentLoading = false;
+        draft.removeCommentError = action.error;
+        break;
+
+      //좋아요
+      case LIKE_POST_REQUEST:
+        draft.postLoading = true;
+        draft.postError = null;
+        draft.postDone = false;
+        break;
+      case LIKE_POST_SUCCESS:
+        draft.postLoading = false;
+        draft.postDone = true;
+        break;
+      case LIKE_POST_FAILURE:
+        draft.postLoading = false;
+        draft.postError = action.error;
         break;
 
       default:
