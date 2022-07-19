@@ -23,14 +23,17 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import { signOutRequestAction, signOutResetAction } from "../../reducers/user";
+import { signOutRequestAction, signOutResetAction, editProfileRequestAction } from "../../reducers/user";
 
 const MyProfile = () => {
-  const inputRef = useRef(null);
   const dispatch = useDispatch();
-  const [startDate, setStartDate] = useState(null);
+  const [birthday, setBirthday] = useState("");
+  const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, signOutDone, myPostsData } = useSelector((state) => state.user);
+  const { me, signOutDone } = useSelector((state) => state.user);
+  const [nickname, setNickname] = useState("");
+  const [comment, setComment] = useState("");
+
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
@@ -49,13 +52,33 @@ const MyProfile = () => {
     }
   }, [signOutDone]);
 
-  useEffect(() => {
-    console.log(startDate);
-  }, [startDate]);
-
   const myProfile = () => {
     Router.push("/profile");
   };
+
+  const onChangeNickname = (e) => {
+    setNickname(e.target.value);
+  };
+
+  const onChangeComment = (e) => {
+    setComment(e.target.value);
+  };
+
+  const onChangeBirthday = (data) => {
+    setDate(data);
+    if (data) {
+      const year = data.getFullYear();
+      const month = data.getMonth() + 1;
+      const day = data.getDate();
+      const fullDate = `${year}-${month}-${day}`;
+      setBirthday(fullDate);
+    }
+  };
+
+  const submit = useCallback(() => {
+    const data = { nickname, birthday, comment };
+    dispatch(editProfileRequestAction(data));
+  }, [nickname, birthday, comment]);
 
   return (
     <>
@@ -108,26 +131,25 @@ const MyProfile = () => {
               <ProfileEditArea>
                 <h1>프로필 설정</h1>
                 <label>닉네임</label>
-                <Input />
+                <Input onChange={onChangeNickname} />
                 <label>
                   생년월일
                   <DatePicker
                     showPopperArrow={false}
-                    selected={startDate}
+                    selected={date}
                     placeholderText="YYYY-MM-DD"
                     locale={ko}
                     dateFormat="yyyy-MM-dd"
-                    onChange={(date) => setStartDate(date)}
+                    onChange={onChangeBirthday}
                     customInput={<Input />}
                     // renderCustomHeader={({})=>(<CalendarHeader>
-
                     // </CalendarHeader>)}
                   />
                 </label>
                 <label>한줄 소개</label>
-                <Input />
+                <Input onChange={onChangeComment} />
                 <div>
-                  <ConfirmButton>설정 완료</ConfirmButton>
+                  <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
                 </div>
               </ProfileEditArea>
             </TabWrapper>

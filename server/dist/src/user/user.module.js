@@ -10,6 +10,7 @@ exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
 const user_controller_1 = require("./user.controller");
 const user_entity_1 = require("./user.entity");
@@ -21,6 +22,7 @@ UserModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([
                 user_entity_1.UserEntity,
+                user_profile_entity_1.UserProfileEntity,
                 community_like_entity_1.CommunityLikeEntity,
                 community_entity_1.CommunityEntity,
             ]),

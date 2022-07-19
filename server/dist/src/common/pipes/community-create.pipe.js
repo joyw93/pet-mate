@@ -11,11 +11,11 @@ const common_1 = require("@nestjs/common");
 let CommunityCreatePipe = class CommunityCreatePipe {
     transform(createPostDto, metadata) {
         const { hashtags } = createPostDto;
-        const transformedcreatePostDto = Object.assign({}, createPostDto);
+        const transformedCreatePostDto = Object.assign({}, createPostDto);
         if (typeof hashtags === 'string') {
-            transformedcreatePostDto.hashtags = [hashtags];
+            transformedCreatePostDto.hashtags = [hashtags];
         }
-        return transformedcreatePostDto;
+        return transformedCreatePostDto;
     }
 };
 CommunityCreatePipe = __decorate([

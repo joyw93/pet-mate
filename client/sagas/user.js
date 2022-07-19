@@ -22,6 +22,9 @@ import {
   LOAD_MY_LIKED_FAILURE,
   LOAD_MY_LIKED_REQUEST,
   LOAD_MY_LIKED_SUCCESS,
+  EDIT_PROFILE_FAILURE,
+  EDIT_PROFILE_REQUEST,
+  EDIT_PROFILE_SUCCESS,
 } from "../reducers/user";
 
 const serverUrl = `http://api.petmate.kr`;
@@ -173,6 +176,29 @@ function* loadMyLiked(action) {
   }
 }
 
+function editProfileAPI(data) {
+  return axios.post(`${serverUrl}/user/profile`, data, {
+    withCredentials: true,
+  });
+}
+
+function* editProfile(action) {
+  try {
+    console.log(action.data);
+    const result = yield call(editProfileAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: EDIT_PROFILE_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: EDIT_PROFILE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -201,6 +227,10 @@ function* watchLoadMyLiked() {
   yield takeLatest(LOAD_MY_LIKED_REQUEST, loadMyLiked);
 }
 
+function* watchEditProfile() {
+  yield takeLatest(EDIT_PROFILE_REQUEST, editProfile);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchSignUp),
@@ -210,5 +240,6 @@ export default function* userSaga() {
     fork(watchLoadMyPosts),
     fork(watchLoadMyComments),
     fork(watchLoadMyLiked),
+    fork(watchEditProfile),
   ]);
 }

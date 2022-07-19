@@ -13,6 +13,9 @@ export const initialState = {
   signOutLoading: false, // 회원탈퇴 시도중
   signOutDone: false,
   signOutError: null,
+  editProfileLoading: false,
+  editProfileDone: false,
+  editProfileError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -60,6 +63,10 @@ export const LOAD_MY_LIKED_REQUEST = "LOAD_MY_LIKED_REQUEST";
 export const LOAD_MY_LIKED_SUCCESS = "LOAD_MY_LIKED_SUCCESS";
 export const LOAD_MY_LIKED_FAILURE = "LOAD_MY_LIKED_FAILURE";
 
+export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
+export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
+export const EDIT_PROFILE_FAILURE = "EDIT_PROFILE_FAILURE";
+
 export const signupRequestAction = (data) => ({
   type: SIGN_UP_REQUEST,
   data,
@@ -96,6 +103,11 @@ export const loadMyCommentsAction = () => ({
 
 export const loadMyLikedAction = () => ({
   type: LOAD_MY_LIKED_REQUEST,
+});
+
+export const editProfileRequestAction = (data) => ({
+  type: EDIT_PROFILE_REQUEST,
+  data,
 });
 
 const reducer = (state = initialState, action) =>
@@ -212,6 +224,19 @@ const reducer = (state = initialState, action) =>
       case LOAD_MY_LIKED_FAILURE:
         draft.loadMyLikedLoading = false;
         draft.loadMyLikedError = action.error;
+
+      case EDIT_PROFILE_REQUEST:
+        draft.editProfileLoading = true;
+        draft.editProfileError = null;
+        draft.editProfileDone = false;
+        break;
+      case EDIT_PROFILE_SUCCESS:
+        draft.editProfileLoading = false;
+        draft.editProfileDone = true;
+        break;
+      case EDIT_PROFILE_FAILURE:
+        draft.editProfileLoading = false;
+        draft.editProfileError = action.error;
         break;
 
       default:

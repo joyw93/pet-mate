@@ -78,6 +78,7 @@ let CommunityService = class CommunityService {
                 .leftJoin('tags.hashtag', 'hashtag')
                 .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
                 .loadRelationCountAndMap('post.likeCount', 'post.likes')
+                .loadRelationCountAndMap('post.commentCount', 'post.comments')
                 .skip(offset)
                 .take(postCount)
                 .orderBy(cond)

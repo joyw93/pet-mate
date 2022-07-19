@@ -30,11 +30,21 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 const bcrypt = require("bcrypt");
 const res = require("../common/responses/message");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
 let UserService = class UserService {
-    constructor(userRepository, communityRepository) {
+    constructor(userRepository, userProfileRepository, communityRepository) {
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.communityRepository = communityRepository;
+    }
+    async getUserProfile(userId) {
+        const userProfile = await this.userRepository.findOne({
+            relations: ['profile'],
+            select: ['profile', 'nickname', 'id'],
+            where: { id: userId },
+        });
+        return userProfile;
     }
     async checkNickname(nickname) {
         const userByNickname = await this.userRepository.findOne({
@@ -68,7 +78,8 @@ let UserService = class UserService {
         }
         const hashedPassword = await bcrypt.hash(password, 12);
         try {
-            const user = await this.userRepository.save(Object.assign(Object.assign({}, createUserDto), { password: hashedPassword }));
+            const userProfile = new user_profile_entity_1.UserProfileEntity();
+            const user = await this.userRepository.save(Object.assign(Object.assign({}, createUserDto), { password: hashedPassword, profile: userProfile }));
             const { password } = user, userWithoutPassword = __rest(user, ["password"]);
             return userWithoutPassword;
         }
@@ -76,6 +87,17 @@ let UserService = class UserService {
             console.error(error);
             throw new common_1.InternalServerErrorException();
         }
+    }
+    async setProfile(userId, setProfileDto) {
+        const { nickname, birthday, comment } = setProfileDto;
+        const user = await this.userRepository.findOne({
+            relations: ['profile'],
+            where: { id: userId },
+        });
+        user.nickname = nickname;
+        user.profile.comment = comment;
+        user.profile.birth = birthday;
+        return await this.userRepository.save(user);
     }
     async googleLoginCallback(req, res) {
         if (!req.user) {
@@ -114,24 +136,23 @@ let UserService = class UserService {
         return posts;
     }
     async getLikedPosts(userId) {
-        const posts = await this.userRepository
-            .createQueryBuilder('user')
-            .select(['user.id', 'likes.id', 'post.id', 'images.id', 'images.url'])
-            .leftJoin('user.likes', 'likes')
-            .leftJoin('likes.post', 'post')
+        const posts = await this.communityRepository
+            .createQueryBuilder('post')
+            .select(['post.id', 'images.url'])
+            .leftJoin('post.likes', 'likes')
             .leftJoin('post.images', 'images')
-            .where('user.id = :id', { id: userId })
+            .where('likes.user_id = :id', { id: userId })
             .getMany();
         return posts;
     }
     async getCommentedPosts(userId) {
-        const posts = await this.userRepository
-            .createQueryBuilder('user')
-            .select(['user.id', 'comments.id', 'post.id', 'images.id', 'images.url'])
-            .leftJoin('user.comments', 'comments')
-            .leftJoin('comments.post', 'post')
+        const posts = await this.communityRepository
+            .createQueryBuilder('post')
+            .select(['post.id', 'images.url'])
             .leftJoin('post.images', 'images')
-            .where('user.id=:id', { id: userId })
+            .leftJoin('post.comments', 'comments')
+            .leftJoin('comments.author', 'author')
+            .where('author.id=:id', { id: userId })
             .getMany();
         return posts;
     }
@@ -142,8 +163,10 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __param(1, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
+    __param(1, (0, typeorm_1.InjectRepository)(user_profile_entity_1.UserProfileEntity)),
+    __param(2, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;

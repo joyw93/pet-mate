@@ -18,7 +18,7 @@ import {
   CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import { loadPostDetailRequestAction } from "../../reducers/community";
+import { loadPostDetailRequestAction, removePostRequestAction } from "../../reducers/community";
 import { addCommentRequestAction } from "../../reducers/community";
 import { removeCommentRequestAction, removePostRequestAction } from "../../reducers/community";
 import { likePostRequestAction } from "../../reducers/community";
@@ -60,7 +60,6 @@ const CommunityPostDetail = () => {
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
-
     dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
     setCmtContent("");
   }, [cmtContent]);
@@ -73,7 +72,7 @@ const CommunityPostDetail = () => {
         }
 
         dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
-        
+
         setCmtContent("");
       }
     },
