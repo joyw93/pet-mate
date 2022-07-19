@@ -11,6 +11,7 @@ export declare class AuthService {
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
+        profile: import("../common/entities/user-profile.entity").UserProfileEntity;
         posts: import("../community/community.entity").CommunityEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];

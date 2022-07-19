@@ -240,10 +240,6 @@ function* watchMorePosts() {
   yield takeLatest( LOAD_MORE_REQUEST, loadMorePosts);
 }
 
-function* watchLoadOldPosts() {
-  yield takeLatest( SHOW_OLD_POSTS_REQUEST, loadOldPosts);
-}
-
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
@@ -263,7 +259,6 @@ export default function* communitySaga() {
     fork(watchMorePosts),
     fork(watchLoadPostDetail),
     fork(watchRemovePost),
-    fork(watchLoadOldPosts),
     fork(watchLoadPostDetail),
     fork(watchAddComment),
     fork(watchRemoveComment),

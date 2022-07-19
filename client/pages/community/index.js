@@ -32,7 +32,6 @@ export const getServerSideProps = async () => {
   const result = await fetch("http://api.petmate.kr/community/hot-posts");
   const hotdata = await result.json();
 
-  console.log(hotdata);
   // Pass data to the page via props
   return { props: { hotdata } };
 };

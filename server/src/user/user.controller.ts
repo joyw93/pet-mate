@@ -15,12 +15,18 @@ import { KakaoAuthGuard } from 'src/auth/kakao/kakao-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local/local-auth.guard';
 import { User } from 'src/common/decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get()
+  async getUserProfile(@User() user: UserEntity) {
+    return await this.userService.getUserProfile(user.id);
+  }
 
   @Post('nickname-check')
   async checkNickname(@Body() data: { nickname: string }) {
@@ -41,6 +47,14 @@ export class UserController {
   @Post('login')
   async login(@User() user: UserEntity) {
     return user;
+  }
+
+  @Post('profile')
+  async setProfile(
+    @User() user: UserEntity,
+    @Body() setProfileDto: SetProfileDto,
+  ) {
+    return await this.userService.setProfile(user.id, setProfileDto);
   }
 
   @Get('google')

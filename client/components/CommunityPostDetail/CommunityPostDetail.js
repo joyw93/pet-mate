@@ -18,7 +18,7 @@ import {
   CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import { loadPostDetailRequestAction } from "../../reducers/community";
+import { loadPostDetailRequestAction, removePostRequestAction } from "../../reducers/community";
 import { addCommentRequestAction } from "../../reducers/community";
 import { removeCommentRequestAction } from "../../reducers/community";
 import { likePostRequestAction } from "../../reducers/community";
@@ -62,7 +62,7 @@ const CommunityPostDetail = () => {
     if (!cmtContent) {
       return alert("내용을 입력하세요");
     }
-    dispatch(addCommentRequestAction(id));
+    dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
     setCmtContent("");
   }, [cmtContent]);
 

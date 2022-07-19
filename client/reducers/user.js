@@ -13,6 +13,9 @@ export const initialState = {
   signOutLoading: false, // 회원탈퇴 시도중
   signOutDone: false,
   signOutError: null,
+  editProfileLoading: false,
+  editProfileDone: false,
+  editProfileError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -35,6 +38,10 @@ export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
+
+export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
+export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
+export const EDIT_PROFILE_FAILURE = "EDIT_PROFILE_FAILURE";
 
 export const signupRequestAction = (data) => ({
   type: SIGN_UP_REQUEST,
@@ -60,6 +67,11 @@ export const loginRequestAction = (data) => ({
 
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
+});
+
+export const editProfileRequestAction = (data) => ({
+  type: EDIT_PROFILE_REQUEST,
+  data,
 });
 
 const reducer = (state = initialState, action) =>
@@ -131,6 +143,20 @@ const reducer = (state = initialState, action) =>
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
         draft.logOutError = action.error;
+        break;
+
+      case EDIT_PROFILE_REQUEST:
+        draft.editProfileLoading = true;
+        draft.editProfileError = null;
+        draft.editProfileDone = false;
+        break;
+      case EDIT_PROFILE_SUCCESS:
+        draft.editProfileLoading = false;
+        draft.editProfileDone = true;
+        break;
+      case EDIT_PROFILE_FAILURE:
+        draft.editProfileLoading = false;
+        draft.editProfileError = action.error;
         break;
 
       default:

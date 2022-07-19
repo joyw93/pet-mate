@@ -13,10 +13,13 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
+  EDIT_PROFILE_FAILURE,
+  EDIT_PROFILE_REQUEST,
+  EDIT_PROFILE_SUCCESS,
 } from "../reducers/user";
 
-const serverUrl = `http://api.petmate.kr`;
-// const serverUrl = `http://127.0.0.1:3000`;
+// const serverUrl = `http://api.petmate.kr`;
+const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -102,6 +105,29 @@ function* logOut() {
   }
 }
 
+function editProfileAPI(data) {
+  return axios.post(`${serverUrl}/user/profile`, data, {
+    withCredentials: true,
+  });
+}
+
+function* editProfile(action) {
+  try {
+    console.log(action.data);
+    const result = yield call(editProfileAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: EDIT_PROFILE_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: EDIT_PROFILE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -118,11 +144,16 @@ function* watchSignOut() {
   yield takeLatest(SIGN_OUT_REQUEST, signOut);
 }
 
+function* watchEditProfile() {
+  yield takeLatest(EDIT_PROFILE_REQUEST, editProfile);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchSignUp),
     fork(watchSignOut),
     fork(watchLogIn),
     fork(watchLogOut),
+    fork(watchEditProfile),
   ]);
 }

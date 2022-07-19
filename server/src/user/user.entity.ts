@@ -1,12 +1,15 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
+import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { CommunityEntity } from 'src/community/community.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -36,6 +39,16 @@ export class UserEntity {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @OneToOne(
+    () => UserProfileEntity,
+    (profile: UserProfileEntity) => profile.user,
+    {
+      cascade: true,
+    },
+  )
+  @JoinColumn({ name: 'profile_id', referencedColumnName: 'id' })
+  profile: UserProfileEntity;
 
   @OneToMany(() => CommunityEntity, (post: CommunityEntity) => post.author, {
     cascade: true,
