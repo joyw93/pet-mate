@@ -109,6 +109,11 @@ export const removePostRequestAction = (data) => ({
   data,
 });
 
+export const updatePostRequestAction = (data) => ({
+  type: UPDATE_POST_REQUEST,
+  data,
+});
+
 export const addCommentRequestAction = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
@@ -145,7 +150,6 @@ const reducer = (state = initialState, action) =>
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
         break;
-      //글 보여주기
 
       //글 불러오기
       case LOAD_POSTS_REQUEST:
@@ -223,7 +227,6 @@ const reducer = (state = initialState, action) =>
       case UPDATE_POST_SUCCESS:
         draft.updatePostLoading = false;
         draft.updatePostDone = true;
-        draft.posts.find((v) => v.id === action.data.PostId).content = action.data.content;
         break;
       case UPDATE_POST_FAILURE:
         draft.updatePostLoading = false;

@@ -16,6 +16,9 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
   REMOVE_POST_FAILURE,
+  UPDATE_POST_REQUEST,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
@@ -218,6 +221,64 @@ function* likePost(action) {
   }
 }
 
+//글 수정하기
+// function updatePostAPI(data) {
+//   const { post, id } = data;
+//   console.log(post, id);
+
+//   const testFormdata = new FormData();
+//   testFormdata.append("title", post.title);
+//   testFormdata.append("content", post.content);
+
+//   return axios.patch(`${serverUrl}/community/${id}`, testFormdata, {
+//     withCredentials: true,
+//   });
+// }
+
+// function* updatePost(action) {
+//   try {
+//     const result = yield call(updatePostAPI, action.data);
+//     const payload = result.data;
+//     yield put({
+//       type: UPDATE_POST_SUCCESS,
+//       data: payload.data,
+//     });
+//     // console.log(action.data);
+//   } catch (err) {
+//     console.error(err);
+//     yield put({
+//       type: UPDATE_POST_FAILURE,
+//       error: err.response.data,
+//     });
+//   }
+// }
+
+function updatePostAPI(data) {
+  console.log(data.post);
+  console.log(data.id);
+  return axios.patch(`${serverUrl}/community/${data.id}`, data.post, {
+    withCredentials: true,
+  });
+}
+
+function* updatePost(action) {
+  try {
+    const result = yield call(updatePostAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: UPDATE_POST_SUCCESS,
+      data: payload.data,
+    });
+    // console.log(action.data);
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPDATE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, post);
 }
@@ -249,6 +310,10 @@ function* watchLikePost() {
   yield takeLatest(LIKE_POST_REQUEST, likePost);
 }
 
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+}
+
 export default function* communitySaga() {
   yield all([
     fork(watchAddPost),
@@ -260,5 +325,6 @@ export default function* communitySaga() {
     fork(watchAddComment),
     fork(watchRemoveComment),
     fork(watchLikePost),
+    fork(watchUpdatePost),
   ]);
 }

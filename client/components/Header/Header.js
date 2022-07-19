@@ -102,7 +102,11 @@ const Header = () => {
         </div>
         <div id="menu_right">
           <form>
-            <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+            <Input
+              placeholder="검색어를 입력하세요"
+              onChange={handleValChange}
+              value={inputVal}
+            />
             {visible && (
               <button className="cancel_btn" onClick={clearInputVal}>
                 <img src="../img/cancel-btn.png" />
@@ -141,14 +145,18 @@ const Header = () => {
         {/* toggle menu */}
         <ToggleMenuWrapper display={toggleVisible}>
           <div id="toggle_btn" onClick={handleToggleVisible}>
-            <img src="../img/toggle-menu-btn.png" alt="메뉴" />
+            <img src="../../img/toggle-menu-btn.png" alt="메뉴" />
           </div>
           <div id="toggle_menu">
             <div id="close_btn" onClick={handleToggleVisible}>
-              <img src="../img/close-btn.png" alt="메뉴" />
+              <img src="../../img/close-btn.png" alt="메뉴" />
             </div>
             <form id="search_input">
-              <Input placeholder="검색어를 입력하세요" onChange={handleValChange} value={inputVal} />
+              <Input
+                placeholder="검색어를 입력하세요"
+                onChange={handleValChange}
+                value={inputVal}
+              />
               {visible && (
                 <button className="toggle_cancel_btn" onClick={clearInputVal}>
                   <img src="../img/cancel-btn.png" />

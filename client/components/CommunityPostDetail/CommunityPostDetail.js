@@ -20,7 +20,10 @@ import {
 import { getElapsedTime } from "../../utils";
 import { loadPostDetailRequestAction, removePostRequestAction } from "../../reducers/community";
 import { addCommentRequestAction } from "../../reducers/community";
-import { removeCommentRequestAction, removePostRequestAction } from "../../reducers/community";
+import {
+  removeCommentRequestAction,
+  removePostRequestAction,
+} from "../../reducers/community";
 import { likePostRequestAction } from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -93,8 +96,6 @@ const CommunityPostDetail = () => {
     }
   };
 
-  const editing = useSelector((state) => state.community.editing);
-
   return (
     <>
       {post && (
@@ -103,7 +104,7 @@ const CommunityPostDetail = () => {
           <Title>
             <h2>{post.title}</h2>
             <div>
-              <Link href={`/community/${id}/new`}>
+              <Link href={`/community/${id}/edit`}>
                 <Button>수정</Button>
               </Link>
               <Button onClick={handleDeletePost}>삭제</Button>
