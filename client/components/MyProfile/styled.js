@@ -168,14 +168,13 @@ export const ProfileEditArea = styled.div`
   } */
 
   .react-datepicker__day--selected {
-  background-color: ${Colors.primaryColor} ;
-  color: #2b2b2b ;
-}
+    background-color: ${Colors.primaryColor};
+    color: #2b2b2b;
+  }
 
   .react-datepicker__header {
     background-color: #fff;
   }
-
 `;
 
 export const Input = styled.input`
@@ -213,6 +212,6 @@ export const ConfirmButton = styled.button`
   }
 `;
 
-export const CalendarHeader = styled.div`
-
+export const ValidMessage = styled.div`
+  margin-top: 10px;
 `;

@@ -127,12 +127,12 @@ export class UserService {
   }
 
   async getMyPosts(userId: number) {
-    const posts = await this.userRepository
-      .createQueryBuilder('user')
-      .select(['user.id', 'post.id', 'images.id', 'images.url'])
-      .leftJoin('user.posts', 'post')
+    const posts = await this.communityRepository
+      .createQueryBuilder('post')
+      .select(['post.id', 'images.url'])
+      .leftJoin('post.author', 'author')
       .leftJoin('post.images', 'images')
-      .where('user.id = :id', { id: userId })
+      .where('author.id = :id', { id: userId })
       .getMany();
     return posts;
   }

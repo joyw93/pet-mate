@@ -1,4 +1,3 @@
-/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -36,7 +35,7 @@ export declare class UserService {
         message: string;
         user: any;
     }>;
-    getMyPosts(userId: number): Promise<UserEntity[]>;
+    getMyPosts(userId: number): Promise<CommunityEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;
     signout(userId: number): Promise<import("typeorm").DeleteResult>;

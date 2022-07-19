@@ -18,7 +18,7 @@ import {
   ConfirmButton,
   ButtonWrapper,
   ProfileEditArea,
-  CalendarHeader,
+  ValidMessage,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
@@ -36,6 +36,7 @@ const MyProfile = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { me, signOutDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
+  const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
@@ -59,7 +60,6 @@ const MyProfile = () => {
     Router.push("/profile");
   };
 
-
   const onChangeNickname = (e) => {
     setNickname(e.target.value);
   };
@@ -69,7 +69,6 @@ const MyProfile = () => {
   };
 
   const onChangeBirthday = (data) => {
-    
     setDate(data);
     if (data) {
       const year = data.getFullYear();
@@ -81,6 +80,11 @@ const MyProfile = () => {
   };
 
   const submit = useCallback(() => {
+    if(!nickname) {
+      return setNicknameValid("닉네임을 입력하세요.")
+    }
+
+
     const data = { nickname, birthday, comment };
     dispatch(editProfileRequestAction(data));
   }, [nickname, birthday, comment]);
@@ -143,6 +147,7 @@ const MyProfile = () => {
                 <h1>프로필 설정</h1>
                 <label>닉네임</label>
                 <Input onChange={onChangeNickname} />
+                <ValidMessage>{nicknameValid}</ValidMessage>
                 <label>
                   생년월일
                   <DatePicker
@@ -154,7 +159,6 @@ const MyProfile = () => {
                     onChange={onChangeBirthday}
                     customInput={<Input />}
                     // renderCustomHeader={({})=>(<CalendarHeader>
-
                     // </CalendarHeader>)}
                   />
                 </label>
