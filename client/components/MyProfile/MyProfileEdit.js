@@ -30,7 +30,7 @@ const MyProfile = () => {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, signOutDone } = useSelector((state) => state.user);
+  const { me, signOutDone, myPostsData } = useSelector((state) => state.user);
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
@@ -98,16 +98,10 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   프로필 설정
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   계정 설정
                 </li>
               </TabList>
@@ -128,7 +122,6 @@ const MyProfile = () => {
                     // renderCustomHeader={({})=>(<CalendarHeader>
 
                     // </CalendarHeader>)}
-
                   />
                 </label>
                 <label>한줄 소개</label>

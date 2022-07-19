@@ -6,13 +6,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
-import {
-  TitleWrapper,
-  TextEditWrapper,
-  AddPhotoWrapper,
-  KeywordWrapper,
-  Button,
-} from "./styled";
+import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, KeywordWrapper, Button } from "./styled";
 import { useRouter } from "next/router";
 
 const CommunityPost = ({ editState }) => {
@@ -108,14 +102,13 @@ const CommunityPost = ({ editState }) => {
   );
   const keyUp = useCallback(
     (e) => {
-      if (e.keyCode === 13 && e.target.value.trim() !== "") {
-        if (hashArr.find((it) => it === e.target.value)) {
+      if ((e.keyCode === 13 || e.keyCode === 32) && e.target.value.trim() !== "") {
+        if (hashArr.find((it) => it === e.target.value.trim())) {
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
           return;
         }
-
-        setHashArr([...hashArr, hashTagVal]);
+        setHashArr([...hashArr, hashTagVal.trim()]);
         setHashTagVal("");
       }
     },
@@ -222,11 +215,7 @@ const CommunityPost = ({ editState }) => {
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
             {hashArr.map((it, index) => (
-              <button
-                key={index}
-                className="keyword_item"
-                onClick={() => handleDeleteHash(index)}
-              >
+              <button key={index} className="keyword_item" onClick={() => handleDeleteHash(index)}>
                 <span>{it}</span>
 
                 <svg

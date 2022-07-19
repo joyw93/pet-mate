@@ -17,88 +17,50 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import { signOutRequestAction, signOutResetAction } from "../../reducers/user";
+import { signOutRequestAction, signOutResetAction, loadMyPostsAction, loadMyCommentsAction, loadMyLikedAction } from "../../reducers/user";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, signOutDone } = useSelector((state) => state.user);
+  const { me, signOutDone, myPostsData, myCommentsData, myLikedData, loadMyPostsDone, loadMyCommentsDone, loadMyLikedDone } = useSelector(
+    (state) => state.user
+  );
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
 
-  const MyPostItems = [
-    {
-      id: 1,
-      src: "img/pet1.jpg",
-      title: "울집 댕댕이랑  ",
-      link: "/community",
-    },
-    {
-      id: 2,
-      src: "img/pet2.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함2",
-      link: "/community",
-    },
-    {
-      id: 3,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함3",
-      link: "/community",
-    },
-    {
-      id: 4,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함",
-      link: "/community",
-    },
-    {
-      id: 5,
-      src: "img/pet2.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함2",
-      link: "/community",
-    },
-  ];
+  const [myPostItems, setMyPostItems] = useState([]);
+  const [myCommentItems, setMyCommentItems] = useState([]);
+  const [myLikedItems, setMyLikedItems] = useState([]);
 
-  const MyCommentItems = [
-    {
-      id: 6,
-      src: "img/pet1.jpg",
-      con: "울집 댕댕이 궁물 타임~!~!~!",
-      link: "/community",
-    },
-    {
-      id: 7,
-      src: "img/pet2.jpg",
-      title: "궁금해요 울집 댕댕이",
-      link: "/community",
-    },
-  ];
+  useEffect(() => {
+    dispatch(loadMyPostsAction());
+    dispatch(loadMyCommentsAction());
+    dispatch(loadMyLikedAction());
+  }, []);
 
-  const MyLikedItems = [
-    {
-      id: 8,
-      src: "img/pet1.jpg",
-      con: "울집 댕댕이 궁물 타임~!~!~!",
-      link: "/community",
-      tag: "like",
-    },
-    {
-      id: 9,
-      src: "img/pet2.jpg",
-      title: "궁금해요 울집 댕댕이",
-      link: "/community",
-      tag: "mypost",
-    },
-    {
-      id: 10,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함",
-      link: "/community",
-    },
-  ];
+  useEffect(() => {
+    if (loadMyPostsDone) {
+      setMyPostItems(myPostsData);
+      console.log("데이터", myPostItems);
+    }
+  }, [myPostsData]);
 
-  const titles = [MyPostItems, MyCommentItems, MyLikedItems];
+  useEffect(() => {
+    if (loadMyCommentsDone) {
+      setMyCommentItems(myCommentsData);
+      console.log("코멘트데이터", myCommentItems);
+    }
+  }, [myCommentsData]);
+
+  useEffect(() => {
+    if (loadMyLikedDone) {
+      setMyLikedItems(myLikedData);
+      console.log("라이크데이터", myLikedItems);
+    }
+  }, [myLikedData]);
+
+  const titles = [myPostItems, myCommentsData, myLikedItems];
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
@@ -136,19 +98,19 @@ const MyProfile = () => {
                 <div className="list_wrapper">
                   <p>내가 쓴 게시글</p>
                   <p>
-                    <span>{MyPostItems.length}</span>개
+                    <span>{myPostsData.length}</span>개
                   </p>
                 </div>{" "}
                 <div className="list_wrapper">
                   <p>내가 쓴 댓글</p>
                   <p>
-                    <span>{MyCommentItems.length}</span>개
+                    <span>{myCommentsData.length}</span>개
                   </p>
                 </div>
                 <div className="list_wrapper">
                   <p>좋아요</p>
                   <p>
-                    <span>{MyLikedItems.length}</span>개
+                    <span>{myLikedItems.length}</span>개
                   </p>
                 </div>
               </UserFeed>
@@ -159,31 +121,18 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   내가 쓴 게시글
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   내가 쓴 댓글
                 </li>
-                <li
-                  className={activeIndex === 2 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(2)}
-                >
+                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickHandler(2)}>
                   좋아요
                 </li>
               </TabList>
 
-              <ImageWrapper>
-                {titles[activeIndex].map((item) => (
-                  <MyPosts key={item.id} {...item} />
-                ))}
-              </ImageWrapper>
+              <ImageWrapper>{titles[activeIndex] && titles[activeIndex].map((item) => <MyPosts key={item.id} {...item} />)}</ImageWrapper>
             </TabWrapper>
           </UserContent>
         </ContentArea>

@@ -109,10 +109,7 @@ function* loadPostDetail(action) {
 
 //글 더 불러오기
 function loadMoreAPI(data) {
-  return axios.get(
-    `${serverUrl}/community?offset=10&count=10&orderBy=${data}`,
-    data
-  );
+  return axios.get(`${serverUrl}/community?offset=10&count=10&orderBy=${data}`, data);
 }
 
 function* loadMorePosts(action) {
@@ -230,18 +227,14 @@ function* watchRemovePost() {
 }
 
 function* watchLoadPosts() {
-  yield takeLatest( LOAD_POSTS_REQUEST, loadPosts);
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
 function* watchLoadPostDetail() {
-  yield takeLatest( LOAD_POST_DETAIL_REQUEST, loadPostDetail);
+  yield takeLatest(LOAD_POST_DETAIL_REQUEST, loadPostDetail);
 }
 
 function* watchMorePosts() {
-  yield takeLatest( LOAD_MORE_REQUEST, loadMorePosts);
-}
-
-function* watchLoadOldPosts() {
-  yield takeLatest( SHOW_OLD_POSTS_REQUEST, loadOldPosts);
+  yield takeLatest(LOAD_MORE_REQUEST, loadMorePosts);
 }
 
 function* watchAddComment() {
@@ -263,7 +256,6 @@ export default function* communitySaga() {
     fork(watchMorePosts),
     fork(watchLoadPostDetail),
     fork(watchRemovePost),
-    fork(watchLoadOldPosts),
     fork(watchLoadPostDetail),
     fork(watchAddComment),
     fork(watchRemoveComment),
