@@ -74,6 +74,7 @@ export const LOAD_MY_LIKED_FAILURE = "LOAD_MY_LIKED_FAILURE";
 export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
 export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
 export const EDIT_PROFILE_FAILURE = "EDIT_PROFILE_FAILURE";
+export const EDIT_PROFILE_RESET = "EDIT_PROFILE_RESET";
 
 export const signupRequestAction = (data) => ({
   type: SIGN_UP_REQUEST,
@@ -120,6 +121,10 @@ export const loadMyLikedAction = () => ({
 export const editProfileRequestAction = (data) => ({
   type: EDIT_PROFILE_REQUEST,
   data,
+});
+
+export const editProfileResetAction = () => ({
+  type: EDIT_PROFILE_RESET,
 });
 
 const reducer = (state = initialState, action) =>
@@ -264,6 +269,11 @@ const reducer = (state = initialState, action) =>
       case EDIT_PROFILE_FAILURE:
         draft.editProfileLoading = false;
         draft.editProfileError = action.error;
+        break;
+
+      case EDIT_PROFILE_RESET:
+        draft.editProfileLoading = false;
+        draft.editProfileDone = false;
         break;
 
       default:

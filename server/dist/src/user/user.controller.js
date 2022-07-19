@@ -14,10 +14,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
 const google_auth_guard_1 = require("../auth/google/google-auth.guard");
 const kakao_auth_guard_1 = require("../auth/kakao/kakao-auth.guard");
 const local_auth_guard_1 = require("../auth/local/local-auth.guard");
+const s3_1 = require("../common/aws/s3");
 const user_decorator_1 = require("../common/decorators/user.decorator");
+const image_file_pipe_1 = require("../common/pipes/image-file.pipe");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const set_profile_dto_1 = require("./dto/set-profile.dto");
 const user_entity_1 = require("./user.entity");
@@ -41,8 +44,8 @@ let UserController = class UserController {
     async login(user) {
         return user;
     }
-    async setProfile(user, setProfileDto) {
-        return await this.userService.setProfile(user.id, setProfileDto);
+    async setProfile(user, imgUrls, setProfileDto) {
+        return await this.userService.setProfile(user.id, setProfileDto, imgUrls);
     }
     async googleLogin(req) { }
     async googleLoginCallback(req, res) {
@@ -119,11 +122,12 @@ __decorate([
 ], UserController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('profile'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('image', 1, s3_1.setProfileConfig)),
     __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.UserEntity,
-        set_profile_dto_1.SetProfileDto]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, set_profile_dto_1.SetProfileDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "setProfile", null);
 __decorate([

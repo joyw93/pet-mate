@@ -8,13 +8,13 @@ import * as res from '../../common/responses/message';
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const user = request.user;
-    if(!user) {
-      throw new UnauthorizedException(res.msg.LOGIN_REQUIRED)
-    }
-    return request.user;
+    // const user = request.user;
+    // if(!user) {
+    //   throw new UnauthorizedException(res.msg.LOGIN_REQUIRED)
+    // }
+    // return request.user;
 
-    // const user = { id: 2 };
-    // return user;
+    const user = { id: 1 };
+    return user;
   },
 );

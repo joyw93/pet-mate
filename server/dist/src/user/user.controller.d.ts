@@ -1,3 +1,4 @@
+/// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
@@ -26,7 +27,7 @@ export declare class UserController {
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
-    setProfile(user: UserEntity, setProfileDto: SetProfileDto): Promise<UserEntity>;
+    setProfile(user: UserEntity, imgUrls: string[], setProfileDto: SetProfileDto): Promise<UserEntity>;
     googleLogin(req: any): Promise<void>;
     googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
         message: string;

@@ -9,17 +9,15 @@ import {
   ContentArea,
   UserContent,
   ProfileInfo,
-  ProfileImg,
-  UserInfo,
-  UserFeed,
   TabWrapper,
   TabList,
   Input,
   ConfirmButton,
-  ButtonWrapper,
+  ImageHolder,
   ProfileEditArea,
   ValidMessage,
   InvalidMessage,
+  ImageInput,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
@@ -27,6 +25,7 @@ import { useCallback } from "react";
 import {
   editProfileRequestAction,
   loadProfileRequestAction,
+  editProfileResetAction,
 } from "../../reducers/user";
 
 const MyProfile = () => {
@@ -34,24 +33,33 @@ const MyProfile = () => {
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, user } = useSelector((state) => state.user);
+  const { me, editProfileError, user, editProfileDone } = useSelector(
+    (state) => state.user
+  );
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
-
+  const [image, setImage] = useState("");
+  const [imageFile, setImageFile] = useState("");
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
 
   useEffect(() => {
+    if (editProfileDone) {
+      dispatch(editProfileResetAction());
+      alert("회원정보가 변경되었습니다.");
+      Router.back();
+    }
     dispatch(loadProfileRequestAction());
-  }, []);
+  }, [editProfileDone]);
 
   useEffect(() => {
     if (user) {
       setNickname(user.nickname);
       setBirthday(user.profile.birth);
       setComment(user.profile.comment);
+      setImage(user.profile.imageUrl);
     }
     if (user?.profile?.birth) {
       setDate(new Date(user.profile.birth));
@@ -72,16 +80,19 @@ const MyProfile = () => {
     }
   }, [nickname]);
 
-  const myProfile = () => {
-    Router.push("/profile");
-  };
-
   const onChangeNickname = (e) => {
     setNickname(e.target.value);
   };
 
   const onChangeComment = (e) => {
     setComment(e.target.value);
+  };
+
+  const onChangeImage = (e) => {
+    const imageFile = e.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setImage(imageUrl);
+    setImageFile(imageFile);
   };
 
   const onChangeBirthday = (data) => {
@@ -99,7 +110,11 @@ const MyProfile = () => {
     if (!nickname) {
       return;
     }
-    const data = { nickname, birthday, comment };
+    const data = new FormData();
+    data.append("nickname", nickname);
+    data.append("birthday", birthday);
+    data.append("comment", comment);
+    data.append("image", imageFile);
     dispatch(editProfileRequestAction(data));
   }, [nickname, birthday, comment]);
 
@@ -109,38 +124,7 @@ const MyProfile = () => {
         <BackgroundArea />
         <ContentArea>
           <UserContent>
-            <ProfileInfo>
-              <ProfileImg>
-                <img src="../img/son.png" alt="프로필이미지" />
-              </ProfileImg>
-              <UserInfo>
-                <h2>{user?.nickname}</h2>
-                <p>{user?.email}</p>
-              </UserInfo>
-              <UserFeed>
-                <div className="list_wrapper">
-                  <p>내가 쓴 게시글</p>
-                  <p>
-                    <span>1</span>개
-                  </p>
-                </div>{" "}
-                <div className="list_wrapper">
-                  <p>내가 쓴 댓글</p>
-                  <p>
-                    <span>2</span>개
-                  </p>
-                </div>
-                <div className="list_wrapper">
-                  <p>좋아요</p>
-                  <p>
-                    <span>3</span>개
-                  </p>
-                </div>
-              </UserFeed>
-              <ButtonWrapper>
-                <button onClick={myProfile}>내 프로필</button>
-              </ButtonWrapper>
-            </ProfileInfo>
+            <ProfileInfo></ProfileInfo>
             <TabWrapper>
               <TabList>
                 <li
@@ -180,6 +164,25 @@ const MyProfile = () => {
                 </label>
                 <label>한줄 소개</label>
                 <Input onChange={onChangeComment} value={comment} />
+                <label onChange={onChangeImage}>
+                  프로필 이미지
+                  <ImageInput type="file" />
+                  {image ? (
+                    <ImageHolder
+                      src={image}
+                      alt="이미지 업로드"
+                      width={200}
+                      height={200}
+                    />
+                  ) : (
+                    <ImageHolder
+                      src="../../img/son.png"
+                      alt="이미지 업로드"
+                      width={200}
+                      height={200}
+                    />
+                  )}
+                </label>
                 <div>
                   <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
                 </div>

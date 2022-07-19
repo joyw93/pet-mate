@@ -29,7 +29,7 @@ export class UserService {
   async getUserProfile(userId: number) {
     const userProfile = await this.userRepository.findOne({
       relations: ['profile'],
-      select: ['profile', 'nickname', 'id'],
+      select: ['profile', 'nickname', 'id', 'email'],
       where: { id: userId },
     });
     return userProfile;
@@ -88,21 +88,26 @@ export class UserService {
     }
   }
 
-  async setProfile(userId: number, setProfileDto: SetProfileDto) {
+  async setProfile(
+    userId: number,
+    setProfileDto: SetProfileDto,
+    imgUrls: string[],
+  ) {
     const { nickname, birthday, comment } = setProfileDto;
     const userByNickname = await this.userRepository.findOne({
       where: { nickname },
     });
-    if (userByNickname) {
-      throw new UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
-    }
     const user = await this.userRepository.findOne({
       relations: ['profile'],
       where: { id: userId },
     });
+    if (userByNickname && (user.nickname !== nickname))  {
+      throw new UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
+    }
     user.nickname = nickname;
     user.profile.comment = comment;
     user.profile.birth = birthday;
+    user.profile.imageUrl = imgUrls[0];
     return await this.userRepository.save(user);
   }
 

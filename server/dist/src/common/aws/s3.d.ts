@@ -4,3 +4,6 @@ export declare const createPostConfig: {
 export declare const editPostConfig: {
     storage: any;
 };
+export declare const setProfileConfig: {
+    storage: any;
+};

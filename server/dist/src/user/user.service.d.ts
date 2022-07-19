@@ -1,3 +1,4 @@
+/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -26,7 +27,7 @@ export declare class UserService {
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
-    setProfile(userId: number, setProfileDto: SetProfileDto): Promise<UserEntity>;
+    setProfile(userId: number, setProfileDto: SetProfileDto, imgUrls: string[]): Promise<UserEntity>;
     googleLoginCallback(req: Request, res: Response): Promise<"no user from google" | {
         message: string;
         user: Express.User;

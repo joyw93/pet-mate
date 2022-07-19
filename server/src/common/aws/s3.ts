@@ -41,3 +41,18 @@ export const editPostConfig = {
   }),
 
 };
+
+export const setProfileConfig = {
+  storage: multerS3({
+    s3,
+    bucket: process.env.AWS_S3_BUCKET_NAME,
+    acl: 'public-read',
+    key: (req, file, cb) => {
+      cb(
+        null,
+        `petmate/user/image/${uuid()}${path.extname(file.originalname)}`,
+      );
+    },
+  }),
+
+};

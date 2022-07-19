@@ -233,7 +233,7 @@ export const Input = styled.input`
 
 export const ConfirmButton = styled.button`
   margin-top: 100px;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
   width: 300px;
   height: 50px;
   border-radius: 5px;
@@ -257,4 +257,13 @@ export const ValidMessage = styled.div`
 export const InvalidMessage = styled.div`
   color: red;
   margin-top: 10px;
+`;
+
+export const ImageInput = styled.input`
+  display: none;
+`;
+
+export const ImageHolder = styled.img`
+
+  flex-wrap: wrap;
 `;

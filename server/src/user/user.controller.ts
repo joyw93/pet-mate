@@ -9,11 +9,16 @@ import {
   Response,
   InternalServerErrorException,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
 import { KakaoAuthGuard } from 'src/auth/kakao/kakao-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local/local-auth.guard';
+import { setProfileConfig } from 'src/common/aws/s3';
 import { User } from 'src/common/decorators/user.decorator';
+import { ImageFilePipe } from 'src/common/pipes/image-file.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
@@ -50,11 +55,13 @@ export class UserController {
   }
 
   @Post('profile')
+  @UseInterceptors(FilesInterceptor('image', 1, setProfileConfig))
   async setProfile(
     @User() user: UserEntity,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body() setProfileDto: SetProfileDto,
   ) {
-    return await this.userService.setProfile(user.id, setProfileDto);
+    return await this.userService.setProfile(user.id, setProfileDto, imgUrls);
   }
 
   @Get('google')
