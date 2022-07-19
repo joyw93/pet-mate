@@ -13,13 +13,22 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
+  LOAD_MY_POSTS_FAILURE,
+  LOAD_MY_POSTS_REQUEST,
+  LOAD_MY_POSTS_SUCCESS,
+  LOAD_MY_COMMENTS_FAILURE,
+  LOAD_MY_COMMENTS_REQUEST,
+  LOAD_MY_COMMENTS_SUCCESS,
+  LOAD_MY_LIKED_FAILURE,
+  LOAD_MY_LIKED_REQUEST,
+  LOAD_MY_LIKED_SUCCESS,
   EDIT_PROFILE_FAILURE,
   EDIT_PROFILE_REQUEST,
   EDIT_PROFILE_SUCCESS,
 } from "../reducers/user";
 
-// const serverUrl = `http://api.petmate.kr`;
-const serverUrl = `http://127.0.0.1:3000`;
+const serverUrl = `http://api.petmate.kr`;
+// const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -104,6 +113,68 @@ function* logOut() {
     });
   }
 }
+function loadMyPostsAPI() {
+  return axios.get(`${serverUrl}/user/posts`, { withCredentials: true });
+}
+
+function* loadMyPosts(action) {
+  try {
+    const result = yield call(loadMyPostsAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: LOAD_MY_POSTS_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_POSTS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadMyCommentsAPI() {
+  return axios.get(`${serverUrl}/user/commented-posts`, { withCredentials: true });
+}
+
+function* loadMyComments(action) {
+  try {
+    const result = yield call(loadMyCommentsAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: LOAD_MY_COMMENTS_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_COMMENTS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadMyLikedAPI() {
+  return axios.get(`${serverUrl}/user/liked-posts`, { withCredentials: true });
+}
+
+function* loadMyLiked(action) {
+  try {
+    const result = yield call(loadMyLikedAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: LOAD_MY_LIKED_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_LIKED_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 function editProfileAPI(data) {
   return axios.post(`${serverUrl}/user/profile`, data, {
@@ -144,6 +215,18 @@ function* watchSignOut() {
   yield takeLatest(SIGN_OUT_REQUEST, signOut);
 }
 
+function* watchLoadMyPosts() {
+  yield takeLatest(LOAD_MY_POSTS_REQUEST, loadMyPosts);
+}
+
+function* watchLoadMyComments() {
+  yield takeLatest(LOAD_MY_COMMENTS_REQUEST, loadMyComments);
+}
+
+function* watchLoadMyLiked() {
+  yield takeLatest(LOAD_MY_LIKED_REQUEST, loadMyLiked);
+}
+
 function* watchEditProfile() {
   yield takeLatest(EDIT_PROFILE_REQUEST, editProfile);
 }
@@ -154,6 +237,9 @@ export default function* userSaga() {
     fork(watchSignOut),
     fork(watchLogIn),
     fork(watchLogOut),
+    fork(watchLoadMyPosts),
+    fork(watchLoadMyComments),
+    fork(watchLoadMyLiked),
     fork(watchEditProfile),
   ]);
 }

@@ -23,11 +23,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  signOutRequestAction,
-  signOutResetAction,
-  editProfileRequestAction,
-} from "../../reducers/user";
+import { signOutRequestAction, signOutResetAction, editProfileRequestAction } from "../../reducers/user";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -37,6 +33,7 @@ const MyProfile = () => {
   const { me, signOutDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [comment, setComment] = useState("");
+
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
@@ -59,7 +56,6 @@ const MyProfile = () => {
     Router.push("/profile");
   };
 
-
   const onChangeNickname = (e) => {
     setNickname(e.target.value);
   };
@@ -69,7 +65,6 @@ const MyProfile = () => {
   };
 
   const onChangeBirthday = (data) => {
-    
     setDate(data);
     if (data) {
       const year = data.getFullYear();
@@ -126,16 +121,10 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   프로필 설정
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   계정 설정
                 </li>
               </TabList>
@@ -154,7 +143,6 @@ const MyProfile = () => {
                     onChange={onChangeBirthday}
                     customInput={<Input />}
                     // renderCustomHeader={({})=>(<CalendarHeader>
-
                     // </CalendarHeader>)}
                   />
                 </label>

@@ -19,6 +19,18 @@ export const initialState = {
   me: null,
   signUpData: {},
   loginData: {},
+  loadMyPostsLoading: false,
+  loadMyPostsDone: false,
+  loadMyPostsError: null,
+  loadMyCommentsLoading: false,
+  loadMyCommentsDone: false,
+  loadMyCommentsError: null,
+  loadMyLikedLoading: false,
+  loadMyLikedDone: false,
+  loadMyLikedError: null,
+  myPostsData: [],
+  myCommentsData: [],
+  myLikedData: [],
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -38,6 +50,18 @@ export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
+
+export const LOAD_MY_POSTS_REQUEST = "LOAD_MY_POSTS_REQUEST";
+export const LOAD_MY_POSTS_SUCCESS = "LOAD_MY_POSTS_SUCCESS";
+export const LOAD_MY_POSTS_FAILURE = "LOAD_MY_POSTS_FAILURE";
+
+export const LOAD_MY_COMMENTS_REQUEST = "LOAD_MY_COMMENTS_REQUEST";
+export const LOAD_MY_COMMENTS_SUCCESS = "LOAD_MY_COMMENTS_SUCCESS";
+export const LOAD_MY_COMMENTS_FAILURE = "LOAD_MY_COMMENTS_FAILURE";
+
+export const LOAD_MY_LIKED_REQUEST = "LOAD_MY_LIKED_REQUEST";
+export const LOAD_MY_LIKED_SUCCESS = "LOAD_MY_LIKED_SUCCESS";
+export const LOAD_MY_LIKED_FAILURE = "LOAD_MY_LIKED_FAILURE";
 
 export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
 export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
@@ -67,6 +91,18 @@ export const loginRequestAction = (data) => ({
 
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
+});
+
+export const loadMyPostsAction = () => ({
+  type: LOAD_MY_POSTS_REQUEST,
+});
+
+export const loadMyCommentsAction = () => ({
+  type: LOAD_MY_COMMENTS_REQUEST,
+});
+
+export const loadMyLikedAction = () => ({
+  type: LOAD_MY_LIKED_REQUEST,
 });
 
 export const editProfileRequestAction = (data) => ({
@@ -144,6 +180,50 @@ const reducer = (state = initialState, action) =>
         draft.logOutLoading = false;
         draft.logOutError = action.error;
         break;
+
+      case LOAD_MY_POSTS_REQUEST:
+        draft.loadMyPostsLoading = true;
+        draft.loadMyPostsError = null;
+        draft.loadMyPostsDone = false;
+        break;
+      case LOAD_MY_POSTS_SUCCESS:
+        draft.loadMyPostsLoading = false;
+        draft.loadMyPostsDone = true;
+        draft.myPostsData = action.data;
+        break;
+      case LOAD_MY_POSTS_FAILURE:
+        draft.loadMyPostsLoading = false;
+        draft.loadMyPostsError = action.error;
+        break;
+
+      case LOAD_MY_COMMENTS_REQUEST:
+        draft.loadMyCommentsLoading = true;
+        draft.loadMyCommentsError = null;
+        draft.loadMyCommentsDone = false;
+        break;
+      case LOAD_MY_COMMENTS_SUCCESS:
+        draft.loadMyCommentsLoading = false;
+        draft.loadMyCommentsDone = true;
+        draft.myCommentsData = action.data;
+        break;
+      case LOAD_MY_COMMENTS_FAILURE:
+        draft.loadMyCommentsLoading = false;
+        draft.loadMyCommentsError = action.error;
+        break;
+
+      case LOAD_MY_LIKED_REQUEST:
+        draft.loadMyLikedLoading = true;
+        draft.loadMyLikedError = null;
+        draft.loadMyLikedDone = false;
+        break;
+      case LOAD_MY_LIKED_SUCCESS:
+        draft.loadMyLikedLoading = false;
+        draft.loadMyLikedDone = true;
+        draft.myLikedData = action.data;
+        break;
+      case LOAD_MY_LIKED_FAILURE:
+        draft.loadMyLikedLoading = false;
+        draft.loadMyLikedError = action.error;
 
       case EDIT_PROFILE_REQUEST:
         draft.editProfileLoading = true;
