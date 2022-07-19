@@ -25,10 +25,13 @@ import {
   EDIT_PROFILE_FAILURE,
   EDIT_PROFILE_REQUEST,
   EDIT_PROFILE_SUCCESS,
+  LOAD_PROFILE_SUCCESS,
+  LOAD_PROFILE_FAILURE,
+  LOAD_PROFILE_REQUEST,
 } from "../reducers/user";
 
-const serverUrl = `http://api.petmate.kr`;
-// const serverUrl = `http://127.0.0.1:3000`;
+// const serverUrl = `http://api.petmate.kr`;
+const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -113,6 +116,29 @@ function* logOut() {
     });
   }
 }
+
+function loadProfileAPI() {
+  return axios.get(`${serverUrl}/user`, { withCredentials: true });
+}
+
+function* loadProfile(action) {
+  try {
+    const result = yield call(loadProfileAPI);
+    const payload = result.data;
+    yield put({
+      type: LOAD_PROFILE_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_PROFILE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+
 function loadMyPostsAPI() {
   return axios.get(`${serverUrl}/user/posts`, { withCredentials: true });
 }
@@ -184,7 +210,6 @@ function editProfileAPI(data) {
 
 function* editProfile(action) {
   try {
-    console.log(action.data);
     const result = yield call(editProfileAPI, action.data);
     const payload = result.data;
     yield put({
@@ -215,6 +240,11 @@ function* watchSignOut() {
   yield takeLatest(SIGN_OUT_REQUEST, signOut);
 }
 
+function* watchLoadProfile() {
+  yield takeLatest(LOAD_PROFILE_REQUEST, loadProfile);
+}
+
+
 function* watchLoadMyPosts() {
   yield takeLatest(LOAD_MY_POSTS_REQUEST, loadMyPosts);
 }
@@ -241,5 +271,6 @@ export default function* userSaga() {
     fork(watchLoadMyComments),
     fork(watchLoadMyLiked),
     fork(watchEditProfile),
+    fork(watchLoadProfile)
   ]);
 }

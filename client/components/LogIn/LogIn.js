@@ -92,6 +92,7 @@ const LogIn = () => {
             value={password}
             ref={passwordRef}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e)=>{if(e.key==='Enter') handleLoginSubmit()}}
           ></UserInput>
         </InputWrapper>
         <LoginBtn onClick={handleLoginSubmit}>로그인</LoginBtn>

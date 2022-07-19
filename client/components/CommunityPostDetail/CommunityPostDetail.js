@@ -18,12 +18,8 @@ import {
   CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import { loadPostDetailRequestAction, removePostRequestAction } from "../../reducers/community";
+import { loadPostDetailRequestAction, removePostRequestAction,removeCommentRequestAction } from "../../reducers/community";
 import { addCommentRequestAction } from "../../reducers/community";
-import {
-  removeCommentRequestAction,
-  removePostRequestAction,
-} from "../../reducers/community";
 import { likePostRequestAction } from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";

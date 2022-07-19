@@ -90,6 +90,12 @@ let UserService = class UserService {
     }
     async setProfile(userId, setProfileDto) {
         const { nickname, birthday, comment } = setProfileDto;
+        const userByNickname = await this.userRepository.findOne({
+            where: { nickname },
+        });
+        if (userByNickname) {
+            throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
+        }
         const user = await this.userRepository.findOne({
             relations: ['profile'],
             where: { id: userId },

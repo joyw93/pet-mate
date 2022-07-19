@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 class SetProfileDto {
 }
 __decorate([
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], SetProfileDto.prototype, "nickname", void 0);

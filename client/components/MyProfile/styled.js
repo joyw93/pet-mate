@@ -170,7 +170,7 @@ export const ProfileEditArea = styled.div`
   .react-datepicker__day--selected {
     background-color: ${Colors.primaryColor};
     color: #2b2b2b;
-
+  }
   .react-datepicker {
     font-size: 0.8rem;
     padding: 12px;
@@ -249,5 +249,12 @@ export const ConfirmButton = styled.button`
 `;
 
 export const ValidMessage = styled.div`
+  /* color: ${(props) => props.ValidMessage === ""} */
+  color: green;
+  margin-top: 10px;
+`;
+
+export const InvalidMessage = styled.div`
+  color: red;
   margin-top: 10px;
 `;

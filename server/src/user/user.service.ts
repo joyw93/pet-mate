@@ -90,6 +90,12 @@ export class UserService {
 
   async setProfile(userId: number, setProfileDto: SetProfileDto) {
     const { nickname, birthday, comment } = setProfileDto;
+    const userByNickname = await this.userRepository.findOne({
+      where: { nickname },
+    });
+    if (userByNickname) {
+      throw new UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
+    }
     const user = await this.userRepository.findOne({
       relations: ['profile'],
       where: { id: userId },
@@ -140,7 +146,7 @@ export class UserService {
   async getLikedPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id','images.url'])
+      .select(['post.id', 'images.url'])
       .leftJoin('post.likes', 'likes')
       .leftJoin('post.images', 'images')
       .where('likes.user_id = :id', { id: userId })

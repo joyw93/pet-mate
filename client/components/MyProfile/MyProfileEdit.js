@@ -19,18 +19,22 @@ import {
   ButtonWrapper,
   ProfileEditArea,
   ValidMessage,
+  InvalidMessage,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import { signOutRequestAction, signOutResetAction, editProfileRequestAction } from "../../reducers/user";
+import {
+  editProfileRequestAction,
+  loadProfileRequestAction,
+} from "../../reducers/user";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, signOutDone } = useSelector((state) => state.user);
+  const { me, editProfileError, user } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -38,20 +42,35 @@ const MyProfile = () => {
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
-  const signOut = () => {
-    const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
-    if (isAgreed) {
-      dispatch(signOutRequestAction());
-    }
-  };
 
   useEffect(() => {
-    if (signOutDone) {
-      dispatch(signOutResetAction());
-      Router.push("/");
-      alert("회원탈퇴가 완료되었습니다.");
+    dispatch(loadProfileRequestAction());
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setNickname(user.nickname);
+      setBirthday(user.profile.birth);
+      setComment(user.profile.comment);
     }
-  }, [signOutDone]);
+    if (user?.profile?.birth) {
+      setDate(new Date(user.profile.birth));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (editProfileError) {
+      setNicknameValid(editProfileError?.message);
+    }
+  }, [editProfileError]);
+
+  useEffect(() => {
+    if (!nickname) {
+      setNicknameValid("닉네임을 입력하세요.");
+    } else {
+      setNicknameValid(null);
+    }
+  }, [nickname]);
 
   const myProfile = () => {
     Router.push("/profile");
@@ -77,11 +96,9 @@ const MyProfile = () => {
   };
 
   const submit = useCallback(() => {
-    if(!nickname) {
-      return setNicknameValid("닉네임을 입력하세요.")
+    if (!nickname) {
+      return;
     }
-
-
     const data = { nickname, birthday, comment };
     dispatch(editProfileRequestAction(data));
   }, [nickname, birthday, comment]);
@@ -97,8 +114,8 @@ const MyProfile = () => {
                 <img src="../img/son.png" alt="프로필이미지" />
               </ProfileImg>
               <UserInfo>
-                <h2>{me?.nickname}</h2>
-                <p>{me?.email}</p>
+                <h2>{user?.nickname}</h2>
+                <p>{user?.email}</p>
               </UserInfo>
               <UserFeed>
                 <div className="list_wrapper">
@@ -122,23 +139,33 @@ const MyProfile = () => {
               </UserFeed>
               <ButtonWrapper>
                 <button onClick={myProfile}>내 프로필</button>
-                <button onClick={signOut}>회원탈퇴</button>
               </ButtonWrapper>
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
+                <li
+                  className={activeIndex === 0 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(0)}
+                >
                   프로필 설정
                 </li>
-                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
+                <li
+                  className={activeIndex === 1 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(1)}
+                >
                   계정 설정
                 </li>
               </TabList>
               <ProfileEditArea>
                 <h1>프로필 설정</h1>
                 <label>닉네임</label>
-                <Input onChange={onChangeNickname} />
-                <ValidMessage>{nicknameValid}</ValidMessage>
+                <Input onChange={onChangeNickname} value={nickname} />
+                {nicknameValid === "닉네임을 입력하세요." ||
+                nicknameValid === "중복된 닉네임입니다." ? (
+                  <InvalidMessage>{nicknameValid}</InvalidMessage>
+                ) : (
+                  <ValidMessage>{nicknameValid}</ValidMessage>
+                )}
                 <label>
                   생년월일
                   <DatePicker
@@ -149,12 +176,10 @@ const MyProfile = () => {
                     dateFormat="yyyy-MM-dd"
                     onChange={onChangeBirthday}
                     customInput={<Input />}
-                    // renderCustomHeader={({})=>(<CalendarHeader>
-                    // </CalendarHeader>)}
                   />
                 </label>
                 <label>한줄 소개</label>
-                <Input onChange={onChangeComment} />
+                <Input onChange={onChangeComment} value={comment} />
                 <div>
                   <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
                 </div>

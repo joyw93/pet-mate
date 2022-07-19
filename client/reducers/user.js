@@ -16,6 +16,10 @@ export const initialState = {
   editProfileLoading: false,
   editProfileDone: false,
   editProfileError: null,
+  loadProfileLoading: false,
+  loadProfileDone: false,
+  loadProfileError: null,
+  user: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -50,6 +54,10 @@ export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
+
+export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST";
+export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS";
+export const LOAD_PROFILE_FAILURE = "LOAD_PROFILE_FAILURE";
 
 export const LOAD_MY_POSTS_REQUEST = "LOAD_MY_POSTS_REQUEST";
 export const LOAD_MY_POSTS_SUCCESS = "LOAD_MY_POSTS_SUCCESS";
@@ -91,6 +99,10 @@ export const loginRequestAction = (data) => ({
 
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
+});
+
+export const loadProfileRequestAction = () => ({
+  type: LOAD_PROFILE_REQUEST,
 });
 
 export const loadMyPostsAction = () => ({
@@ -179,6 +191,21 @@ const reducer = (state = initialState, action) =>
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
         draft.logOutError = action.error;
+        break;
+
+      case LOAD_PROFILE_REQUEST:
+        draft.loadProfileLoading = true;
+        draft.loadProfileError = null;
+        draft.loadProfileDone = false;
+        break;
+      case LOAD_PROFILE_SUCCESS:
+        draft.loadProfileLoading = false;
+        draft.loadProfileDone = true;
+        draft.user = action.data;
+        break;
+      case LOAD_PROFILE_FAILURE:
+        draft.loadProfileLoading = false;
+        draft.loadProfileError = action.error;
         break;
 
       case LOAD_MY_POSTS_REQUEST:
