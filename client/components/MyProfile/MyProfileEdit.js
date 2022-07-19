@@ -54,6 +54,8 @@ const MyProfile = () => {
     dispatch(loadProfileRequestAction());
   }, [editProfileDone]);
 
+
+
   useEffect(() => {
     if (user) {
       setNickname(user.nickname);
@@ -116,7 +118,7 @@ const MyProfile = () => {
     data.append("comment", comment);
     data.append("image", imageFile);
     dispatch(editProfileRequestAction(data));
-  }, [nickname, birthday, comment]);
+  }, [nickname, birthday, comment, imageFile]);
 
   return (
     <>
@@ -176,7 +178,7 @@ const MyProfile = () => {
                     />
                   ) : (
                     <ImageHolder
-                      src="../../img/son.png"
+                      src="../../img/default_profile.png"
                       alt="이미지 업로드"
                       width={200}
                       height={200}
