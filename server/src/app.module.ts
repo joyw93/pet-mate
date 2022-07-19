@@ -12,12 +12,14 @@ import { CommunityLikeEntity } from './common/entities/community-like.entity';
 import { HashtagModule } from './hashtag/hashtag.module';
 import { CommunityHashtagEntity } from './common/entities/community-hashtag.entity';
 import * as ormconfig from '../ormconfig';
+import { UserProfileEntity } from './common/entities/user-profile.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(ormconfig),
     TypeOrmModule.forFeature([
       UserEntity,
+      UserProfileEntity,
       CommunityEntity,
       CommunityLikeEntity,
       CommunityHashtagEntity,

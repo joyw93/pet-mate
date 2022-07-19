@@ -112,10 +112,7 @@ function* loadPostDetail(action) {
 
 //글 더 불러오기
 function loadMoreAPI(data) {
-  return axios.get(
-    `${serverUrl}/community?offset=10&count=10&orderBy=${data}`,
-    data
-  );
+  return axios.get(`${serverUrl}/community?offset=10&count=10&orderBy=${data}`, data);
 }
 
 function* loadMorePosts(action) {

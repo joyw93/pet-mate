@@ -1,10 +1,12 @@
 /// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
+import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
+    getUserProfile(user: UserEntity): Promise<UserEntity>;
     checkNickname(data: {
         nickname: string;
     }): Promise<void>;
@@ -12,6 +14,7 @@ export declare class UserController {
         email: string;
     }): Promise<void>;
     signup(createUserDto: CreateUserDto): Promise<{
+        profile: import("../common/entities/user-profile.entity").UserProfileEntity;
         email: string;
         name: string;
         nickname: string;
@@ -24,6 +27,7 @@ export declare class UserController {
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
+    setProfile(user: UserEntity, setProfileDto: SetProfileDto): Promise<UserEntity>;
     googleLogin(req: any): Promise<void>;
     googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
         message: string;
@@ -36,8 +40,8 @@ export declare class UserController {
     }>;
     logout(response: any): Promise<any>;
     getMyPosts(user: UserEntity): Promise<UserEntity[]>;
-    getLikedPosts(user: UserEntity): Promise<UserEntity[]>;
-    getCommentedPosts(user: UserEntity): Promise<UserEntity[]>;
+    getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
+    getCommentedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
     signout(user: UserEntity): Promise<import("typeorm").DeleteResult>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;
 }

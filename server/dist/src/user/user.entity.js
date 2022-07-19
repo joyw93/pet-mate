@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
 const typeorm_1 = require("typeorm");
 let UserEntity = class UserEntity {
@@ -48,6 +49,13 @@ __decorate([
     (0, typeorm_1.DeleteDateColumn)(),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "deletedAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => user_profile_entity_1.UserProfileEntity, (profile) => profile.user, {
+        cascade: true,
+    }),
+    (0, typeorm_1.JoinColumn)({ name: 'profile_id', referencedColumnName: 'id' }),
+    __metadata("design:type", user_profile_entity_1.UserProfileEntity)
+], UserEntity.prototype, "profile", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => community_entity_1.CommunityEntity, (post) => post.author, {
         cascade: true,

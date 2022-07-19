@@ -4,7 +4,7 @@ export const initialState = {
   posts: [],
   content: [],
   commentId: [],
-  post: null,
+  post: null, // post = {...post, comments:[...comments, '새로운댓글']}
   hasMorePosts: true,
   editing: false,
   loadPostDetailLoading: false,
@@ -78,6 +78,7 @@ export const REMOVE_COMMENT_FAILURE = "REMOVE_COMMENT_FAILURE";
 export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
 export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
 export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
+export const LIKE_POST_RESET = "LIKE_RESET";
 
 export const postRequestAction = (data) => ({
   type: ADD_POST_REQUEST,
@@ -126,6 +127,9 @@ export const removeCommentRequestAction = (data) => ({
 export const likePostRequestAction = (data) => ({
   type: LIKE_POST_REQUEST,
   data,
+});
+export const likeResetAction = () => ({
+  type: LIKE_POST_RESET,
 });
 
 const reducer = (state = initialState, action) =>
@@ -223,8 +227,6 @@ const reducer = (state = initialState, action) =>
       case UPDATE_POST_SUCCESS:
         draft.updatePostLoading = false;
         draft.updatePostDone = true;
-        // draft.posts.find((post) => post.id === action.data.postId).content =
-        //   action.data.content;
         break;
       case UPDATE_POST_FAILURE:
         draft.updatePostLoading = false;
@@ -265,17 +267,20 @@ const reducer = (state = initialState, action) =>
 
       //좋아요
       case LIKE_POST_REQUEST:
-        draft.postLoading = true;
-        draft.postError = null;
-        draft.postDone = false;
+        draft.likePostLoading = true;
+        draft.likePostError = null;
+        draft.likePostDone = false;
         break;
       case LIKE_POST_SUCCESS:
-        draft.postLoading = false;
-        draft.postDone = true;
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
         break;
       case LIKE_POST_FAILURE:
-        draft.postLoading = false;
-        draft.postError = action.error;
+        draft.likePostLoading = false;
+        draft.likePostError = action.error;
+        break;
+      case LIKE_POST_RESET:
+        draft.likePostDone = false;
         break;
 
       default:

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
+
 import {
   loadPostDetailRequestAction,
   updatePostRequestAction,
@@ -140,13 +141,12 @@ const CommunityPost = ({ editState }) => {
 
   const keyUp = useCallback(
     (e) => {
-      if (e.keyCode === 13 && e.target.value.trim() !== "") {
+      if ((e.keyCode === 13 || e.keyCode === 32) && e.target.value.trim() !== "") {
         if (hashArr.find((it) => it === e.target.value.trim())) {
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
           return;
         }
-
         setHashArr([...hashArr, hashTagVal.trim()]);
         setHashTagVal("");
       }
@@ -295,6 +295,7 @@ const CommunityPost = ({ editState }) => {
                   </svg>
                 </button>
               ))}
+
             <div id="keyword_input">
               <input
                 onKeyUp={keyUp}

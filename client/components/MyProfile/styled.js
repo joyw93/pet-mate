@@ -167,15 +167,46 @@ export const ProfileEditArea = styled.div`
     color: #333;
   } */
 
-  .react-datepicker__day--selected {
-  background-color: ${Colors.primaryColor} ;
-  color: #2b2b2b ;
-}
+  .react-datepicker {
+    font-size: 0.8rem;
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+  .react-datepicker__current-month {
+    font-size: 13px;
+    margin: 5px 0;
+  }
+  .react-datepicker__day-names {
+    margin-top: 18px;
+  }
+
+  .react-datepicker__navigation {
+    margin-top: 10px;
+  }
+  .react-datepicker__navigation-icon {
+    width: 12px;
+    height: 12px;
+  }
+  .react-datepicker__navigation-icon::before {
+    width: 7px;
+    height: 7px;
+  }
+
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    background-color: ${Colors.primaryColor};
+    color: #fff;
+  }
+
+  .react-datepicker__day--outside-month {
+    color: #ccc;
+  }
 
   .react-datepicker__header {
     background-color: #fff;
+    padding-top: 10px;
+    border: none;
   }
-
 `;
 
 export const Input = styled.input`
@@ -213,6 +244,4 @@ export const ConfirmButton = styled.button`
   }
 `;
 
-export const CalendarHeader = styled.div`
-
-`;
+export const CalendarHeader = styled.div``;

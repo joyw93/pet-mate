@@ -21,6 +21,7 @@ const community_like_entity_1 = require("./common/entities/community-like.entity
 const hashtag_module_1 = require("./hashtag/hashtag.module");
 const community_hashtag_entity_1 = require("./common/entities/community-hashtag.entity");
 const ormconfig = require("../ormconfig");
+const user_profile_entity_1 = require("./common/entities/user-profile.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -29,6 +30,7 @@ AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot(ormconfig),
             typeorm_1.TypeOrmModule.forFeature([
                 user_entity_1.UserEntity,
+                user_profile_entity_1.UserProfileEntity,
                 community_entity_1.CommunityEntity,
                 community_like_entity_1.CommunityLikeEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,

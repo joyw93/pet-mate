@@ -11,6 +11,8 @@ import { UserEntity } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import * as res from '../common/responses/message';
 import { Request, Response } from 'express';
+import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
+import { SetProfileDto } from './dto/set-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
 
 @Injectable()
@@ -18,9 +20,20 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserProfileEntity)
+    private userProfileRepository: Repository<UserProfileEntity>,
     @InjectRepository(CommunityEntity)
     private communityRepository: Repository<CommunityEntity>,
   ) {}
+
+  async getUserProfile(userId: number) {
+    const userProfile = await this.userRepository.findOne({
+      relations: ['profile'],
+      select: ['profile', 'nickname', 'id'],
+      where: { id: userId },
+    });
+    return userProfile;
+  }
 
   async checkNickname(nickname: string) {
     const userByNickname = await this.userRepository.findOne({
@@ -61,9 +74,11 @@ export class UserService {
     }
     const hashedPassword = await bcrypt.hash(password, 12);
     try {
+      const userProfile = new UserProfileEntity();
       const user = await this.userRepository.save({
         ...createUserDto,
         password: hashedPassword,
+        profile: userProfile,
       });
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
@@ -71,6 +86,18 @@ export class UserService {
       console.error(error);
       throw new InternalServerErrorException();
     }
+  }
+
+  async setProfile(userId: number, setProfileDto: SetProfileDto) {
+    const { nickname, birthday, comment } = setProfileDto;
+    const user = await this.userRepository.findOne({
+      relations: ['profile'],
+      where: { id: userId },
+    });
+    user.nickname = nickname;
+    user.profile.comment = comment;
+    user.profile.birth = birthday;
+    return await this.userRepository.save(user);
   }
 
   async googleLoginCallback(req: Request, res: Response) {
@@ -111,25 +138,24 @@ export class UserService {
   }
 
   async getLikedPosts(userId: number) {
-    const posts = await this.userRepository
-      .createQueryBuilder('user')
-      .select(['user.id', 'likes.id', 'post.id', 'images.id', 'images.url'])
-      .leftJoin('user.likes', 'likes')
-      .leftJoin('likes.post', 'post')
+    const posts = await this.communityRepository
+      .createQueryBuilder('post')
+      .select(['post.id','images.url'])
+      .leftJoin('post.likes', 'likes')
       .leftJoin('post.images', 'images')
-      .where('user.id = :id', { id: userId })
+      .where('likes.user_id = :id', { id: userId })
       .getMany();
     return posts;
   }
 
   async getCommentedPosts(userId: number) {
-    const posts = await this.userRepository
-      .createQueryBuilder('user')
-      .select(['user.id', 'comments.id', 'post.id', 'images.id', 'images.url'])
-      .leftJoin('user.comments', 'comments')
-      .leftJoin('comments.post', 'post')
+    const posts = await this.communityRepository
+      .createQueryBuilder('post')
+      .select(['post.id', 'images.url'])
       .leftJoin('post.images', 'images')
-      .where('user.id=:id', { id: userId })
+      .leftJoin('post.comments', 'comments')
+      .leftJoin('comments.author', 'author')
+      .where('author.id=:id', { id: userId })
       .getMany();
     return posts;
   }
