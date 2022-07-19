@@ -17,19 +17,15 @@ const CommunityList = (filterCond) => {
     dispatch(loadPostsRequestAction(filterCond.filterCond));
   }, [filterCond.filterCond]);
 
-  console.log(filterCond.filterCond);
-
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("??", posts);
+    console.log(posts);
     if (loadPostsDone) {
       setList(posts);
     }
   }, [posts]);
-
-  console.log(list);
 
   const handleMorePosts = () => {
     dispatch(loadMorePostsAction(filterCond.filterCond));

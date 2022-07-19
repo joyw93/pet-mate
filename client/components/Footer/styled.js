@@ -48,15 +48,15 @@ export const FooterContainer = styled.footer`
   }
 
   #kwak_face {
-    background-image: url("../img/kwak.jpg");
+    background-image: url("../../img/kwak.jpg");
   }
 
   #son_face {
-    background-image: url("../img/son.png");
+    background-image: url("../../img/son.png");
   }
 
   #jo_face {
-    background-image: url("../img/jo.png");
+    background-image: url("../../img/jo.png");
     background-color: #fff;
   }
   #copyright {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import Link from "next/link";
 import Router from "next/router";
 import { useEffect, useRef } from "react";
 import { useCallback } from "react";
@@ -6,6 +6,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postRequestAction, postResetAction } from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
+import {
+  loadPostDetailRequestAction,
+  updatePostRequestAction,
+} from "../../reducers/community";
 import {
   TitleWrapper,
   TextEditWrapper,
@@ -20,11 +24,10 @@ const CommunityPost = ({ editState }) => {
   const { id } = router.query;
   const [singlePost, setSinglePost] = useState("");
 
-  console.log(editState);
   const dispatch = useDispatch();
   const { postDone } = useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
-  const { posts } = useSelector((state) => state.community);
+  const selectedPost = useSelector((state) => state.community.post);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -39,16 +42,45 @@ const CommunityPost = ({ editState }) => {
   const contentRef = useRef();
 
   useEffect(() => {
-    if (editState) {
-      const post = posts.filter((post) => post.id === parseInt(id));
-      setSinglePost(post[0]);
-      //const { id, title, content } = singlePost;
-      setTitle(post[0].title);
-      setContent(post[0].content);
-    }
-  }, [editState]);
+    dispatch(loadPostDetailRequestAction(id));
+  }, []);
 
-  console.log(singlePost);
+  useEffect(() => {
+    if (editState) {
+      if (selectedPost) {
+        setSinglePost(selectedPost);
+
+        setTitle(singlePost.title);
+        setContent(singlePost.content);
+
+        let imageFiles = [];
+
+        if (singlePost.images) {
+          for (let i = 0; i < singlePost.images.length; i++) {
+            // let newImg = {
+            //   id: singlePost.images[i].id,
+            //   image: singlePost.images[i].url,
+            // };
+            // imageFiles = imageFiles.concat(newImg);
+            let newImg = singlePost.images[i].url;
+            imageFiles = imageFiles.concat(newImg);
+            setFileImages(imageFiles);
+          }
+        }
+        if (singlePost.tags) {
+          for (let i = 0; i < singlePost.tags.length; i++) {
+            const keyword = singlePost.tags[i].hashtag.keyword;
+            setHashArr([...hashArr, keyword]);
+          }
+        }
+      }
+    }
+  }, [selectedPost]);
+
+  console.log(selectedPost);
+  console.log(fileImages);
+  // console.log(hashArr);
+  //console.log(fileImages);
 
   // useEffect(() => {
   //   if (!me) {
@@ -99,23 +131,23 @@ const CommunityPost = ({ editState }) => {
   );
 
   //KeywordWrapper
-
   const handleHash = useCallback(
     (e) => {
       setHashTagVal(e.target.value);
     },
     [hashTagVal, hashArr]
   );
+
   const keyUp = useCallback(
     (e) => {
       if (e.keyCode === 13 && e.target.value.trim() !== "") {
-        if (hashArr.find((it) => it === e.target.value)) {
+        if (hashArr.find((it) => it === e.target.value.trim())) {
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
           return;
         }
 
-        setHashArr([...hashArr, hashTagVal]);
+        setHashArr([...hashArr, hashTagVal.trim()]);
         setHashTagVal("");
       }
     },
@@ -128,26 +160,38 @@ const CommunityPost = ({ editState }) => {
     [hashArr]
   );
 
-  const post = () => {
+  const handlePost = () => {
     if (!title) {
       return titleRef.current.focus();
     }
     if (!content) {
       return contentRef.current.focus();
     }
+
     const post = new FormData();
     post.append("title", title);
     post.append("content", content);
 
-    for (let i = 0; i < hashArr.length; i++) {
-      post.append("hashtags", hashArr[i]);
+    if (hashArr.length > 0) {
+      for (let i = 0; i < hashArr.length; i++) {
+        post.append("hashtags", hashArr[i]);
+      }
     }
 
-    [].forEach.call(images, (img) => {
-      post.append("images", img);
-    });
+    if (images.length > 0) {
+      [].forEach.call(images, (img) => {
+        post.append("images", img);
+      });
+    }
 
-    dispatch(postRequestAction(post));
+    //수정 모드일 때
+    if (editState) {
+      dispatch(updatePostRequestAction({ post, id }));
+      router.push("/community");
+    } else {
+      //새로 작성할 때
+      dispatch(postRequestAction(post));
+    }
   };
 
   useEffect(() => {
@@ -157,16 +201,25 @@ const CommunityPost = ({ editState }) => {
     }
   }, [postDone]);
 
+  console.log(fileImages);
+
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
           <button>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
-          <div id="buttons">
-            <Button onClick={post}>등록</Button>
-            <Button>취소</Button>
-          </div>
+          {editState ? (
+            <div id="buttons">
+              <Button onClick={handlePost}>수정완료</Button>
+              <Button onClick={() => router.back()}>취소</Button>
+            </div>
+          ) : (
+            <div id="buttons">
+              <Button onClick={handlePost}>등록</Button>
+              <Button onClick={() => router.back()}>취소</Button>
+            </div>
+          )}
         </TitleWrapper>
 
         <TextEditWrapper>
@@ -175,14 +228,14 @@ const CommunityPost = ({ editState }) => {
             autoFocus
             maxLength="40"
             type="text"
-            value={title}
+            value={title || ""}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="제목을 입력해 주세요."
           />
           <textarea
             ref={contentRef}
             maxLength="350"
-            value={content}
+            value={content || ""}
             onChange={(e) => setContent(e.target.value)}
             placeholder="내용을 입력해 주세요"
           ></textarea>
@@ -194,53 +247,54 @@ const CommunityPost = ({ editState }) => {
             <div id="add_photo">
               <label htmlFor="add_file" onChange={handleAddImages}>
                 <input type="file" id="add_file" />
-                <img src="../img/photo.png" alt="이미지 업로드" />
+                <img src="../../img/photo.png" alt="이미지 업로드" />
               </label>
             </div>
 
-            {fileImages.map((image, id) => (
-              <div key={id} className="photo_preview">
-                <img src={image} alt={`${image}-${id}`} />
-                <button onClick={() => handleDeleteImage(id)}>
-                  <svg
-                    className="delete-icon"
-                    width="12"
-                    height="12"
-                    fill="currentColor"
-                    viewBox="0 0 12 12"
-                    preserveAspectRatio="xMidYMid meet"
-                  >
-                    <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
-                  </svg>
-                </button>
-              </div>
-            ))}
+            {fileImages &&
+              fileImages.map((image, id) => (
+                <div key={id} className="photo_preview">
+                  <img src={image} alt={`${image}-${id}`} />
+                  <button onClick={() => handleDeleteImage(id)}>
+                    <svg
+                      className="delete-icon"
+                      width="12"
+                      height="12"
+                      fill="currentColor"
+                      viewBox="0 0 12 12"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+                    </svg>
+                  </button>
+                </div>
+              ))}
           </div>
         </AddPhotoWrapper>
 
         <KeywordWrapper>
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
-            {hashArr.map((it, index) => (
-              <button
-                key={index}
-                className="keyword_item"
-                onClick={() => handleDeleteHash(index)}
-              >
-                <span>{it}</span>
-
-                <svg
-                  className="delete-icon"
-                  width="13"
-                  height="13"
-                  fill="currentColor"
-                  viewBox="0 0 13 13"
-                  preserveAspectRatio="xMidYMid meet"
+            {hashArr &&
+              hashArr.map((it, index) => (
+                <button
+                  key={index}
+                  className="keyword_item"
+                  onClick={() => handleDeleteHash(index)}
                 >
-                  <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
-                </svg>
-              </button>
-            ))}
+                  <span>{it}</span>
+                  <svg
+                    className="delete-icon"
+                    width="13"
+                    height="13"
+                    fill="currentColor"
+                    viewBox="0 0 13 13"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+                  </svg>
+                </button>
+              ))}
             <div id="keyword_input">
               <input
                 onKeyUp={keyUp}
