@@ -42,7 +42,7 @@ const CommunityPostDetail = () => {
   const [count, setCount] = useState(0);
   const router = useRouter();
   const { id } = router.query;
-  const { post } = useSelector((state) => state.community);
+  const { post, loadPostDetailDone } = useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   //carousel
@@ -55,27 +55,25 @@ const CommunityPostDetail = () => {
     slidesToScroll: 1,
   };
 
+  // 게시물 로드
   useEffect(() => {
     if (router.isReady) {
       dispatch(loadPostDetailRequestAction(id));
     }
   }, [router.isReady]);
 
+  // 내가 좋아요 누른 글 표시
   useEffect(() => {
     if (!me) {
       setLike(false);
       return;
     }
-    if (me && post) {
-      if (count == 1) return;
+    if (post && post.likes) {
       post.likes.forEach((likers) => {
-        if (likers.user_id === me.id) {
-          setLike(true);
-          setCount(1);
-        }
+        setLike(likers.user_id === me.id);
       });
     }
-  }, [me, post]);
+  }, [me, loadPostDetailDone]);
 
   const handleLike = useCallback(() => {
     if (!me) {

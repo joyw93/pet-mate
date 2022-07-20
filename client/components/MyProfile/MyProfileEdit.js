@@ -33,7 +33,7 @@ const MyProfile = () => {
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, user, editProfileDone } = useSelector(
+  const { me, editProfileError, editProfileDone } = useSelector(
     (state) => state.user
   );
   const [nickname, setNickname] = useState("");
@@ -58,10 +58,10 @@ const MyProfile = () => {
 
   useEffect(() => {
     if (me) {
-      setNickname(me.nickname);
-      setBirthday(me.profile.birth);
-      setComment(me.profile.comment);
-      setImage(me.profile.imageUrl);
+      setNickname(me?.nickname);
+      setBirthday(me?.profile?.birth);
+      setComment(me?.profile?.comment);
+      setImage(me?.profile?.imageUrl);
     }
     if (me?.profile?.birth) {
       setDate(new Date(me.profile.birth));

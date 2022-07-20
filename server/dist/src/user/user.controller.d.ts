@@ -1,4 +1,3 @@
-/// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';

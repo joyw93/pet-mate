@@ -39,7 +39,7 @@ export declare class CommunityService {
         images: CommunityImageEntity[];
     } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
-    likePost(userId: number, postId: number): Promise<"like" | "unlike">;
+    likePost(userId: number, postId: number): Promise<"unlike" | "like">;
     getAllComments(postId: number): Promise<CommunityEntity[]>;
     createComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
     editComment(commentId: number, content: string): Promise<{

@@ -40,7 +40,9 @@ const CommunityList = (filterCond) => {
         {list && list.map((item) => <CommunityItem key={item.id} {...item} />)}
         <BtnContainer>
           <span></span>
-          <button onClick={handleMorePosts}>더보기</button>
+          {posts.length >= 10 ? (
+            <button onClick={handleMorePosts}>더보기</button>
+          ) : null}
         </BtnContainer>
       </ListContainer>
     </>
