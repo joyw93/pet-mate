@@ -47,7 +47,7 @@ export class CommunityService {
     } else if (orderBy === 'old') {
       cond = { 'post.createdAt': 'ASC' };
     } else if (orderBy === 'like') {
-      cond = { 'likeCount': 'DESC' };
+      cond = { likeCount: 'DESC' };
     } else if (orderBy === 'views') {
       cond = { 'post.views': 'DESC' };
     }
@@ -55,7 +55,7 @@ export class CommunityService {
       const likeCount = this.communityLikeRepository
         .createQueryBuilder()
         .subQuery()
-        .select(['post_id','COUNT(likes.user_id) AS likeCount'])
+        .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
         .from(CommunityLikeEntity, 'likes')
         .groupBy('post_id')
         .getQuery();
@@ -71,14 +71,14 @@ export class CommunityService {
           'images.url',
           'tags.id',
           'hashtag.keyword',
-          'LikeCount.likeCount'
+          'LikeCount.likeCount',
         ])
         .leftJoin('post.author', 'author')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
-        .leftJoin(likeCount, 'LikeCount','LikeCount.post_id = post.id')
+        .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
         .loadRelationCountAndMap('post.likeCount', 'post.likes')
         .loadRelationCountAndMap('post.commentCount', 'post.comments')
         .skip(offset)
@@ -92,10 +92,19 @@ export class CommunityService {
     }
   }
 
-  async getOnePost(postId: number) {
+  async getOnePost(postId: number, userId) {
     const post = await this.communityRepository.findOne({
       where: { id: postId },
     });
+    const communityLike = await this.communityLikeRepository.findOne({
+      where: { user_id: userId, post_id: postId },
+    });
+    let isLike;
+    if (userId !== post.author_id) {
+      isLike = null;
+    } else {
+      isLike = communityLike !== null;
+    }
     if (!post) {
       throw new NotFoundException(res.msg.COMMUNITY_POST_NOT_EXIST);
     } else {
@@ -132,7 +141,7 @@ export class CommunityService {
         .loadRelationCountAndMap('post.likeCount', 'post.likes')
         .where('post.id = :id', { id: postId })
         .getOne();
-      return post;
+      return { ...post, isLike };
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
@@ -224,10 +233,17 @@ export class CommunityService {
       const post = await this.communityRepository.findOne({
         where: { id: postId },
       });
-      const communityLike = new CommunityLikeEntity();
-      communityLike.user = user;
-      communityLike.post = post;
-      return await this.communityLikeRepository.save(communityLike);
+      const communityLike = await this.communityLikeRepository.findOne({
+        where: { user_id: userId, post_id: postId },
+      });
+      if (communityLike) {
+        return await this.communityLikeRepository.remove(communityLike);
+      } else {
+        const communityLike = new CommunityLikeEntity();
+        communityLike.user = user;
+        communityLike.post = post;
+        return await this.communityLikeRepository.save(communityLike);
+      }
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);

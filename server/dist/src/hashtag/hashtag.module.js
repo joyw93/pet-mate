@@ -14,6 +14,7 @@ const community_entity_1 = require("../community/community.entity");
 const hashtag_entity_1 = require("./hashtag.entity");
 const hashtag_controller_1 = require("./hashtag.controller");
 const hashtag_service_1 = require("./hashtag.service");
+const community_like_entity_1 = require("../common/entities/community-like.entity");
 let HashtagModule = class HashtagModule {
 };
 HashtagModule = __decorate([
@@ -22,6 +23,7 @@ HashtagModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([
                 community_entity_1.CommunityEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,
+                community_like_entity_1.CommunityLikeEntity,
                 hashtag_entity_1.HashtagEntity,
             ]),
         ],

@@ -6,7 +6,7 @@ export class HashtagController {
   constructor(private readonly hashtagService: HashtagService) {}
 
   @Get()
-  async getPosts(@Query('tag') tag: string) {
-    return await this.hashtagService.getPosts(tag)
+  async getPosts(@Query('keyword') keyword: string) {
+    return await this.hashtagService.getPosts(keyword)
   }
 }

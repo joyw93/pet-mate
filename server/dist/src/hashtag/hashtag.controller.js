@@ -19,13 +19,13 @@ let HashtagController = class HashtagController {
     constructor(hashtagService) {
         this.hashtagService = hashtagService;
     }
-    async getPosts(tag) {
-        return await this.hashtagService.getPosts(tag);
+    async getPosts(keyword) {
+        return await this.hashtagService.getPosts(keyword);
     }
 };
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Query)('tag')),
+    __param(0, (0, common_1.Query)('keyword')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

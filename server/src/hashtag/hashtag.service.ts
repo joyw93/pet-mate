@@ -5,6 +5,7 @@ import { CommunityEntity } from 'src/community/community.entity';
 import { Repository } from 'typeorm';
 import { HashtagEntity } from './hashtag.entity';
 import * as res from '../common/responses/message';
+import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 
 @Injectable()
 export class HashtagService {
@@ -13,6 +14,10 @@ export class HashtagService {
     private communityHashtagRepository: Repository<CommunityHashtagEntity>,
     @InjectRepository(HashtagEntity)
     private hashtagRepository: Repository<HashtagEntity>,
+    @InjectRepository(CommunityEntity)
+    private communityRepository: Repository<CommunityEntity>,
+    @InjectRepository(CommunityLikeEntity)
+    private communityLikeRepository: Repository<CommunityLikeEntity>,
   ) {}
 
   async addTags(post: CommunityEntity, hashtags: string[]) {
@@ -44,12 +49,38 @@ export class HashtagService {
     }
   }
 
-  async getPosts(tag: string) {
-    const posts = await this.hashtagRepository
-      .createQueryBuilder('hashtag')
-      .leftJoinAndSelect('hashtag.tags', 'tag')
-      .leftJoinAndSelect('tag.post', 'post')
-      .where('hashtag.tag = :tag', { tag })
+  async getPosts(keyword: string) {
+    const likeCount = this.communityLikeRepository
+      .createQueryBuilder()
+      .subQuery()
+      .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+      .from(CommunityLikeEntity, 'likes')
+      .groupBy('post_id')
+      .getQuery();
+
+    const posts = await this.communityRepository
+      .createQueryBuilder('post')
+      .select([
+        'post.id',
+        'post.title',
+        'post.content',
+        'post.createdAt',
+        'post.views',
+        'author.nickname',
+        'images.url',
+        'tags.id',
+        'hashtag.keyword',
+        'LikeCount.likeCount',
+      ])
+      .leftJoin('post.author', 'author')
+      .leftJoin('post.images', 'images')
+      .leftJoin('post.tags', 'tags')
+      .leftJoin('post.likes', 'likes')
+      .leftJoin('tags.hashtag', 'hashtag')
+      .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
+      .loadRelationCountAndMap('post.likeCount', 'post.likes')
+      .loadRelationCountAndMap('post.commentCount', 'post.comments')
+      .where('hashtag.keyword=:keyword', { keyword })
       .getMany();
     return posts;
   }

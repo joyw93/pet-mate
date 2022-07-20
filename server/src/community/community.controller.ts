@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -40,7 +41,7 @@ export class CommunityController {
   ) {
     return await this.communityService.getPosts(
       offset ?? 0,
-      postCount ?? 30,
+      postCount ?? 10,
       orderBy ?? 'new',
     );
   }
@@ -51,8 +52,9 @@ export class CommunityController {
   }
 
   @Get(':postId')
-  async getOnePost(@Param('postId', ParseIntPipe) postId: number) {
-    return await this.communityService.getOnePost(postId);
+  async getOnePost(@Param('postId', ParseIntPipe) postId: number, @Req() req) {
+    const userId = req.user ? req.user.id : null;
+    return await this.communityService.getOnePost(postId, userId);
   }
 
   @Get(':postId/like')

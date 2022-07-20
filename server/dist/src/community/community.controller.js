@@ -32,13 +32,14 @@ let CommunityController = class CommunityController {
         this.hashtagService = hashtagService;
     }
     async getPosts(offset, postCount, orderBy) {
-        return await this.communityService.getPosts(offset !== null && offset !== void 0 ? offset : 0, postCount !== null && postCount !== void 0 ? postCount : 30, orderBy !== null && orderBy !== void 0 ? orderBy : 'new');
+        return await this.communityService.getPosts(offset !== null && offset !== void 0 ? offset : 0, postCount !== null && postCount !== void 0 ? postCount : 10, orderBy !== null && orderBy !== void 0 ? orderBy : 'new');
     }
     async getHotPosts() {
         return await this.communityService.getHotPosts();
     }
-    async getOnePost(postId) {
-        return await this.communityService.getOnePost(postId);
+    async getOnePost(postId, req) {
+        const userId = req.user ? req.user.id : null;
+        return await this.communityService.getOnePost(postId, userId);
     }
     async likePost(user, postId) {
         return await this.communityService.likePost(user.id, postId);
@@ -99,8 +100,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':postId'),
     __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getOnePost", null);
 __decorate([

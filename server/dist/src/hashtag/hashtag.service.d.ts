@@ -2,10 +2,13 @@ import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.en
 import { CommunityEntity } from 'src/community/community.entity';
 import { Repository } from 'typeorm';
 import { HashtagEntity } from './hashtag.entity';
+import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 export declare class HashtagService {
     private communityHashtagRepository;
     private hashtagRepository;
-    constructor(communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>);
+    private communityRepository;
+    private communityLikeRepository;
+    constructor(communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>, communityRepository: Repository<CommunityEntity>, communityLikeRepository: Repository<CommunityLikeEntity>);
     addTags(post: CommunityEntity, hashtags: string[]): Promise<CommunityHashtagEntity[]>;
-    getPosts(tag: string): Promise<HashtagEntity[]>;
+    getPosts(keyword: string): Promise<CommunityEntity[]>;
 }

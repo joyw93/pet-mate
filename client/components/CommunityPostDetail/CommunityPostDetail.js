@@ -1,5 +1,10 @@
 import Link from "next/link";
-import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -18,7 +23,11 @@ import {
   CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import { loadPostDetailRequestAction, removePostRequestAction,removeCommentRequestAction } from "../../reducers/community";
+import {
+  loadPostDetailRequestAction,
+  removePostRequestAction,
+  removeCommentRequestAction,
+} from "../../reducers/community";
 import { addCommentRequestAction } from "../../reducers/community";
 import { likePostRequestAction } from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,7 +40,9 @@ const CommunityPostDetail = () => {
   const [like, setLike] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { post, addCommentDone, removeCommentDone, likePostDone } = useSelector((state) => state.community);
+  const { post, addCommentDone, removeCommentDone, likePostDone } = useSelector(
+    (state) => state.community
+  );
   const dispatch = useDispatch();
   //carousel
   const settings = {
@@ -42,6 +53,14 @@ const CommunityPostDetail = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  useEffect(() => {
+    if (post?.isLike === null) {
+      setLike(false);
+    } else {
+      setLike(post?.isLike);
+    }
+  }, [post]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -109,11 +128,19 @@ const CommunityPostDetail = () => {
           <PostInfo>
             <div>
               <span id="post_author">{post.author.nickname}</span>
-              <span id="post_created_time">{getElapsedTime(post.createdAt)}</span>
+              <span id="post_created_time">
+                {getElapsedTime(post.createdAt)}
+              </span>
               <span id="views">조회수 {post.views}</span>
             </div>
             <div id="like_wrapper">
-              <button onClick={handleLike}>{like ? <img src={likeIcon} alt="좋아요" /> : <img src={unlikeIcon} alt="안좋아요" />}</button>
+              <button onClick={handleLike}>
+                {like ? (
+                  <img src={likeIcon} alt="좋아요" />
+                ) : (
+                  <img src={unlikeIcon} alt="안좋아요" />
+                )}
+              </button>
               <span id="like_count">{post.likeCount}</span>
             </div>
           </PostInfo>
@@ -168,7 +195,10 @@ const CommunityPostDetail = () => {
                           <CommentContentInfo>
                             <span>{getElapsedTime(comment.createdAt)}</span>
                             <span>·</span>
-                            <span id="delete_btn" onClick={() => handleDeleteCmt(comment.id)}>
+                            <span
+                              id="delete_btn"
+                              onClick={() => handleDeleteCmt(comment.id)}
+                            >
                               삭제
                             </span>
                           </CommentContentInfo>
