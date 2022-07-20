@@ -11,7 +11,6 @@ export const initialState = {
   loadPostDetailDone: false,
   loadPostDetailError: null,
 
-  hasMorePosts: true,
   loadMoreLoading: false,
   loadMoreDone: false,
   loadMoreError: null,
@@ -53,6 +52,7 @@ export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
 export const LOAD_MORE_REQUEST = "LOAD_MORE_REQUEST";
 export const LOAD_MORE_SUCCESS = "LOAD_MORE_SUCCESS";
 export const LOAD_MORE_FAILURE = "LOAD_MORE_FAILURE";
+export const LOAD_MORE_RESET = "LOAD_MORE_RESET";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -102,6 +102,10 @@ export const loadPostsRequestAction = (data) => ({
 export const loadMorePostsAction = (data) => ({
   type: LOAD_MORE_REQUEST,
   data,
+});
+
+export const loadMoreReset = () => ({
+  type: LOAD_MORE_RESET,
 });
 
 export const removePostRequestAction = (data) => ({
@@ -182,6 +186,9 @@ const reducer = (state = initialState, action) =>
       case LOAD_MORE_FAILURE:
         draft.loadMoreLoading = false;
         draft.loadMoreError = action.error;
+        break;
+      case LOAD_MORE_RESET:
+        draft.loadMoreDone = false;
         break;
 
       //글 추가

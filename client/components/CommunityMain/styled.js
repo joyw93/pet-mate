@@ -175,30 +175,47 @@ export const BtnContainer = styled.div`
   position: relative;
   margin-bottom: 200px;
 
-  span {
+  div {
     width: 100%;
-    border: 0.3px solid #eee;
-    position: absolute;
-    top: 50%;
-  }
 
-  button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    background-color: #eee;
-    padding: 10px 20px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-
-    &:hover {
-      transition: all 0.3s;
-      opacity: 0.6;
+    p {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      span {
+        font-size: 1.5rem;
+      }
     }
+  }
+`;
+
+export const BtnLine = styled.span`
+  width: 100%;
+  border: 0.3px solid #eee;
+  position: absolute;
+  top: 50%;
+`;
+
+export const MoreButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const MoreBtn = styled(MoreButton)`
+  background-color: #eee;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.3s;
+    opacity: 0.6;
   }
 `;
