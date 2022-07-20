@@ -3,10 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
 import { ListContainer, BtnContainer } from "./styled";
-import {
-  loadMorePostsAction,
-  loadPostsRequestAction,
-} from "../../reducers/community";
+import { loadMorePostsAction, loadPostsRequestAction } from "../../reducers/community";
 
 const CommunityList = (filterCond) => {
   const posts = useSelector((state) => state.community.posts);

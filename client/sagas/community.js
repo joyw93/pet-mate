@@ -322,7 +322,6 @@ export default function* communitySaga() {
     fork(watchMorePosts),
     fork(watchLoadPostDetail),
     fork(watchRemovePost),
-    fork(watchLoadPostDetail),
     fork(watchAddComment),
     fork(watchRemoveComment),
     fork(watchLikePost),

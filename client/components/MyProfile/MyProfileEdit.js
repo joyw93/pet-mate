@@ -8,7 +8,7 @@ import {
   BackgroundArea,
   ContentArea,
   UserContent,
-  ProfileInfo,
+  ProfileEditContent,
   TabWrapper,
   TabList,
   Input,
@@ -18,24 +18,19 @@ import {
   ValidMessage,
   InvalidMessage,
   ImageInput,
+  ImageEditWrapper,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-} from "../../reducers/user";
+import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction } from "../../reducers/user";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, user, editProfileDone } = useSelector(
-    (state) => state.user
-  );
+  const { me, editProfileError, user, editProfileDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -53,8 +48,6 @@ const MyProfile = () => {
     }
     dispatch(loadProfileRequestAction());
   }, [editProfileDone]);
-
-
 
   useEffect(() => {
     if (user) {
@@ -126,34 +119,25 @@ const MyProfile = () => {
         <BackgroundArea />
         <ContentArea>
           <UserContent>
-            <ProfileInfo></ProfileInfo>
-            <TabWrapper>
-              <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
-                  프로필 설정
-                </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
-                  계정 설정
-                </li>
-              </TabList>
-              <ProfileEditArea>
-                <h1>프로필 설정</h1>
-                <label>닉네임</label>
-                <Input onChange={onChangeNickname} value={nickname} />
-                {nicknameValid === "닉네임을 입력하세요." ||
-                nicknameValid === "중복된 닉네임입니다." ? (
-                  <InvalidMessage>{nicknameValid}</InvalidMessage>
-                ) : (
-                  <ValidMessage>{nicknameValid}</ValidMessage>
-                )}
-                <label>
-                  생년월일
+            <ProfileEditContent>
+              <TabWrapper>
+                <TabList>
+                  <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
+                    프로필 설정
+                  </li>
+                  <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
+                    계정 설정
+                  </li>
+                </TabList>
+                <ProfileEditArea>
+                  <span>닉네임</span>
+                  <Input onChange={onChangeNickname} value={nickname} />
+                  {nicknameValid === "닉네임을 입력하세요." || nicknameValid === "중복된 닉네임입니다." ? (
+                    <InvalidMessage>{nicknameValid}</InvalidMessage>
+                  ) : (
+                    <ValidMessage>{nicknameValid}</ValidMessage>
+                  )}
+                  <span>생년월일</span>
                   <DatePicker
                     showPopperArrow={false}
                     selected={date}
@@ -163,33 +147,24 @@ const MyProfile = () => {
                     onChange={onChangeBirthday}
                     customInput={<Input />}
                   />
-                </label>
-                <label>한줄 소개</label>
-                <Input onChange={onChangeComment} value={comment} />
-                <label onChange={onChangeImage}>
-                  프로필 이미지
-                  <ImageInput type="file" />
-                  {image ? (
-                    <ImageHolder
-                      src={image}
-                      alt="이미지 업로드"
-                      width={200}
-                      height={200}
-                    />
-                  ) : (
-                    <ImageHolder
-                      src="../../img/default_profile.png"
-                      alt="이미지 업로드"
-                      width={200}
-                      height={200}
-                    />
-                  )}
-                </label>
-                <div>
-                  <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
-                </div>
-              </ProfileEditArea>
-            </TabWrapper>
+                  <span>한줄 소개</span>
+                  <Input onChange={onChangeComment} value={comment} />
+
+                  <span>프로필 이미지</span>
+                  <ImageEditWrapper onChange={onChangeImage}>
+                    <ImageInput type="file" />
+                    {image ? (
+                      <ImageHolder src={image} alt="이미지 업로드" />
+                    ) : (
+                      <ImageHolder src="../../img/default_profile.png" alt="이미지 업로드" />
+                    )}
+                  </ImageEditWrapper>
+                  <div>
+                    <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
+                  </div>
+                </ProfileEditArea>
+              </TabWrapper>
+            </ProfileEditContent>
           </UserContent>
         </ContentArea>
       </ProfileContainer>

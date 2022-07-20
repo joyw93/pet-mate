@@ -17,6 +17,7 @@ import {
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
+import Link from "next/link";
 
 const CommunityItem = (item) => {
   const [title, setTitle] = useState("");
@@ -51,6 +52,10 @@ const CommunityItem = (item) => {
     Router.push(`community/${item.id}`);
   };
 
+  const goToKeywordSearch = (e) => {
+    Router.push(`search/hashtag?keyword=${e.target.value}`);
+  };
+
   return (
     <ItemContainer>
       <ItemWrapper>
@@ -70,14 +75,20 @@ const CommunityItem = (item) => {
           <KeywordWrapper>
             {tags &&
               tags.map((word, index) => (
-                <KeywordItem key={index}>
-                  <span>#</span>
-                  {word.hashtag.keyword}
-                </KeywordItem>
+                <Link href={`/search?keyword=${word.hashtag.keyword}`} key={index} passHref>
+                  <KeywordItem>
+                    <span>#</span>
+                    {word.hashtag.keyword}
+                  </KeywordItem>
+                </Link>
               ))}
           </KeywordWrapper>
         </ContentWrapper>
-        <ImageWrapper onClick={itemSelect}>{image_src && <ItemImage src={image_src.url} />}</ImageWrapper>
+        {image_src && (
+          <ImageWrapper onClick={itemSelect}>
+            <ItemImage src={image_src.url} />
+          </ImageWrapper>
+        )}
       </ItemWrapper>
     </ItemContainer>
   );

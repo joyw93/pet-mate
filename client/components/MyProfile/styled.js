@@ -29,6 +29,7 @@ export const UserContent = styled.div`
   display: flex;
   background-color: #fff;
 `;
+
 export const ProfileInfo = styled.div`
   width: 280px;
   height: 480px;
@@ -46,8 +47,10 @@ export const ProfileImg = styled.div`
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    border: 3px solid ${Colors.primaryColor};
+    /* border: 1px solid ${Colors.primaryColor}; */
+    box-shadow: 0 0 7px ${Colors.primaryColor};
   }
 `;
 export const UserInfo = styled.div`
@@ -144,22 +147,21 @@ export const ImageWrapper = styled.div`
   }
 `;
 
+export const ProfileEditContent = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  background-color: #fff;
+`;
+
 export const ProfileEditArea = styled.div`
-  width: 80%;
-  height: 80%;
-  margin-top: 30px;
-  padding-top: 50px;
-  padding-left: 28px;
   justify-content: flex-start;
   flex-wrap: wrap;
-  border: 2px solid #e0e0e0;
 
-  label {
-    margin-top: 50px;
+  span {
+    margin-top: 30px;
     display: block;
-    width: 300px;
-    color: #424242;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   /* .react-datepicker__input-container::before {
@@ -215,12 +217,12 @@ export const ProfileEditArea = styled.div`
 
 export const Input = styled.input`
   margin-top: 10px;
-  font-size: 17px;
+  font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #e0e0e0;
   line-height: 40px;
   text-indent: 12px;
-  width: 400px;
+  width: 300px;
   ::placeholder,
   ::-webkit-input-placeholder {
     color: #bdbdbd;
@@ -259,11 +261,24 @@ export const InvalidMessage = styled.div`
   margin-top: 10px;
 `;
 
+export const ImageEditWrapper = styled.label`
+  margin-top: 10px;
+  width: 200px;
+  height: 200px;
+  display: block;
+`;
+
 export const ImageInput = styled.input`
   display: none;
 `;
 
 export const ImageHolder = styled.img`
-
-  flex-wrap: wrap;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+    transition: all 0.1s;
+  }
 `;
