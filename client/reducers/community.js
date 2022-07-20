@@ -2,11 +2,12 @@ import produce from "immer";
 
 export const initialState = {
   posts: [],
-  content: [],
+  //content: [],
   commentId: [],
   post: null, // post = {...post, comments:[...comments, '새로운댓글']}
   hasMorePosts: true,
   editing: false,
+
   loadPostDetailLoading: false,
   loadPostDetailDone: false,
   loadPostDetailError: null,
@@ -23,9 +24,11 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+
   updatePostLoading: false,
   updatePostDone: false,
   updatePostError: null,
+
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
@@ -33,6 +36,7 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+
   removeCommentLoading: false,
   removeCommentDone: false,
   removeCommentError: null,
@@ -45,6 +49,7 @@ export const initialState = {
 export const LOAD_POST_DETAIL_REQUEST = "LOAD_POST_DETAIL_REQUEST";
 export const LOAD_POST_DETAIL_SUCCESS = "LOAD_POST_DETAIL_SUCCESS";
 export const LOAD_POST_DETAIL_FAILURE = "LOAD_POST_DETAIL_FAILURE";
+export const LOAD_POST_DETAIL_RESET = "LOAD_POST_DETAIL_RESET";
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -92,6 +97,10 @@ export const postResetAction = () => ({
 export const loadPostDetailRequestAction = (data) => ({
   type: LOAD_POST_DETAIL_REQUEST,
   data,
+});
+
+export const loadPostDetailResetAction = () => ({
+  type: LOAD_POST_DETAIL_RESET,
 });
 
 export const loadPostsRequestAction = (data) => ({
@@ -147,8 +156,14 @@ const reducer = (state = initialState, action) =>
         draft.post = action.data;
         break;
       case LOAD_POST_DETAIL_FAILURE:
+        draft.loadPostDetailLoading = false;
+        draft.loadPostDetailError = action.error;
+        break;
+      case LOAD_POST_DETAIL_RESET:
         draft.loadPostsLoading = false;
-        draft.loadPostsError = action.error;
+        draft.post = null;
+        draft.loadPostsDone = false,
+        draft.loadPostsError = null;
         break;
 
       //글 불러오기
@@ -240,7 +255,8 @@ const reducer = (state = initialState, action) =>
         draft.addCommentError = null;
         break;
       case ADD_COMMENT_SUCCESS:
-        draft.content.unshift(action.data.content);
+        // draft.content.unshift(action.data.content);
+        draft.post.comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
@@ -256,7 +272,9 @@ const reducer = (state = initialState, action) =>
         draft.removeCommentError = null;
         break;
       case REMOVE_COMMENT_SUCCESS:
-        // draft.posts.comments = state.posts.comments.filter((v) => v.comment.id !== action.data);
+        draft.post.comments = draft.post.comments.filter(
+          (v) => v.id !== action.data
+        );
         draft.removeCommentLoading = false;
         draft.removeCommentDone = true;
         break;
@@ -272,7 +290,12 @@ const reducer = (state = initialState, action) =>
         draft.likePostDone = false;
         break;
       case LIKE_POST_SUCCESS:
+        draft.post.likeCount =
+          action.data === "like"
+            ? draft.post.likeCount + 1
+            : draft.post.likeCount - 1;
         draft.likePostLoading = false;
+        draft.likePostError = null;
         draft.likePostDone = true;
         break;
       case LIKE_POST_FAILURE:

@@ -6,6 +6,7 @@ import { ListContainer, BtnContainer } from "./styled";
 import {
   loadMorePostsAction,
   loadPostsRequestAction,
+  loadPostDetailResetAction,
 } from "../../reducers/community";
 
 const CommunityList = (filterCond) => {
@@ -13,7 +14,6 @@ const CommunityList = (filterCond) => {
   const loadPostsDone = useSelector((state) => state.community.loadPostsDone);
 
   useEffect(() => {
-    //setFilterCond("new");
     dispatch(loadPostsRequestAction(filterCond.filterCond));
   }, [filterCond.filterCond]);
 
@@ -21,7 +21,10 @@ const CommunityList = (filterCond) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(posts);
+    dispatch(loadPostDetailResetAction());
+  }, []);
+
+  useEffect(() => {
     if (loadPostsDone) {
       setList(posts);
     }

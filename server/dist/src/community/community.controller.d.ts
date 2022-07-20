@@ -10,23 +10,8 @@ export declare class CommunityController {
     constructor(communityService: CommunityService, hashtagService: HashtagService);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<import("./community.entity").CommunityEntity[]>;
     getHotPosts(): Promise<import("./community.entity").CommunityEntity[]>;
-    getOnePost(postId: number, req: any): Promise<{
-        isLike: any;
-        id: number;
-        title: string;
-        content: string;
-        author_id: number;
-        views: number;
-        createdAt: Date;
-        updatedAt: Date;
-        deletedAt: Date;
-        author: UserEntity;
-        likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
-        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
-        tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
-        images: import("../common/entities/community-image.entity").CommunityImageEntity[];
-    }>;
-    likePost(user: UserEntity, postId: number): Promise<import("../common/entities/community-like.entity").CommunityLikeEntity>;
+    getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
+    likePost(user: UserEntity, postId: number): Promise<"like" | "unlike">;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
     editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
         title: string;

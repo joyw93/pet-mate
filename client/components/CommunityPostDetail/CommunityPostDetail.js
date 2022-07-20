@@ -27,22 +27,23 @@ import {
   loadPostDetailRequestAction,
   removePostRequestAction,
   removeCommentRequestAction,
+  addCommentRequestAction,
+  likePostRequestAction,
 } from "../../reducers/community";
-import { addCommentRequestAction } from "../../reducers/community";
-import { likePostRequestAction } from "../../reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { loadProfileRequestAction } from "../../reducers/user";
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
   const unlikeIcon = "../img/heart2.png";
   const [cmtContent, setCmtContent] = useState("");
   const [like, setLike] = useState(false);
+  const [count, setCount] = useState(0);
   const router = useRouter();
   const { id } = router.query;
-  const { post, addCommentDone, removeCommentDone, likePostDone } = useSelector(
-    (state) => state.community
-  );
+  const { post } = useSelector((state) => state.community);
+  const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   //carousel
   const settings = {
@@ -55,23 +56,33 @@ const CommunityPostDetail = () => {
   };
 
   useEffect(() => {
-    if (post?.isLike === null) {
-      setLike(false);
-    } else {
-      setLike(post?.isLike);
-    }
-  }, [post]);
-
-  useEffect(() => {
     if (router.isReady) {
       dispatch(loadPostDetailRequestAction(id));
     }
-  }, [router.isReady, addCommentDone, removeCommentDone, likePostDone]);
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if (!me) {
+      setLike(false);
+      return;
+    }
+    if (me && post) {
+      if (count == 1) return;
+      post.likes.forEach((likers) => {
+        if (likers.user_id === me.id) {
+          setLike(true);
+          setCount(1);
+        }
+      });
+    }
+  }, [me, post]);
 
   const handleLike = useCallback(() => {
+    if (!me) {
+      return alert("로그인이 필요합니다.");
+    }
     setLike(!like);
     dispatch(likePostRequestAction(id));
-    console.log(post);
   }, [like]);
 
   const handleCmtContent = useCallback(() => {
@@ -88,9 +99,7 @@ const CommunityPostDetail = () => {
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
-
         dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
-
         setCmtContent("");
       }
     },
@@ -99,13 +108,13 @@ const CommunityPostDetail = () => {
 
   const handleDeleteCmt = (commentId) => {
     if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
+      console.log(commentId);
       dispatch(removeCommentRequestAction(commentId));
     }
   };
 
   const handleDeletePost = () => {
     if (window.confirm("글을 삭제하겠습니까?")) {
-      console.log("글 삭제");
       dispatch(removePostRequestAction(parseInt(id)));
       router.push(`/community`);
     }
@@ -185,28 +194,25 @@ const CommunityPostDetail = () => {
               </CommentInput>
               <CommentArea>
                 {post.comments &&
-                  post.comments
-                    .slice(0)
-                    .reverse()
-                    .map((comment) => (
-                      <CommentItem key={comment.id}>
-                        <CommentHandler>
-                          <h3>{comment.author.nickname}</h3>
-                          <CommentContentInfo>
-                            <span>{getElapsedTime(comment.createdAt)}</span>
-                            <span>·</span>
-                            <span
-                              id="delete_btn"
-                              onClick={() => handleDeleteCmt(comment.id)}
-                            >
-                              삭제
-                            </span>
-                          </CommentContentInfo>
-                        </CommentHandler>
+                  post.comments.map((comment) => (
+                    <CommentItem key={comment.id}>
+                      <CommentHandler>
+                        <h3>{comment.author.nickname}</h3>
+                        <CommentContentInfo>
+                          <span>{getElapsedTime(comment.createdAt)}</span>
+                          <span>·</span>
+                          <span
+                            id="delete_btn"
+                            onClick={() => handleDeleteCmt(comment.id)}
+                          >
+                            삭제
+                          </span>
+                        </CommentContentInfo>
+                      </CommentHandler>
 
-                        <p>{comment.content}</p>
-                      </CommentItem>
-                    ))}
+                      <p>{comment.content}</p>
+                    </CommentItem>
+                  ))}
               </CommentArea>
             </CommentWrapper>
           </div>

@@ -35,10 +35,19 @@ let AuthService = class AuthService {
         this.userRepository = userRepository;
     }
     async validateUser(email, password) {
-        const user = await this.userRepository.findOne({
-            where: { email },
-            select: ['id', 'email', 'nickname', 'password'],
-        });
+        const user = await this.userRepository
+            .createQueryBuilder('user')
+            .select([
+            'user.id',
+            'user.name',
+            'user.nickname',
+            'user.email',
+            'user.password',
+        ])
+            .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
+            .leftJoin('user.profile', 'profile')
+            .where('user.email= :email', { email })
+            .getOne();
         if (!user) {
             return null;
         }
@@ -61,7 +70,7 @@ let AuthService = class AuthService {
                 email,
                 name,
                 nickname: name,
-                password: accessToken
+                password: accessToken,
             });
             return newUser;
         }

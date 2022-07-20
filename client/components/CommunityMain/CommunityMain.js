@@ -39,7 +39,6 @@ const ListSelection = ({ onChange }) => {
 
 const Notice = ({ hotdata }) => {
   const [noticeList, setNoticeList] = useState([]);
-  // console.log(hotdata.hotdata.data);
   useEffect(() => {
     setNoticeList(hotdata.hotdata.data);
   }, []);
@@ -108,7 +107,6 @@ const CommunityMain = (hotdata) => {
 
   return (
     <CommunityCon>
-      <button onClick={loadPosts}>게시글 불러오기</button>
       <Title>커뮤니티</Title>
       <HeadWrapper>
         <ListSelection onChange={handleListSelect} />

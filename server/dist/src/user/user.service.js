@@ -39,12 +39,19 @@ let UserService = class UserService {
         this.communityRepository = communityRepository;
     }
     async getUserProfile(userId) {
-        const userProfile = await this.userRepository.findOne({
-            relations: ['profile'],
-            select: ['profile', 'nickname', 'id', 'email'],
-            where: { id: userId },
-        });
-        return userProfile;
+        const user = await this.userRepository
+            .createQueryBuilder('user')
+            .select([
+            'user.id',
+            'user.name',
+            'user.nickname',
+            'user.email',
+        ])
+            .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
+            .leftJoin('user.profile', 'profile')
+            .where('user.id= :id', { id: userId })
+            .getOne();
+        return user;
     }
     async checkNickname(nickname) {
         const userByNickname = await this.userRepository.findOne({
@@ -97,7 +104,7 @@ let UserService = class UserService {
             relations: ['profile'],
             where: { id: userId },
         });
-        if (userByNickname && (user.nickname !== nickname)) {
+        if (userByNickname && user.nickname !== nickname) {
             throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
         }
         user.nickname = nickname;

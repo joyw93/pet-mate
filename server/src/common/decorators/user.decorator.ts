@@ -10,9 +10,9 @@ export const User = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
     let user = request.user;
     if (!user) {
-      // throw new UnauthorizedException(res.msg.LOGIN_REQUIRED)
-      user = { id: 1 };
-      return user;
+      throw new UnauthorizedException(res.msg.LOGIN_REQUIRED)
+      // user = { id: 1 };
+      // return user;
     }
     return request.user;
 

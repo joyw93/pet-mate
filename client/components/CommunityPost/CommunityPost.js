@@ -50,7 +50,6 @@ const CommunityPost = ({ editState }) => {
     if (editState) {
       if (selectedPost) {
         setSinglePost(selectedPost);
-
         setTitle(singlePost.title);
         setContent(singlePost.content);
 
@@ -78,16 +77,6 @@ const CommunityPost = ({ editState }) => {
     }
   }, [selectedPost]);
 
-  console.log(selectedPost);
-  console.log(fileImages);
-  // console.log(hashArr);
-  //console.log(fileImages);
-
-  // useEffect(() => {
-  //   if (!me) {
-  //     Router.push("/login");
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (hashArr.length > 5) {
@@ -201,13 +190,10 @@ const CommunityPost = ({ editState }) => {
     }
   }, [postDone]);
 
-  console.log(fileImages);
-
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
-          <button>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
           {editState ? (
             <div id="buttons">
@@ -271,7 +257,6 @@ const CommunityPost = ({ editState }) => {
               ))}
           </div>
         </AddPhotoWrapper>
-
         <KeywordWrapper>
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">
