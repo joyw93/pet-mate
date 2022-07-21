@@ -63,7 +63,7 @@ export const LOAD_MORE_RESET = "LOAD_MORE_RESET";
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
-export const POST_RESET = "POST_RESET";
+export const ADD_POST_RESET = "ADD_POST_RESET";
 
 export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST";
 export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
@@ -72,6 +72,7 @@ export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
 export const UPDATE_POST_REQUEST = "UPDATE_POST_REQUEST";
 export const UPDATE_POST_SUCCESS = "UPDATE_POST_SUCCESS";
 export const UPDATE_POST_FAILURE = "UPDATE_POST_FAILURE";
+export const UPDATE_POST_RESET = "UPDATE_POST_RESET";
 
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
@@ -92,7 +93,11 @@ export const postRequestAction = (data) => ({
 });
 
 export const postResetAction = () => ({
-  type: POST_RESET,
+  type: ADD_POST_RESET,
+});
+
+export const updatePostResetAction = () => ({
+  type: UPDATE_POST_RESET,
 });
 
 export const loadPostDetailRequestAction = (data) => ({
@@ -224,8 +229,10 @@ const reducer = (state = initialState, action) =>
         draft.postLoading = false;
         draft.postError = action.error;
         break;
-      case POST_RESET:
+      case ADD_POST_RESET:
+        draft.postLoading = true;
         draft.postDone = false;
+        draft.postError = null;
         break;
 
       //글 삭제
@@ -256,6 +263,11 @@ const reducer = (state = initialState, action) =>
       case UPDATE_POST_FAILURE:
         draft.updatePostLoading = false;
         draft.updatePostError = action.error;
+        break;
+      case UPDATE_POST_RESET:
+        draft.updatePostLoading = false;
+        draft.updatePostDone = false;
+        draft.updatePostError = null;
         break;
 
       //댓글 추가

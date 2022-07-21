@@ -4,7 +4,11 @@ import { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postRequestAction, postResetAction } from "../../reducers/community";
+import {
+  postRequestAction,
+  postResetAction,
+  updatePostResetAction,
+} from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
 
 import {
@@ -26,7 +30,7 @@ const CommunityPost = ({ editState }) => {
   //const [singlePost, setSinglePost] = useState("");
 
   const dispatch = useDispatch();
-  const { postDone } = useSelector((state) => state.community);
+  const { postDone, updatePostDone } = useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
   const selectedPost = useSelector((state) => state.community.post);
 
@@ -42,6 +46,15 @@ const CommunityPost = ({ editState }) => {
 
   const titleRef = useRef();
   const contentRef = useRef();
+
+  // test
+
+  useEffect(() => {
+    if (images) console.log("images", images);
+    if (fileImages) console.log("fileImages", fileImages);
+  }, [images, fileImages]);
+
+  //
 
   useEffect(() => {
     dispatch(loadPostDetailRequestAction(id));
@@ -78,10 +91,10 @@ const CommunityPost = ({ editState }) => {
     }
   }, [selectedPost]);
 
-  console.log(selectedPost);
+  // console.log(selectedPost);
   //console.log(singlePost);
 
-  console.log(hashArr);
+  // console.log(hashArr);
 
   // useEffect(() => {
   //   if (!me) {
@@ -212,22 +225,24 @@ const CommunityPost = ({ editState }) => {
     //수정 모드일 때
     if (editState) {
       dispatch(updatePostRequestAction({ post, id }));
-
-      router.push("/community");
+      // router.push("/community");
     } else {
       //새로 작성할 때
       dispatch(postRequestAction(post));
     }
   };
 
-  console.log(hashArr);
+  // console.log(hashArr);
 
   useEffect(() => {
     if (postDone) {
       dispatch(postResetAction());
       Router.replace("/community");
+    } else if (updatePostDone) {
+      dispatch(updatePostResetAction());
+      Router.replace("/community");
     }
-  }, [postDone]);
+  }, [postDone, updatePostDone]);
 
   return (
     <>

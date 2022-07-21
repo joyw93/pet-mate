@@ -38,8 +38,8 @@ import {
 //   });
 // }
 
-const serverUrl = "http://api.petmate.kr";
-// const serverUrl = "http://127.0.0.1:3000";
+// const serverUrl = "http://api.petmate.kr";
+const serverUrl = "http://127.0.0.1:3000";
 
 //글 작성
 function postAPI(data) {
@@ -113,14 +113,11 @@ function* loadPostDetail(action) {
 
 //글 더 불러오기
 function loadMoreAPI(data) {
-<<<<<<< HEAD
-  return axios.get(`${serverUrl}/community?offset=10&count=10&orderBy=${data}`, data);
-=======
+
   return axios.get(
     `${serverUrl}/community?offset=${data.offset}&count=10&orderBy=${data.orderBy}`,
     data
   );
->>>>>>> 7c12712fd77160f03939349293f377d848e79c57
 }
 
 function* loadMorePosts(action) {

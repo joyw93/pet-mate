@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
-<<<<<<< HEAD
-import { ListContainer, BtnContainer } from "./styled";
-import { loadMorePostsAction, loadPostsRequestAction, loadPostDetailResetAction } from "../../reducers/community";
-=======
+
 import { ListContainer, BtnContainer, BtnLine, MoreBtn } from "./styled";
 import {
   loadMorePostsAction,
@@ -13,7 +10,6 @@ import {
   loadPostDetailResetAction,
   loadMoreResetAction,
 } from "../../reducers/community";
->>>>>>> 7c12712fd77160f03939349293f377d848e79c57
 
 const CommunityList = (filterCond) => {
   const morePostsRef = useRef(1);
@@ -21,7 +17,7 @@ const CommunityList = (filterCond) => {
   const { posts, loadPostsDone, loadMoreDone, morePosts } = useSelector(
     (state) => state.community
   );
-  const [list, setList] = useState([]);
+  // const [list, setList] = useState([]);
   const [noMoreList, setNoMoreList] = useState(false);
 
   useEffect(() => {
@@ -36,7 +32,7 @@ const CommunityList = (filterCond) => {
   useEffect(() => {
     //로딩 완료 되면 list업데이트
     if (loadPostsDone) {
-      setList(posts);
+      // setList(posts);
       dispatch(loadMoreResetAction());
     }
     //더보기 눌렀을 때
@@ -63,13 +59,6 @@ const CommunityList = (filterCond) => {
   return (
     <>
       <ListContainer>
-<<<<<<< HEAD
-        {list && list.map((item) => <CommunityItem key={item.id} {...item} />)}
-        <BtnContainer>
-          <span></span>
-          {posts.length >= 10 ? <button onClick={handleMorePosts}>더보기</button> : null}
-        </BtnContainer>
-=======
         {posts && posts.map((item) => <CommunityItem key={item.id} {...item} />)}
         {noMoreList ? (
           <BtnContainer>
@@ -88,7 +77,6 @@ const CommunityList = (filterCond) => {
             ) : null}
           </BtnContainer>
         )}
->>>>>>> 7c12712fd77160f03939349293f377d848e79c57
       </ListContainer>
     </>
   );
