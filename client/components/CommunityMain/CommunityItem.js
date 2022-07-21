@@ -14,6 +14,7 @@ import {
   ContentDetail,
   ImageWrapper,
   TitleContentWrapper,
+  ContentArea,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
@@ -49,46 +50,44 @@ const CommunityItem = (item) => {
   }, []);
 
   const itemSelect = () => {
-    Router.push(`community/${item.id}`);
-  };
-
-  const goToKeywordSearch = (e) => {
-    Router.push(`search/hashtag?keyword=${e.target.value}`);
+    Router.push(`/community/${item.id}`);
   };
 
   return (
     <ItemContainer>
       <ItemWrapper>
-        <ContentWrapper>
-          <TitleContentWrapper onClick={itemSelect}>
-            <ContentTitle>{title}</ContentTitle>
-            <Content>{content}</Content>
-          </TitleContentWrapper>
-          <ContentInfo>
-            <Author>{author}</Author>
-            <ContentDetail>{created_date}</ContentDetail>
-            <ContentDetail>·</ContentDetail>
-            <ContentDetail>조회수 {views}</ContentDetail>
-            <ContentDetail>·</ContentDetail>
-            <ContentDetail>좋아요 {likeCount}</ContentDetail>
-          </ContentInfo>
-          <KeywordWrapper>
-            {tags &&
-              tags.map((word, index) => (
-                <Link href={`/search?keyword=${word.hashtag.keyword}`} key={index} passHref>
-                  <KeywordItem>
-                    <span>#</span>
-                    {word.hashtag.keyword}
-                  </KeywordItem>
-                </Link>
-              ))}
-          </KeywordWrapper>
+        <ContentWrapper onClick={itemSelect}>
+          <ContentArea>
+            <TitleContentWrapper>
+              <ContentTitle>{title}</ContentTitle>
+              <Content>{content}</Content>
+            </TitleContentWrapper>
+            <ContentInfo>
+              <Author>{author}</Author>
+              <ContentDetail>{created_date}</ContentDetail>
+              <ContentDetail>·</ContentDetail>
+              <ContentDetail>조회수 {views}</ContentDetail>
+              <ContentDetail>·</ContentDetail>
+              <ContentDetail>좋아요 {likeCount}</ContentDetail>
+            </ContentInfo>
+          </ContentArea>
+          {image_src && (
+            <ImageWrapper>
+              <ItemImage src={image_src.url} />
+            </ImageWrapper>
+          )}
         </ContentWrapper>
-        {image_src && (
-          <ImageWrapper onClick={itemSelect}>
-            <ItemImage src={image_src.url} />
-          </ImageWrapper>
-        )}
+        <KeywordWrapper>
+          {tags &&
+            tags.map((word, index) => (
+              <Link href={`/search/hashtag?keyword=${word.hashtag.keyword}`} key={index} passHref>
+                <KeywordItem>
+                  <span>#</span>
+                  {word.hashtag.keyword}
+                </KeywordItem>
+              </Link>
+            ))}
+        </KeywordWrapper>
       </ItemWrapper>
     </ItemContainer>
   );

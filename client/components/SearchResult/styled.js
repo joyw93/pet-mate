@@ -2,13 +2,24 @@ import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
 
 export const SearchContainer = styled.div`
-  max-width: 1200px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 10px 14px;
+`;
 
-  h3 {
-    margin-bottom: 50px;
-  }
+export const SearchResultComment = styled.h1`
+  margin: 60px 0 30px;
+  font-size: 1rem;
+  line-height: 20px;
+`;
+export const SearchKeyword = styled.span`
+  font-size: 1.1rem;
+  color: ${Colors.primaryColor};
+  margin-right: 2px;
+`;
+
+export const ResultLength = styled.span`
+  color: #bbb;
 `;
 
 export const NoResultImg = styled.img`
@@ -33,21 +44,25 @@ export const ItemContainer = styled.div`
 
 export const ItemWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-`;
-export const TitleContentWrapper = styled.div`
   cursor: pointer;
   &:hover {
-    opacity: 0.6;
+    opacity: 0.5;
     transition: ease-in 0.1s;
   }
 `;
+export const ContentArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+export const TitleContentWrapper = styled.div``;
 export const ContentTitle = styled.h2`
   font-size: 20px;
   font-weight: bold;
@@ -71,10 +86,6 @@ export const ContentInfo = styled.div`
   display: flex;
   font-size: 14px;
   margin-bottom: 10px;
-
-  /* span {
-    margin-left: 5px;
-  } */
 `;
 
 export const ContentDetail = styled.span`
@@ -83,21 +94,17 @@ export const ContentDetail = styled.span`
 export const ImageWrapper = styled.div`
   width: 220px;
   height: 180px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.6;
-    transition: ease-in 0.1s;
-  }
 `;
 export const ItemImage = styled.img`
   width: 220px;
   height: 180px;
   object-fit: cover;
   border-radius: 5px;
-  margin-left: 50px;
 `;
 
-export const KeywordWrapper = styled.div``;
+export const KeywordWrapper = styled.div`
+  margin-top: 10px;
+`;
 
 export const KeywordItem = styled.button`
   padding: 5px 10px;
@@ -105,15 +112,17 @@ export const KeywordItem = styled.button`
   background-color: #fff;
   border: 1.5px solid ${Colors.primaryColor};
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-sizing: border-box;
 
   cursor: pointer;
   span {
-    font-size: 14px;
+    margin-right: 2px;
   }
   &:hover {
-    opacity: 0.5;
-    transition: ease-in 0.1s;
+    box-shadow: 0 0 7px ${Colors.primaryColor};
+    transition: all 0.1s;
   }
 `;
 

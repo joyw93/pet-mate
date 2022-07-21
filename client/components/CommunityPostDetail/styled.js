@@ -111,6 +111,10 @@ export const KeywordWrapper = styled.div`
   .keyword_item {
     display: inline-block;
     position: relative;
+    &:hover {
+      box-shadow: 0 0 7px ${Colors.primaryColor};
+      transition: all 0.1s;
+    }
   }
   .keyword_item::before {
     content: "#";
@@ -157,6 +161,9 @@ export const CommentInput = styled.div`
     height: 35px;
     border: 1px solid #ddd;
     padding-left: 10px;
+    &:focus {
+      border: 1px solid ${Colors.primaryColor};
+    }
   }
 
   button {

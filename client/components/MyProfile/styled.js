@@ -131,43 +131,43 @@ export const ImageWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  div {
+`;
+
+export const MyPostItem = styled.div`
+  width: 210px;
+  height: 300px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  &:hover {
+    opacity: 0.6;
+    transition: all 0.1s;
+  }
+  img {
     width: 210px;
     height: 210px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    margin-right: 20px;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
     border-radius: 5px;
+  }
+  h1 {
+    font-size: 1rem;
+    margin-top: 5px;
   }
 `;
 
 export const ProfileEditContent = styled.div`
-  width: 50%;
-  margin: 0 auto;
+  max-width: 520px;
+  margin: 0 auto 100px;
   display: flex;
   background-color: #fff;
+  padding: 0 20px;
 `;
 
 export const ProfileEditArea = styled.div`
-  justify-content: flex-start;
-  flex-wrap: wrap;
-
-  span {
-    margin-top: 30px;
-    display: block;
-    font-size: 1rem;
-  }
-
-  /* .react-datepicker__input-container::before {
-    font-size: 100px;
-    color: #333;
-  } */
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
   .react-datepicker__day--selected {
     background-color: ${Colors.primaryColor};
@@ -216,37 +216,39 @@ export const ProfileEditArea = styled.div`
 `;
 
 export const Input = styled.input`
-  margin-top: 10px;
   font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #e0e0e0;
   line-height: 40px;
+  height: 40px;
   text-indent: 12px;
-  width: 300px;
+  flex-grow: 1;
+  width: 100%;
   ::placeholder,
   ::-webkit-input-placeholder {
     color: #bdbdbd;
   }
   &:focus {
-    border: 1px solid #ffa726;
+    border: 1px solid ${Colors.primaryColor};
     box-shadow: 0 0 5px ${Colors.primaryColor};
   }
 `;
 
 export const ConfirmButton = styled.button`
-  margin-top: 100px;
-  margin-bottom: 200px;
-  width: 300px;
+  /* margin: 0 auto; */
+  width: 100%;
   height: 50px;
   border-radius: 5px;
   font-weight: bold;
   font-size: 16px;
   color: white;
-  background-color: #ffb74d;
+  background-color: ${Colors.primaryColor};
   border: none;
+  opacity: 0.8;
+  cursor: pointer;
   &:hover {
-    cursor: pointer;
-    background-color: ${Colors.primaryColor};
+    opacity: 1;
+    transition: all 0.2s;
   }
 `;
 
@@ -261,11 +263,22 @@ export const InvalidMessage = styled.div`
   margin-top: 10px;
 `;
 
-export const ImageEditWrapper = styled.label`
+export const ImageEditWrapper = styled.div`
   margin-top: 10px;
-  width: 200px;
-  height: 200px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  span {
+    font-size: 1rem;
+    display: block;
+    width: 150px;
+  }
+`;
+
+export const ImageInputArea = styled.label`
   display: block;
+  width: 240px;
+  height: 240px;
 `;
 
 export const ImageInput = styled.input`
@@ -273,12 +286,40 @@ export const ImageInput = styled.input`
 `;
 
 export const ImageHolder = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   cursor: pointer;
   &:hover {
     opacity: 0.7;
-    transition: all 0.1s;
+    transition: all 0.2s;
+  }
+`;
+
+export const NicknameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+export const BirthdateWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+export const BioWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+export const InputTitle = styled.div`
+  span {
+    font-size: 1rem;
+    display: block;
+    width: 200px;
+  }
+  span:last-child {
+    font-size: 0.8rem;
+    margin-top: 7px;
+    color: #777;
   }
 `;

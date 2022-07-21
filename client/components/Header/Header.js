@@ -1,11 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useLayoutEffect,
-} from "react";
+import React, { useCallback, useEffect, useState, useLayoutEffect, useRef } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
@@ -18,6 +13,7 @@ import {
   ToggleMenuWrapper,
   SanchaekWrapper,
   CommunityWrapper,
+  InputWrapper,
 } from "./styled";
 
 import { useRouter } from "next/router";
@@ -34,6 +30,9 @@ const Header = () => {
 
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+
+  const inputRef = useRef();
+  const toggleInputRef = useRef();
 
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
@@ -72,6 +71,21 @@ const Header = () => {
     }
   }, [toggleVisible]);
 
+  const keyUp = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        if (!e.target.value.trim()) {
+          return alert("내용을 입력하세요");
+        }
+        setInputVal("");
+        setVisible(false);
+        inputRef.current.blur();
+        toggleInputRef.current.blur();
+      }
+    },
+    [inputVal]
+  );
+
   return (
     <>
       <NavContainer>
@@ -101,18 +115,21 @@ const Header = () => {
           </ul>
         </div>
         <div id="menu_right">
-          <form>
+          <InputWrapper>
             <Input
+              onKeyUp={keyUp}
               placeholder="검색어를 입력하세요"
               onChange={handleValChange}
               value={inputVal}
+              ref={inputRef}
+              maxLength="10"
             />
             {visible && (
               <button className="cancel_btn" onClick={clearInputVal}>
                 <img src="../img/cancel-btn.png" />
               </button>
             )}
-          </form>
+          </InputWrapper>
           <ul id="gnb">
             {me ? (
               <>
@@ -151,18 +168,21 @@ const Header = () => {
             <div id="close_btn" onClick={handleToggleVisible}>
               <img src="../../img/close-btn.png" alt="메뉴" />
             </div>
-            <form id="search_input">
+            <InputWrapper id="search_input">
               <Input
+                onKeyUp={keyUp}
                 placeholder="검색어를 입력하세요"
                 onChange={handleValChange}
                 value={inputVal}
+                ref={toggleInputRef}
+                maxLength="10"
               />
               {visible && (
                 <button className="toggle_cancel_btn" onClick={clearInputVal}>
                   <img src="../img/cancel-btn.png" />
                 </button>
               )}
-            </form>
+            </InputWrapper>
             <div id="menu_list">
               <ul>
                 <li>

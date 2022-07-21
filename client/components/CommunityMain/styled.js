@@ -15,16 +15,17 @@ export const Title = styled.h1`
 `;
 
 export const Selection = styled.select`
-  margin-top: 40px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  border: none;
+  font-size: 1rem;
+  border: 1px solid #fff;
   width: 100px;
+  padding: 3px 0;
 
   &:focus {
     outline: none;
   }
-
+  &:hover {
+    border: 1px solid #eee;
+  }
   option {
     font-size: 1rem;
   }
@@ -34,6 +35,8 @@ export const HeadWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 48px;
+  margin-bottom: 10px;
 `;
 
 export const Btn = styled.button`
@@ -49,6 +52,10 @@ export const PostBtn = styled(Btn)`
   background-color: ${Colors.btnGray};
   color: #000;
   cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+    transition: all 0.2s;
+  }
 `;
 
 export const NoticeBtn = styled(Btn)`
@@ -87,21 +94,25 @@ export const ItemContainer = styled.div`
 
 export const ItemWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-`;
-export const TitleContentWrapper = styled.div`
   cursor: pointer;
   &:hover {
-    opacity: 0.6;
+    opacity: 0.5;
     transition: ease-in 0.1s;
   }
 `;
+export const ContentArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+export const TitleContentWrapper = styled.div``;
 export const ContentTitle = styled.h2`
   font-size: 20px;
   font-weight: bold;
@@ -125,10 +136,6 @@ export const ContentInfo = styled.div`
   display: flex;
   font-size: 14px;
   margin-bottom: 10px;
-
-  /* span {
-    margin-left: 5px;
-  } */
 `;
 
 export const ContentDetail = styled.span`
@@ -137,21 +144,17 @@ export const ContentDetail = styled.span`
 export const ImageWrapper = styled.div`
   width: 220px;
   height: 180px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.6;
-    transition: ease-in 0.1s;
-  }
 `;
 export const ItemImage = styled.img`
   width: 220px;
   height: 180px;
   object-fit: cover;
   border-radius: 5px;
-  margin-left: 50px;
 `;
 
-export const KeywordWrapper = styled.div``;
+export const KeywordWrapper = styled.div`
+  margin-top: 10px;
+`;
 
 export const KeywordItem = styled.button`
   padding: 5px 10px;
@@ -159,15 +162,17 @@ export const KeywordItem = styled.button`
   background-color: #fff;
   border: 1.5px solid ${Colors.primaryColor};
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-sizing: border-box;
 
   cursor: pointer;
   span {
-    font-size: 14px;
+    margin-right: 2px;
   }
   &:hover {
-    opacity: 0.5;
-    transition: ease-in 0.1s;
+    box-shadow: 0 0 7px ${Colors.primaryColor};
+    transition: all 0.1s;
   }
 `;
 
