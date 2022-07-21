@@ -256,7 +256,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_COMMENT_SUCCESS:
         // draft.content.unshift(action.data.content);
-        draft.post.comments.unshift(action.data);
+        draft.post.comments.push(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

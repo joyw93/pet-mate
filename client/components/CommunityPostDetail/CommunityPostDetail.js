@@ -192,25 +192,28 @@ const CommunityPostDetail = () => {
               </CommentInput>
               <CommentArea>
                 {post.comments &&
-                  post.comments.map((comment) => (
-                    <CommentItem key={comment.id}>
-                      <CommentHandler>
-                        <h3>{comment.author.nickname}</h3>
-                        <CommentContentInfo>
-                          <span>{getElapsedTime(comment.createdAt)}</span>
-                          <span>·</span>
-                          <span
-                            id="delete_btn"
-                            onClick={() => handleDeleteCmt(comment.id)}
-                          >
-                            삭제
-                          </span>
-                        </CommentContentInfo>
-                      </CommentHandler>
+                  post.comments
+                    .slice(0)
+                    .reverse()
+                    .map((comment) => (
+                      <CommentItem key={comment.id}>
+                        <CommentHandler>
+                          <h3>{comment.author.nickname}</h3>
+                          <CommentContentInfo>
+                            <span>{getElapsedTime(comment.createdAt)}</span>
+                            <span>·</span>
+                            <span
+                              id="delete_btn"
+                              onClick={() => handleDeleteCmt(comment.id)}
+                            >
+                              삭제
+                            </span>
+                          </CommentContentInfo>
+                        </CommentHandler>
 
-                      <p>{comment.content}</p>
-                    </CommentItem>
-                  ))}
+                        <p>{comment.content}</p>
+                      </CommentItem>
+                    ))}
               </CommentArea>
             </CommentWrapper>
           </div>
