@@ -1,3 +1,4 @@
+/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';

@@ -62,6 +62,8 @@ const CommunityPostDetail = () => {
     }
   }, [router.isReady]);
 
+
+
   // 내가 좋아요 누른 글 표시
   useEffect(() => {
     if (!me) {

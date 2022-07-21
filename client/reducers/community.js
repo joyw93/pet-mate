@@ -6,6 +6,7 @@ export const initialState = {
   commentId: [],
   post: null, // post = {...post, comments:[...comments, '새로운댓글']}
   morePosts: null,
+
   editing: false,
 
   loadPostDetailLoading: false,
@@ -216,6 +217,7 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_SUCCESS:
         draft.postLoading = false;
         draft.postDone = true;
+        // draft.posts.unshift(action.data);
         draft.posts.unshift(action.data);
         break;
       case ADD_POST_FAILURE:

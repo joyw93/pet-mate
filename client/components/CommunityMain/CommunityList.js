@@ -71,7 +71,9 @@ const CommunityList = (filterCond) => {
         ) : (
           <BtnContainer>
             <BtnLine></BtnLine>
-            <MoreBtn onClick={handleMorePosts}>더보기</MoreBtn>
+            {posts.length >= 10 ? (
+              <MoreBtn onClick={handleMorePosts}>더보기</MoreBtn>
+            ) : null}
           </BtnContainer>
         )}
       </ListContainer>
