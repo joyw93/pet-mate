@@ -32,10 +32,19 @@ export const CarouselContainer = styled.div`
   }
 `;
 
+// export const CarouselItem = styled.div`
+//   width: 100%;
+//   img {
+//     width: 100%;
+//     object-fit: cover;
+//   }
+// `;
+
 export const CarouselItem = styled.div`
   width: 100%;
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
+  background-image: url(${(props) => props.backgroundImg});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 520px;
 `;

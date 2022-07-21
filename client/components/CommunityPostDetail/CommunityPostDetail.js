@@ -1,10 +1,5 @@
 import Link from "next/link";
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useEffect, useCallback, useLayoutEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -45,6 +40,7 @@ const CommunityPostDetail = () => {
   const { post, loadPostDetailDone } = useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const commentInputRef = useRef();
   //carousel
   const settings = {
     arrows: true,
@@ -54,6 +50,14 @@ const CommunityPostDetail = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  useEffect(() => {
+    if (post?.isLike === null) {
+      setLike(false);
+    } else {
+      setLike(post?.isLike);
+    }
+  }, [post]);
 
   // 게시물 로드
   useEffect(() => {
@@ -79,7 +83,8 @@ const CommunityPostDetail = () => {
 
   const handleLike = useCallback(() => {
     if (!me) {
-      return alert("로그인이 필요합니다.");
+      alert("로그인이 필요합니다.");
+      return router.push("/login");
     }
     setLike(!like);
     dispatch(likePostRequestAction(id));
@@ -91,6 +96,7 @@ const CommunityPostDetail = () => {
     }
     dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
     setCmtContent("");
+    commentInputRef.current.blur();
   }, [cmtContent]);
 
   const keyUp = useCallback(
@@ -101,6 +107,7 @@ const CommunityPostDetail = () => {
         }
         dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
         setCmtContent("");
+        commentInputRef.current.blur();
       }
     },
     [cmtContent]
@@ -120,9 +127,13 @@ const CommunityPostDetail = () => {
     }
   };
 
+  const getKeywordValue = (e) => {
+    console.log(e.target.value);
+  };
+
   return (
     <>
-      {post && (
+      {post ? (
         <PostDetailContainer>
           <h1>커뮤니티</h1>
           <Title>
@@ -137,19 +148,11 @@ const CommunityPostDetail = () => {
           <PostInfo>
             <div>
               <span id="post_author">{post.author.nickname}</span>
-              <span id="post_created_time">
-                {getElapsedTime(post.createdAt)}
-              </span>
+              <span id="post_created_time">{getElapsedTime(post.createdAt)}</span>
               <span id="views">조회수 {post.views}</span>
             </div>
             <div id="like_wrapper">
-              <button onClick={handleLike}>
-                {like ? (
-                  <img src={likeIcon} alt="좋아요" />
-                ) : (
-                  <img src={unlikeIcon} alt="안좋아요" />
-                )}
-              </button>
+              <button onClick={handleLike}>{like ? <img src={likeIcon} alt="좋아요" /> : <img src={unlikeIcon} alt="안좋아요" />}</button>
               <span id="like_count">{post.likeCount}</span>
             </div>
           </PostInfo>
@@ -172,9 +175,11 @@ const CommunityPostDetail = () => {
               <div id="keyword_area">
                 {post.tags &&
                   post.tags.map((tag) => (
-                    <button key={tag.id} className="keyword_item">
-                      <span>{tag.hashtag.keyword}</span>
-                    </button>
+                    <Link href={`/search/hashtag?keyword=${tag.hashtag.keyword}`} key={tag.id} passHref>
+                      <button onClick={getKeywordValue} className="keyword_item">
+                        <span>{tag.hashtag.keyword}</span>
+                      </button>
+                    </Link>
                   ))}
               </div>
             </KeywordWrapper>
@@ -184,6 +189,7 @@ const CommunityPostDetail = () => {
               </h2>
               <CommentInput>
                 <input
+                  ref={commentInputRef}
                   onKeyUp={keyUp}
                   onChange={(e) => setCmtContent(e.target.value)}
                   value={cmtContent}
@@ -204,10 +210,7 @@ const CommunityPostDetail = () => {
                           <CommentContentInfo>
                             <span>{getElapsedTime(comment.createdAt)}</span>
                             <span>·</span>
-                            <span
-                              id="delete_btn"
-                              onClick={() => handleDeleteCmt(comment.id)}
-                            >
+                            <span id="delete_btn" onClick={() => handleDeleteCmt(comment.id)}>
                               삭제
                             </span>
                           </CommentContentInfo>
@@ -220,7 +223,7 @@ const CommunityPostDetail = () => {
             </CommentWrapper>
           </div>
         </PostDetailContainer>
-      )}
+      ) : null}
     </>
   );
 };

@@ -39,7 +39,7 @@ export const NavContainer = styled.header`
   #lnb li {
     line-height: 64px;
   }
-  #menu_right form {
+  #menu_right div {
     position: relative;
   }
   .cancel_btn {
@@ -146,6 +146,8 @@ export const ToggleMenuWrapper = styled.div`
   }
 `;
 
+export const InputWrapper = styled.div``;
+
 export const Input = styled.input`
   border-radius: 15px;
   border: 1px solid ${Colors.primaryColor};
@@ -153,12 +155,16 @@ export const Input = styled.input`
   width: 200px;
   opacity: 0.7;
   text-indent: 12px;
+  &:focus {
+    box-shadow: 0 0 7px ${Colors.primaryColor};
+    transition: all 0.1s;
+  }
 `;
 
 export const Tab = styled.div`
   margin-left: 20px;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1rem;
   &:hover {
     color: ${Colors.primaryColor};
     transition: 0.2s all;
@@ -168,17 +174,26 @@ export const Tab = styled.div`
 export const AuthTab = styled.li`
   margin-left: 20px;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1rem;
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};
     transition: 0.2s all;
   }
+  span {
+    font-weight: bold;
+    font-size: 1rem;
+    &:hover {
+      cursor: pointer;
+      color: ${Colors.primaryColor};
+      transition: 0.2s all;
+    }
+  }
 `;
 
 export const SanchaekWrapper = styled.a`
-  color: ${(props) =>
-    props.path === "sanchaek" ? Colors.primaryColor : "black"};
+  color: ${(props) => (props.path === "sanchaek" ? Colors.primaryColor : "black")};
+  font-size: 1rem;
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};
@@ -187,8 +202,8 @@ export const SanchaekWrapper = styled.a`
 `;
 
 export const CommunityWrapper = styled.a`
-  color: ${(props) =>
-    props.path === "community" ? Colors.primaryColor : "black"};
+  color: ${(props) => (props.path === "community" ? Colors.primaryColor : "black")};
+  font-size: 1rem;
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};
@@ -197,6 +212,7 @@ export const CommunityWrapper = styled.a`
 `;
 
 export const LinkWrapper = styled.a`
+  font-size: 1rem;
   &:hover {
     cursor: pointer;
     color: ${Colors.primaryColor};

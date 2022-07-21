@@ -14,18 +14,58 @@ import {
   ContentDetail,
   ImageWrapper,
   TitleContentWrapper,
+  ContentArea,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
+import Link from "next/link";
 
 const CommunityItem = (post) => {
   const itemSelect = () => {
+<<<<<<< HEAD
+    Router.push(`/community/${item.id}`);
+=======
     Router.push(`community/${post.id}`);
+>>>>>>> 7c12712fd77160f03939349293f377d848e79c57
   };
 
   return (
     <ItemContainer>
       <ItemWrapper>
+<<<<<<< HEAD
+        <ContentWrapper onClick={itemSelect}>
+          <ContentArea>
+            <TitleContentWrapper>
+              <ContentTitle>{title}</ContentTitle>
+              <Content>{content}</Content>
+            </TitleContentWrapper>
+            <ContentInfo>
+              <Author>{author}</Author>
+              <ContentDetail>{created_date}</ContentDetail>
+              <ContentDetail>·</ContentDetail>
+              <ContentDetail>조회수 {views}</ContentDetail>
+              <ContentDetail>·</ContentDetail>
+              <ContentDetail>좋아요 {likeCount}</ContentDetail>
+            </ContentInfo>
+          </ContentArea>
+          {image_src && (
+            <ImageWrapper>
+              <ItemImage src={image_src.url} />
+            </ImageWrapper>
+          )}
+        </ContentWrapper>
+        <KeywordWrapper>
+          {tags &&
+            tags.map((word, index) => (
+              <Link href={`/search/hashtag?keyword=${word.hashtag.keyword}`} key={index} passHref>
+                <KeywordItem>
+                  <span>#</span>
+                  {word.hashtag.keyword}
+                </KeywordItem>
+              </Link>
+            ))}
+        </KeywordWrapper>
+=======
         <ContentWrapper>
           <TitleContentWrapper onClick={itemSelect}>
             <ContentTitle>{post.title}</ContentTitle>
@@ -56,6 +96,7 @@ const CommunityItem = (post) => {
             )}
           </ImageWrapper>
         )}
+>>>>>>> 7c12712fd77160f03939349293f377d848e79c57
       </ItemWrapper>
     </ItemContainer>
   );

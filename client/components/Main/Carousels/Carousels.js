@@ -20,8 +20,8 @@ const Carousels = () => {
       <CarouselContainer>
         <Slider {...settings}>
           {imageUrls.map((imageUrl) => (
-            <CarouselItem key={imageUrl}>
-              <img key={imageUrl} src={imageUrl} />
+            <CarouselItem key={imageUrl} backgroundImg={imageUrl}>
+              {/* <img key={imageUrl} src={imageUrl} /> */}
             </CarouselItem>
           ))}
         </Slider>

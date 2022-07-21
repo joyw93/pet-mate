@@ -29,51 +29,20 @@ import {
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
-  const {
-    user,
-    me,
-    signOutDone,
-    myPostsData,
-    myCommentsData,
-    myLikedData,
-    loadMyPostsDone,
-    loadMyCommentsDone,
-    loadMyLikedDone,
-  } = useSelector((state) => state.user);
+  const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } = useSelector((state) => state.user);
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
-
-  const [myPostItems, setMyPostItems] = useState([]);
-  const [myCommentItems, setMyCommentItems] = useState([]);
-  const [myLikedItems, setMyLikedItems] = useState([]);
 
   useEffect(() => {
     dispatch(loadProfileRequestAction());
     dispatch(loadMyPostsAction());
     dispatch(loadMyCommentsAction());
     dispatch(loadMyLikedAction());
+    console.log("전체");
   }, []);
 
-  useEffect(() => {
-    if (loadMyPostsDone) {
-      setMyPostItems(myPostsData);
-    }
-  }, [myPostsData]);
-
-  useEffect(() => {
-    if (loadMyCommentsDone) {
-      setMyCommentItems(myCommentsData);
-    }
-  }, [myCommentsData]);
-
-  useEffect(() => {
-    if (loadMyLikedDone) {
-      setMyLikedItems(myLikedData);
-    }
-  }, [myLikedData]);
-
-  const titles = [myPostItems, myCommentsData, myLikedItems];
+  const titles = [myPostsData, myCommentsData, myLikedData];
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
@@ -127,7 +96,7 @@ const MyProfile = () => {
                 <div className="list_wrapper">
                   <p>좋아요</p>
                   <p>
-                    <span>{myLikedItems.length}</span>개
+                    <span>{myLikedData.length}</span>개
                   </p>
                 </div>
               </UserFeed>
@@ -138,32 +107,18 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   내가 쓴 게시글
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   내가 쓴 댓글
                 </li>
-                <li
-                  className={activeIndex === 2 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(2)}
-                >
+                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickHandler(2)}>
                   좋아요
                 </li>
               </TabList>
 
-              <ImageWrapper>
-                {titles[activeIndex] &&
-                  titles[activeIndex].map((item) => (
-                    <MyPosts key={item.id} {...item} />
-                  ))}
-              </ImageWrapper>
+              <ImageWrapper>{titles[activeIndex] && titles[activeIndex].map((item) => <MyPosts key={item.id} {...item} />)}</ImageWrapper>
             </TabWrapper>
           </UserContent>
         </ContentArea>

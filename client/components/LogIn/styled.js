@@ -4,8 +4,8 @@ import { Colors } from "../../styles/ColorVariable";
 export const LogInContainer = styled.div`
   width: 400px;
   margin: 0 auto;
-  margin-top: 90px;
-  margin-bottom: 50px;
+  margin-top: 70px;
+  margin-bottom: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;

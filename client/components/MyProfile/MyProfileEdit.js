@@ -5,10 +5,8 @@ import { ko } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   ProfileContainer,
-  BackgroundArea,
   ContentArea,
-  UserContent,
-  ProfileInfo,
+  ProfileEditContent,
   TabWrapper,
   TabList,
   Input,
@@ -18,24 +16,24 @@ import {
   ValidMessage,
   InvalidMessage,
   ImageInput,
+  ImageEditWrapper,
+  NicknameWrapper,
+  BirthdateWrapper,
+  BioWrapper,
+  ImageInputArea,
+  InputTitle,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-} from "../../reducers/user";
+import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction } from "../../reducers/user";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, editProfileDone } = useSelector(
-    (state) => state.user
-  );
+  const { me, editProfileError, editProfileDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -53,8 +51,6 @@ const MyProfile = () => {
     }
     dispatch(loadProfileRequestAction());
   }, [editProfileDone]);
-
-
 
   useEffect(() => {
     if (me) {
@@ -123,37 +119,36 @@ const MyProfile = () => {
   return (
     <>
       <ProfileContainer>
-        <BackgroundArea />
         <ContentArea>
-          <UserContent>
-            <ProfileInfo></ProfileInfo>
+          <ProfileEditContent>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   프로필 설정
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   계정 설정
                 </li>
               </TabList>
               <ProfileEditArea>
-                <h1>프로필 설정</h1>
-                <label>닉네임</label>
-                <Input onChange={onChangeNickname} value={nickname || ""} />
-                {nicknameValid === "닉네임을 입력하세요." ||
-                nicknameValid === "중복된 닉네임입니다." ? (
-                  <InvalidMessage>{nicknameValid}</InvalidMessage>
-                ) : (
-                  <ValidMessage>{nicknameValid}</ValidMessage>
-                )}
-                <label>
-                  생년월일
+                <NicknameWrapper>
+                  <InputTitle>
+                    <span>닉네임</span>
+                    <span>(10자 이내)</span>
+                  </InputTitle>
+                  <Input maxLength="10" onChange={onChangeNickname} value={nickname} />
+                  {nicknameValid === "닉네임을 입력하세요." || nicknameValid === "중복된 닉네임입니다." ? (
+                    <InvalidMessage>{nicknameValid}</InvalidMessage>
+                  ) : (
+                    <ValidMessage>{nicknameValid}</ValidMessage>
+                  )}
+                </NicknameWrapper>
+                <BirthdateWrapper>
+                  <InputTitle>
+                    <span>생년월일</span>
+                    <span>(키보드 입력 가능)</span>
+                  </InputTitle>
+
                   <DatePicker
                     showPopperArrow={false}
                     selected={date}
@@ -163,34 +158,29 @@ const MyProfile = () => {
                     onChange={onChangeBirthday}
                     customInput={<Input />}
                   />
-                </label>
-                <label>한줄 소개</label>
-                <Input onChange={onChangeComment} value={comment || ""} />
-                <label onChange={onChangeImage}>
-                  프로필 이미지
-                  <ImageInput type="file" />
-                  {image ? (
-                    <ImageHolder
-                      src={image}
-                      alt="이미지 업로드"
-                      width={200}
-                      height={200}
-                    />
-                  ) : (
-                    <ImageHolder
-                      src="../../img/default_profile.png"
-                      alt="이미지 업로드"
-                      width={200}
-                      height={200}
-                    />
-                  )}
-                </label>
-                <div>
-                  <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
-                </div>
+                </BirthdateWrapper>
+                <BioWrapper>
+                  <InputTitle>
+                    <span>한줄 소개</span>
+                    <span>(20자 이내)</span>
+                  </InputTitle>
+                  <Input maxLength="20" onChange={onChangeComment} value={comment} />
+                </BioWrapper>
+                <ImageEditWrapper>
+                  <span>프로필 이미지</span>
+                  <ImageInputArea onChange={onChangeImage}>
+                    <ImageInput type="file" />
+                    {image ? (
+                      <ImageHolder src={image} alt="이미지 업로드" />
+                    ) : (
+                      <ImageHolder src="../../img/default_profile.png" alt="이미지 업로드" />
+                    )}
+                  </ImageInputArea>
+                </ImageEditWrapper>
+                <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
               </ProfileEditArea>
             </TabWrapper>
-          </UserContent>
+          </ProfileEditContent>
         </ContentArea>
       </ProfileContainer>
     </>
