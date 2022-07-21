@@ -37,9 +37,8 @@ let CommunityController = class CommunityController {
     async getHotPosts() {
         return await this.communityService.getHotPosts();
     }
-    async getOnePost(postId, req) {
-        const userId = req.user ? req.user.id : null;
-        return await this.communityService.getOnePost(postId, userId);
+    async getOnePost(postId) {
+        return await this.communityService.getOnePost(postId);
     }
     async likePost(user, postId) {
         return await this.communityService.likePost(user.id, postId);
@@ -100,9 +99,8 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':postId'),
     __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "getOnePost", null);
 __decorate([

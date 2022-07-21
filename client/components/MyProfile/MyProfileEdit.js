@@ -30,7 +30,9 @@ const MyProfile = () => {
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, user, editProfileDone } = useSelector((state) => state.user);
+  const { me, editProfileError, editProfileDone } = useSelector(
+    (state) => state.user
+  );
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -50,16 +52,16 @@ const MyProfile = () => {
   }, [editProfileDone]);
 
   useEffect(() => {
-    if (user) {
-      setNickname(user.nickname);
-      setBirthday(user.profile.birth);
-      setComment(user.profile.comment);
-      setImage(user.profile.imageUrl);
+    if (me) {
+      setNickname(me?.nickname);
+      setBirthday(me?.profile?.birth);
+      setComment(me?.profile?.comment);
+      setImage(me?.profile?.imageUrl);
     }
-    if (user?.profile?.birth) {
-      setDate(new Date(user.profile.birth));
+    if (me?.profile?.birth) {
+      setDate(new Date(me.profile.birth));
     }
-  }, [user]);
+  }, [me]);
 
   useEffect(() => {
     if (editProfileError) {

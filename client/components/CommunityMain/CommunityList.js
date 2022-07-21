@@ -3,14 +3,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
 import { ListContainer, BtnContainer } from "./styled";
-import { loadMorePostsAction, loadPostsRequestAction } from "../../reducers/community";
+import { loadMorePostsAction, loadPostsRequestAction, loadPostDetailResetAction } from "../../reducers/community";
 
 const CommunityList = (filterCond) => {
   const posts = useSelector((state) => state.community.posts);
   const loadPostsDone = useSelector((state) => state.community.loadPostsDone);
 
   useEffect(() => {
-    //setFilterCond("new");
     dispatch(loadPostsRequestAction(filterCond.filterCond));
   }, [filterCond.filterCond]);
 
@@ -18,7 +17,10 @@ const CommunityList = (filterCond) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(posts);
+    dispatch(loadPostDetailResetAction());
+  }, []);
+
+  useEffect(() => {
     if (loadPostsDone) {
       setList(posts);
     }
@@ -34,7 +36,7 @@ const CommunityList = (filterCond) => {
         {list && list.map((item) => <CommunityItem key={item.id} {...item} />)}
         <BtnContainer>
           <span></span>
-          <button onClick={handleMorePosts}>더보기</button>
+          {posts.length >= 10 ? <button onClick={handleMorePosts}>더보기</button> : null}
         </BtnContainer>
       </ListContainer>
     </>

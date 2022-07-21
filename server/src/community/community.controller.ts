@@ -52,9 +52,8 @@ export class CommunityController {
   }
 
   @Get(':postId')
-  async getOnePost(@Param('postId', ParseIntPipe) postId: number, @Req() req) {
-    const userId = req.user ? req.user.id : null;
-    return await this.communityService.getOnePost(postId, userId);
+  async getOnePost(@Param('postId', ParseIntPipe) postId: number) {
+    return await this.communityService.getOnePost(postId);
   }
 
   @Get(':postId/like')

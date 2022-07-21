@@ -20,22 +20,7 @@ export declare class CommunityService {
     private dataSource;
     constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>, dataSource: DataSource);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<CommunityEntity[]>;
-    getOnePost(postId: number, userId: any): Promise<{
-        isLike: any;
-        id: number;
-        title: string;
-        content: string;
-        author_id: number;
-        views: number;
-        createdAt: Date;
-        updatedAt: Date;
-        deletedAt: Date;
-        author: UserEntity;
-        likes: CommunityLikeEntity[];
-        comments: CommunityCommentEntity[];
-        tags: CommunityHashtagEntity[];
-        images: CommunityImageEntity[];
-    }>;
+    getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<CommunityEntity[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     editPost(postId: number, editPostDto: EditPostDto): Promise<{
@@ -54,7 +39,7 @@ export declare class CommunityService {
         images: CommunityImageEntity[];
     } & CommunityEntity>;
     deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
-    likePost(userId: number, postId: number): Promise<CommunityLikeEntity>;
+    likePost(userId: number, postId: number): Promise<"unlike" | "like">;
     getAllComments(postId: number): Promise<CommunityEntity[]>;
     createComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
     editComment(commentId: number, content: string): Promise<{
