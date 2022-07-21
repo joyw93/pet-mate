@@ -38,8 +38,8 @@ import {
 //   });
 // }
 
-// const serverUrl = "http://api.petmate.kr";
-const serverUrl = "http://127.0.0.1:3000";
+const serverUrl = "http://api.petmate.kr";
+//const serverUrl = "http://127.0.0.1:3000";
 
 //글 작성
 function postAPI(data) {
@@ -114,7 +114,7 @@ function* loadPostDetail(action) {
 //글 더 불러오기
 function loadMoreAPI(data) {
   return axios.get(
-    `${serverUrl}/community?offset=10&count=10&orderBy=${data}`,
+    `${serverUrl}/community?offset=${data.offset}&count=10&orderBy=${data.orderBy}`,
     data
   );
 }
@@ -127,7 +127,7 @@ function* loadMorePosts(action) {
       type: LOAD_MORE_SUCCESS,
       data: payload.data,
     });
-    //console.log(payload);
+    console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({
@@ -194,8 +194,8 @@ function* removeComment(action) {
   try {
     const result = yield call(removeCommentAPI, action.data);
     const payload = result.data;
-    console.log('payload.data',payload.data)
-    console.log('action.data',action.data)
+    console.log("payload.data", payload.data);
+    console.log("action.data", action.data);
     yield put({
       type: REMOVE_COMMENT_SUCCESS,
       data: action.data,
@@ -233,40 +233,7 @@ function* likePost(action) {
 }
 
 //글 수정하기
-// function updatePostAPI(data) {
-//   const { post, id } = data;
-//   console.log(post, id);
-
-//   const testFormdata = new FormData();
-//   testFormdata.append("title", post.title);
-//   testFormdata.append("content", post.content);
-
-//   return axios.patch(`${serverUrl}/community/${id}`, testFormdata, {
-//     withCredentials: true,
-//   });
-// }
-
-// function* updatePost(action) {
-//   try {
-//     const result = yield call(updatePostAPI, action.data);
-//     const payload = result.data;
-//     yield put({
-//       type: UPDATE_POST_SUCCESS,
-//       data: payload.data,
-//     });
-//     // console.log(action.data);
-//   } catch (err) {
-//     console.error(err);
-//     yield put({
-//       type: UPDATE_POST_FAILURE,
-//       error: err.response.data,
-//     });
-//   }
-// }
-
 function updatePostAPI(data) {
-  console.log(data.post);
-  console.log(data.id);
   return axios.patch(`${serverUrl}/community/${data.id}`, data.post, {
     withCredentials: true,
   });

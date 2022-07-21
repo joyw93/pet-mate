@@ -4,15 +4,15 @@ export const initialState = {
   posts: [],
   //content: [],
   commentId: [],
-  post: null, 
-  hasMorePosts: true,
+  post: null, // post = {...post, comments:[...comments, '새로운댓글']}
+  morePosts: null,
+
   editing: false,
 
   loadPostDetailLoading: false,
   loadPostDetailDone: false,
   loadPostDetailError: null,
 
-  hasMorePosts: true,
   loadMoreLoading: false,
   loadMoreDone: false,
   loadMoreError: null,
@@ -58,6 +58,7 @@ export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
 export const LOAD_MORE_REQUEST = "LOAD_MORE_REQUEST";
 export const LOAD_MORE_SUCCESS = "LOAD_MORE_SUCCESS";
 export const LOAD_MORE_FAILURE = "LOAD_MORE_FAILURE";
+export const LOAD_MORE_RESET = "LOAD_MORE_RESET";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -113,6 +114,10 @@ export const loadMorePostsAction = (data) => ({
   data,
 });
 
+export const loadMoreResetAction = () => ({
+  type: LOAD_MORE_RESET,
+});
+
 export const removePostRequestAction = (data) => ({
   type: REMOVE_POST_REQUEST,
   data,
@@ -162,8 +167,7 @@ const reducer = (state = initialState, action) =>
       case LOAD_POST_DETAIL_RESET:
         draft.loadPostsLoading = false;
         draft.post = null;
-        draft.loadPostsDone = false,
-        draft.loadPostsError = null;
+        (draft.loadPostsDone = false), (draft.loadPostsError = null);
         break;
 
       //글 불러오기
@@ -193,10 +197,15 @@ const reducer = (state = initialState, action) =>
         draft.loadMoreLoading = false;
         draft.loadMoreDone = true;
         draft.posts = draft.posts.concat(action.data);
+        draft.morePosts = action.data;
         break;
       case LOAD_MORE_FAILURE:
         draft.loadMoreLoading = false;
         draft.loadMoreError = action.error;
+        break;
+      case LOAD_MORE_RESET:
+        draft.loadMoreDone = false;
+        draft.morePosts = [];
         break;
 
       //글 추가

@@ -240,9 +240,9 @@ export const Images = styled.div`
     height: 32px;
   }
   .slick-prev::before {
-    background-image: url("../img/leftBtn.png");
+    background-image: url("../../img/leftBtn.png");
   }
   .slick-next::before {
-    background-image: url("../img/rightBtn.png");
+    background-image: url("../../img/rightBtn.png");
   }
 `;
