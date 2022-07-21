@@ -92,19 +92,10 @@ export class CommunityService {
     }
   }
 
-  async getOnePost(postId: number, userId) {
+  async getOnePost(postId: number) {
     const post = await this.communityRepository.findOne({
       where: { id: postId },
     });
-    const communityLike = await this.communityLikeRepository.findOne({
-      where: { user_id: userId, post_id: postId },
-    });
-    let isLike;
-    if (userId !== post.author_id) {
-      isLike = null;
-    } else {
-      isLike = communityLike !== null;
-    }
     if (!post) {
       throw new NotFoundException(res.msg.COMMUNITY_POST_NOT_EXIST);
     } else {
@@ -122,12 +113,14 @@ export class CommunityService {
           'post.createdAt',
           'post.views',
           'author.nickname',
+          'author.id',
           'images.id',
           'images.url',
           'comments.id',
           'comments.content',
           'comments.createdAt',
           'commentAuthor.nickname',
+          'likes.user_id',
           'tags.id',
           'hashtag.keyword',
         ])
@@ -141,7 +134,7 @@ export class CommunityService {
         .loadRelationCountAndMap('post.likeCount', 'post.likes')
         .where('post.id = :id', { id: postId })
         .getOne();
-      return { ...post, isLike };
+      return post;
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
@@ -237,12 +230,14 @@ export class CommunityService {
         where: { user_id: userId, post_id: postId },
       });
       if (communityLike) {
-        return await this.communityLikeRepository.remove(communityLike);
+        await this.communityLikeRepository.remove(communityLike);
+        return 'unlike';
       } else {
         const communityLike = new CommunityLikeEntity();
         communityLike.user = user;
         communityLike.post = post;
-        return await this.communityLikeRepository.save(communityLike);
+        await this.communityLikeRepository.save(communityLike);
+        return 'like';
       }
     } catch (err) {
       console.error(err);

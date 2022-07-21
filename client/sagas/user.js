@@ -31,7 +31,7 @@ import {
 } from "../reducers/user";
 
 const serverUrl = `http://api.petmate.kr`;
-// const serverUrl = `http://127.0.0.1:3000`;
+//const serverUrl = `http://127.0.0.1:3000`;
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -138,7 +138,6 @@ function* loadProfile(action) {
   }
 }
 
-
 function loadMyPostsAPI() {
   return axios.get(`${serverUrl}/user/posts`, { withCredentials: true });
 }
@@ -161,7 +160,9 @@ function* loadMyPosts(action) {
 }
 
 function loadMyCommentsAPI() {
-  return axios.get(`${serverUrl}/user/commented-posts`, { withCredentials: true });
+  return axios.get(`${serverUrl}/user/commented-posts`, {
+    withCredentials: true,
+  });
 }
 
 function* loadMyComments(action) {
@@ -244,7 +245,6 @@ function* watchLoadProfile() {
   yield takeLatest(LOAD_PROFILE_REQUEST, loadProfile);
 }
 
-
 function* watchLoadMyPosts() {
   yield takeLatest(LOAD_MY_POSTS_REQUEST, loadMyPosts);
 }
@@ -271,6 +271,6 @@ export default function* userSaga() {
     fork(watchLoadMyComments),
     fork(watchLoadMyLiked),
     fork(watchEditProfile),
-    fork(watchLoadProfile)
+    fork(watchLoadProfile),
   ]);
 }

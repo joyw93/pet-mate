@@ -23,7 +23,7 @@ import { useRouter } from "next/router";
 const CommunityPost = ({ editState }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [singlePost, setSinglePost] = useState("");
+  //const [singlePost, setSinglePost] = useState("");
 
   const dispatch = useDispatch();
   const { postDone } = useSelector((state) => state.community);
@@ -51,15 +51,14 @@ const CommunityPost = ({ editState }) => {
     //수정상태일 때 선택된 게시글값 넣어주기
     if (editState) {
       if (selectedPost) {
-        setSinglePost(selectedPost);
-
-        setTitle(singlePost.title);
-        setContent(singlePost.content);
+        //setSinglePost(selectedPost);
+        setTitle(selectedPost.title);
+        setContent(selectedPost.content);
 
         let imageFiles = [];
-        if (singlePost.images) {
-          for (let i = 0; i < singlePost.images.length; i++) {
-            let newImg = singlePost.images[i].url;
+        if (selectedPost.images) {
+          for (let i = 0; i < selectedPost.images.length; i++) {
+            let newImg = selectedPost.images[i].url;
             imageFiles = imageFiles.concat(newImg);
             setFileImages(imageFiles);
           }
@@ -67,19 +66,21 @@ const CommunityPost = ({ editState }) => {
         }
 
         let keywords = [];
-        if (singlePost.tags) {
-          for (let i = 0; i < singlePost.tags.length; i++) {
-            const keyword = singlePost.tags[i].hashtag.keyword;
+        if (selectedPost.tags) {
+          for (let i = 0; i < selectedPost.tags.length; i++) {
+            const keyword = selectedPost.tags[i].hashtag.keyword;
             keywords = keywords.concat(keyword);
           }
           setHashArr(keywords);
-          setTagsLength(singlePost.tags.length);
+          setTagsLength(selectedPost.tags.length);
         }
       }
     }
   }, [selectedPost]);
 
   console.log(selectedPost);
+  //console.log(singlePost);
+
   console.log(hashArr);
 
   // useEffect(() => {
@@ -222,7 +223,6 @@ const CommunityPost = ({ editState }) => {
     <>
       <CreatePostContainer>
         <TitleWrapper>
-          <button>테스트버튼</button>
           <h1>커뮤니티 글쓰기</h1>
           {editState ? (
             <div id="buttons">
@@ -286,7 +286,6 @@ const CommunityPost = ({ editState }) => {
               ))}
           </div>
         </AddPhotoWrapper>
-
         <KeywordWrapper>
           <h2>키워드 등록(최대 5개)</h2>
           <div id="keyword_area">

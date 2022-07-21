@@ -33,7 +33,7 @@ const MyProfile = () => {
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, user, editProfileDone } = useSelector(
+  const { me, editProfileError, editProfileDone } = useSelector(
     (state) => state.user
   );
   const [nickname, setNickname] = useState("");
@@ -57,16 +57,16 @@ const MyProfile = () => {
 
 
   useEffect(() => {
-    if (user) {
-      setNickname(user.nickname);
-      setBirthday(user.profile.birth);
-      setComment(user.profile.comment);
-      setImage(user.profile.imageUrl);
+    if (me) {
+      setNickname(me?.nickname);
+      setBirthday(me?.profile?.birth);
+      setComment(me?.profile?.comment);
+      setImage(me?.profile?.imageUrl);
     }
-    if (user?.profile?.birth) {
-      setDate(new Date(user.profile.birth));
+    if (me?.profile?.birth) {
+      setDate(new Date(me.profile.birth));
     }
-  }, [user]);
+  }, [me]);
 
   useEffect(() => {
     if (editProfileError) {
@@ -145,7 +145,7 @@ const MyProfile = () => {
               <ProfileEditArea>
                 <h1>프로필 설정</h1>
                 <label>닉네임</label>
-                <Input onChange={onChangeNickname} value={nickname} />
+                <Input onChange={onChangeNickname} value={nickname || ""} />
                 {nicknameValid === "닉네임을 입력하세요." ||
                 nicknameValid === "중복된 닉네임입니다." ? (
                   <InvalidMessage>{nicknameValid}</InvalidMessage>
@@ -165,7 +165,7 @@ const MyProfile = () => {
                   />
                 </label>
                 <label>한줄 소개</label>
-                <Input onChange={onChangeComment} value={comment} />
+                <Input onChange={onChangeComment} value={comment || ""} />
                 <label onChange={onChangeImage}>
                   프로필 이미지
                   <ImageInput type="file" />

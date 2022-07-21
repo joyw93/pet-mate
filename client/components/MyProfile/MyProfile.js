@@ -101,15 +101,15 @@ const MyProfile = () => {
           <UserContent>
             <ProfileInfo>
               <ProfileImg>
-                {user?.profile?.imageUrl ? (
-                  <img src={user?.profile?.imageUrl} alt="프로필이미지" />
+                {me?.profile?.imageUrl ? (
+                  <img src={me?.profile?.imageUrl} alt="프로필이미지" />
                 ) : (
                   <img src="img/default_profile.png" alt="프로필이미지" />
                 )}
               </ProfileImg>
               <UserInfo>
-                <h2>{user?.nickname}</h2>
-                <p>{user?.email}</p>
+                <h2>{me?.nickname}</h2>
+                <p>{me?.email}</p>
               </UserInfo>
               <UserFeed>
                 <div className="list_wrapper">

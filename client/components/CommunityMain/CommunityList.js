@@ -6,33 +6,45 @@ import { ListContainer, BtnContainer, BtnLine, MoreBtn } from "./styled";
 import {
   loadMorePostsAction,
   loadPostsRequestAction,
+  loadPostDetailResetAction,
+  loadMoreResetAction,
 } from "../../reducers/community";
 
 const CommunityList = (filterCond) => {
   const morePostsRef = useRef(1);
-  const { posts, loadPostsDone, loadMoreDone } = useSelector(
+  const dispatch = useDispatch();
+  const { posts, loadPostsDone, loadMoreDone, morePosts } = useSelector(
     (state) => state.community
   );
-  useEffect(() => {
-    //setFilterCond("new");
-    dispatch(loadPostsRequestAction(filterCond.filterCond));
-  }, [filterCond.filterCond]);
-
   const [list, setList] = useState([]);
-  const dispatch = useDispatch();
   const [noMoreList, setNoMoreList] = useState(false);
 
   useEffect(() => {
-    console.log(posts);
+    dispatch(loadPostsRequestAction(filterCond.filterCond));
+    morePostsRef.current = 1;
+  }, [filterCond.filterCond]);
+
+  useEffect(() => {
+    dispatch(loadPostDetailResetAction());
+  }, []);
+
+  useEffect(() => {
+    //로딩 완료 되면 list업데이트
     if (loadPostsDone) {
       setList(posts);
+      dispatch(loadMoreResetAction());
     }
-    if (loadMoreDone) {
-      if (list.length === posts.length) {
-        setNoMoreList(true);
-      }
+    //더보기 눌렀을 때
+    if (loadMoreDone && morePostsRef.current !== 1 && morePosts.length === 0) {
+      console.log(morePosts.length);
+      //이전 리스트 길이랑 새 리스트 길이가 같으면 더이상 게시글 없다! 알려줌
+      setNoMoreList(true);
     }
   }, [posts]);
+
+  useEffect(() => {
+    setNoMoreList(false);
+  }, [filterCond.filterCond]);
 
   const handleMorePosts = () => {
     const data = {

@@ -90,20 +90,10 @@ let CommunityService = class CommunityService {
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
         }
     }
-    async getOnePost(postId, userId) {
+    async getOnePost(postId) {
         const post = await this.communityRepository.findOne({
             where: { id: postId },
         });
-        const communityLike = await this.communityLikeRepository.findOne({
-            where: { user_id: userId, post_id: postId },
-        });
-        let isLike;
-        if (userId !== post.author_id) {
-            isLike = null;
-        }
-        else {
-            isLike = communityLike !== null;
-        }
         if (!post) {
             throw new common_1.NotFoundException(res.msg.COMMUNITY_POST_NOT_EXIST);
         }
@@ -121,12 +111,14 @@ let CommunityService = class CommunityService {
                 'post.createdAt',
                 'post.views',
                 'author.nickname',
+                'author.id',
                 'images.id',
                 'images.url',
                 'comments.id',
                 'comments.content',
                 'comments.createdAt',
                 'commentAuthor.nickname',
+                'likes.user_id',
                 'tags.id',
                 'hashtag.keyword',
             ])
@@ -140,7 +132,7 @@ let CommunityService = class CommunityService {
                 .loadRelationCountAndMap('post.likeCount', 'post.likes')
                 .where('post.id = :id', { id: postId })
                 .getOne();
-            return Object.assign(Object.assign({}, post), { isLike });
+            return post;
         }
         catch (err) {
             console.error(err);
@@ -224,13 +216,15 @@ let CommunityService = class CommunityService {
                 where: { user_id: userId, post_id: postId },
             });
             if (communityLike) {
-                return await this.communityLikeRepository.remove(communityLike);
+                await this.communityLikeRepository.remove(communityLike);
+                return 'unlike';
             }
             else {
                 const communityLike = new community_like_entity_1.CommunityLikeEntity();
                 communityLike.user = user;
                 communityLike.post = post;
-                return await this.communityLikeRepository.save(communityLike);
+                await this.communityLikeRepository.save(communityLike);
+                return 'like';
             }
         }
         catch (err) {

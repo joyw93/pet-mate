@@ -17,10 +17,21 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.userRepository.findOne({
-      where: { email },
-      select: ['id', 'email', 'nickname', 'password'],
-    });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.nickname',
+        'user.email',
+        'user.password',
+      ])
+      .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
+      // .addSelect(['likes.post_id'])
+      .leftJoin('user.profile', 'profile')
+      // .leftJoin('user.likes', 'likes')
+      .where('user.email= :email', { email })
+      .getOne();
     if (!user) {
       return null;
     }
@@ -43,7 +54,7 @@ export class AuthService {
         email,
         name,
         nickname: name,
-        password: accessToken
+        password: accessToken,
       });
       return newUser;
     }

@@ -4,34 +4,43 @@ export const initialState = {
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
+
   logOutLoading: false, // 로그아웃 시도중
   logOutDone: false,
   logOutError: null,
+
   signUpLoading: false, // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+
   signOutLoading: false, // 회원탈퇴 시도중
   signOutDone: false,
   signOutError: null,
+
   editProfileLoading: false,
   editProfileDone: false,
   editProfileError: null,
+
   loadProfileLoading: false,
   loadProfileDone: false,
   loadProfileError: null,
-  user: null,
+  
   me: null,
   signUpData: {},
   loginData: {},
+
   loadMyPostsLoading: false,
   loadMyPostsDone: false,
   loadMyPostsError: null,
+
   loadMyCommentsLoading: false,
   loadMyCommentsDone: false,
   loadMyCommentsError: null,
+
   loadMyLikedLoading: false,
   loadMyLikedDone: false,
   loadMyLikedError: null,
+  
   myPostsData: [],
   myCommentsData: [],
   myLikedData: [],
@@ -206,7 +215,7 @@ const reducer = (state = initialState, action) =>
       case LOAD_PROFILE_SUCCESS:
         draft.loadProfileLoading = false;
         draft.loadProfileDone = true;
-        draft.user = action.data;
+        draft.me = action.data;
         break;
       case LOAD_PROFILE_FAILURE:
         draft.loadProfileLoading = false;

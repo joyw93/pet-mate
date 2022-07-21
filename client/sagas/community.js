@@ -39,7 +39,7 @@ import {
 // }
 
 const serverUrl = "http://api.petmate.kr";
-// const serverUrl = "http://127.0.0.1:3000";
+//const serverUrl = "http://127.0.0.1:3000";
 
 //글 작성
 function postAPI(data) {
@@ -139,10 +139,12 @@ function* loadMorePosts(action) {
 
 //글 삭제하기
 function removePostAPI(data) {
-  return axios.delete(`${serverUrl}/community/${data}`);
+  return axios.delete(`${serverUrl}/community/${data}`, {
+    withCredentials: true,
+  });
 }
 
-function* removepost(action) {
+function* removePost(action) {
   try {
     const result = yield call(removePostAPI, action.data);
     const payload = result.data;
@@ -150,7 +152,6 @@ function* removepost(action) {
       type: REMOVE_POST_SUCCESS,
       data: payload.data,
     });
-    //console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({
@@ -184,16 +185,20 @@ function* addComment(action) {
 }
 
 function removeCommentAPI(data) {
-  return axios.delete(`${serverUrl}/community/comment/${data}`);
+  return axios.delete(`${serverUrl}/community/comment/${data}`, {
+    withCredentials: true,
+  });
 }
 
 function* removeComment(action) {
   try {
     const result = yield call(removeCommentAPI, action.data);
     const payload = result.data;
+    console.log("payload.data", payload.data);
+    console.log("action.data", action.data);
     yield put({
       type: REMOVE_COMMENT_SUCCESS,
-      data: payload.data,
+      data: action.data,
     });
   } catch (err) {
     console.error(err);
@@ -205,7 +210,9 @@ function* removeComment(action) {
 }
 
 function likePostAPI(data) {
-  return axios.get(`${serverUrl}/community/${data}/like`);
+  return axios.get(`${serverUrl}/community/${data}/like`, {
+    withCredentials: true,
+  });
 }
 
 function* likePost(action) {
@@ -254,7 +261,7 @@ function* watchAddPost() {
 }
 
 function* watchRemovePost() {
-  yield takeLatest(REMOVE_POST_REQUEST, removepost);
+  yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
 
 function* watchLoadPosts() {
@@ -291,7 +298,6 @@ export default function* communitySaga() {
     fork(watchMorePosts),
     fork(watchLoadPostDetail),
     fork(watchRemovePost),
-    fork(watchLoadPostDetail),
     fork(watchAddComment),
     fork(watchRemoveComment),
     fork(watchLikePost),

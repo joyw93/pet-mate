@@ -6,7 +6,6 @@ import Head from "next/head";
 import CommunityMain from "../../components/CommunityMain/CommunityMain";
 
 const Community = ({ hotdata }) => {
-  const { me } = useSelector((state) => state.user);
 
   return (
     <>
@@ -14,13 +13,6 @@ const Community = ({ hotdata }) => {
         <title>커뮤니티 | 펫메이트</title>
       </Head>
       <AppLayout>
-        {me ? (
-          <button>
-            <Link href="/community/post">
-              <a>게시글 쓰기</a>
-            </Link>
-          </button>
-        ) : null}
         <CommunityMain hotdata={hotdata} />
       </AppLayout>
     </>
