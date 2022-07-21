@@ -18,37 +18,9 @@ import {
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
 
-const CommunityItem = (item) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [created_date, setCreatedate] = useState("");
-  const [image_src, setImagesrc] = useState("");
-  const [tags, setTags] = useState("");
-  const [views, setViews] = useState(0);
-  const [likeCount, setLikeCount] = useState(0);
-
-  //렌더 문제 있어서 초기화값 설정
-  useEffect(() => {
-    const { title, content, author, createdAt, images, tags, views, likeCount } = item;
-    const convertedTime = getElapsedTime(createdAt);
-    setTitle(title);
-    setContent(content);
-    setAuthor(author.nickname);
-    setCreatedate(convertedTime);
-    setTags(tags);
-    setViews(views);
-    setLikeCount(likeCount);
-
-    if (images && images.length !== 0) {
-      setImagesrc(images[0]);
-    } else {
-      setImagesrc(null);
-    }
-  }, []);
-
+const CommunityItem = (post) => {
   const itemSelect = () => {
-    Router.push(`community/${item.id}`);
+    Router.push(`community/${post.id}`);
   };
 
   return (
@@ -56,20 +28,20 @@ const CommunityItem = (item) => {
       <ItemWrapper>
         <ContentWrapper>
           <TitleContentWrapper onClick={itemSelect}>
-            <ContentTitle>{title}</ContentTitle>
-            <Content>{content}</Content>
+            <ContentTitle>{post.title}</ContentTitle>
+            <Content>{post.content}</Content>
           </TitleContentWrapper>
           <ContentInfo>
-            <Author>{author}</Author>
-            <ContentDetail>{created_date}</ContentDetail>
+            <Author>{post.author.nickname}</Author>
+            <ContentDetail>{getElapsedTime(post.createdAt)}</ContentDetail>
             <ContentDetail>·</ContentDetail>
-            <ContentDetail>조회수 {views}</ContentDetail>
+            <ContentDetail>조회수 {post.views}</ContentDetail>
             <ContentDetail>·</ContentDetail>
-            <ContentDetail>좋아요 {likeCount}</ContentDetail>
+            <ContentDetail>좋아요 {post.likeCount}</ContentDetail>
           </ContentInfo>
           <KeywordWrapper>
-            {tags &&
-              tags.map((word, index) => (
+            {post.tags &&
+              post.tags.map((word, index) => (
                 <KeywordItem key={index}>
                   <span>#</span>
                   {word.hashtag.keyword}
@@ -77,7 +49,13 @@ const CommunityItem = (item) => {
               ))}
           </KeywordWrapper>
         </ContentWrapper>
-        <ImageWrapper onClick={itemSelect}>{image_src && <ItemImage src={image_src.url} />}</ImageWrapper>
+        {post?.images && (
+          <ImageWrapper onClick={itemSelect}>
+            {post?.images?.length === 0 ? null : (
+              <ItemImage src={post.images[0].url} />
+            )}
+          </ImageWrapper>
+        )}
       </ItemWrapper>
     </ItemContainer>
   );

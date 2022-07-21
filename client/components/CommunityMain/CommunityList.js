@@ -37,7 +37,7 @@ const CommunityList = (filterCond) => {
   return (
     <>
       <ListContainer>
-        {list && list.map((item) => <CommunityItem key={item.id} {...item} />)}
+        {list && list.map((post) => <CommunityItem key={post.id} {...post} />)}
         <BtnContainer>
           <span></span>
           {posts.length >= 10 ? (

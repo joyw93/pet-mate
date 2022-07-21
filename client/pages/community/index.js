@@ -4,6 +4,7 @@ import AppLayout from "../../components/AppLayout";
 import Head from "next/head";
 
 import CommunityMain from "../../components/CommunityMain/CommunityMain";
+import { useEffect } from "react";
 
 const Community = ({ hotdata }) => {
 
