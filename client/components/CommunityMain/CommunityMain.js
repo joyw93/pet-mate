@@ -14,11 +14,7 @@ import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-import {
-  loadPostsRequestAction,
-  showOldPostAction,
-  postResetAction,
-} from "../../reducers/community";
+import { postResetAction } from "../../reducers/community";
 
 const SelectOptions = [
   { id: "latest", name: "최신순" },
@@ -83,12 +79,6 @@ const CommunityMain = (hotdata) => {
     } else {
       Router.replace("/community/new");
     }
-  };
-
-  const loadPosts = async () => {
-    const result = await axios.get("http://api.petmate.kr/community?count=100");
-    const data = result.data.data;
-    console.log(data);
   };
 
   const handleListSelect = (e) => {

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-
-import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // const MapContainer = styled.div`
@@ -11,23 +9,22 @@ const Kakaomap = ({ place }) => {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
-  const [placeSearched, setPlacesSearched] = useState("");
-  const [lat, setLat] = useState();
-  const [lng, setLng] = useState();
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
+  const [placeResult, setPlaceResult] = useState("");
 
   console.log(place);
-
   useEffect(() => {
-    setPlacesSearched(place);
+    if (!map || !place) return;
 
-    if (!map) return;
     const ps = new kakao.maps.services.Places();
 
-    ps.keywordSearch(placeSearched, (data, status, _pagination) => {
+    ps.keywordSearch(place, (data, status, _pagination) => {
       if (status === kakao.maps.services.Status.OK) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         const bounds = new kakao.maps.LatLngBounds();
+
         let markers = [];
 
         for (var i = 0; i < data.length; i++) {
@@ -46,20 +43,23 @@ const Kakaomap = ({ place }) => {
         map.setBounds(bounds);
       }
     });
-  }, [map, placeSearched]);
+  }, [place]);
 
   const handleMarkerClick = (e) => {
     console.log(e.n);
-    setLat(e.n.La);
-    setLng(e.n.Ma);
   };
 
   console.log(lat, lng);
+  useEffect(() => {
+    //setPlaceResult(info.content);
+    if (info) {
+      setPlaceResult(info.content);
+    }
+  }, [info]);
 
   return (
     <>
-      <span>카카오맵</span>
-      <Map // 로드뷰를 표시할 Container
+      <Map
         center={{
           lat: 37.566826,
           lng: 126.9786567,
@@ -76,7 +76,8 @@ const Kakaomap = ({ place }) => {
             key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
             position={marker.position}
             onClick={() => {
-              setInfo(marker), handleMarkerClick;
+              setInfo(marker);
+              setLat(marker.position.lat), setLng(marker.position.lng);
             }}
           >
             {info && info.content === marker.content && (
@@ -85,6 +86,11 @@ const Kakaomap = ({ place }) => {
           </MapMarker>
         ))}
       </Map>
+      <div>
+        {placeResult !== "" ? (
+          <span>{placeResult}이 선택되었습니다!</span>
+        ) : null}
+      </div>
     </>
   );
 };

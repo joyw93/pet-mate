@@ -20,42 +20,19 @@ import { getElapsedTime } from "../../utils";
 import Router from "next/router";
 import Link from "next/link";
 
-const CommunityItem = (item) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [created_date, setCreatedate] = useState("");
-  const [image_src, setImagesrc] = useState("");
-  const [tags, setTags] = useState("");
-  const [views, setViews] = useState(0);
-  const [likeCount, setLikeCount] = useState(0);
-
-  //렌더 문제 있어서 초기화값 설정
-  useEffect(() => {
-    const { title, content, author, createdAt, images, tags, views, likeCount } = item;
-    const convertedTime = getElapsedTime(createdAt);
-    setTitle(title);
-    setContent(content);
-    setAuthor(author.nickname);
-    setCreatedate(convertedTime);
-    setTags(tags);
-    setViews(views);
-    setLikeCount(likeCount);
-
-    if (images && images.length !== 0) {
-      setImagesrc(images[0]);
-    } else {
-      setImagesrc(null);
-    }
-  }, []);
-
+const CommunityItem = (post) => {
   const itemSelect = () => {
+<<<<<<< HEAD
     Router.push(`/community/${item.id}`);
+=======
+    Router.push(`community/${post.id}`);
+>>>>>>> 7c12712fd77160f03939349293f377d848e79c57
   };
 
   return (
     <ItemContainer>
       <ItemWrapper>
+<<<<<<< HEAD
         <ContentWrapper onClick={itemSelect}>
           <ContentArea>
             <TitleContentWrapper>
@@ -88,6 +65,38 @@ const CommunityItem = (item) => {
               </Link>
             ))}
         </KeywordWrapper>
+=======
+        <ContentWrapper>
+          <TitleContentWrapper onClick={itemSelect}>
+            <ContentTitle>{post.title}</ContentTitle>
+            <Content>{post.content}</Content>
+          </TitleContentWrapper>
+          <ContentInfo>
+            <Author>{post.author.nickname}</Author>
+            <ContentDetail>{getElapsedTime(post.createdAt)}</ContentDetail>
+            <ContentDetail>·</ContentDetail>
+            <ContentDetail>조회수 {post.views}</ContentDetail>
+            <ContentDetail>·</ContentDetail>
+            <ContentDetail>좋아요 {post.likeCount}</ContentDetail>
+          </ContentInfo>
+          <KeywordWrapper>
+            {post.tags &&
+              post.tags.map((word, index) => (
+                <KeywordItem key={index}>
+                  <span>#</span>
+                  {word.hashtag.keyword}
+                </KeywordItem>
+              ))}
+          </KeywordWrapper>
+        </ContentWrapper>
+        {post?.images && (
+          <ImageWrapper onClick={itemSelect}>
+            {post?.images?.length === 0 ? null : (
+              <ItemImage src={post.images[0].url} />
+            )}
+          </ImageWrapper>
+        )}
+>>>>>>> 7c12712fd77160f03939349293f377d848e79c57
       </ItemWrapper>
     </ItemContainer>
   );

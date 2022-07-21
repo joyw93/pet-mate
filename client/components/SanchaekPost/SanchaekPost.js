@@ -7,10 +7,24 @@ import {
   MapWrapper,
   Button,
 } from "./styled";
+import Kakaomap from "../Kakaomap/Kakaomap";
 
 const SanchaekPost = () => {
-  const [FileImages, setFileImages] = useState([]);
-  const { me } = useSelector((state) => state.user);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const [fileImages, setFileImages] = useState([]);
+  //const [images, setImages] = useState([]);
+
+  const [inputText, setInputText] = useState("");
+  const [place, setPlace] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPlace(inputText);
+  };
+
+  //const { me } = useSelector((state) => state.user);
 
   // useEffect(() => {
   //   if (!me) {
@@ -20,7 +34,7 @@ const SanchaekPost = () => {
 
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
-    let imageUrlLists = [...FileImages];
+    let imageUrlLists = [...fileImages];
 
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
@@ -35,9 +49,9 @@ const SanchaekPost = () => {
   };
 
   const handleDeleteImage = (id) => {
-    setFileImages(FileImages.filter((_, index) => index !== id));
-    window.URL.revokeObjectURL(FileImages.filter((_, index) => index === id));
-    console.log(FileImages);
+    setFileImages(fileImages.filter((_, index) => index !== id));
+    window.URL.revokeObjectURL(fileImages.filter((_, index) => index === id));
+    console.log(fileImages);
   };
   return (
     <CreatePostContainer>
@@ -75,7 +89,7 @@ const SanchaekPost = () => {
               <img src="../img/photo.png" alt="이미지 업로드" />
             </label>
           </div>
-          {FileImages.map((image, id) => (
+          {fileImages.map((image, id) => (
             <div key={id} className="photo_preview">
               <img src={image} alt={`${image}-${id}`} />
               <button onClick={() => handleDeleteImage(id)}>
@@ -101,10 +115,15 @@ const SanchaekPost = () => {
             id="map_search_input"
             type="search"
             placeholder="주소를 입력해 주세요"
+            onChange={(e) => setInputText(e.target.value)}
+            value={inputText}
           />
-          <button id="map_search_btn">검색</button>
+          <button id="map_search_btn" onClick={handleSubmit}>
+            검색
+          </button>
         </form>
-        <div id="map_view"></div>
+        {/* <div id="map_view"></div> */}
+        <Kakaomap id="map_view" place={place} />
       </MapWrapper>
     </CreatePostContainer>
   );

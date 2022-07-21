@@ -160,7 +160,9 @@ function* loadMyPosts(action) {
 }
 
 function loadMyCommentsAPI() {
-  return axios.get(`${serverUrl}/user/commented-posts`, { withCredentials: true });
+  return axios.get(`${serverUrl}/user/commented-posts`, {
+    withCredentials: true,
+  });
 }
 
 function* loadMyComments(action) {

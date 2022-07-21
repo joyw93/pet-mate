@@ -23,7 +23,7 @@ import { useRouter } from "next/router";
 const CommunityPost = ({ editState }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [singlePost, setSinglePost] = useState("");
+  //const [singlePost, setSinglePost] = useState("");
 
   const dispatch = useDispatch();
   const { postDone } = useSelector((state) => state.community);
@@ -36,6 +36,7 @@ const CommunityPost = ({ editState }) => {
   const [fileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
 
+  const [tagsLength, setTagsLength] = useState(0);
   const [hashTagVal, setHashTagVal] = useState("");
   const [hashArr, setHashArr] = useState([]);
 
@@ -47,36 +48,46 @@ const CommunityPost = ({ editState }) => {
   }, []);
 
   useEffect(() => {
+    //수정상태일 때 선택된 게시글값 넣어주기
     if (editState) {
       if (selectedPost) {
-        setSinglePost(selectedPost);
-        setTitle(singlePost.title);
-        setContent(singlePost.content);
+        //setSinglePost(selectedPost);
+        setTitle(selectedPost.title);
+        setContent(selectedPost.content);
 
         let imageFiles = [];
-
-        if (singlePost.images) {
-          for (let i = 0; i < singlePost.images.length; i++) {
-            // let newImg = {
-            //   id: singlePost.images[i].id,
-            //   image: singlePost.images[i].url,
-            // };
-            // imageFiles = imageFiles.concat(newImg);
-            let newImg = singlePost.images[i].url;
+        if (selectedPost.images) {
+          for (let i = 0; i < selectedPost.images.length; i++) {
+            let newImg = selectedPost.images[i].url;
             imageFiles = imageFiles.concat(newImg);
             setFileImages(imageFiles);
           }
+          setImages(imageFiles);
         }
-        if (singlePost.tags) {
-          for (let i = 0; i < singlePost.tags.length; i++) {
-            const keyword = singlePost.tags[i].hashtag.keyword;
-            setHashArr([...hashArr, keyword]);
+
+        let keywords = [];
+        if (selectedPost.tags) {
+          for (let i = 0; i < selectedPost.tags.length; i++) {
+            const keyword = selectedPost.tags[i].hashtag.keyword;
+            keywords = keywords.concat(keyword);
           }
+          setHashArr(keywords);
+          setTagsLength(selectedPost.tags.length);
         }
       }
     }
   }, [selectedPost]);
 
+  console.log(selectedPost);
+  //console.log(singlePost);
+
+  console.log(hashArr);
+
+  // useEffect(() => {
+  //   if (!me) {
+  //     Router.push("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (hashArr.length > 5) {
@@ -90,16 +101,16 @@ const CommunityPost = ({ editState }) => {
   const handleAddImages = useCallback(
     (event) => {
       const imageLists = event.target.files;
-      const imageUrlLists = [...fileImages];
+      let imageUrlLists = [...fileImages];
 
       for (let i = 0; i < imageLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
         imageUrlLists.push(currentImageUrl);
       }
 
-      if (imageUrlLists.length > 3) {
+      if (fileImages.length > 2) {
         imageUrlLists = imageUrlLists.slice(0, 3);
-        alert("이미지는 3장까지 업로드 할 수 있습니다.");
+        return alert("이미지는 3장까지 업로드 할 수 있습니다.");
       }
 
       const imagesFile = event.target.files[0];
@@ -108,7 +119,7 @@ const CommunityPost = ({ editState }) => {
       setImages(imageFileList);
       setFileImages(imageUrlLists);
     },
-    [fileImages]
+    [fileImages, images]
   );
 
   const handleDeleteImage = useCallback(
@@ -125,12 +136,15 @@ const CommunityPost = ({ editState }) => {
     (e) => {
       setHashTagVal(e.target.value);
     },
-    [hashTagVal, hashArr]
+    [hashTagVal]
   );
 
   const keyUp = useCallback(
     (e) => {
-      if ((e.keyCode === 13 || e.keyCode === 32) && e.target.value.trim() !== "") {
+      if (
+        (e.keyCode === 13 || e.keyCode === 32) &&
+        e.target.value.trim() !== ""
+      ) {
         if (hashArr.find((it) => it === e.target.value.trim())) {
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
@@ -142,12 +156,22 @@ const CommunityPost = ({ editState }) => {
     },
     [hashTagVal, hashArr]
   );
-  const handleDeleteHash = useCallback(
-    (idx) => {
-      setHashArr(hashArr.filter((_, index) => index !== idx));
-    },
-    [hashArr]
-  );
+  // const handleDeleteHash = useCallback(
+  //   (idx) => {
+  //     setHashArr(hashArr.filter((_, index) => index !== idx));
+  //   },
+  //   [hashArr]
+  // );
+
+  const handleDeleteHash = (idx) => {
+    //setHashArr(hashArr.filter((_, index) => index !== idx));
+    console.log(idx);
+    setHashArr(hashArr.filter((item, index) => index !== idx));
+  };
+
+  useEffect(() => {
+    console.log(hashArr);
+  }, [hashArr]);
 
   const handlePost = () => {
     if (!title) {
@@ -157,15 +181,13 @@ const CommunityPost = ({ editState }) => {
       return contentRef.current.focus();
     }
 
+    let tagsArr = hashArr.filter((v, i) => hashArr.indexOf(v) === i);
+    setHashArr(tagsArr);
+
+    //데이터 전송
     const post = new FormData();
     post.append("title", title);
     post.append("content", content);
-
-    if (hashArr.length > 0) {
-      for (let i = 0; i < hashArr.length; i++) {
-        post.append("hashtags", hashArr[i]);
-      }
-    }
 
     if (images.length > 0) {
       [].forEach.call(images, (img) => {
@@ -173,15 +195,32 @@ const CommunityPost = ({ editState }) => {
       });
     }
 
+    if (editState) {
+      if (hashArr.length > 0) {
+        for (let i = tagsLength; i < hashArr.length; i++) {
+          post.append("hashtags", hashArr[i]);
+        }
+      }
+    } else {
+      if (hashArr.length > 0) {
+        for (let i = 0; i < hashArr.length; i++) {
+          post.append("hashtags", hashArr[i]);
+        }
+      }
+    }
+
     //수정 모드일 때
     if (editState) {
       dispatch(updatePostRequestAction({ post, id }));
+
       router.push("/community");
     } else {
       //새로 작성할 때
       dispatch(postRequestAction(post));
     }
   };
+
+  console.log(hashArr);
 
   useEffect(() => {
     if (postDone) {
@@ -203,7 +242,7 @@ const CommunityPost = ({ editState }) => {
           ) : (
             <div id="buttons">
               <Button onClick={handlePost}>등록</Button>
-              <Button onClick={() => router.back()}>취소</Button>
+              <Button onClick={() => router.push("/community")}>취소</Button>
             </div>
           )}
         </TitleWrapper>

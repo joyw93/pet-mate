@@ -78,13 +78,29 @@ let HashtagService = class HashtagService {
         ])
             .leftJoin('post.author', 'author')
             .leftJoin('post.images', 'images')
-            .leftJoin('post.tags', 'tags')
+            .innerJoin('post.tags', 'tags')
             .leftJoin('post.likes', 'likes')
-            .leftJoin('tags.hashtag', 'hashtag')
+            .innerJoin('tags.hashtag', 'hashtag')
             .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
             .loadRelationCountAndMap('post.likeCount', 'post.likes')
             .loadRelationCountAndMap('post.commentCount', 'post.comments')
-            .where('hashtag.keyword=:keyword', { keyword })
+            .where((qb) => {
+            const subQuery = qb
+                .subQuery()
+                .select(['post_id'])
+                .from(community_hashtag_entity_1.CommunityHashtagEntity, 'tags')
+                .where((qb) => {
+                const subQuery = qb
+                    .subQuery()
+                    .select(['id'])
+                    .from(hashtag_entity_1.HashtagEntity, 'hashtag')
+                    .where('keyword=:keyword', { keyword })
+                    .getQuery();
+                return 'tag_id=' + subQuery;
+            })
+                .getQuery();
+            return 'post.id IN' + subQuery;
+        })
             .getMany();
         return posts;
     }

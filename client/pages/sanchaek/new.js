@@ -4,7 +4,7 @@ import SanchaekPost from "../../components/SanchaekPost/SanchaekPost";
 const PostPage = () => {
   return (
     <AppLayout>
-      {/* <SanchaekPost /> */}
+      <SanchaekPost />
     </AppLayout>
   );
 };

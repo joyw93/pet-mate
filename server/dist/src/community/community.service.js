@@ -141,14 +141,25 @@ let CommunityService = class CommunityService {
     }
     async getHotPosts() {
         try {
+            const likeCount = this.communityLikeRepository
+                .createQueryBuilder()
+                .subQuery()
+                .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+                .from(community_like_entity_1.CommunityLikeEntity, 'likes')
+                .groupBy('post_id')
+                .getQuery();
             const posts = await this.communityRepository
                 .createQueryBuilder('post')
-                .select(['post.id', 'post.title', 'post.createdAt'])
-                .addSelect('COUNT(post.id)', 'likeCount')
-                .groupBy('likes.post_id')
+                .select([
+                'post.id',
+                'post.title',
+                'post.createdAt',
+                'LikeCount.likeCount',
+            ])
                 .leftJoin('post.likes', 'likes')
+                .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
                 .take(2)
-                .orderBy({ likeCount: 'DESC', 'post.createdAt': 'DESC' })
+                .orderBy({ likeCount: 'DESC' })
                 .getMany();
             return posts;
         }
