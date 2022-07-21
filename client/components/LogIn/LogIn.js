@@ -19,9 +19,9 @@ import {
 
 const LogIn = () => {
   // const serverUrl = "http://api.petmate.kr";
-  const serverUrl = 'http://127.0.0.1:3000';
+  const serverUrl = "http://127.0.0.1:3000";
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  const { me, logInError } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +29,12 @@ const LogIn = () => {
 
   const emailRef = useRef();
   const passwordRef = useRef();
+
+  useEffect(() => {
+    if (logInError !== null) {
+      alert(logInError.message);
+    }
+  }, [logInError]);
 
   const handleLoginSubmit = useCallback(() => {
     const emailregExp =
@@ -92,7 +98,9 @@ const LogIn = () => {
             value={password}
             ref={passwordRef}
             onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e)=>{if(e.key==='Enter') handleLoginSubmit()}}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleLoginSubmit();
+            }}
           ></UserInput>
         </InputWrapper>
         <LoginBtn onClick={handleLoginSubmit}>로그인</LoginBtn>

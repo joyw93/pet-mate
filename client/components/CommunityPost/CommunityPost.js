@@ -156,12 +156,22 @@ const CommunityPost = ({ editState }) => {
     },
     [hashTagVal, hashArr]
   );
-  const handleDeleteHash = useCallback(
-    (idx) => {
-      setHashArr(hashArr.filter((_, index) => index !== idx));
-    },
-    [hashArr]
-  );
+  // const handleDeleteHash = useCallback(
+  //   (idx) => {
+  //     setHashArr(hashArr.filter((_, index) => index !== idx));
+  //   },
+  //   [hashArr]
+  // );
+
+  const handleDeleteHash = (idx) => {
+    //setHashArr(hashArr.filter((_, index) => index !== idx));
+    console.log(idx);
+    setHashArr(hashArr.filter((item, index) => index !== idx));
+  };
+
+  useEffect(() => {
+    console.log(hashArr);
+  }, [hashArr]);
 
   const handlePost = () => {
     if (!title) {
