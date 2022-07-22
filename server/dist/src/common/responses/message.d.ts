@@ -17,5 +17,7 @@ export declare const msg: {
     COMMUNITY_COMMENT_EDIT_FAIL: string;
     COMMUNITY_COMMENT_DELETE_FAIL: string;
     COMMUNITY_LIKE_FAIL: string;
+    SANCHAEK_POST_NOT_EXIST: string;
+    SANCHAEK_ADD_IMAGE_FAIL: string;
     INTERNAL_SERVER_ERROR: string;
 };

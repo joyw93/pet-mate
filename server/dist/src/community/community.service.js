@@ -22,8 +22,8 @@ const typeorm_2 = require("typeorm");
 const community_entity_1 = require("./community.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
-const res = require("../common/responses/message");
 const hashtag_entity_1 = require("../hashtag/hashtag.entity");
+const res = require("../common/responses/message");
 let CommunityService = class CommunityService {
     constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository, dataSource) {
         this.communityRepository = communityRepository;
@@ -300,10 +300,10 @@ let CommunityService = class CommunityService {
     async uploadImages(post, imgUrls) {
         try {
             const result = await Promise.all(imgUrls.map((imgUrl) => {
-                const img = new community_image_entity_1.CommunityImageEntity();
-                img.post = post;
-                img.url = imgUrl;
-                return this.communityImageRepository.save(img);
+                const image = new community_image_entity_1.CommunityImageEntity();
+                image.post = post;
+                image.url = imgUrl;
+                return this.communityImageRepository.save(image);
             }));
             return result;
         }

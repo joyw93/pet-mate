@@ -2,6 +2,7 @@ import { CommunityCommentEntity } from 'src/common/entities/community-comment.en
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { CommunityEntity } from 'src/community/community.entity';
+import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
 import {
   Column,
   CreateDateColumn,
@@ -31,6 +32,9 @@ export class UserEntity {
   @Column('varchar', { name: 'password', select: false })
   password: string;
 
+  @Column('int', { name: 'profile_id' })
+  profile_id: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -54,6 +58,15 @@ export class UserEntity {
     cascade: true,
   })
   posts: CommunityEntity[];
+
+  @OneToMany(
+    () => SanchaekEntity,
+    (sanchaek: SanchaekEntity) => sanchaek.user,
+    {
+      cascade: true,
+    },
+  )
+  sanchaeks: SanchaekEntity[];
 
   @OneToMany(
     () => CommunityLikeEntity,

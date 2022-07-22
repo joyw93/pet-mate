@@ -19,10 +19,12 @@ export declare class UserController {
         name: string;
         nickname: string;
         id: number;
+        profile_id: number;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
         posts: import("../community/community.entity").CommunityEntity[];
+        sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;

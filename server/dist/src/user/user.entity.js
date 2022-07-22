@@ -14,6 +14,7 @@ const community_comment_entity_1 = require("../common/entities/community-comment
 const community_like_entity_1 = require("../common/entities/community-like.entity");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
+const sanchaek_entity_1 = require("../sanchaek/sanchaek.entity");
 const typeorm_1 = require("typeorm");
 let UserEntity = class UserEntity {
 };
@@ -37,6 +38,10 @@ __decorate([
     (0, typeorm_1.Column)('varchar', { name: 'password', select: false }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { name: 'profile_id' }),
+    __metadata("design:type", Number)
+], UserEntity.prototype, "profile_id", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
@@ -62,6 +67,12 @@ __decorate([
     }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "posts", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => sanchaek_entity_1.SanchaekEntity, (sanchaek) => sanchaek.user, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "sanchaeks", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => community_like_entity_1.CommunityLikeEntity, (like) => like.user, {
         cascade: true,

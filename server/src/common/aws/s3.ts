@@ -27,6 +27,35 @@ export const createPostConfig = {
   }),
 };
 
+export const editSanchaekConfig = {
+  storage: multerS3({
+    s3,
+    bucket: process.env.AWS_S3_BUCKET_NAME,
+    acl: 'public-read',
+    key: (req, file, cb) => {
+      cb(
+        null,
+        `petmate/sanchaek/images/${uuid()}${path.extname(file.originalname)}`,
+      );
+    },
+  }),
+
+};
+
+export const createSanchaekConfig = {
+  storage: multerS3({
+    s3,
+    bucket: process.env.AWS_S3_BUCKET_NAME,
+    acl: 'public-read',
+    key: (req, file, cb) => {
+      cb(
+        null,
+        `petmate/sanchaek/images/${uuid()}${path.extname(file.originalname)}`,
+      );
+    },
+  }),
+};
+
 export const editPostConfig = {
   storage: multerS3({
     s3,

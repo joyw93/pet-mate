@@ -10,8 +10,10 @@ exports.ImageFilePipe = void 0;
 const common_1 = require("@nestjs/common");
 let ImageFilePipe = class ImageFilePipe {
     transform(files, metadata) {
-        const imgUrls = [].map.call(files, (file) => file.location);
-        return imgUrls;
+        if (files) {
+            const imgUrls = [].map.call(files, (file) => file.location);
+            return imgUrls;
+        }
     }
 };
 ImageFilePipe = __decorate([

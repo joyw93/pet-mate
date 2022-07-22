@@ -16,9 +16,9 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
+import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 
 import * as res from '../common/responses/message';
-import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 
 @Injectable()
 export class CommunityService {
@@ -323,10 +323,10 @@ export class CommunityService {
     try {
       const result = await Promise.all(
         imgUrls.map((imgUrl: string) => {
-          const img = new CommunityImageEntity();
-          img.post = post;
-          img.url = imgUrl;
-          return this.communityImageRepository.save(img);
+          const image = new CommunityImageEntity();
+          image.post = post;
+          image.url = imgUrl;
+          return this.communityImageRepository.save(image);
         }),
       );
       return result;

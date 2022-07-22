@@ -8,11 +8,13 @@ export declare class AuthService {
         name: string;
         nickname: string;
         email: string;
+        profile_id: number;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;
         profile: import("../common/entities/user-profile.entity").UserProfileEntity;
         posts: import("../community/community.entity").CommunityEntity[];
+        sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;

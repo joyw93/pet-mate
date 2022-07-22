@@ -13,6 +13,7 @@ import { HashtagModule } from './hashtag/hashtag.module';
 import { CommunityHashtagEntity } from './common/entities/community-hashtag.entity';
 import * as ormconfig from '../ormconfig';
 import { UserProfileEntity } from './common/entities/user-profile.entity';
+import { SanchaekModule } from './sanchaek/sanchaek.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserProfileEntity } from './common/entities/user-profile.entity';
     AuthModule,
     CommunityModule,
     HashtagModule,
+    SanchaekModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],
