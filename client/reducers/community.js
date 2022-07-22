@@ -215,24 +215,24 @@ const reducer = (state = initialState, action) =>
 
       //글 추가
       case ADD_POST_REQUEST:
-        draft.postLoading = true;
-        draft.postError = null;
-        draft.postDone = false;
+        draft.addPostLoading = true;
+        draft.addPostError = null;
+        draft.addPostDone = false;
         break;
       case ADD_POST_SUCCESS:
-        draft.postLoading = false;
-        draft.postDone = true;
+        draft.addPostLoading = false;
+        draft.addPostDone = true;
         // draft.posts.unshift(action.data);
         draft.posts.unshift(action.data);
         break;
       case ADD_POST_FAILURE:
-        draft.postLoading = false;
-        draft.postError = action.error;
+        draft.addPostLoading = false;
+        draft.addPostError = action.error;
         break;
       case ADD_POST_RESET:
-        draft.postLoading = true;
-        draft.postDone = false;
-        draft.postError = null;
+        draft.addPostLoading = false;
+        draft.addPostDone = false;
+        draft.addPostError = null;
         break;
 
       //글 삭제

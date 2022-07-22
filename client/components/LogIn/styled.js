@@ -83,3 +83,15 @@ export const KakaoBtn = styled(MainBtn)`
 export const CheckInput = styled.p`
   color: ${(props) => props.color || "black"};
 `;
+
+export const SnackBarContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 50px;
+  background-color: #2F3438;
+  color: white;
+  border-radius: 5px;
+  font-size: 14px;
+`;

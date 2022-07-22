@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
+import Snackbar from "@mui/material/Snackbar";
 import { useEffect, useRef, useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,11 +14,16 @@ import {
   GoogleBtn,
   KakaoBtn,
   CheckInput,
+  SnackBarContent
 } from "./styled";
 
 // const serverUrl = 'http://127.0.0.1:3000';
 
 const LogIn = () => {
+  const [snackBar, setSnackBar] = useState(false);
+  const handleClose = () => {
+    setSnackBar(false);
+  };
   // const serverUrl = "http://api.petmate.kr";
   const serverUrl = "http://127.0.0.1:3000";
   const dispatch = useDispatch();
@@ -32,7 +38,8 @@ const LogIn = () => {
 
   useEffect(() => {
     if (logInError !== null) {
-      alert(logInError.message);
+      setSnackBar(true);
+      // alert(logInError.message);
     }
   }, [logInError]);
 
@@ -112,6 +119,15 @@ const LogIn = () => {
           <a>아직 아이디가 없으신가요? 회원가입 하러가기</a>
         </Link>
       </p>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackBar}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        key={"bottomcenter"}
+      >
+        <SnackBarContent>{logInError?.message}</SnackBarContent>
+      </Snackbar>
     </LogInContainer>
   );
 };

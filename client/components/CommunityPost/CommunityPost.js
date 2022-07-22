@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import Router from "next/router";
 import { useEffect, useRef } from "react";
 import { useCallback } from "react";
@@ -30,7 +32,8 @@ const CommunityPost = ({ editState }) => {
   //const [singlePost, setSinglePost] = useState("");
 
   const dispatch = useDispatch();
-  const { postDone, updatePostDone } = useSelector((state) => state.community);
+  const { addPostDone, updatePostDone, addPostLoading, updatePostLoading } =
+    useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
   const selectedPost = useSelector((state) => state.community.post);
 
@@ -47,14 +50,18 @@ const CommunityPost = ({ editState }) => {
   const titleRef = useRef();
   const contentRef = useRef();
 
-  // test
+  const [backdrop, setBackdrop] = useState(false);
+  const handleClose = () => {
+    setBackdrop(false);
+  };
+  const handleToggle = () => {
+    setBackdrop(!backdrop);
+  };
 
   useEffect(() => {
-    if (images) console.log("images", images);
-    if (fileImages) console.log("fileImages", fileImages);
-  }, [images, fileImages]);
-
-  //
+    setBackdrop(addPostLoading || updatePostLoading);
+    
+  }, [addPostLoading, updatePostLoading]);
 
   useEffect(() => {
     dispatch(loadPostDetailRequestAction(id));
@@ -235,14 +242,14 @@ const CommunityPost = ({ editState }) => {
   // console.log(hashArr);
 
   useEffect(() => {
-    if (postDone) {
+    if (addPostDone) {
       dispatch(postResetAction());
       Router.replace("/community");
     } else if (updatePostDone) {
       dispatch(updatePostResetAction());
       Router.replace("/community");
     }
-  }, [postDone, updatePostDone]);
+  }, [addPostDone, updatePostDone]);
 
   return (
     <>
@@ -349,6 +356,13 @@ const CommunityPost = ({ editState }) => {
           </div>
         </KeywordWrapper>
       </CreatePostContainer>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdrop}
+        onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

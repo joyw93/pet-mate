@@ -219,3 +219,15 @@ export const LinkWrapper = styled.a`
     transition: 0.2s all;
   }
 `;
+
+export const SnackBarContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 50px;
+  background-color: #2F3438;
+  color: white;
+  border-radius: 5px;
+  font-size: 14px;
+`;

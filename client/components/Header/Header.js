@@ -1,7 +1,13 @@
 import Link from "next/link";
 import Router from "next/router";
-import React, { useCallback, useEffect, useState, useLayoutEffect, useRef } from "react";
-
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useRef,
+} from "react";
+import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAction } from "../../reducers/user";
 import {
@@ -14,11 +20,13 @@ import {
   SanchaekWrapper,
   CommunityWrapper,
   InputWrapper,
+  SnackBarContent,
 } from "./styled";
 
 import { useRouter } from "next/router";
 
 const Header = () => {
+  const [snackBar, setSnackBar] = useState(false);
   const canUseDOM = typeof window !== "undefined";
   const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
   const router = useRouter();
@@ -34,6 +42,10 @@ const Header = () => {
   const inputRef = useRef();
   const toggleInputRef = useRef();
 
+  const handleClose = () => {
+    setSnackBar(false);
+  };
+
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");
@@ -45,7 +57,8 @@ const Header = () => {
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
     Router.replace("/");
-    alert("로그아웃되었습니다!");
+    // alert("로그아웃되었습니다!");
+    setSnackBar(true);
   }, []);
 
   const handleValChange = useCallback((event) => {
@@ -229,6 +242,15 @@ const Header = () => {
           </div>
         </ToggleMenuWrapper>
       </NavContainer>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackBar}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        key={"bottomcenter"}
+      >
+        <SnackBarContent>로그아웃 되었습니다! 🐾</SnackBarContent>
+      </Snackbar>
     </>
   );
 };
