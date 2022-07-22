@@ -28,6 +28,9 @@ import {
   LOAD_PROFILE_SUCCESS,
   LOAD_PROFILE_FAILURE,
   LOAD_PROFILE_REQUEST,
+  EDIT_ACCOUNT_SUCCESS,
+  EDIT_ACCOUNT_FAILURE,
+  EDIT_ACCOUNT_REQUEST,
 } from "../reducers/user";
 
 // const serverUrl = `http://api.petmate.kr`;
@@ -225,6 +228,29 @@ function* editProfile(action) {
   }
 }
 
+function editAccountAPI(data) {
+  return axios.post(`${serverUrl}/user/account`, data, {
+    withCredentials: true,
+  });
+}
+
+
+function* editAccount(action) {
+  try {
+    const result = yield call(editAccountAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: EDIT_ACCOUNT_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: EDIT_ACCOUNT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -261,6 +287,10 @@ function* watchEditProfile() {
   yield takeLatest(EDIT_PROFILE_REQUEST, editProfile);
 }
 
+function* watchEditAccount() {
+  yield takeLatest(EDIT_ACCOUNT_REQUEST, editAccount);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchSignUp),
@@ -270,7 +300,8 @@ export default function* userSaga() {
     fork(watchLoadMyPosts),
     fork(watchLoadMyComments),
     fork(watchLoadMyLiked),
-    fork(watchEditProfile),
     fork(watchLoadProfile),
+    fork(watchEditProfile),
+    fork(watchEditAccount),
   ]);
 }

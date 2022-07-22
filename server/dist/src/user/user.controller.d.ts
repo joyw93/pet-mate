@@ -1,4 +1,5 @@
 import { CreateUserDto } from './dto/create-user.dto';
+import { SetAccountDto } from './dto/set-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -27,6 +28,7 @@ export declare class UserController {
     }>;
     login(user: UserEntity): Promise<UserEntity>;
     setProfile(user: UserEntity, imgUrls: string[], setProfileDto: SetProfileDto): Promise<UserEntity>;
+    setAccount(user: UserEntity, setAccountDto: SetAccountDto): Promise<UserEntity>;
     googleLogin(req: any): Promise<void>;
     googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
         message: string;

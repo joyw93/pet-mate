@@ -1,11 +1,26 @@
 import Head from "next/head";
-// import styled, { createGlobalStyle } from "styled-components";
-// import GlobalStyles from "../styles/GlobalStyles";
+import Snackbar from "@mui/material/Snackbar";
+import { useDispatch, useSelector } from "react-redux";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
-//import Script from "next/script";
+import { SnackBarContent } from "../components/Header/styled";
+import { logoutResetAction } from "../reducers/user";
 
 const App = ({ Component, pageProps }) => {
+  const { logOutDone } = useSelector((state) => state.user);
+  const [snackBar, setSnackBar] = useState(false);
+  const handleClose = () => {
+    setSnackBar(false);
+  };
+
+  useEffect(() => {
+    setSnackBar(logOutDone);
+  }, [logOutDone]);
+
   return (
     <>
       <Head>
@@ -22,6 +37,15 @@ const App = ({ Component, pageProps }) => {
         />
       </Head>
       <Component {...pageProps} />
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackBar}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        key={"bottomcenter"}
+      >
+        <SnackBarContent>로그아웃 되었습니다! 🐾</SnackBarContent>
+      </Snackbar>
     </>
   );
 };

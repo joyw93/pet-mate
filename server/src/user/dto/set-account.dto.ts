@@ -1,15 +1,13 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class SetProfileDto {
+export class SetAccountDto {
   @IsNotEmpty()
   @IsString()
-  public nickname: string;
+  public currentPassword: string;
 
   @IsOptional()
   @IsString()
-  public birthday: string;
+  public newPassword: string;
 
-  @IsOptional()
-  @IsString()
-  public comment: string;
+  
 }
