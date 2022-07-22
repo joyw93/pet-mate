@@ -145,7 +145,7 @@ const MyProfile = () => {
                 </NicknameWrapper>
                 <BirthdateWrapper>
                   <InputTitle>
-                    <span>생년월일</span>
+                    <span>반려동물 생일</span>
                     <span>(키보드 입력 가능)</span>
                   </InputTitle>
 

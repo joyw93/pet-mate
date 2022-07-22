@@ -1,11 +1,15 @@
+import Head from "next/head";
+import AppLayout from "../components/AppLayout";
+
 const Test = () => {
   return (
     <>
-      <div className="contents-wrap">
-        <header>header</header>
-        <div className="Site-content">content</div>
-        <footer className="footer">footer</footer>
-      </div>
+      <Head>
+        <title>환영합니다! | 펫메이트</title>
+      </Head>
+      <AppLayout>
+        <input type="password" name="" id="" autoComplete="new-password" />
+      </AppLayout>
     </>
   );
 };
