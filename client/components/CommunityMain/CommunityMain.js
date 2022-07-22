@@ -38,6 +38,7 @@ const Notice = ({ hotdata }) => {
   useEffect(() => {
     setNoticeList(hotdata.hotdata.data);
   }, []);
+  console.log(noticeList);
 
   return (
     <>
