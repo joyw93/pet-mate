@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import DetailedMap from "../Kakaomap/DetailedMap";
 
 // const MapContainer = styled.div`
 //   aspect-ratio: 320 / 220;
@@ -51,11 +52,28 @@ const Kakaomap = ({ place }) => {
 
   console.log(lat, lng);
   useEffect(() => {
-    //setPlaceResult(info.content);
     if (info) {
       setPlaceResult(info.content);
     }
   }, [info]);
+
+  function getAddr(lat, lng) {
+    // 주소-좌표 변환 객체를 생성합니다
+    let geocoder = new kakao.maps.services.Geocoder();
+
+    let coord = new kakao.maps.LatLng(lat, lng);
+    let callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        const arr = { ...result };
+        console.log(arr);
+        // const _arr1 = arr[0].address.region_1depth_name;
+        // const _arr2 = arr[0].address.region_2depth_name;
+        // const _arr3 = arr[0].address.region_3depth_name;
+        // console.log(_arr1, _arr2, _arr3);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }
 
   return (
     <>
@@ -78,6 +96,7 @@ const Kakaomap = ({ place }) => {
             onClick={() => {
               setInfo(marker);
               setLat(marker.position.lat), setLng(marker.position.lng);
+              getAddr(lat, lng);
             }}
           >
             {info && info.content === marker.content && (
@@ -91,6 +110,27 @@ const Kakaomap = ({ place }) => {
           <span>{placeResult}이 선택되었습니다!</span>
         ) : null}
       </div>
+      <>
+        {/* <Map
+          center={{
+            lat: 37.566826,
+            lng: 126.9786567,
+          }}
+          style={{
+            width: "100%",
+            height: "350px",
+          }}
+          level={3}
+          onCreate={setMap}
+        >
+          {" "}
+        </Map> */}
+      </>
+      <DetailedMap
+        lat={Number(lat)}
+        lng={Number(lng)}
+        placeResult={placeResult}
+      />
     </>
   );
 };
