@@ -41,12 +41,7 @@ let UserService = class UserService {
     async getUserProfile(userId) {
         const user = await this.userRepository
             .createQueryBuilder('user')
-            .select([
-            'user.id',
-            'user.name',
-            'user.nickname',
-            'user.email',
-        ])
+            .select(['user.id', 'user.name', 'user.nickname', 'user.email'])
             .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
             .leftJoin('user.profile', 'profile')
             .where('user.id= :id', { id: userId })
@@ -111,6 +106,27 @@ let UserService = class UserService {
         user.profile.comment = comment;
         user.profile.birth = birthday;
         user.profile.imageUrl = imgUrls[0];
+        return await this.userRepository.save(user);
+    }
+    async setAccount(userId, setAccountDto) {
+        const { currentPassword, newPassword } = setAccountDto;
+        const user = await this.userRepository
+            .createQueryBuilder('user')
+            .select([
+            'user.id',
+            'user.name',
+            'user.nickname',
+            'user.email',
+            'user.password',
+        ])
+            .where('user.id= :id', { id: userId })
+            .getOne();
+        const isAuthenticated = await bcrypt.compare(currentPassword, user.password);
+        if (!isAuthenticated) {
+            throw new common_1.UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
+        }
+        const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+        user.password = hashedNewPassword;
         return await this.userRepository.save(user);
     }
     async googleLoginCallback(req, res) {

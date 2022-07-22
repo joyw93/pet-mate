@@ -22,6 +22,7 @@ const s3_1 = require("../common/aws/s3");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const image_file_pipe_1 = require("../common/pipes/image-file.pipe");
 const create_user_dto_1 = require("./dto/create-user.dto");
+const set_account_dto_1 = require("./dto/set-account.dto");
 const set_profile_dto_1 = require("./dto/set-profile.dto");
 const user_entity_1 = require("./user.entity");
 const user_service_1 = require("./user.service");
@@ -46,6 +47,9 @@ let UserController = class UserController {
     }
     async setProfile(user, imgUrls, setProfileDto) {
         return await this.userService.setProfile(user.id, setProfileDto, imgUrls);
+    }
+    async setAccount(user, setAccountDto) {
+        return await this.userService.setAccount(user.id, setAccountDto);
     }
     async googleLogin(req) { }
     async googleLoginCallback(req, res) {
@@ -130,6 +134,15 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, set_profile_dto_1.SetProfileDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "setProfile", null);
+__decorate([
+    (0, common_1.Post)('account'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity,
+        set_account_dto_1.SetAccountDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "setAccount", null);
 __decorate([
     (0, common_1.Get)('google'),
     (0, common_1.UseGuards)(google_auth_guard_1.GoogleAuthGuard),

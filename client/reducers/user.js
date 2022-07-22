@@ -21,10 +21,14 @@ export const initialState = {
   editProfileDone: false,
   editProfileError: null,
 
+  editAccountLoading: false,
+  editAccountDone: false,
+  editAccountError: null,
+
   loadProfileLoading: false,
   loadProfileDone: false,
   loadProfileError: null,
-  
+
   me: null,
   signUpData: {},
   loginData: {},
@@ -40,7 +44,7 @@ export const initialState = {
   loadMyLikedLoading: false,
   loadMyLikedDone: false,
   loadMyLikedError: null,
-  
+
   myPostsData: [],
   myCommentsData: [],
   myLikedData: [],
@@ -63,6 +67,7 @@ export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
+export const LOG_OUT_RESET = "LOG_OUT_RESET";
 
 export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST";
 export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS";
@@ -84,6 +89,11 @@ export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
 export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
 export const EDIT_PROFILE_FAILURE = "EDIT_PROFILE_FAILURE";
 export const EDIT_PROFILE_RESET = "EDIT_PROFILE_RESET";
+
+export const EDIT_ACCOUNT_REQUEST = "EDIT_ACCOUNT_REQUEST";
+export const EDIT_ACCOUNT_SUCCESS = "EDIT_ACCOUNT_SUCCESS";
+export const EDIT_ACCOUNT_FAILURE = "EDIT_ACCOUNT_FAILURE";
+export const EDIT_ACCOUNT_RESET = "EDIT_ACCOUNT_RESET";
 
 export const signupRequestAction = (data) => ({
   type: SIGN_UP_REQUEST,
@@ -111,6 +121,10 @@ export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
 });
 
+export const logoutResetAction = () => ({
+  type: LOG_OUT_RESET,
+});
+
 export const loadProfileRequestAction = () => ({
   type: LOAD_PROFILE_REQUEST,
 });
@@ -134,6 +148,15 @@ export const editProfileRequestAction = (data) => ({
 
 export const editProfileResetAction = () => ({
   type: EDIT_PROFILE_RESET,
+});
+
+export const editAccountRequestAction = (data) => ({
+  type: EDIT_ACCOUNT_REQUEST,
+  data,
+});
+
+export const editAccountResetAction = () => ({
+  type: EDIT_ACCOUNT_RESET,
 });
 
 const reducer = (state = initialState, action) =>
@@ -205,6 +228,12 @@ const reducer = (state = initialState, action) =>
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
         draft.logOutError = action.error;
+        break;
+
+      case LOG_OUT_RESET:
+        draft.logOutDone = false;
+        draft.logOutLoading = false;
+        draft.logOutError = null;
         break;
 
       case LOAD_PROFILE_REQUEST:
@@ -283,6 +312,25 @@ const reducer = (state = initialState, action) =>
       case EDIT_PROFILE_RESET:
         draft.editProfileLoading = false;
         draft.editProfileDone = false;
+        break;
+
+      case EDIT_ACCOUNT_REQUEST:
+        draft.editAccountLoading = true;
+        draft.editAccountError = null;
+        draft.editAccountDone = false;
+        break;
+      case EDIT_ACCOUNT_SUCCESS:
+        draft.editAccountLoading = false;
+        draft.editAccountDone = true;
+        break;
+      case EDIT_ACCOUNT_FAILURE:
+        draft.editAccountLoading = false;
+        draft.editAccountError = action.error;
+        break;
+
+      case EDIT_ACCOUNT_RESET:
+        draft.editAccountLoading = false;
+        draft.editAccountDone = false;
         break;
 
       default:

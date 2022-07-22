@@ -26,7 +26,6 @@ import {
 import { useRouter } from "next/router";
 
 const Header = () => {
-  const [snackBar, setSnackBar] = useState(false);
   const canUseDOM = typeof window !== "undefined";
   const useIsomorphicLayoutEffect = canUseDOM ? useLayoutEffect : useEffect;
   const router = useRouter();
@@ -42,9 +41,6 @@ const Header = () => {
   const inputRef = useRef();
   const toggleInputRef = useRef();
 
-  const handleClose = () => {
-    setSnackBar(false);
-  };
 
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
@@ -58,7 +54,6 @@ const Header = () => {
     dispatch(logoutRequestAction());
     Router.replace("/");
     // alert("로그아웃되었습니다!");
-    setSnackBar(true);
   }, []);
 
   const handleValChange = useCallback((event) => {
@@ -242,15 +237,7 @@ const Header = () => {
           </div>
         </ToggleMenuWrapper>
       </NavContainer>
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={snackBar}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        key={"bottomcenter"}
-      >
-        <SnackBarContent>로그아웃 되었습니다! 🐾</SnackBarContent>
-      </Snackbar>
+      
     </>
   );
 };

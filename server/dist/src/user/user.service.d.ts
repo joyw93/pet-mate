@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
+import { SetAccountDto } from './dto/set-account.dto';
 export declare class UserService {
     private userRepository;
     private userProfileRepository;
@@ -27,6 +28,7 @@ export declare class UserService {
         comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
     }>;
     setProfile(userId: number, setProfileDto: SetProfileDto, imgUrls: string[]): Promise<UserEntity>;
+    setAccount(userId: number, setAccountDto: SetAccountDto): Promise<UserEntity>;
     googleLoginCallback(req: Request, res: Response): Promise<"no user from google" | {
         message: string;
         user: Express.User;

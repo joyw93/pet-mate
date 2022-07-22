@@ -301,7 +301,26 @@ export const NicknameWrapper = styled.div`
   align-items: center;
   margin-bottom: 30px;
 `;
-export const BirthdateWrapper = styled.div`
+
+export const NameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+export const EmailWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+export const PasswordWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+
+export const BirthDateWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 30px;

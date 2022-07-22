@@ -27,9 +27,7 @@ export class AuthService {
         'user.password',
       ])
       .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
-      // .addSelect(['likes.post_id'])
       .leftJoin('user.profile', 'profile')
-      // .leftJoin('user.likes', 'likes')
       .where('user.email= :email', { email })
       .getOne();
     if (!user) {

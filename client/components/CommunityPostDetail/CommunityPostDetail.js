@@ -34,7 +34,6 @@ const CommunityPostDetail = () => {
   const unlikeIcon = "../img/heart2.png";
   const [cmtContent, setCmtContent] = useState("");
   const [like, setLike] = useState(false);
-  const [count, setCount] = useState(0);
   const router = useRouter();
   const { id } = router.query;
   const { post, loadPostDetailDone } = useSelector((state) => state.community);

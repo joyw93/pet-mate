@@ -14,6 +14,7 @@ import { Request, Response } from 'express';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
+import { SetAccountDto } from './dto/set-account.dto';
 
 @Injectable()
 export class UserService {
@@ -29,12 +30,7 @@ export class UserService {
   async getUserProfile(userId: number) {
     const user = await this.userRepository
       .createQueryBuilder('user')
-      .select([
-        'user.id',
-        'user.name',
-        'user.nickname',
-        'user.email',
-      ])
+      .select(['user.id', 'user.name', 'user.nickname', 'user.email'])
       .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
       // .addSelect(['likes.post_id'])
       .leftJoin('user.profile', 'profile')
@@ -117,6 +113,31 @@ export class UserService {
     user.profile.comment = comment;
     user.profile.birth = birthday;
     user.profile.imageUrl = imgUrls[0];
+    return await this.userRepository.save(user);
+  }
+
+  async setAccount(userId: number, setAccountDto: SetAccountDto) {
+    const { currentPassword, newPassword } = setAccountDto;
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.nickname',
+        'user.email',
+        'user.password',
+      ])
+      .where('user.id= :id', { id: userId })
+      .getOne();
+    const isAuthenticated = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+    if (!isAuthenticated) {
+      throw new UnauthorizedException(res.msg.LOGIN_PASSWORD_WRONG);
+    }
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+    user.password = hashedNewPassword;
     return await this.userRepository.save(user);
   }
 

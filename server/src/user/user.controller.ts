@@ -20,6 +20,7 @@ import { setProfileConfig } from 'src/common/aws/s3';
 import { User } from 'src/common/decorators/user.decorator';
 import { ImageFilePipe } from 'src/common/pipes/image-file.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SetAccountDto } from './dto/set-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -62,6 +63,14 @@ export class UserController {
     @Body() setProfileDto: SetProfileDto,
   ) {
     return await this.userService.setProfile(user.id, setProfileDto, imgUrls);
+  }
+
+  @Post('account')
+  async setAccount(
+    @User() user: UserEntity,
+    @Body() setAccountDto: SetAccountDto,
+  ) {
+    return await this.userService.setAccount(user.id, setAccountDto);
   }
 
   @Get('google')
