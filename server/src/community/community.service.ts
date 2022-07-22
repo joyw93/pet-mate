@@ -161,7 +161,7 @@ export class CommunityService {
         .leftJoin('post.likes', 'likes')
         .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
         .take(2)
-        .orderBy({ likeCount: 'DESC'})
+        .orderBy({ likeCount: 'DESC' })
         .getMany();
       return posts;
     } catch (err) {
@@ -194,10 +194,17 @@ export class CommunityService {
       });
       const newPost = { ...oldPost, title, content };
 
-      const savedImages: CommunityImageEntity[] =
-        await this.communityImageRepository.find({
-          where: { post_id: postId },
-        });
+      const savedImages = await this.communityImageRepository.find({
+        where: { post_id: postId },
+      });
+
+      const savedHashtags = await this.communityHashtagRepository.find({
+        where: { post_id: postId },
+      });
+
+      if (savedHashtags) {
+        await this.communityHashtagRepository.remove(savedHashtags);
+      }
 
       if (savedImages.length === 0)
         return await this.communityRepository.save(newPost);

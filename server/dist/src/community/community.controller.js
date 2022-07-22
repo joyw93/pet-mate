@@ -54,7 +54,8 @@ let CommunityController = class CommunityController {
         }
         return post;
     }
-    async editPost(user, postId, imgUrls, editPostDto) {
+    async editPost(postId, imgUrls, editPostDto) {
+        console.log(editPostDto);
         const { hashtags } = editPostDto;
         const editedPost = await this.communityService.editPost(postId, editPostDto);
         if (hashtags) {
@@ -124,12 +125,11 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':postId'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editPostConfig)),
-    __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
-    __param(2, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
-    __param(3, (0, common_1.Body)(community_edit_pipe_1.CommunityEditPipe)),
+    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
+    __param(2, (0, common_1.Body)(community_edit_pipe_1.CommunityEditPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, Array, edit_post_dto_1.EditPostDto]),
+    __metadata("design:paramtypes", [Number, Array, edit_post_dto_1.EditPostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "editPost", null);
 __decorate([

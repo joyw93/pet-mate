@@ -1,5 +1,11 @@
 import Link from "next/link";
-import React, { useState, useEffect, useCallback, useLayoutEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -50,15 +56,12 @@ const CommunityPostDetail = () => {
     slidesToScroll: 1,
   };
 
-
   // 게시물 로드
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && !post) {
       dispatch(loadPostDetailRequestAction(id));
     }
-  }, [router.isReady]);
-
-
+  }, [router.isReady, post]);
 
   // 내가 좋아요 누른 글 표시
   useEffect(() => {
@@ -130,21 +133,31 @@ const CommunityPostDetail = () => {
           <h1>커뮤니티</h1>
           <Title>
             <h2>{post.title}</h2>
-            <div>
-              <Link href={`/community/${id}/edit`}>
-                <Button>수정</Button>
-              </Link>
-              <Button onClick={handleDeletePost}>삭제</Button>
-            </div>
+            {me ? (
+              <div>
+                <Link href={`/community/${id}/edit`}>
+                  <Button>수정</Button>
+                </Link>
+                <Button onClick={handleDeletePost}>삭제</Button>
+              </div>
+            ) : null}
           </Title>
           <PostInfo>
             <div>
               <span id="post_author">{post.author.nickname}</span>
-              <span id="post_created_time">{getElapsedTime(post.createdAt)}</span>
+              <span id="post_created_time">
+                {getElapsedTime(post.createdAt)}
+              </span>
               <span id="views">조회수 {post.views}</span>
             </div>
             <div id="like_wrapper">
-              <button onClick={handleLike}>{like ? <img src={likeIcon} alt="좋아요" /> : <img src={unlikeIcon} alt="안좋아요" />}</button>
+              <button onClick={handleLike}>
+                {like ? (
+                  <img src={likeIcon} alt="좋아요" />
+                ) : (
+                  <img src={unlikeIcon} alt="안좋아요" />
+                )}
+              </button>
               <span id="like_count">{post.likeCount}</span>
             </div>
           </PostInfo>
@@ -167,8 +180,15 @@ const CommunityPostDetail = () => {
               <div id="keyword_area">
                 {post.tags &&
                   post.tags.map((tag) => (
-                    <Link href={`/search/hashtag?keyword=${tag.hashtag.keyword}`} key={tag.id} passHref>
-                      <button onClick={getKeywordValue} className="keyword_item">
+                    <Link
+                      href={`/search/hashtag?keyword=${tag.hashtag.keyword}`}
+                      key={tag.id}
+                      passHref
+                    >
+                      <button
+                        onClick={getKeywordValue}
+                        className="keyword_item"
+                      >
                         <span>{tag.hashtag.keyword}</span>
                       </button>
                     </Link>
@@ -202,7 +222,10 @@ const CommunityPostDetail = () => {
                           <CommentContentInfo>
                             <span>{getElapsedTime(comment.createdAt)}</span>
                             <span>·</span>
-                            <span id="delete_btn" onClick={() => handleDeleteCmt(comment.id)}>
+                            <span
+                              id="delete_btn"
+                              onClick={() => handleDeleteCmt(comment.id)}
+                            >
                               삭제
                             </span>
                           </CommentContentInfo>

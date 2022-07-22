@@ -13,7 +13,7 @@ export declare class CommunityController {
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
     likePost(user: UserEntity, postId: number): Promise<"unlike" | "like">;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
-    editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
+    editPost(postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
         id: number;

@@ -85,11 +85,12 @@ export class CommunityController {
   @Patch(':postId')
   @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
   async editPost(
-    @User() user: UserEntity,
+    // @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
     @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body(CommunityEditPipe) editPostDto: EditPostDto,
   ) {
+    console.log(editPostDto)
     const { hashtags } = editPostDto;
     const editedPost = await this.communityService.editPost(
       postId,

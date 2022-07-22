@@ -6,11 +6,24 @@ import { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postRequestAction, postResetAction, updatePostResetAction } from "../../reducers/community";
+import {
+  postRequestAction,
+  postResetAction,
+  updatePostResetAction,
+} from "../../reducers/community";
 import { CreatePostContainer } from "./styled";
 
-import { loadPostDetailRequestAction, updatePostRequestAction } from "../../reducers/community";
-import { TitleWrapper, TextEditWrapper, AddPhotoWrapper, KeywordWrapper, Button } from "./styled";
+import {
+  loadPostDetailRequestAction,
+  updatePostRequestAction,
+} from "../../reducers/community";
+import {
+  TitleWrapper,
+  TextEditWrapper,
+  AddPhotoWrapper,
+  KeywordWrapper,
+  Button,
+} from "./styled";
 import { useRouter } from "next/router";
 
 const CommunityPost = ({ editState }) => {
@@ -18,7 +31,8 @@ const CommunityPost = ({ editState }) => {
   const { id } = router.query;
 
   const dispatch = useDispatch();
-  const { addPostDone, updatePostDone, addPostLoading, updatePostLoading } = useSelector((state) => state.community);
+  const { addPostDone, updatePostDone, addPostLoading, updatePostLoading } =
+    useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
   const selectedPost = useSelector((state) => state.community.post);
 
@@ -40,21 +54,16 @@ const CommunityPost = ({ editState }) => {
   const handleClose = () => {
     setBackdrop(false);
   };
-  const handleToggle = () => {
-    setBackdrop(!backdrop);
-  };
-
-  useEffect(() => {
-    console.log(hashArr);
-  }, [hashArr]);
 
   useEffect(() => {
     setBackdrop(addPostLoading || updatePostLoading);
   }, [addPostLoading, updatePostLoading]);
 
-  useEffect(() => {
-    dispatch(loadPostDetailRequestAction(id));
-  }, []);
+  // useEffect(() => {
+  //   if (router.isReady && editState) {
+  //     dispatch(loadPostDetailRequestAction(id));
+  //   }
+  // }, [router.isReady, editState]);
 
   useEffect(() => {
     //수정상태일 때 선택된 게시글값 넣어주기
@@ -76,29 +85,18 @@ const CommunityPost = ({ editState }) => {
         let keywords = [];
         //post.delete("hashtags");
         if (selectedPost.tags) {
-          for (let i = 0; i < selectedPost.tags.length; i++) {
-            const keyword = selectedPost.tags[i].hashtag.keyword;
-            keywords = keywords.concat(keyword);
-          }
-          console.log(keywords);
+          // for (let i = 0; i < selectedPost.tags.length; i++) {
+          //   const keyword = selectedPost.tags[i].hashtag.keyword;
+          //   keywords = keywords.concat(keyword);
+          // }
+          const keywords = selectedPost.tags.map((tag) => tag.hashtag.keyword);
           //setEditedHash(keywords);
           setHashArr(keywords);
           setTagsLength(selectedPost.tags.length);
         }
       }
     }
-  }, [selectedPost]);
-
-  console.log(selectedPost);
-  //console.log(singlePost);
-
-  // console.log(hashArr);
-
-  // useEffect(() => {
-  //   if (!me) {
-  //     Router.push("/login");
-  //   }
-  // }, []);
+  }, [selectedPost, editState]);
 
   useEffect(() => {
     if (hashArr.length > 5) {
@@ -112,10 +110,19 @@ const CommunityPost = ({ editState }) => {
   const handleAddImages = useCallback(
     (event) => {
       const pathPoint = imageRef.current.value.lastIndexOf(".");
-      const filePoint = imageRef.current.value.substring(pathPoint + 1, imageRef.current.length);
+      const filePoint = imageRef.current.value.substring(
+        pathPoint + 1,
+        imageRef.current.length
+      );
       const fileType = filePoint.toLowerCase();
 
-      if (fileType == "jpg" || fileType == "gif" || fileType == "png" || fileType == "jpeg" || fileType == "bmp") {
+      if (
+        fileType == "jpg" ||
+        fileType == "gif" ||
+        fileType == "png" ||
+        fileType == "jpeg" ||
+        fileType == "bmp"
+      ) {
         //이미지 확장자 파일일 때
         const imageLists = event.target.files;
         let imageUrlLists = [...fileImages];
@@ -162,7 +169,10 @@ const CommunityPost = ({ editState }) => {
 
   const keyUp = useCallback(
     (e) => {
-      if ((e.keyCode === 13 || e.keyCode === 32) && e.target.value.trim() !== "") {
+      if (
+        (e.keyCode === 13 || e.keyCode === 32) &&
+        e.target.value.trim() !== ""
+      ) {
         if (hashArr.find((it) => it === e.target.value.trim())) {
           alert("같은 키워드를 입력하셨습니다.");
           setHashTagVal("");
@@ -175,22 +185,10 @@ const CommunityPost = ({ editState }) => {
     [hashTagVal, hashArr]
   );
 
-  // const handleDeleteHash = useCallback(
-  //   (idx) => {
-  //     setHashArr(hashArr.filter((_, index) => index !== idx));
-  //   },
-  //   [hashArr]
-  // );
-
   const handleDeleteHash = (i) => {
-    console.log(i);
     const deletedArr = hashArr.filter((item, index) => index !== i);
     setHashArr(deletedArr);
   };
-
-  useEffect(() => {
-    console.log(hashArr);
-  }, [hashArr]);
 
   const handlePost = () => {
     if (!title) {
@@ -216,38 +214,25 @@ const CommunityPost = ({ editState }) => {
     }
 
     if (editState) {
-      post.delete("hashtags");
-      for (let i = 0; i < hashArr.length; i++) {
-        post.append("hashtags", hashArr[i]);
-      }
-      for (let [name, value] of post) {
-        alert(`${name} = ${value}`); // key1 = value1, then key2 = value2
-      }
+      hashArr.forEach((hashtag) => {
+        post.append("hashtags", hashtag);
+      });
     } else {
       if (hashArr.length > 0) {
-        for (let i = 0; i < hashArr.length; i++) {
-          post.append("hashtags", hashArr[i]);
-        }
+        hashArr.forEach((hashtag) => {
+          post.append("hashtags", hashtag);
+        });
       }
     }
-
-    // if (hashArr.length > 0) {
-    //   for (let i = 0; i < hashArr.length; i++) {
-    //     post.append("hashtags", hashArr[i]);
-    //   }
-    // }
 
     //수정 모드일 때
     if (editState) {
       dispatch(updatePostRequestAction({ post, id }));
-      // router.push("/community");
     } else {
       //새로 작성할 때
       dispatch(postRequestAction(post));
     }
   };
-
-  // console.log(hashArr);
 
   useEffect(() => {
     if (addPostDone) {
@@ -301,7 +286,12 @@ const CommunityPost = ({ editState }) => {
           <div id="photos">
             <div id="add_photo">
               <label htmlFor="add_file" onChange={handleAddImages}>
-                <input ref={imageRef} type="file" id="add_file" accept="image/*" />
+                <input
+                  ref={imageRef}
+                  type="file"
+                  id="add_file"
+                  accept="image/*"
+                />
                 <img src="../../img/photo.png" alt="이미지 업로드" />
               </label>
             </div>
@@ -331,7 +321,11 @@ const CommunityPost = ({ editState }) => {
           <div id="keyword_area">
             {hashArr &&
               hashArr.map((it, index) => (
-                <button key={index} className="keyword_item" onClick={() => handleDeleteHash(index)}>
+                <button
+                  key={index}
+                  className="keyword_item"
+                  onClick={() => handleDeleteHash(index)}
+                >
                   <span>{it}</span>
                   <svg
                     className="delete-icon"
@@ -359,7 +353,11 @@ const CommunityPost = ({ editState }) => {
           </div>
         </KeywordWrapper>
       </CreatePostContainer>
-      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={backdrop} onClick={handleClose}>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdrop}
+        onClick={handleClose}
+      >
         <CircularProgress color="inherit" />
       </Backdrop>
     </>
