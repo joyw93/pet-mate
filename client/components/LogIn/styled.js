@@ -90,8 +90,9 @@ export const SnackBarContent = styled.div`
   align-items: center;
   width: 350px;
   height: 50px;
-  background-color: #2F3438;
+  background-color: #2f3438;
   color: white;
-  border-radius: 5px;
+  border-radius: 7px;
   font-size: 14px;
+  opacity: 0.5;
 `;

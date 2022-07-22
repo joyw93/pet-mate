@@ -1,5 +1,8 @@
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
+import Skeleton from "@mui/material/Skeleton";
 import { useEffect } from "react";
+
 import {
   ItemContainer,
   ItemImage,
@@ -19,9 +22,9 @@ import {
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
 import Link from "next/link";
-import { getLinearProgressUtilityClass } from "@mui/material";
 
 const CommunityItem = (post) => {
+  const { loadPostsLoading } = useSelector((state) => state.community);
   const itemSelect = () => {
     Router.push(`community/${post.id}`);
   };

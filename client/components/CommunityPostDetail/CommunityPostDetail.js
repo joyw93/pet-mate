@@ -51,13 +51,6 @@ const CommunityPostDetail = () => {
     slidesToScroll: 1,
   };
 
-  useEffect(() => {
-    if (post?.isLike === null) {
-      setLike(false);
-    } else {
-      setLike(post?.isLike);
-    }
-  }, [post]);
 
   // 게시물 로드
   useEffect(() => {
