@@ -1,6 +1,10 @@
 import { all, call, fork, put, takeLatest, throttle } from "redux-saga/effects";
 import axios from "axios";
-import { LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE } from "../reducers/search";
+import {
+  LOAD_HASHTAG_POSTS_REQUEST,
+  LOAD_HASHTAG_POSTS_SUCCESS,
+  LOAD_HASHTAG_POSTS_FAILURE,
+} from "../reducers/search";
 
 //const serverUrl = "http://127.0.0.1:3000";
 
@@ -10,8 +14,9 @@ import { LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_HASHTAG_PO
 //   });
 // }
 
-// const serverUrl = "http://api.petmate.kr";
+
 const serverUrl = "http://127.0.0.1:3000";
+
 
 //글 불러오기
 function loadHashtagPostsAPI(data) {

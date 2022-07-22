@@ -168,6 +168,7 @@ export const ProfileEditArea = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .react-datepicker__day--selected {
     background-color: ${Colors.primaryColor};
@@ -251,16 +252,38 @@ export const ConfirmButton = styled.button`
     transition: all 0.2s;
   }
 `;
-
+export const DeleteAccountButton = styled.button`
+  width: 80px;
+  height: 28px;
+  line-height: 28px;
+  text-align: right;
+  position: absolute;
+  right: 0;
+  top: -32px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #999;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    color: #555;
+    transition: all 0.2s;
+  }
+`;
+export const NicknameValidWrapper = styled.div`
+  font-size: 0.9rem;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+`;
 export const ValidMessage = styled.div`
   /* color: ${(props) => props.ValidMessage === ""} */
   color: green;
-  margin-top: 10px;
 `;
 
 export const InvalidMessage = styled.div`
   color: red;
-  margin-top: 10px;
 `;
 
 export const ImageEditWrapper = styled.div`
@@ -268,6 +291,7 @@ export const ImageEditWrapper = styled.div`
   margin-bottom: 50px;
   display: flex;
   justify-content: space-between;
+  position: relative;
   span {
     font-size: 1rem;
     display: block;
@@ -279,6 +303,14 @@ export const ImageInputArea = styled.label`
   display: block;
   width: 240px;
   height: 240px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+    transition: all 0.2s;
+  }
 `;
 
 export const ImageInput = styled.input`
@@ -290,16 +322,31 @@ export const ImageHolder = styled.img`
   height: 100%;
   object-fit: cover;
   cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-    transition: all 0.2s;
+`;
+export const ImageDeleteBtn = styled.button`
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 2;
+  background: none;
+  border: none;
+  cursor: pointer;
+  svg {
+    fill: #fff;
+    line-height: 22px;
+    text-align: center;
   }
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50px;
 `;
 
 export const NicknameWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+  position: relative;
 `;
 
 export const NameWrapper = styled.div`
@@ -318,6 +365,12 @@ export const PasswordWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+`;
+
+export const PasswordCheckWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 70px;
 `;
 
 export const BirthDateWrapper = styled.div`

@@ -7,6 +7,7 @@ export const SanchaekContainer = styled.div`
 export const SanchaekBanner = styled.div`
   width: 100%;
   margin-bottom: 100px;
+  cursor: pointer;
 
   img {
     width: 100%;
@@ -20,17 +21,26 @@ export const SanchaekContent = styled.div`
 `;
 export const Item = styled.div`
   /* background-color: #eee; */
-  margin-bottom: 80px;
 
-  h2 {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  margin: 0 10px 80px;
+  cursor: pointer;
+  border-radius: 10px;
+  #text_box {
+    margin: 10px  0;
+    h2 {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    span {
+      font-size: 0.8rem;
+    }
   }
-
-  span {
-    font-size: 0.9rem;
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
+    opacity: 0.7;
   }
 `;
 
@@ -39,11 +49,6 @@ export const ItemImage = styled.img`
   height: 270px;
   object-fit: cover;
   border-radius: 10px;
-
-  &:hover {
-    transition: all 0.3s;
-    opacity: 0.7;
-  }
 `;
 
 export const BtnContainer = styled.div`

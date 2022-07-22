@@ -5,17 +5,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequestAction } from "../../reducers/user";
-import {
-  LogInContainer,
-  FormWrapper,
-  InputWrapper,
-  UserInput,
-  LoginBtn,
-  GoogleBtn,
-  KakaoBtn,
-  CheckInput,
-  SnackBarContent
-} from "./styled";
+import { LogInContainer, FormWrapper, InputWrapper, UserInput, LoginBtn, GoogleBtn, KakaoBtn, CheckInput, SnackBarContent } from "./styled";
 
 // const serverUrl = 'http://127.0.0.1:3000';
 
@@ -44,8 +34,7 @@ const LogIn = () => {
   }, [logInError]);
 
   const handleLoginSubmit = useCallback(() => {
-    const emailregExp =
-      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    const emailregExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     if (emailregExp.test(email) === false || !email) {
       setEmail("");
       emailRef.current.focus();
@@ -88,15 +77,8 @@ const LogIn = () => {
       <FormWrapper>
         <InputWrapper>
           <label>이메일</label>
-          <UserInput
-            type="email"
-            value={email}
-            ref={emailRef}
-            onChange={handleLoginEmail}
-          ></UserInput>
-          {!emailIsValid && (
-            <CheckInput color="red">유효하지 않은 이메일입니다.</CheckInput>
-          )}
+          <UserInput type="email" value={email} ref={emailRef} onChange={handleLoginEmail}></UserInput>
+          {!emailIsValid && <CheckInput color="red">유효하지 않은 이메일입니다.</CheckInput>}
         </InputWrapper>
         <InputWrapper>
           <label>비밀번호</label>
@@ -122,7 +104,7 @@ const LogIn = () => {
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={snackBar}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         onClose={handleClose}
         key={"bottomcenter"}
       >

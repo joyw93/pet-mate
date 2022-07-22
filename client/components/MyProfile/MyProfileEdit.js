@@ -25,11 +25,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-} from "../../reducers/user";
+import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction } from "../../reducers/user";
 import ProfileTab from "./ProfileTab";
 import AccountTab from "./AccountTab";
 
@@ -38,9 +34,7 @@ const MyProfile = () => {
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, editProfileDone } = useSelector(
-    (state) => state.user
-  );
+  const { me, editProfileError, editProfileDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -130,16 +124,10 @@ const MyProfile = () => {
           <ProfileEditContent>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   프로필 설정
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   계정 설정
                 </li>
               </TabList>

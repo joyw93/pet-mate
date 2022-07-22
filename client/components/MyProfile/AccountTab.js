@@ -10,8 +10,10 @@ import {
   InvalidMessage,
   NameWrapper,
   PasswordWrapper,
+  PasswordCheckWrapper,
   InputTitle,
   EmailWrapper,
+  DeleteAccountButton,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
@@ -27,13 +29,7 @@ import {
 
 const AccountTab = () => {
   const dispatch = useDispatch();
-  const {
-    me,
-    editProfileDone,
-    signOutDone,
-    editAccountDone,
-    editAccountError,
-  } = useSelector((state) => state.user);
+  const { me, editProfileDone, signOutDone, editAccountDone, editAccountError } = useSelector((state) => state.user);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -109,6 +105,9 @@ const AccountTab = () => {
   return (
     <>
       <ProfileEditArea>
+        <input type="text" style={{ width: 0, height: 0, border: "none" }} />
+        <input type="password" autoComplete="new-password" style={{ width: 0, height: 0, border: "none" }} />
+        <DeleteAccountButton onClick={signOut}>회원탈퇴</DeleteAccountButton>
         <NameWrapper>
           <InputTitle>
             <span>이름</span>
@@ -133,9 +132,9 @@ const AccountTab = () => {
             onChange={(e) => {
               setCurrentPassword(e.target.value);
             }}
+            autoComplete="no"
           />
-          {currentPasswordValid === "비밀번호가 일치하지 않습니다." ||
-          currentPasswordValid === "현재 비밀번호를 입력하세요." ? (
+          {currentPasswordValid === "비밀번호가 일치하지 않습니다." || currentPasswordValid === "현재 비밀번호를 입력하세요." ? (
             <InvalidMessage>{currentPasswordValid}</InvalidMessage>
           ) : (
             <ValidMessage>{currentPasswordValid}</ValidMessage>
@@ -151,6 +150,7 @@ const AccountTab = () => {
             onChange={(e) => {
               setNewPassword(e.target.value);
             }}
+            autoComplete="no"
           />
           {newPasswordValid === "새 비밀번호를 입력하세요." ? (
             <InvalidMessage>{newPasswordValid}</InvalidMessage>
@@ -158,7 +158,7 @@ const AccountTab = () => {
             <ValidMessage>{newPasswordValid}</ValidMessage>
           )}
         </PasswordWrapper>
-        <PasswordWrapper>
+        <PasswordCheckWrapper>
           <InputTitle>
             <span>새 비밀번호 확인</span>
             <span></span>
@@ -168,9 +168,9 @@ const AccountTab = () => {
             onChange={(e) => {
               setNewPasswordConfirm(e.target.value);
             }}
+            autoComplete="no"
           />
-        </PasswordWrapper>
-        <button onClick={signOut}>회원탈퇴</button>
+        </PasswordCheckWrapper>
         <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
       </ProfileEditArea>
     </>

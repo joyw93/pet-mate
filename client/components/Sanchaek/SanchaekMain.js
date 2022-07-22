@@ -11,7 +11,9 @@ const SanchaekMain = () => {
     if (!me) {
       Router.replace("/login");
     } else {
-      Router.replace("/sanchaek/new");
+      if (window.confirm("글 작성하러 가시겠습니까?")) {
+        Router.replace("/sanchaek/new");
+      }
     }
   };
 
