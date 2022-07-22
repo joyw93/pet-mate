@@ -6,8 +6,9 @@ import {
   POST_FAILURE,
 } from "../reducers/community";
 
-const serverUrl = `http://api.petmate.kr`;
-// const serverUrl = `http://127.0.0.1:3000`;
+
+const serverUrl = `http://127.0.0.1:3000`;
+
 
 // function postAPI(data) {
 //   return axios.post(`${serverUrl}/community`, data, {

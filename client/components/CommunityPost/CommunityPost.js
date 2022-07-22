@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 const CommunityPost = ({ editState }) => {
   const router = useRouter();
   const { id } = router.query;
-  //const [singlePost, setSinglePost] = useState("");
 
   const dispatch = useDispatch();
   const { addPostDone, updatePostDone, addPostLoading, updatePostLoading } = useSelector((state) => state.community);
@@ -46,6 +45,10 @@ const CommunityPost = ({ editState }) => {
   };
 
   useEffect(() => {
+    console.log(hashArr);
+  }, [hashArr]);
+
+  useEffect(() => {
     setBackdrop(addPostLoading || updatePostLoading);
   }, [addPostLoading, updatePostLoading]);
 
@@ -57,7 +60,6 @@ const CommunityPost = ({ editState }) => {
     //수정상태일 때 선택된 게시글값 넣어주기
     if (editState) {
       if (selectedPost) {
-        //setSinglePost(selectedPost);
         setTitle(selectedPost.title);
         setContent(selectedPost.content);
 
@@ -72,11 +74,14 @@ const CommunityPost = ({ editState }) => {
         }
 
         let keywords = [];
+        //post.delete("hashtags");
         if (selectedPost.tags) {
           for (let i = 0; i < selectedPost.tags.length; i++) {
             const keyword = selectedPost.tags[i].hashtag.keyword;
             keywords = keywords.concat(keyword);
           }
+          console.log(keywords);
+          //setEditedHash(keywords);
           setHashArr(keywords);
           setTagsLength(selectedPost.tags.length);
         }
@@ -84,7 +89,7 @@ const CommunityPost = ({ editState }) => {
     }
   }, [selectedPost]);
 
-  // console.log(selectedPost);
+  console.log(selectedPost);
   //console.log(singlePost);
 
   // console.log(hashArr);
@@ -169,6 +174,7 @@ const CommunityPost = ({ editState }) => {
     },
     [hashTagVal, hashArr]
   );
+
   // const handleDeleteHash = useCallback(
   //   (idx) => {
   //     setHashArr(hashArr.filter((_, index) => index !== idx));
@@ -176,10 +182,10 @@ const CommunityPost = ({ editState }) => {
   //   [hashArr]
   // );
 
-  const handleDeleteHash = (idx) => {
-    //setHashArr(hashArr.filter((_, index) => index !== idx));
-    console.log(idx);
-    setHashArr(hashArr.filter((item, index) => index !== idx));
+  const handleDeleteHash = (i) => {
+    console.log(i);
+    const deletedArr = hashArr.filter((item, index) => index !== i);
+    setHashArr(deletedArr);
   };
 
   useEffect(() => {
@@ -194,6 +200,7 @@ const CommunityPost = ({ editState }) => {
       return contentRef.current.focus();
     }
 
+    //수정모드일 때 중복값 삭제
     let tagsArr = hashArr.filter((v, i) => hashArr.indexOf(v) === i);
     setHashArr(tagsArr);
 
@@ -209,10 +216,12 @@ const CommunityPost = ({ editState }) => {
     }
 
     if (editState) {
-      if (hashArr.length > 0) {
-        for (let i = tagsLength; i < hashArr.length; i++) {
-          post.append("hashtags", hashArr[i]);
-        }
+      post.delete("hashtags");
+      for (let i = 0; i < hashArr.length; i++) {
+        post.append("hashtags", hashArr[i]);
+      }
+      for (let [name, value] of post) {
+        alert(`${name} = ${value}`); // key1 = value1, then key2 = value2
       }
     } else {
       if (hashArr.length > 0) {
@@ -221,6 +230,12 @@ const CommunityPost = ({ editState }) => {
         }
       }
     }
+
+    // if (hashArr.length > 0) {
+    //   for (let i = 0; i < hashArr.length; i++) {
+    //     post.append("hashtags", hashArr[i]);
+    //   }
+    // }
 
     //수정 모드일 때
     if (editState) {
@@ -330,7 +345,6 @@ const CommunityPost = ({ editState }) => {
                   </svg>
                 </button>
               ))}
-
             <div id="keyword_input">
               <input
                 onKeyUp={keyUp}
