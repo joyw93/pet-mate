@@ -25,11 +25,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-} from "../../reducers/user";
+import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction } from "../../reducers/user";
 import ProfileTab from "./ProfileTab";
 import AccountTab from "./AccountTab";
 
@@ -38,9 +34,7 @@ const MyProfile = () => {
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { me, editProfileError, editProfileDone } = useSelector(
-    (state) => state.user
-  );
+  const { me, editProfileError, editProfileDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -130,73 +124,15 @@ const MyProfile = () => {
           <ProfileEditContent>
             <TabWrapper>
               <TabList>
-                <li
-                  className={activeIndex === 0 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(0)}
-                >
+                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
                   프로필 설정
                 </li>
-                <li
-                  className={activeIndex === 1 ? "is_active" : ""}
-                  onClick={() => tabClickHandler(1)}
-                >
+                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
                   계정 설정
                 </li>
               </TabList>
-<<<<<<< HEAD
-              <ProfileEditArea>
-                <NicknameWrapper>
-                  <InputTitle>
-                    <span>닉네임</span>
-                    <span>(10자 이내)</span>
-                  </InputTitle>
-                  <Input maxLength="10" onChange={onChangeNickname} value={nickname} />
-                  {nicknameValid === "닉네임을 입력하세요." || nicknameValid === "중복된 닉네임입니다." ? (
-                    <InvalidMessage>{nicknameValid}</InvalidMessage>
-                  ) : (
-                    <ValidMessage>{nicknameValid}</ValidMessage>
-                  )}
-                </NicknameWrapper>
-                <BirthdateWrapper>
-                  <InputTitle>
-                    <span>반려동물 생일</span>
-                    <span>(키보드 입력 가능)</span>
-                  </InputTitle>
-
-                  <DatePicker
-                    showPopperArrow={false}
-                    selected={date}
-                    placeholderText="YYYY-MM-DD"
-                    locale={ko}
-                    dateFormat="yyyy-MM-dd"
-                    onChange={onChangeBirthday}
-                    customInput={<Input />}
-                  />
-                </BirthdateWrapper>
-                <BioWrapper>
-                  <InputTitle>
-                    <span>한줄 소개</span>
-                    <span>(20자 이내)</span>
-                  </InputTitle>
-                  <Input maxLength="20" onChange={onChangeComment} value={comment} />
-                </BioWrapper>
-                <ImageEditWrapper>
-                  <span>프로필 이미지</span>
-                  <ImageInputArea onChange={onChangeImage}>
-                    <ImageInput type="file" />
-                    {image ? (
-                      <ImageHolder src={image} alt="이미지 업로드" />
-                    ) : (
-                      <ImageHolder src="../../img/default_profile.png" alt="이미지 업로드" />
-                    )}
-                  </ImageInputArea>
-                </ImageEditWrapper>
-                <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
-              </ProfileEditArea>
-=======
               {activeIndex === 0 ? <ProfileTab /> : null}
               {activeIndex === 1 ? <AccountTab /> : null}
->>>>>>> 1602d973a73a6c2ae3b8939cbf6d1866ceba5bed
             </TabWrapper>
           </ProfileEditContent>
         </ContentArea>

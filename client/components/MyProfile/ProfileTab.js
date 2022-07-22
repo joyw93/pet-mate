@@ -12,33 +12,28 @@ import {
   ImageInput,
   ImageEditWrapper,
   NicknameWrapper,
+  NicknameValidWrapper,
   BirthDateWrapper,
   BioWrapper,
   ImageInputArea,
   InputTitle,
+  ImageDeleteBtn,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-} from "../../reducers/user";
+import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction } from "../../reducers/user";
 
 const ProfileTab = () => {
   const dispatch = useDispatch();
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
-  const { me, editProfileError, editProfileDone } = useSelector(
-    (state) => state.user
-  );
+  const { me, editProfileError, editProfileDone } = useSelector((state) => state.user);
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
   const [image, setImage] = useState("");
   const [imageFile, setImageFile] = useState("");
-
 
   useEffect(() => {
     if (editProfileDone) {
@@ -84,10 +79,16 @@ const ProfileTab = () => {
   };
 
   const onChangeImage = (e) => {
-    const imageFile = e.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImage(imageUrl);
-    setImageFile(imageFile);
+    if (e.target.files.length > 0) {
+      const imageFile = e.target.files[0];
+      const imageUrl = URL.createObjectURL(imageFile);
+      setImage(imageUrl);
+      setImageFile(imageFile);
+    }
+  };
+  const handleDeleteImage = () => {
+    setImage("");
+    setImageFile("");
   };
 
   const onChangeBirthday = (data) => {
@@ -126,12 +127,13 @@ const ProfileTab = () => {
             <span>(10자 이내)</span>
           </InputTitle>
           <Input maxLength="10" onChange={onChangeNickname} value={nickname || ""} />
-          {nicknameValid === "닉네임을 입력하세요." ||
-          nicknameValid === "중복된 닉네임입니다." ? (
-            <InvalidMessage>{nicknameValid}</InvalidMessage>
-          ) : (
-            <ValidMessage>{nicknameValid}</ValidMessage>
-          )}
+          <NicknameValidWrapper>
+            {nicknameValid === "닉네임을 입력하세요." || nicknameValid === "중복된 닉네임입니다." ? (
+              <InvalidMessage>{nicknameValid}</InvalidMessage>
+            ) : (
+              <ValidMessage>{nicknameValid}</ValidMessage>
+            )}
+          </NicknameValidWrapper>
         </NicknameWrapper>
         <BirthDateWrapper>
           <InputTitle>
@@ -160,15 +162,22 @@ const ProfileTab = () => {
           <span>프로필 이미지</span>
           <ImageInputArea onChange={onChangeImage}>
             <ImageInput type="file" />
-            {image ? (
-              <ImageHolder src={image} alt="이미지 업로드" />
-            ) : (
-              <ImageHolder
-                src="../../img/default_profile.png"
-                alt="이미지 업로드"
-              />
-            )}
-          </ImageInputArea>
+            {image ? <ImageHolder src={image} alt="이미지 업로드" /> : <ImageHolder src="../../img/defaultimg1.png" alte="이미지없음" />}
+          </ImageInputArea>{" "}
+          {image && (
+            <ImageDeleteBtn onClick={handleDeleteImage}>
+              <svg
+                className="delete-icon"
+                width="12"
+                height="12"
+                fill="currentColor"
+                viewBox="0 0 12 12"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <path d="M6.8 6l4.2 4.2-.8.8L6 6.8 1.8 11l-.8-.8L5.2 6 1 1.8l.8-.8L6 5.2 10.2 1l.8.8L6.8 6z"></path>
+              </svg>
+            </ImageDeleteBtn>
+          )}
         </ImageEditWrapper>
         <ConfirmButton onClick={submit}>설정 완료</ConfirmButton>
       </ProfileEditArea>
