@@ -33,12 +33,11 @@ const ListSelection = ({ onChange }) => {
   );
 };
 
-const Notice = ({ hotdata }) => {
+const Notice = ({ hotPosts }) => {
   const [noticeList, setNoticeList] = useState([]);
   useEffect(() => {
-    setNoticeList(hotdata.hotdata.data);
+    setNoticeList(hotPosts.hotPosts.data);
   }, []);
-  console.log(noticeList);
 
   return (
     <>
@@ -56,7 +55,7 @@ const Notice = ({ hotdata }) => {
   );
 };
 
-const CommunityMain = (hotdata) => {
+const CommunityMain = (hotPosts) => {
   const [filterCond, setFilterCond] = useState("new");
   const { me } = useSelector((state) => state.user);
   const { postDone, posts } = useSelector((state) => state.community);
@@ -107,7 +106,7 @@ const CommunityMain = (hotdata) => {
           </PostBtn>
         ) : null}
       </HeadWrapper>
-      <Notice hotdata={hotdata} />
+      <Notice hotPosts={hotPosts} />
       <CommunityList filterCond={filterCond} />
     </CommunityCon>
   );

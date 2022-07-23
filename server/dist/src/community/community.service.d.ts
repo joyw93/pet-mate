@@ -23,11 +23,11 @@ export declare class CommunityService {
     getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<CommunityEntity[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
-    editPost(postId: number, editPostDto: EditPostDto): Promise<{
+    editPost(userId: number, postId: number, editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
         id: number;
-        author_id: number;
+        authorId: number;
         views: number;
         createdAt: Date;
         updatedAt: Date;
@@ -38,9 +38,8 @@ export declare class CommunityService {
         tags: CommunityHashtagEntity[];
         images: CommunityImageEntity[];
     } & CommunityEntity>;
-    deletePost(postId: number): Promise<import("typeorm").DeleteResult>;
+    deletePost(userId: number, postId: number): Promise<CommunityEntity>;
     likePost(userId: number, postId: number): Promise<"like" | "unlike">;
-    getAllComments(postId: number): Promise<CommunityEntity[]>;
     addComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
     editComment(commentId: number, content: string): Promise<{
         content: string;
@@ -50,6 +49,6 @@ export declare class CommunityService {
         author: UserEntity;
         post: CommunityEntity;
     } & CommunityCommentEntity>;
-    deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
+    deleteComment(userId: number, commentId: number): Promise<import("typeorm").DeleteResult>;
     uploadImages(post: CommunityEntity, imgUrls: string[]): Promise<CommunityImageEntity[]>;
 }

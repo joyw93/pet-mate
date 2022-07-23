@@ -51,16 +51,16 @@ export class SanchaekService {
     }
   }
 
-  async editSanchaek(postId: number, editSanchaekDto: EditSanchaekDto) {
+  async editSanchaek(sanchaekId: number, editSanchaekDto: EditSanchaekDto) {
     const { title, content, images } = editSanchaekDto;
     try {
       const oldSanchaek = await this.sanchaekRepository.findOne({
-        where: { id: postId },
+        where: { id: sanchaekId },
       });
       const newSanchaek = { ...oldSanchaek, title, content };
 
       const savedImages = await this.sanchaekImageRepository.find({
-        where: { sanchaek_id: postId },
+        where: {  sanchaekId },
       });
 
       if (images) {
@@ -69,7 +69,7 @@ export class SanchaekService {
         );
         await this.sanchaekImageRepository.remove(imagesToDelete);
       } else {
-        await this.sanchaekImageRepository.delete({ sanchaek_id: postId });
+        await this.sanchaekImageRepository.delete({ sanchaekId });
       }
 
       return await this.sanchaekRepository.save(newSanchaek);
@@ -79,9 +79,9 @@ export class SanchaekService {
     }
   }
 
-  async deleteSanchaek(postId: number) {
+  async deleteSanchaek(sanchaekId: number) {
     try {
-      return await this.sanchaekRepository.delete(postId);
+      return await this.sanchaekRepository.delete(sanchaekId);
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(res.msg.SANCHAEK_DELETE_POST_FAIL);

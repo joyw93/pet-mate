@@ -6,7 +6,7 @@ import Head from "next/head";
 import CommunityMain from "../../components/CommunityMain/CommunityMain";
 import { useEffect } from "react";
 
-const Community = ({ hotdata }) => {
+const Community = ({ hotPosts }) => {
 
   return (
     <>
@@ -14,7 +14,7 @@ const Community = ({ hotdata }) => {
         <title>커뮤니티 | 펫메이트</title>
       </Head>
       <AppLayout>
-        <CommunityMain hotdata={hotdata} />
+        <CommunityMain hotPosts={hotPosts} />
       </AppLayout>
     </>
   );
@@ -23,10 +23,9 @@ const Community = ({ hotdata }) => {
 export const getServerSideProps = async () => {
   // Fetch data from external API
   const result = await fetch("http://api.petmate.kr/community/hot-posts");
-  const hotdata = await result.json();
-  console.log(hotdata);
+  const hotPosts = await result.json();
   // Pass data to the page via props
-  return { props: { hotdata } };
+  return { props: { hotPosts } };
 };
 
 export default Community;

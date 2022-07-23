@@ -33,8 +33,8 @@ export class UserEntity {
   @Column('varchar', { name: 'password', select: false })
   password: string;
 
-  @Column('int', { name: 'profile_id' })
-  profile_id: number;
+  @Column('int', { name: 'profileId' })
+  profileId: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -52,7 +52,7 @@ export class UserEntity {
       cascade: true,
     },
   )
-  @JoinColumn({ name: 'profile_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'profileId', referencedColumnName: 'id' })
   profile: UserProfileEntity;
 
   @OneToMany(() => CommunityEntity, (post: CommunityEntity) => post.author, {

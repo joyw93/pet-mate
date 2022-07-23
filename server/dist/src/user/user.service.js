@@ -171,7 +171,7 @@ let UserService = class UserService {
             .select(['post.id', 'post.title', 'post.content', 'images.url'])
             .leftJoin('post.likes', 'likes')
             .leftJoin('post.images', 'images')
-            .where('likes.user_id = :id', { id: userId })
+            .where('likes.userId = :id', { id: userId })
             .getMany();
         return posts;
     }

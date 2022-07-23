@@ -2,8 +2,6 @@ import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';

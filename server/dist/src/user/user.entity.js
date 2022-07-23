@@ -40,9 +40,9 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'profile_id' }),
+    (0, typeorm_1.Column)('int', { name: 'profileId' }),
     __metadata("design:type", Number)
-], UserEntity.prototype, "profile_id", void 0);
+], UserEntity.prototype, "profileId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
@@ -59,7 +59,7 @@ __decorate([
     (0, typeorm_1.OneToOne)(() => user_profile_entity_1.UserProfileEntity, (profile) => profile.user, {
         cascade: true,
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'profile_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'profileId', referencedColumnName: 'id' }),
     __metadata("design:type", user_profile_entity_1.UserProfileEntity)
 ], UserEntity.prototype, "profile", void 0);
 __decorate([

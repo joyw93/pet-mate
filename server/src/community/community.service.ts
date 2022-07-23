@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -55,9 +56,9 @@ export class CommunityService {
       const likeCount = this.communityLikeRepository
         .createQueryBuilder()
         .subQuery()
-        .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+        .select(['postId', 'COUNT(likes.userId) AS likeCount'])
         .from(CommunityLikeEntity, 'likes')
-        .groupBy('post_id')
+        .groupBy('postId')
         .getQuery();
       const posts = this.communityRepository
         .createQueryBuilder('post')
@@ -78,7 +79,7 @@ export class CommunityService {
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
         .leftJoin('tags.hashtag', 'hashtag')
-        .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
+        .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
         .loadRelationCountAndMap('post.likeCount', 'post.likes')
         .loadRelationCountAndMap('post.commentCount', 'post.comments')
         .skip(offset)
@@ -120,7 +121,7 @@ export class CommunityService {
           'comments.content',
           'comments.createdAt',
           'commentAuthor.nickname',
-          'likes.user_id',
+          'likes.userId',
           'tags.id',
           'hashtag.keyword',
         ])
@@ -146,9 +147,9 @@ export class CommunityService {
       const likeCount = this.communityLikeRepository
         .createQueryBuilder()
         .subQuery()
-        .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+        .select(['postId', 'COUNT(likes.userId) AS likeCount'])
         .from(CommunityLikeEntity, 'likes')
-        .groupBy('post_id')
+        .groupBy('postId')
         .getQuery();
       const posts = await this.communityRepository
         .createQueryBuilder('post')
@@ -159,7 +160,7 @@ export class CommunityService {
           'LikeCount.likeCount',
         ])
         .leftJoin('post.likes', 'likes')
-        .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
+        .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
         .take(2)
         .orderBy({ likeCount: 'DESC' })
         .getMany();
@@ -186,20 +187,22 @@ export class CommunityService {
     }
   }
 
-  async editPost(postId: number, editPostDto: EditPostDto) {
+  async editPost(userId: number, postId: number, editPostDto: EditPostDto) {
     const { title, content, images } = editPostDto;
+    const post = await this.communityRepository.findOne({
+      where: { id: postId },
+    });
+    if (post.authorId !== userId) {
+      throw new ForbiddenException(res.msg.COMMUNITY_FORBIDDEN_REQUEST);
+    }
     try {
-      const oldPost = await this.communityRepository.findOne({
-        where: { id: postId },
-      });
-      const newPost = { ...oldPost, title, content };
-
+      const newPost = { ...post, title, content };
       const savedImages = await this.communityImageRepository.find({
-        where: { post_id: postId },
+        where: { postId },
       });
 
       const savedHashtags = await this.communityHashtagRepository.find({
-        where: { post_id: postId },
+        where: { postId },
       });
 
       if (savedHashtags) {
@@ -217,7 +220,7 @@ export class CommunityService {
         await this.communityImageRepository.remove(imagesToDelete);
       } else {
         // 남길 이미지 없는 경우
-        await this.communityImageRepository.delete({ post_id: postId });
+        await this.communityImageRepository.delete({ postId });
       }
 
       return await this.communityRepository.save(newPost);
@@ -227,9 +230,15 @@ export class CommunityService {
     }
   }
 
-  async deletePost(postId: number) {
+  async deletePost(userId: number, postId: number) {
+    const post = await this.communityRepository.findOne({
+      where: { id: postId },
+    });
+    if (post.authorId !== userId) {
+      throw new ForbiddenException(res.msg.COMMUNITY_FORBIDDEN_REQUEST);
+    }
     try {
-      return await this.communityRepository.delete(postId);
+      return await this.communityRepository.remove(post);
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException(
@@ -245,7 +254,7 @@ export class CommunityService {
         where: { id: postId },
       });
       const communityLike = await this.communityLikeRepository.findOne({
-        where: { user_id: userId, post_id: postId },
+        where: { userId, postId },
       });
       if (communityLike) {
         await this.communityLikeRepository.remove(communityLike);
@@ -263,17 +272,7 @@ export class CommunityService {
     }
   }
 
-  async getAllComments(postId: number) {
-    try {
-      return await this.communityRepository.find({
-        where: { id: postId },
-        relations: ['comments'],
-      });
-    } catch (err) {
-      console.error(err);
-      throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
-    }
-  }
+
 
   async addComment(
     userId: number,
@@ -302,10 +301,10 @@ export class CommunityService {
 
   async editComment(commentId: number, content: string) {
     try {
-      const oldComment = await this.communityCommentRepository.findOne({
+      const comment = await this.communityCommentRepository.findOne({
         where: { id: commentId },
       });
-      const newComment = { ...oldComment, content };
+      const newComment = { ...comment, content };
       return await this.communityCommentRepository.save(newComment);
     } catch (err) {
       console.error(err);
@@ -315,7 +314,14 @@ export class CommunityService {
     }
   }
 
-  async deleteComment(commentId: number) {
+  async deleteComment(userId: number, commentId: number) {
+    const comment = await this.communityCommentRepository.findOne({
+      relations:['author'],
+      where: { id: commentId },
+    });
+    if (comment.author.id !== userId) {
+      throw new ForbiddenException(res.msg.COMMUNITY_FORBIDDEN_REQUEST);
+    }
     try {
       return await this.communityCommentRepository.delete(commentId);
     } catch (err) {

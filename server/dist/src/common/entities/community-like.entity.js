@@ -20,25 +20,25 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityLikeEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'user_id' }),
+    (0, typeorm_1.Column)('int', { name: 'userId' }),
     __metadata("design:type", Number)
-], CommunityLikeEntity.prototype, "user_id", void 0);
+], CommunityLikeEntity.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'post_id' }),
+    (0, typeorm_1.Column)('int', { name: 'postId' }),
     __metadata("design:type", Number)
-], CommunityLikeEntity.prototype, "post_id", void 0);
+], CommunityLikeEntity.prototype, "postId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.likes, {
         onDelete: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'postId', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityLikeEntity.prototype, "post", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (user) => user.likes, {
         onDelete: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'user_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'userId', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], CommunityLikeEntity.prototype, "user", void 0);
 CommunityLikeEntity = __decorate([

@@ -1,4 +1,3 @@
-/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -21,7 +20,7 @@ export declare class UserService {
         name: string;
         nickname: string;
         id: number;
-        profile_id: number;
+        profileId: number;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;

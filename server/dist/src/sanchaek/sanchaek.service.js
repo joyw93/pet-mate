@@ -52,22 +52,22 @@ let SanchaekService = class SanchaekService {
             throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_POST_NOT_EXIST);
         }
     }
-    async editSanchaek(postId, editSanchaekDto) {
+    async editSanchaek(sanchaekId, editSanchaekDto) {
         const { title, content, images } = editSanchaekDto;
         try {
             const oldSanchaek = await this.sanchaekRepository.findOne({
-                where: { id: postId },
+                where: { id: sanchaekId },
             });
             const newSanchaek = Object.assign(Object.assign({}, oldSanchaek), { title, content });
             const savedImages = await this.sanchaekImageRepository.find({
-                where: { sanchaek_id: postId },
+                where: { sanchaekId },
             });
             if (images) {
                 const imagesToDelete = savedImages.filter((savedImage) => !images.includes(savedImage.url));
                 await this.sanchaekImageRepository.remove(imagesToDelete);
             }
             else {
-                await this.sanchaekImageRepository.delete({ sanchaek_id: postId });
+                await this.sanchaekImageRepository.delete({ sanchaekId });
             }
             return await this.sanchaekRepository.save(newSanchaek);
         }
@@ -76,9 +76,9 @@ let SanchaekService = class SanchaekService {
             throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_EDIT_POST_FAIL);
         }
     }
-    async deleteSanchaek(postId) {
+    async deleteSanchaek(sanchaekId) {
         try {
-            return await this.sanchaekRepository.delete(postId);
+            return await this.sanchaekRepository.delete(sanchaekId);
         }
         catch (err) {
             console.error(err);

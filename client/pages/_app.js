@@ -1,25 +1,45 @@
 import Head from "next/head";
 import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
-import React, {
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import { SnackBarContent } from "../components/Header/styled";
-import { logoutResetAction } from "../reducers/user";
+import { logoutResetAction, signupResetAction } from "../reducers/user";
 
 const App = ({ Component, pageProps }) => {
-  const { logOutDone } = useSelector((state) => state.user);
+  const feedback = [
+    {
+      id: 1,
+      type: "logout",
+      message: "로그아웃 되었습니다! 🐾",
+    },
+    {
+      id: 2,
+      type: "signup",
+      message: "회원가입 되었습니다! 🐾",
+    },
+  ];
+  const { logOutDone, signUpDone } = useSelector((state) => state.user);
   const [snackBar, setSnackBar] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
   const handleClose = () => {
     setSnackBar(false);
   };
 
   useEffect(() => {
-    setSnackBar(logOutDone);
+    if (logOutDone) {
+      setSnackBar(logOutDone);
+      setSnackBarMessage(feedback[0].message);
+    }
   }, [logOutDone]);
+
+  useEffect(() => {
+    if (signUpDone) {
+      setSnackBar(signUpDone);
+      setSnackBarMessage(feedback[1].message);
+    }
+  }, [signUpDone]);
 
   return (
     <>
@@ -44,7 +64,7 @@ const App = ({ Component, pageProps }) => {
         onClose={handleClose}
         key={"bottomcenter"}
       >
-        <SnackBarContent>로그아웃 되었습니다! 🐾</SnackBarContent>
+        <SnackBarContent>{snackBarMessage}</SnackBarContent>
       </Snackbar>
     </>
   );

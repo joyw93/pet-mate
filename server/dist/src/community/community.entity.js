@@ -31,9 +31,9 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'author_id' }),
+    (0, typeorm_1.Column)('int', { name: 'authorId' }),
     __metadata("design:type", Number)
-], CommunityEntity.prototype, "author_id", void 0);
+], CommunityEntity.prototype, "authorId", void 0);
 __decorate([
     (0, typeorm_1.Column)('int', { name: 'views', default: 0 }),
     __metadata("design:type", Number)
@@ -56,7 +56,7 @@ __decorate([
     }),
     (0, typeorm_1.JoinColumn)([
         {
-            name: 'author_id',
+            name: 'authorId',
             referencedColumnName: 'id',
         },
     ]),

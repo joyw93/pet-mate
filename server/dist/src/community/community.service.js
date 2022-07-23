@@ -53,9 +53,9 @@ let CommunityService = class CommunityService {
             const likeCount = this.communityLikeRepository
                 .createQueryBuilder()
                 .subQuery()
-                .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+                .select(['postId', 'COUNT(likes.userId) AS likeCount'])
                 .from(community_like_entity_1.CommunityLikeEntity, 'likes')
-                .groupBy('post_id')
+                .groupBy('postId')
                 .getQuery();
             const posts = this.communityRepository
                 .createQueryBuilder('post')
@@ -76,7 +76,7 @@ let CommunityService = class CommunityService {
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
                 .leftJoin('tags.hashtag', 'hashtag')
-                .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
+                .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
                 .loadRelationCountAndMap('post.likeCount', 'post.likes')
                 .loadRelationCountAndMap('post.commentCount', 'post.comments')
                 .skip(offset)
@@ -118,7 +118,7 @@ let CommunityService = class CommunityService {
                 'comments.content',
                 'comments.createdAt',
                 'commentAuthor.nickname',
-                'likes.user_id',
+                'likes.userId',
                 'tags.id',
                 'hashtag.keyword',
             ])
@@ -144,9 +144,9 @@ let CommunityService = class CommunityService {
             const likeCount = this.communityLikeRepository
                 .createQueryBuilder()
                 .subQuery()
-                .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+                .select(['postId', 'COUNT(likes.userId) AS likeCount'])
                 .from(community_like_entity_1.CommunityLikeEntity, 'likes')
-                .groupBy('post_id')
+                .groupBy('postId')
                 .getQuery();
             const posts = await this.communityRepository
                 .createQueryBuilder('post')
@@ -157,7 +157,7 @@ let CommunityService = class CommunityService {
                 'LikeCount.likeCount',
             ])
                 .leftJoin('post.likes', 'likes')
-                .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
+                .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
                 .take(2)
                 .orderBy({ likeCount: 'DESC' })
                 .getMany();
@@ -182,18 +182,21 @@ let CommunityService = class CommunityService {
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_CREATE_POST_FAIL);
         }
     }
-    async editPost(postId, editPostDto) {
+    async editPost(userId, postId, editPostDto) {
         const { title, content, images } = editPostDto;
+        const post = await this.communityRepository.findOne({
+            where: { id: postId },
+        });
+        if (post.authorId !== userId) {
+            throw new common_1.ForbiddenException(res.msg.COMMUNITY_FORBIDDEN_REQUEST);
+        }
         try {
-            const oldPost = await this.communityRepository.findOne({
-                where: { id: postId },
-            });
-            const newPost = Object.assign(Object.assign({}, oldPost), { title, content });
+            const newPost = Object.assign(Object.assign({}, post), { title, content });
             const savedImages = await this.communityImageRepository.find({
-                where: { post_id: postId },
+                where: { postId },
             });
             const savedHashtags = await this.communityHashtagRepository.find({
-                where: { post_id: postId },
+                where: { postId },
             });
             if (savedHashtags) {
                 await this.communityHashtagRepository.remove(savedHashtags);
@@ -205,7 +208,7 @@ let CommunityService = class CommunityService {
                 await this.communityImageRepository.remove(imagesToDelete);
             }
             else {
-                await this.communityImageRepository.delete({ post_id: postId });
+                await this.communityImageRepository.delete({ postId });
             }
             return await this.communityRepository.save(newPost);
         }
@@ -214,9 +217,15 @@ let CommunityService = class CommunityService {
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_EDIT_POST_FAIL);
         }
     }
-    async deletePost(postId) {
+    async deletePost(userId, postId) {
+        const post = await this.communityRepository.findOne({
+            where: { id: postId },
+        });
+        if (post.authorId !== userId) {
+            throw new common_1.ForbiddenException(res.msg.COMMUNITY_FORBIDDEN_REQUEST);
+        }
         try {
-            return await this.communityRepository.delete(postId);
+            return await this.communityRepository.remove(post);
         }
         catch (err) {
             console.error(err);
@@ -230,7 +239,7 @@ let CommunityService = class CommunityService {
                 where: { id: postId },
             });
             const communityLike = await this.communityLikeRepository.findOne({
-                where: { user_id: userId, post_id: postId },
+                where: { userId, postId },
             });
             if (communityLike) {
                 await this.communityLikeRepository.remove(communityLike);
@@ -243,18 +252,6 @@ let CommunityService = class CommunityService {
                 await this.communityLikeRepository.save(communityLike);
                 return 'like';
             }
-        }
-        catch (err) {
-            console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
-        }
-    }
-    async getAllComments(postId) {
-        try {
-            return await this.communityRepository.find({
-                where: { id: postId },
-                relations: ['comments'],
-            });
         }
         catch (err) {
             console.error(err);
@@ -283,10 +280,10 @@ let CommunityService = class CommunityService {
     }
     async editComment(commentId, content) {
         try {
-            const oldComment = await this.communityCommentRepository.findOne({
+            const comment = await this.communityCommentRepository.findOne({
                 where: { id: commentId },
             });
-            const newComment = Object.assign(Object.assign({}, oldComment), { content });
+            const newComment = Object.assign(Object.assign({}, comment), { content });
             return await this.communityCommentRepository.save(newComment);
         }
         catch (err) {
@@ -294,7 +291,14 @@ let CommunityService = class CommunityService {
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_COMMENT_EDIT_FAIL);
         }
     }
-    async deleteComment(commentId) {
+    async deleteComment(userId, commentId) {
+        const comment = await this.communityCommentRepository.findOne({
+            relations: ['author'],
+            where: { id: commentId },
+        });
+        if (comment.author.id !== userId) {
+            throw new common_1.ForbiddenException(res.msg.COMMUNITY_FORBIDDEN_REQUEST);
+        }
         try {
             return await this.communityCommentRepository.delete(commentId);
         }

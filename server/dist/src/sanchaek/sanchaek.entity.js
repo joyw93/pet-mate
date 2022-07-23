@@ -30,13 +30,13 @@ __decorate([
     __metadata("design:type", String)
 ], SanchaekEntity.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'user_id' }),
+    (0, typeorm_1.Column)('int', { name: 'userId' }),
     __metadata("design:type", Number)
-], SanchaekEntity.prototype, "user_id", void 0);
+], SanchaekEntity.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'map_id' }),
+    (0, typeorm_1.Column)('int', { name: 'mapId' }),
     __metadata("design:type", Number)
-], SanchaekEntity.prototype, "map_id", void 0);
+], SanchaekEntity.prototype, "mapId", void 0);
 __decorate([
     (0, typeorm_1.Column)('int', { name: 'views', default: 0 }),
     __metadata("design:type", Number)
@@ -59,7 +59,7 @@ __decorate([
     }),
     (0, typeorm_1.JoinColumn)([
         {
-            name: 'user_id',
+            name: 'userId',
             referencedColumnName: 'id',
         },
     ]),
@@ -77,7 +77,7 @@ __decorate([
     (0, typeorm_1.OneToOne)(() => sanchaek_map_entity_1.SanchaekMapEntity, (mapInfo) => mapInfo.sanchaek, {
         cascade: true,
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'map_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'mapId', referencedColumnName: 'id' }),
     __metadata("design:type", sanchaek_map_entity_1.SanchaekMapEntity)
 ], SanchaekEntity.prototype, "mapInfo", void 0);
 SanchaekEntity = __decorate([

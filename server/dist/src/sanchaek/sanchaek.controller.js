@@ -34,24 +34,24 @@ let SanchaekController = class SanchaekController {
             await this.sanchaekService.uploadImages(sanchaek, imgUrls);
         }
     }
-    async editSanchaek(user, postId, imgUrls, editSanchaekDto) {
-        const editedSanchaek = await this.sanchaekService.editSanchaek(postId, editSanchaekDto);
+    async editSanchaek(user, sanchaekId, imgUrls, editSanchaekDto) {
+        const editedSanchaek = await this.sanchaekService.editSanchaek(sanchaekId, editSanchaekDto);
         if (imgUrls) {
             await this.sanchaekService.uploadImages(editedSanchaek, imgUrls);
         }
         return editedSanchaek;
     }
-    async deleteSanchaek(user, postId) {
-        return await this.sanchaekService.deleteSanchaek(postId);
+    async deleteSanchaek(user, sanchaekId) {
+        return await this.sanchaekService.deleteSanchaek(sanchaekId);
     }
     async getSanchaeks() {
         return await this.sanchaekService.getSanchaeks();
     }
-    async getOneSanchaek(postId) {
-        return await this.sanchaekService.getOneSanchaek(postId);
+    async getOneSanchaek(sanchaekId) {
+        return await this.sanchaekService.getOneSanchaek(sanchaekId);
     }
-    async addComment(user, postId, createCommentDto) {
-        return await this.sanchaekService.addComment(user.id, postId, createCommentDto);
+    async addComment(user, sanchaekId, createCommentDto) {
+        return await this.sanchaekService.addComment(user.id, sanchaekId, createCommentDto);
     }
     async deleteComment(user, commentId) {
         return await this.sanchaekService.deleteComment(commentId);
@@ -68,10 +68,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SanchaekController.prototype, "createSanchaek", null);
 __decorate([
-    (0, common_1.Patch)(':postId'),
+    (0, common_1.Patch)(':sanchaekId'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editSanchaekConfig)),
     __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('sanchaekId', common_1.ParseIntPipe)),
     __param(2, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
     __param(3, (0, common_1.Body)(sanchaek_edit_pipe_1.SanchaekEditPipe)),
     __metadata("design:type", Function),
@@ -79,9 +79,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SanchaekController.prototype, "editSanchaek", null);
 __decorate([
-    (0, common_1.Delete)(':postId'),
+    (0, common_1.Delete)(':sanchaekId'),
     __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('sanchaekId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
     __metadata("design:returntype", Promise)
@@ -93,16 +93,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SanchaekController.prototype, "getSanchaeks", null);
 __decorate([
-    (0, common_1.Get)(':postId'),
-    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    (0, common_1.Get)(':sanchaekId'),
+    __param(0, (0, common_1.Param)('sanchaekId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], SanchaekController.prototype, "getOneSanchaek", null);
 __decorate([
-    (0, common_1.Post)(':postId/comment'),
+    (0, common_1.Post)(':sanchaekId/comment'),
     __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('sanchaekId', common_1.ParseIntPipe)),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, create_comment_dto_1.CreateCommentDto]),

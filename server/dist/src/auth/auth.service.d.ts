@@ -8,7 +8,7 @@ export declare class AuthService {
         name: string;
         nickname: string;
         email: string;
-        profile_id: number;
+        profileId: number;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;

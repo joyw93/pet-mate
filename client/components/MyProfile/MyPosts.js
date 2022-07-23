@@ -15,7 +15,6 @@ const MyPosts = ({ id, images, title, content }) => {
   return (
     <MyPostItem>
       <Link href={`/community/${id}`}>{images[0] ? <img src={images[0].url} /> : <img src={defaultImages[randomNum]} />}</Link>
-      {/* <Link href={`/community/${id}`}>{images[0] ? <img src={images[0].url} /> : <img src="../img/defaultimg1.png" />}</Link> */}
       <h1>{title}</h1>
       <div>{content}</div>
     </MyPostItem>

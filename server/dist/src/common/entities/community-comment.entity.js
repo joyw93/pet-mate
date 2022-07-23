@@ -35,14 +35,14 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.communityComments, {
         onDelete: 'CASCADE'
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'author_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'authorId', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], CommunityCommentEntity.prototype, "author", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.comments, {
         onDelete: 'CASCADE'
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'postId', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityCommentEntity.prototype, "post", void 0);
 CommunityCommentEntity = __decorate([

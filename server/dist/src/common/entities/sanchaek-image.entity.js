@@ -23,14 +23,14 @@ __decorate([
     __metadata("design:type", String)
 ], SanchaekImageEntity.prototype, "url", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'sanchaek_id' }),
+    (0, typeorm_1.Column)('int', { name: 'sanchaekId' }),
     __metadata("design:type", Number)
-], SanchaekImageEntity.prototype, "sanchaek_id", void 0);
+], SanchaekImageEntity.prototype, "sanchaekId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => sanchaek_entity_1.SanchaekEntity, (sanchaek) => sanchaek.images, {
         onDelete: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'sanchaek_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'sanchaekId', referencedColumnName: 'id' }),
     __metadata("design:type", sanchaek_entity_1.SanchaekEntity)
 ], SanchaekImageEntity.prototype, "sanchaek", void 0);
 SanchaekImageEntity = __decorate([

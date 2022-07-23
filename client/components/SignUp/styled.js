@@ -90,3 +90,16 @@ export const CheckContainer = styled.div`
     font-size: 14px;
   }
 `;
+
+export const SnackBarContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 50px;
+  background-color: #2f3438;
+  color: white;
+  border-radius: 7px;
+  font-size: 14px;
+  opacity: 0.5;
+`;

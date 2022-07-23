@@ -7,12 +7,12 @@ export declare class SanchaekController {
     private readonly sanchaekService;
     constructor(sanchaekService: SanchaekService);
     createSanchaek(user: UserEntity, imgUrls: string[], createSanchaekDto: CreateSanchaekDto): Promise<void>;
-    editSanchaek(user: UserEntity, postId: number, imgUrls: string[], editSanchaekDto: EditSanchaekDto): Promise<{
+    editSanchaek(user: UserEntity, sanchaekId: number, imgUrls: string[], editSanchaekDto: EditSanchaekDto): Promise<{
         title: string;
         content: string;
         id: number;
-        user_id: number;
-        map_id: number;
+        userId: number;
+        mapId: number;
         views: number;
         createdAt: Date;
         updatedAt: Date;
@@ -22,9 +22,9 @@ export declare class SanchaekController {
         images: import("../common/entities/sanchaek-image.entity").SanchaekImageEntity[];
         mapInfo: import("../common/entities/sanchaek-map.entity").SanchaekMapEntity;
     } & import("./sanchaek.entity").SanchaekEntity>;
-    deleteSanchaek(user: UserEntity, postId: number): Promise<import("typeorm").DeleteResult>;
+    deleteSanchaek(user: UserEntity, sanchaekId: number): Promise<import("typeorm").DeleteResult>;
     getSanchaeks(): Promise<import("./sanchaek.entity").SanchaekEntity[]>;
-    getOneSanchaek(postId: number): Promise<import("./sanchaek.entity").SanchaekEntity>;
-    addComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity>;
+    getOneSanchaek(sanchaekId: number): Promise<import("./sanchaek.entity").SanchaekEntity>;
+    addComment(user: UserEntity, sanchaekId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity>;
     deleteComment(user: UserEntity, commentId: number): Promise<import("typeorm").DeleteResult>;
 }

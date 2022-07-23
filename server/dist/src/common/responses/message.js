@@ -20,6 +20,7 @@ exports.msg = {
     COMMUNITY_COMMENT_EDIT_FAIL: '댓글 수정 실패',
     COMMUNITY_COMMENT_DELETE_FAIL: '댓글 삭제 실패',
     COMMUNITY_LIKE_FAIL: '게시글 좋아요 실패',
+    COMMUNITY_FORBIDDEN_REQUEST: '접근 권한이 없습니다.',
     SANCHAEK_POST_NOT_EXIST: '게시물이 존재하지 않습니다.',
     SANCHAEK_GET_POST_FAIL: '게시물 불러오기 실패',
     SANCHAEK_ADD_IMAGE_FAIL: '이미지 등록 실패',

@@ -15,12 +15,12 @@ export class SanchaekImageEntity {
   @Column('varchar', { name: 'url' })
   url: string;
 
-  @Column('int', { name: 'sanchaek_id' })
-  sanchaek_id: number;
+  @Column('int', { name: 'sanchaekId' })
+  sanchaekId: number;
 
   @ManyToOne(() => SanchaekEntity, (sanchaek) => sanchaek.images, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'sanchaek_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'sanchaekId', referencedColumnName: 'id' })
   sanchaek: SanchaekEntity;
 }

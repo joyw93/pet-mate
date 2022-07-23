@@ -17,6 +17,7 @@ export declare const msg: {
     COMMUNITY_COMMENT_EDIT_FAIL: string;
     COMMUNITY_COMMENT_DELETE_FAIL: string;
     COMMUNITY_LIKE_FAIL: string;
+    COMMUNITY_FORBIDDEN_REQUEST: string;
     SANCHAEK_POST_NOT_EXIST: string;
     SANCHAEK_GET_POST_FAIL: string;
     SANCHAEK_ADD_IMAGE_FAIL: string;

@@ -133,7 +133,7 @@ const CommunityPostDetail = () => {
           <h1>커뮤니티</h1>
           <Title>
             <h2>{post.title}</h2>
-            {me ? (
+            {me && me?.id === post?.author?.id ? (
               <div>
                 <Link href={`/community/${id}/edit`}>
                   <Button>수정</Button>
@@ -221,13 +221,17 @@ const CommunityPostDetail = () => {
                           <h3>{comment.author.nickname}</h3>
                           <CommentContentInfo>
                             <span>{getElapsedTime(comment.createdAt)}</span>
-                            <span>·</span>
-                            <span
-                              id="delete_btn"
-                              onClick={() => handleDeleteCmt(comment.id)}
-                            >
-                              삭제
-                            </span>
+                            {comment?.author?.id === me?.id ? (
+                              <>
+                                <span>·</span>
+                                <span
+                                  id="delete_btn"
+                                  onClick={() => handleDeleteCmt(comment.id)}
+                                >
+                                  삭제
+                                </span>
+                              </>
+                            ) : null}
                           </CommentContentInfo>
                         </CommentHandler>
 

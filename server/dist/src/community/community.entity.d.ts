@@ -7,7 +7,7 @@ export declare class CommunityEntity {
     id: number;
     title: string;
     content: string;
-    author_id: number;
+    authorId: number;
     views: number;
     createdAt: Date;
     updatedAt: Date;

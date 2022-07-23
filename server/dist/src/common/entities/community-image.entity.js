@@ -23,14 +23,14 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityImageEntity.prototype, "url", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'post_id' }),
+    (0, typeorm_1.Column)('int', { name: 'postId' }),
     __metadata("design:type", Number)
-], CommunityImageEntity.prototype, "post_id", void 0);
+], CommunityImageEntity.prototype, "postId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.images, {
         onDelete: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'postId', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityImageEntity.prototype, "post", void 0);
 CommunityImageEntity = __decorate([

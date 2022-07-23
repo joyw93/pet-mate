@@ -92,6 +92,7 @@ export class CommunityController {
   ) {
     const { hashtags } = editPostDto;
     const editedPost = await this.communityService.editPost(
+      user.id,
       postId,
       editPostDto,
     );
@@ -109,13 +110,9 @@ export class CommunityController {
     @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
   ) {
-    return await this.communityService.deletePost(postId);
+    return await this.communityService.deletePost(user.id,postId);
   }
 
-  @Get(':postId/comment')
-  async getAllComments(@Param('postId', ParseIntPipe) postId: number) {
-    return await this.communityService.getAllComments(postId);
-  }
 
   @Post(':postId/comment')
   async addComment(
@@ -143,6 +140,6 @@ export class CommunityController {
     @User() user: UserEntity,
     @Param('commentId', ParseIntPipe) commentId: number,
   ) {
-    return await this.communityService.deleteComment(commentId);
+    return await this.communityService.deleteComment(user.id, commentId);
   }
 }

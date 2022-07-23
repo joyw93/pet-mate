@@ -10,7 +10,7 @@ export declare class UserEntity {
     nickname: string;
     email: string;
     password: string;
-    profile_id: number;
+    profileId: number;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;

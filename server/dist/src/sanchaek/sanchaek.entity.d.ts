@@ -6,8 +6,8 @@ export declare class SanchaekEntity {
     id: number;
     title: string;
     content: string;
-    user_id: number;
-    map_id: number;
+    userId: number;
+    mapId: number;
     views: number;
     createdAt: Date;
     updatedAt: Date;

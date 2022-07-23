@@ -13,21 +13,21 @@ export class CommunityHashtagEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('int', { name: 'post_id' })
-  post_id: number;
+  @Column('int', { name: 'postId' })
+  postId: number;
 
-  @Column('int', { name: 'tag_id' })
-  tag_id: number;
+  @Column('int', { name: 'tagId' })
+  tagId: number;
 
   @ManyToOne(() => CommunityEntity, (post) => post.tags, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: CommunityEntity;
 
   @ManyToOne(() => HashtagEntity, (hashtag) => hashtag.tags, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'tag_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'tagId', referencedColumnName: 'id' })
   hashtag: HashtagEntity;
 }

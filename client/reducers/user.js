@@ -176,6 +176,10 @@ const reducer = (state = initialState, action) =>
         draft.signUpError = action.error;
         break;
 
+      case SIGN_UP_RESET:
+        draft.signUpDone = false;
+        break;
+
       case SIGN_OUT_REQUEST:
         draft.signOutLoading = true;
         draft.signOutError = null;
@@ -190,10 +194,6 @@ const reducer = (state = initialState, action) =>
       case SIGN_OUT_FAILURE:
         draft.signOutLoading = false;
         draft.signOutError = action.error;
-        break;
-
-      case SIGN_UP_RESET:
-        draft.signUpDone = false;
         break;
 
       case SIGN_OUT_RESET:

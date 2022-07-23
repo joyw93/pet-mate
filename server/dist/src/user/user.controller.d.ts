@@ -1,4 +1,3 @@
-/// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetAccountDto } from './dto/set-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
@@ -20,7 +19,7 @@ export declare class UserController {
         name: string;
         nickname: string;
         id: number;
-        profile_id: number;
+        profileId: number;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date;

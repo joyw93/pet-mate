@@ -20,25 +20,25 @@ __decorate([
     __metadata("design:type", Number)
 ], CommunityHashtagEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'post_id' }),
+    (0, typeorm_1.Column)('int', { name: 'postId' }),
     __metadata("design:type", Number)
-], CommunityHashtagEntity.prototype, "post_id", void 0);
+], CommunityHashtagEntity.prototype, "postId", void 0);
 __decorate([
-    (0, typeorm_1.Column)('int', { name: 'tag_id' }),
+    (0, typeorm_1.Column)('int', { name: 'tagId' }),
     __metadata("design:type", Number)
-], CommunityHashtagEntity.prototype, "tag_id", void 0);
+], CommunityHashtagEntity.prototype, "tagId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.tags, {
         onDelete: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'postId', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityHashtagEntity.prototype, "post", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => hashtag_entity_1.HashtagEntity, (hashtag) => hashtag.tags, {
         onDelete: 'CASCADE',
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'tag_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'tagId', referencedColumnName: 'id' }),
     __metadata("design:type", hashtag_entity_1.HashtagEntity)
 ], CommunityHashtagEntity.prototype, "hashtag", void 0);
 CommunityHashtagEntity = __decorate([

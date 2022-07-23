@@ -19,12 +19,12 @@ export class CommunityCommentEntity {
   @ManyToOne(() => UserEntity, (author) => author.communityComments, {
     onDelete: 'CASCADE'
   })
-  @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'id' })
   author: UserEntity;
 
   @ManyToOne(() => CommunityEntity, (post) => post.comments, {
     onDelete:'CASCADE'
   })
-  @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: CommunityEntity;
 }

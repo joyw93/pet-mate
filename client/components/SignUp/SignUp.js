@@ -13,7 +13,7 @@ import {
 } from "./styled";
 import { signupRequestAction, signupResetAction } from "../../reducers/user";
 import Router from "next/router";
-
+import Snackbar from "@mui/material/Snackbar";
 const SignUp = () => {
   const serverUrl = "http://api.petmate.kr";
   // process.env.NODE_ENV === "production"
@@ -27,7 +27,6 @@ const SignUp = () => {
     if (signUpDone) {
       dispatch(signupResetAction());
       Router.replace("/");
-      alert("환영합니다! 가입완료되었습니다.");
     }
   }, [signUpDone]);
 

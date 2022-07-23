@@ -26,11 +26,11 @@ export class SanchaekEntity {
   @Column('text', { name: 'content' })
   content: string;
 
-  @Column('int', { name: 'user_id' })
-  user_id: number;
+  @Column('int', { name: 'userId' })
+  userId: number;
 
-  @Column('int', { name: 'map_id' })
-  map_id: number;
+  @Column('int', { name: 'mapId' })
+  mapId: number;
 
   @Column('int', { name: 'views', default: 0 })
   views: number;
@@ -49,7 +49,7 @@ export class SanchaekEntity {
   })
   @JoinColumn([
     {
-      name: 'user_id',
+      name: 'userId',
       referencedColumnName: 'id',
     },
   ])
@@ -76,6 +76,6 @@ export class SanchaekEntity {
       cascade: true,
     },
   )
-  @JoinColumn({ name: 'map_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'mapId', referencedColumnName: 'id' })
   mapInfo: SanchaekMapEntity;
 }

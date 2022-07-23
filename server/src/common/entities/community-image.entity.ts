@@ -15,12 +15,12 @@ export class CommunityImageEntity {
   @Column('varchar', { name: 'url' })
   url: string;
 
-  @Column('int', { name: 'post_id' })
-  post_id: number;
+  @Column('int', { name: 'postId' })
+  postId: number;
 
   @ManyToOne(() => CommunityEntity, (post) => post.images, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: CommunityEntity;
 }

@@ -19,12 +19,12 @@ export class SanchaekCommentEntity {
   @ManyToOne(() => UserEntity, (author) => author.sanchaekComments, {
     onDelete: 'CASCADE'
   })
-  @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'id' })
   author: UserEntity;
 
   @ManyToOne(() => SanchaekEntity, (sanchaek) => sanchaek.comments, {
     onDelete:'CASCADE'
   })
-  @JoinColumn({ name: 'sanchaek_id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'sanchaekId', referencedColumnName: 'id' })
   sanchaek: SanchaekEntity;
 }

@@ -26,8 +26,8 @@ export class CommunityEntity {
   @Column('text', { name: 'content' })
   content: string;
 
-  @Column('int', { name: 'author_id' })
-  author_id: number;
+  @Column('int', { name: 'authorId' })
+  authorId: number;
 
   @Column('int', { name: 'views', default: 0 })
   views: number;
@@ -46,7 +46,7 @@ export class CommunityEntity {
   })
   @JoinColumn([
     {
-      name: 'author_id',
+      name: 'authorId',
       referencedColumnName: 'id',
     },
   ])

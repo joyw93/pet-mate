@@ -11,13 +11,13 @@ export declare class CommunityController {
     getPosts(offset: number, postCount: number, orderBy: string): Promise<import("./community.entity").CommunityEntity[]>;
     getHotPosts(): Promise<import("./community.entity").CommunityEntity[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
-    likePost(user: UserEntity, postId: number): Promise<"like" | "unlike">;
+    likePost(user: UserEntity, postId: number): Promise<"unlike" | "like">;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
     editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
         id: number;
-        author_id: number;
+        authorId: number;
         views: number;
         createdAt: Date;
         updatedAt: Date;
@@ -28,8 +28,7 @@ export declare class CommunityController {
         tags: import("../common/entities/community-hashtag.entity").CommunityHashtagEntity[];
         images: import("../common/entities/community-image.entity").CommunityImageEntity[];
     } & import("./community.entity").CommunityEntity>;
-    deletePost(user: UserEntity, postId: number): Promise<import("typeorm").DeleteResult>;
-    getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
+    deletePost(user: UserEntity, postId: number): Promise<import("./community.entity").CommunityEntity>;
     addComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
     editComment(commentId: number, commentContent: string): Promise<{
         content: string;

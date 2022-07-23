@@ -41,16 +41,16 @@ export class SanchaekController {
     }
   }
 
-  @Patch(':postId')
+  @Patch(':sanchaekId')
   @UseInterceptors(FilesInterceptor('images', 3, editSanchaekConfig))
   async editSanchaek(
     @User() user: UserEntity,
-    @Param('postId', ParseIntPipe) postId: number,
+    @Param('sanchaekId', ParseIntPipe) sanchaekId: number,
     @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body(SanchaekEditPipe) editSanchaekDto: EditSanchaekDto,
   ) {
     const editedSanchaek = await this.sanchaekService.editSanchaek(
-      postId,
+      sanchaekId,
       editSanchaekDto,
     );
     if (imgUrls) {
@@ -59,12 +59,12 @@ export class SanchaekController {
     return editedSanchaek;
   }
 
-  @Delete(':postId')
+  @Delete(':sanchaekId')
   async deleteSanchaek(
     @User() user: UserEntity,
-    @Param('postId', ParseIntPipe) postId: number,
+    @Param('sanchaekId', ParseIntPipe) sanchaekId: number,
   ) {
-    return await this.sanchaekService.deleteSanchaek(postId);
+    return await this.sanchaekService.deleteSanchaek(sanchaekId);
   }
 
   @Get()
@@ -72,20 +72,20 @@ export class SanchaekController {
     return await this.sanchaekService.getSanchaeks();
   }
 
-  @Get(':postId')
-  async getOneSanchaek(@Param('postId', ParseIntPipe) postId: number) {
-    return await this.sanchaekService.getOneSanchaek(postId);
+  @Get(':sanchaekId')
+  async getOneSanchaek(@Param('sanchaekId', ParseIntPipe) sanchaekId: number) {
+    return await this.sanchaekService.getOneSanchaek(sanchaekId);
   }
 
-  @Post(':postId/comment')
+  @Post(':sanchaekId/comment')
   async addComment(
     @User() user: UserEntity,
-    @Param('postId', ParseIntPipe) postId: number,
+    @Param('sanchaekId', ParseIntPipe) sanchaekId: number,
     @Body() createCommentDto: CreateCommentDto,
   ) {
     return await this.sanchaekService.addComment(
       user.id,
-      postId,
+      sanchaekId,
       createCommentDto,
     );
   }
