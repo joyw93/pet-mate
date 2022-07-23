@@ -261,7 +261,7 @@ let CommunityService = class CommunityService {
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
         }
     }
-    async createComment(userId, postId, createCommentDto) {
+    async addComment(userId, postId, createCommentDto) {
         const { content } = createCommentDto;
         const user = await this.userRepository.findOne({ where: { id: userId } });
         const post = await this.communityRepository.findOne({

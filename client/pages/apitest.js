@@ -30,17 +30,31 @@ const Test = () => {
   };
 
   const post = async (e) => {
+    const mapInfo = {
+      lat: 1.23,
+      lng: 1.32,
+      location: "asdf",
+      address: "asdf",
+      roadAddress: "asdf",
+    };
+
     const body = new FormData();
     body.append("title", title);
     body.append("content", content);
-    body.append("hashtags", "cc");
-    body.append("hashtags", "d");
+
+    // append nested object
+    body.append("mapInfo[lat]", 1.23);
+    body.append("mapInfo[lng]", 1.23);
+    body.append("mapInfo[location]", 'asdf');
+    body.append("mapInfo[address]", 'asdf');
+    body.append("mapInfo[roadAddress]", 'asdf');
+
     [].forEach.call(images, (img) => {
       body.append("images", img);
     });
 
     await axios
-      .post(`${serverUrl}/community`, body, {
+      .post(`${localServerUrl}/sanchaek`, body, {
         withCredentials: true,
       })
       .then((res) => console.log(res))
@@ -53,7 +67,7 @@ const Test = () => {
       { email, password },
       { withCredentials: true }
     );
-    console.log(result)
+    console.log(result);
   };
 
   return (

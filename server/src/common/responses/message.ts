@@ -22,7 +22,12 @@ export const msg = {
   COMMUNITY_LIKE_FAIL: '게시글 좋아요 실패',
 
   SANCHAEK_POST_NOT_EXIST: '게시물이 존재하지 않습니다.',
+  SANCHAEK_GET_POST_FAIL: '게시물 불러오기 실패',
   SANCHAEK_ADD_IMAGE_FAIL: '이미지 등록 실패',
+  SANCHAEK_CREATE_COMMENT_FAIL: '댓글 등록 실패',
+  SANCHAEK_COMMENT_DELETE_FAIL: '댓글 삭제 실패',
+  SANCHAEK_EDIT_POST_FAIL: '게시물 수정 실패',
+  SANCHAEK_DELETE_POST_FAIL: '게시물 삭제 실패',
 
   INTERNAL_SERVER_ERROR: '서버에러 발생',
 };

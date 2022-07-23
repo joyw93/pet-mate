@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SanchaekEntity = void 0;
+const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
 const user_entity_1 = require("../user/user.entity");
@@ -64,6 +65,10 @@ __decorate([
     ]),
     __metadata("design:type", user_entity_1.UserEntity)
 ], SanchaekEntity.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => sanchaek_comment_entity_1.SanchaekCommentEntity, (comment) => comment.sanchaek, { cascade: true }),
+    __metadata("design:type", Array)
+], SanchaekEntity.prototype, "comments", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => sanchaek_image_entity_1.SanchaekImageEntity, (image) => image.sanchaek, { cascade: true }),
     __metadata("design:type", Array)

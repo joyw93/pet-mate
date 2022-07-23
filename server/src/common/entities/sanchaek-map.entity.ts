@@ -13,11 +13,11 @@ export class SanchaekMapEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('float', { name: 'lat' })
-  lat: number;
+  @Column('varchar', { name: 'lat' })
+  lat: string;
 
-  @Column('float', { name: 'lng' })
-  lng: number;
+  @Column('varchar', { name: 'lng' })
+  lng: string;
 
   @Column('varchar', { name: 'location' })
   location: string;

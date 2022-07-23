@@ -9,44 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommunityCommentEntity = void 0;
-const community_entity_1 = require("../../community/community.entity");
+exports.SanchaekCommentEntity = void 0;
+const sanchaek_entity_1 = require("../../sanchaek/sanchaek.entity");
 const user_entity_1 = require("../../user/user.entity");
 const typeorm_1 = require("typeorm");
-let CommunityCommentEntity = class CommunityCommentEntity {
+let SanchaekCommentEntity = class SanchaekCommentEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'int', name: 'id' }),
     __metadata("design:type", Number)
-], CommunityCommentEntity.prototype, "id", void 0);
+], SanchaekCommentEntity.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)('text', { name: 'content' }),
     __metadata("design:type", String)
-], CommunityCommentEntity.prototype, "content", void 0);
+], SanchaekCommentEntity.prototype, "content", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], CommunityCommentEntity.prototype, "createdAt", void 0);
+], SanchaekCommentEntity.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.DeleteDateColumn)(),
     __metadata("design:type", Date)
-], CommunityCommentEntity.prototype, "deletedAt", void 0);
+], SanchaekCommentEntity.prototype, "deletedAt", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.communityComments, {
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.sanchaekComments, {
         onDelete: 'CASCADE'
     }),
     (0, typeorm_1.JoinColumn)({ name: 'author_id', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.UserEntity)
-], CommunityCommentEntity.prototype, "author", void 0);
+], SanchaekCommentEntity.prototype, "author", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.comments, {
+    (0, typeorm_1.ManyToOne)(() => sanchaek_entity_1.SanchaekEntity, (sanchaek) => sanchaek.comments, {
         onDelete: 'CASCADE'
     }),
-    (0, typeorm_1.JoinColumn)({ name: 'post_id', referencedColumnName: 'id' }),
-    __metadata("design:type", community_entity_1.CommunityEntity)
-], CommunityCommentEntity.prototype, "post", void 0);
-CommunityCommentEntity = __decorate([
-    (0, typeorm_1.Entity)('CommunityComment')
-], CommunityCommentEntity);
-exports.CommunityCommentEntity = CommunityCommentEntity;
-//# sourceMappingURL=community-comment.entity.js.map
+    (0, typeorm_1.JoinColumn)({ name: 'sanchaek_id', referencedColumnName: 'id' }),
+    __metadata("design:type", sanchaek_entity_1.SanchaekEntity)
+], SanchaekCommentEntity.prototype, "sanchaek", void 0);
+SanchaekCommentEntity = __decorate([
+    (0, typeorm_1.Entity)('SanchaekComment')
+], SanchaekCommentEntity);
+exports.SanchaekCommentEntity = SanchaekCommentEntity;
+//# sourceMappingURL=sanchaek-comment.entity.js.map

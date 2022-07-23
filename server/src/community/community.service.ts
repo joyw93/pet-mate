@@ -275,7 +275,7 @@ export class CommunityService {
     }
   }
 
-  async createComment(
+  async addComment(
     userId: number,
     postId: number,
     createCommentDto: CreateCommentDto,

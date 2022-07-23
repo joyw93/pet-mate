@@ -62,14 +62,7 @@ const ProfileTab = () => {
     }
   }, [editProfileError]);
 
-  useEffect(() => {
-    if (!nickname) {
-      setNicknameValid("닉네임을 입력하세요.");
-    } else {
-      setNicknameValid(null);
-    }
-  }, [nickname]);
-
+  
   const onChangeNickname = (e) => {
     setNickname(e.target.value);
   };
@@ -104,6 +97,7 @@ const ProfileTab = () => {
 
   const submit = useCallback(() => {
     if (!nickname) {
+      setNicknameValid("닉네임을 입력하세요.");
       return;
     }
     const data = new FormData();

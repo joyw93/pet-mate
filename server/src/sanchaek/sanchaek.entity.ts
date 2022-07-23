@@ -1,3 +1,4 @@
+import { SanchaekCommentEntity } from 'src/common/entities/sanchaek-comment.entity';
 import { SanchaekImageEntity } from 'src/common/entities/sanchaek-image.entity';
 import { SanchaekMapEntity } from 'src/common/entities/sanchaek-map.entity';
 import { UserEntity } from 'src/user/user.entity';
@@ -55,15 +56,26 @@ export class SanchaekEntity {
   user: UserEntity;
 
   @OneToMany(
+    () => SanchaekCommentEntity,
+    (comment: SanchaekCommentEntity) => comment.sanchaek,
+    { cascade: true },
+  )
+  comments: SanchaekCommentEntity[];
+
+  @OneToMany(
     () => SanchaekImageEntity,
     (image: SanchaekImageEntity) => image.sanchaek,
     { cascade: true },
   )
   images: SanchaekImageEntity[];
 
-  @OneToOne(() => SanchaekMapEntity, (mapInfo: SanchaekMapEntity) => mapInfo.sanchaek, {
-    cascade: true,
-  })
+  @OneToOne(
+    () => SanchaekMapEntity,
+    (mapInfo: SanchaekMapEntity) => mapInfo.sanchaek,
+    {
+      cascade: true,
+    },
+  )
   @JoinColumn({ name: 'map_id', referencedColumnName: 'id' })
   mapInfo: SanchaekMapEntity;
 }

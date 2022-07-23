@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SanchaekModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
 const user_entity_1 = require("../user/user.entity");
@@ -25,6 +26,7 @@ SanchaekModule = __decorate([
                 sanchaek_entity_1.SanchaekEntity,
                 sanchaek_map_entity_1.SanchaekMapEntity,
                 sanchaek_image_entity_1.SanchaekImageEntity,
+                sanchaek_comment_entity_1.SanchaekCommentEntity
             ]),
         ],
         controllers: [sanchaek_controller_1.SanchaekController],

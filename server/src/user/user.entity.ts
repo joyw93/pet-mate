@@ -1,5 +1,6 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
+import { SanchaekCommentEntity } from 'src/common/entities/sanchaek-comment.entity';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { CommunityEntity } from 'src/community/community.entity';
 import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
@@ -84,5 +85,14 @@ export class UserEntity {
       cascade: true,
     },
   )
-  comments: CommunityCommentEntity[];
+  communityComments: CommunityCommentEntity[];
+
+  @OneToMany(
+    ()=>SanchaekCommentEntity,
+    (comment: SanchaekCommentEntity)=>comment.author,
+    {
+      cascade: true
+    }
+  )
+  sanchaekComments: SanchaekCommentEntity[];
 }

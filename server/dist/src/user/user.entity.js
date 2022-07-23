@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
 const sanchaek_entity_1 = require("../sanchaek/sanchaek.entity");
@@ -84,7 +85,13 @@ __decorate([
         cascade: true,
     }),
     __metadata("design:type", Array)
-], UserEntity.prototype, "comments", void 0);
+], UserEntity.prototype, "communityComments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => sanchaek_comment_entity_1.SanchaekCommentEntity, (comment) => comment.author, {
+        cascade: true
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "sanchaekComments", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('User')
 ], UserEntity);

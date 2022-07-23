@@ -1,6 +1,6 @@
 declare class MapInfo {
-    lat: number;
-    lng: number;
+    lat: string;
+    lng: string;
     location: string;
     address: string;
     roadAddress: string;

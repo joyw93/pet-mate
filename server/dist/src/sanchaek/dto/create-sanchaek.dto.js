@@ -15,12 +15,12 @@ const class_validator_1 = require("class-validator");
 class MapInfo {
 }
 __decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
 ], MapInfo.prototype, "lat", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
 ], MapInfo.prototype, "lng", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),

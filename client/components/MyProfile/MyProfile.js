@@ -42,7 +42,7 @@ const MyProfile = () => {
     console.log("전체");
   }, []);
 
-  const titles = [myPostsData, myCommentsData, myLikedData];
+  const posts = [myPostsData, myCommentsData, myLikedData];
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
@@ -118,7 +118,7 @@ const MyProfile = () => {
                 </li>
               </TabList>
 
-              <ImageWrapper>{titles[activeIndex] && titles[activeIndex].map((item) => <MyPosts key={item.id} {...item} />)}</ImageWrapper>
+              <ImageWrapper>{posts[activeIndex] && posts[activeIndex].map((post) => <MyPosts key={post.id} {...post} />)}</ImageWrapper>
             </TabWrapper>
           </UserContent>
         </ContentArea>

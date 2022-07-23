@@ -19,12 +19,12 @@ __decorate([
     __metadata("design:type", Number)
 ], SanchaekMapEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)('float', { name: 'lat' }),
-    __metadata("design:type", Number)
+    (0, typeorm_1.Column)('varchar', { name: 'lat' }),
+    __metadata("design:type", String)
 ], SanchaekMapEntity.prototype, "lat", void 0);
 __decorate([
-    (0, typeorm_1.Column)('float', { name: 'lng' }),
-    __metadata("design:type", Number)
+    (0, typeorm_1.Column)('varchar', { name: 'lng' }),
+    __metadata("design:type", String)
 ], SanchaekMapEntity.prototype, "lng", void 0);
 __decorate([
     (0, typeorm_1.Column)('varchar', { name: 'location' }),

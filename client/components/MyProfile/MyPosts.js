@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { MyPostItem } from "./styled";
 
-const MyPosts = ({ id, images }) => {
-  const defaultimages = [
+const MyPosts = ({ id, images, title, content }) => {
+  const defaultImages = [
     "../img/defaultimg1.png",
     "../img/defaultimg2.png",
     "../img/defaultimg3.png",
@@ -14,9 +14,10 @@ const MyPosts = ({ id, images }) => {
 
   return (
     <MyPostItem>
-      <Link href={`/community/${id}`}>{images[0] ? <img src={images[0].url} /> : <img src={defaultimages[randomNum]} />}</Link>
+      <Link href={`/community/${id}`}>{images[0] ? <img src={images[0].url} /> : <img src={defaultImages[randomNum]} />}</Link>
       {/* <Link href={`/community/${id}`}>{images[0] ? <img src={images[0].url} /> : <img src="../img/defaultimg1.png" />}</Link> */}
-      <h1>타이틀타이틀</h1>
+      <h1>{title}</h1>
+      <div>{content}</div>
     </MyPostItem>
   );
 };

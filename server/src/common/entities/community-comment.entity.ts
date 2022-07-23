@@ -16,7 +16,7 @@ export class CommunityCommentEntity {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToOne(() => UserEntity, (author) => author.comments, {
+  @ManyToOne(() => UserEntity, (author) => author.communityComments, {
     onDelete: 'CASCADE'
   })
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })

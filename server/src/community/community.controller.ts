@@ -85,12 +85,11 @@ export class CommunityController {
   @Patch(':postId')
   @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
   async editPost(
-    // @User() user: UserEntity,
+    @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
     @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body(CommunityEditPipe) editPostDto: EditPostDto,
   ) {
-    console.log(editPostDto)
     const { hashtags } = editPostDto;
     const editedPost = await this.communityService.editPost(
       postId,
@@ -119,12 +118,12 @@ export class CommunityController {
   }
 
   @Post(':postId/comment')
-  async createComment(
+  async addComment(
     @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
     @Body() createCommentDto: CreateCommentDto,
   ) {
-    return await this.communityService.createComment(
+    return await this.communityService.addComment(
       user.id,
       postId,
       createCommentDto,
@@ -140,7 +139,10 @@ export class CommunityController {
   }
 
   @Delete('comment/:commentId')
-  async deleteComment(@Param('commentId', ParseIntPipe) commentId: number) {
+  async deleteComment(
+    @User() user: UserEntity,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
     return await this.communityService.deleteComment(commentId);
   }
 }

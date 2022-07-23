@@ -16,7 +16,8 @@ export declare class AuthService {
         posts: import("../community/community.entity").CommunityEntity[];
         sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
-        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        communityComments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        sanchaekComments: import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity[];
     }>;
     validateGoogleUser(email: string, name: string, accessToken: string): Promise<UserEntity>;
 }

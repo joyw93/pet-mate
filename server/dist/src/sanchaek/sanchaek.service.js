@@ -21,11 +21,13 @@ const sanchaek_entity_1 = require("./sanchaek.entity");
 const res = require("../common/responses/message");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
+const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 let SanchaekService = class SanchaekService {
-    constructor(sanchaekRepository, userRepository, sanchaekImageRepository) {
+    constructor(sanchaekRepository, userRepository, sanchaekImageRepository, sanchaekCommentRepository) {
         this.sanchaekRepository = sanchaekRepository;
         this.userRepository = userRepository;
         this.sanchaekImageRepository = sanchaekImageRepository;
+        this.sanchaekCommentRepository = sanchaekCommentRepository;
     }
     async createSanchaek(userId, createSanchaekDto) {
         try {
@@ -50,6 +52,119 @@ let SanchaekService = class SanchaekService {
             throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_POST_NOT_EXIST);
         }
     }
+    async editSanchaek(postId, editSanchaekDto) {
+        const { title, content, images } = editSanchaekDto;
+        try {
+            const oldSanchaek = await this.sanchaekRepository.findOne({
+                where: { id: postId },
+            });
+            const newSanchaek = Object.assign(Object.assign({}, oldSanchaek), { title, content });
+            const savedImages = await this.sanchaekImageRepository.find({
+                where: { sanchaek_id: postId },
+            });
+            if (images) {
+                const imagesToDelete = savedImages.filter((savedImage) => !images.includes(savedImage.url));
+                await this.sanchaekImageRepository.remove(imagesToDelete);
+            }
+            else {
+                await this.sanchaekImageRepository.delete({ sanchaek_id: postId });
+            }
+            return await this.sanchaekRepository.save(newSanchaek);
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_EDIT_POST_FAIL);
+        }
+    }
+    async deleteSanchaek(postId) {
+        try {
+            return await this.sanchaekRepository.delete(postId);
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_DELETE_POST_FAIL);
+        }
+    }
+    async getSanchaeks() {
+        try {
+            const sanchaeks = this.sanchaekRepository
+                .createQueryBuilder('sanchaek')
+                .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'sanchaek.createdAt'])
+                .addSelect(['user.nickname'])
+                .addSelect(['images.url'])
+                .leftJoin('sanchaek.images', 'images')
+                .leftJoinAndSelect('sanchaek.mapInfo', 'map')
+                .leftJoin('sanchaek.user', 'user')
+                .getMany();
+            return sanchaeks;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
+        }
+    }
+    async getOneSanchaek(postId) {
+        const sanchaek = await this.sanchaekRepository.findOne({
+            where: { id: postId },
+        });
+        if (!sanchaek) {
+            throw new common_1.NotFoundException(res.msg.SANCHAEK_POST_NOT_EXIST);
+        }
+        else {
+            sanchaek.views++;
+            await this.sanchaekRepository.save(sanchaek);
+        }
+        try {
+            const sanchaek = await this.sanchaekRepository
+                .createQueryBuilder('sanchaek')
+                .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'sanchaek.createdAt'])
+                .addSelect(['user.nickname'])
+                .addSelect(['images.url'])
+                .addSelect(['comments.content'])
+                .addSelect(['author.nickname'])
+                .leftJoin('sanchaek.comments', 'comments')
+                .leftJoin('comments.author', 'author')
+                .leftJoin('sanchaek.images', 'images')
+                .leftJoinAndSelect('sanchaek.mapInfo', 'map')
+                .leftJoin('sanchaek.user', 'user')
+                .where('sanchaek.id= :id', { id: postId })
+                .getOne();
+            return sanchaek;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
+        }
+    }
+    async addComment(userId, postId, createCommentDto) {
+        const { content } = createCommentDto;
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        const sanchaek = await this.sanchaekRepository.findOne({
+            where: { id: postId },
+        });
+        if (!sanchaek)
+            throw new common_1.BadRequestException(res.msg.SANCHAEK_POST_NOT_EXIST);
+        try {
+            const comment = new sanchaek_comment_entity_1.SanchaekCommentEntity();
+            comment.author = user;
+            comment.sanchaek = sanchaek;
+            comment.content = content;
+            return await this.sanchaekCommentRepository.save(comment);
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_CREATE_COMMENT_FAIL);
+        }
+    }
+    async deleteComment(commentId) {
+        try {
+            return await this.sanchaekCommentRepository.delete(commentId);
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_COMMENT_DELETE_FAIL);
+        }
+    }
     async uploadImages(sanchaek, imgUrls) {
         try {
             const result = await Promise.all(imgUrls.map((imgUrl) => {
@@ -71,7 +186,9 @@ SanchaekService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(sanchaek_entity_1.SanchaekEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(sanchaek_image_entity_1.SanchaekImageEntity)),
+    __param(3, (0, typeorm_1.InjectRepository)(sanchaek_comment_entity_1.SanchaekCommentEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], SanchaekService);

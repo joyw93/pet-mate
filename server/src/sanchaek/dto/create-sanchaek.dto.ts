@@ -9,10 +9,10 @@ import {
 } from 'class-validator';
 
 class MapInfo {
-  @IsNumber()
-  public lat: number;
-  @IsNumber()
-  public lng: number;
+  @IsString()
+  public lat: string;
+  @IsString()
+  public lng: string;
   @IsString()
   public location: string;
   @IsString()

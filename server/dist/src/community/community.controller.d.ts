@@ -11,9 +11,9 @@ export declare class CommunityController {
     getPosts(offset: number, postCount: number, orderBy: string): Promise<import("./community.entity").CommunityEntity[]>;
     getHotPosts(): Promise<import("./community.entity").CommunityEntity[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
-    likePost(user: UserEntity, postId: number): Promise<"unlike" | "like">;
+    likePost(user: UserEntity, postId: number): Promise<"like" | "unlike">;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
-    editPost(postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
+    editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
         id: number;
@@ -30,7 +30,7 @@ export declare class CommunityController {
     } & import("./community.entity").CommunityEntity>;
     deletePost(user: UserEntity, postId: number): Promise<import("typeorm").DeleteResult>;
     getAllComments(postId: number): Promise<import("./community.entity").CommunityEntity[]>;
-    createComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
+    addComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
     editComment(commentId: number, commentContent: string): Promise<{
         content: string;
         id: number;
@@ -39,5 +39,5 @@ export declare class CommunityController {
         author: UserEntity;
         post: import("./community.entity").CommunityEntity;
     } & import("../common/entities/community-comment.entity").CommunityCommentEntity>;
-    deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
+    deleteComment(user: UserEntity, commentId: number): Promise<import("typeorm").DeleteResult>;
 }

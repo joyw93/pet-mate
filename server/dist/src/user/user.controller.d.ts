@@ -1,3 +1,4 @@
+/// <reference types="passport" />
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetAccountDto } from './dto/set-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
@@ -26,7 +27,8 @@ export declare class UserController {
         posts: import("../community/community.entity").CommunityEntity[];
         sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
-        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        communityComments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        sanchaekComments: import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
     setProfile(user: UserEntity, imgUrls: string[], setProfileDto: SetProfileDto): Promise<UserEntity>;

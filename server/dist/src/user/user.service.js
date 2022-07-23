@@ -158,7 +158,7 @@ let UserService = class UserService {
     async getMyPosts(userId) {
         const posts = await this.communityRepository
             .createQueryBuilder('post')
-            .select(['post.id', 'images.url'])
+            .select(['post.id', 'post.title', 'post.content', 'images.url'])
             .leftJoin('post.author', 'author')
             .leftJoin('post.images', 'images')
             .where('author.id = :id', { id: userId })
@@ -168,7 +168,7 @@ let UserService = class UserService {
     async getLikedPosts(userId) {
         const posts = await this.communityRepository
             .createQueryBuilder('post')
-            .select(['post.id', 'images.url'])
+            .select(['post.id', 'post.title', 'post.content', 'images.url'])
             .leftJoin('post.likes', 'likes')
             .leftJoin('post.images', 'images')
             .where('likes.user_id = :id', { id: userId })
@@ -178,7 +178,7 @@ let UserService = class UserService {
     async getCommentedPosts(userId) {
         const posts = await this.communityRepository
             .createQueryBuilder('post')
-            .select(['post.id', 'images.url'])
+            .select(['post.id', 'post.title', 'post.content', 'images.url'])
             .leftJoin('post.images', 'images')
             .leftJoin('post.comments', 'comments')
             .leftJoin('comments.author', 'author')

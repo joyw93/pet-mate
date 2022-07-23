@@ -54,8 +54,7 @@ let CommunityController = class CommunityController {
         }
         return post;
     }
-    async editPost(postId, imgUrls, editPostDto) {
-        console.log(editPostDto);
+    async editPost(user, postId, imgUrls, editPostDto) {
         const { hashtags } = editPostDto;
         const editedPost = await this.communityService.editPost(postId, editPostDto);
         if (hashtags) {
@@ -72,13 +71,13 @@ let CommunityController = class CommunityController {
     async getAllComments(postId) {
         return await this.communityService.getAllComments(postId);
     }
-    async createComment(user, postId, createCommentDto) {
-        return await this.communityService.createComment(user.id, postId, createCommentDto);
+    async addComment(user, postId, createCommentDto) {
+        return await this.communityService.addComment(user.id, postId, createCommentDto);
     }
     async editComment(commentId, commentContent) {
         return await this.communityService.editComment(commentId, commentContent);
     }
-    async deleteComment(commentId) {
+    async deleteComment(user, commentId) {
         return await this.communityService.deleteComment(commentId);
     }
 };
@@ -125,11 +124,12 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':postId'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editPostConfig)),
-    __param(0, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
-    __param(2, (0, common_1.Body)(community_edit_pipe_1.CommunityEditPipe)),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
+    __param(3, (0, common_1.Body)(community_edit_pipe_1.CommunityEditPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Array, edit_post_dto_1.EditPostDto]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, Array, edit_post_dto_1.EditPostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "editPost", null);
 __decorate([
@@ -155,7 +155,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", Promise)
-], CommunityController.prototype, "createComment", null);
+], CommunityController.prototype, "addComment", null);
 __decorate([
     (0, common_1.Patch)('comment/:commentId'),
     __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
@@ -166,9 +166,10 @@ __decorate([
 ], CommunityController.prototype, "editComment", null);
 __decorate([
     (0, common_1.Delete)('comment/:commentId'),
-    __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "deleteComment", null);
 CommunityController = __decorate([

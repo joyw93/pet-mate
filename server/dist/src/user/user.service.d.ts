@@ -1,3 +1,4 @@
+/// <reference types="passport" />
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -27,7 +28,8 @@ export declare class UserService {
         posts: CommunityEntity[];
         sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
-        comments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        communityComments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
+        sanchaekComments: import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity[];
     }>;
     setProfile(userId: number, setProfileDto: SetProfileDto, imgUrls: string[]): Promise<UserEntity>;
     setAccount(userId: number, setAccountDto: SetAccountDto): Promise<UserEntity>;

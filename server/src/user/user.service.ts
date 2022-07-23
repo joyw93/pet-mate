@@ -32,9 +32,7 @@ export class UserService {
       .createQueryBuilder('user')
       .select(['user.id', 'user.name', 'user.nickname', 'user.email'])
       .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
-      // .addSelect(['likes.post_id'])
       .leftJoin('user.profile', 'profile')
-      // .leftJoin('user.likes', 'likes')
       .where('user.id= :id', { id: userId })
       .getOne();
     return user;
@@ -170,7 +168,7 @@ export class UserService {
   async getMyPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id', 'images.url'])
+      .select(['post.id', 'post.title','post.content','images.url'])
       .leftJoin('post.author', 'author')
       .leftJoin('post.images', 'images')
       .where('author.id = :id', { id: userId })
@@ -181,7 +179,7 @@ export class UserService {
   async getLikedPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id', 'images.url'])
+      .select(['post.id', 'post.title','post.content','images.url'])
       .leftJoin('post.likes', 'likes')
       .leftJoin('post.images', 'images')
       .where('likes.user_id = :id', { id: userId })
@@ -192,7 +190,7 @@ export class UserService {
   async getCommentedPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id', 'images.url'])
+      .select(['post.id', 'post.title','post.content','images.url'])
       .leftJoin('post.images', 'images')
       .leftJoin('post.comments', 'comments')
       .leftJoin('comments.author', 'author')
