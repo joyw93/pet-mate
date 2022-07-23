@@ -7,7 +7,8 @@ import {
 } from "../reducers/community";
 
 
-const serverUrl = `http://127.0.0.1:3000`;
+// const serverUrl = `http://127.0.0.1:3000`;
+const serverUrl = "http://api.petmate.kr";
 
 
 // function postAPI(data) {
