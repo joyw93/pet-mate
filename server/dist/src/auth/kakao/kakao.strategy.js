@@ -23,9 +23,10 @@ let KakaoStrategy = class KakaoStrategy extends (0, passport_1.PassportStrategy)
         this.authService = authService;
     }
     async validate(accessToken, refreshToken, profile, done) {
-        const user = profile;
-        console.log(profile);
-        done(null, user);
+        const name = profile.username;
+        const email = profile._json.kakao_account.email;
+        const kakaoUser = await this.authService.validateKakaoUser(email, name, accessToken);
+        return done(null, kakaoUser);
     }
 };
 KakaoStrategy = __decorate([

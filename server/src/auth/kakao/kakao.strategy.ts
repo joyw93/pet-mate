@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Strategy } from 'passport-kakao';
 import { PassportStrategy } from '@nestjs/passport';
 import { AuthService } from '../auth.service';
+import { VerifyCallback } from 'passport-google-oauth20';
 
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy) {
@@ -15,18 +16,13 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
     accessToken: string,
     refreshToken: string,
     profile: any,
-    done,
+    done: VerifyCallback,
   ) {
-    const user = profile;
-
-    console.log(profile);
-    done(null, user);
-
-    // const googleUser = await this.authService.validateGoogleUser(
-    //   user.email,
-    //   user.name,
-    //   accessToken,
-    // );
-    // return done(null, googleUser);
+    // const user = profile;
+    const name = profile.username;
+    const email = profile._json.kakao_account.email;
+    const kakaoUser = await this.authService.validateKakaoUser(email, name, accessToken)
+    return done(null, kakaoUser);
+    
   }
 }

@@ -30,9 +30,11 @@ const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const bcrypt = require("bcrypt");
 const res = require("../common/responses/message");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 let AuthService = class AuthService {
-    constructor(userRepository) {
+    constructor(userRepository, userProfileRepository) {
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
     }
     async validateUser(email, password) {
         const user = await this.userRepository
@@ -66,20 +68,41 @@ let AuthService = class AuthService {
             return exUser;
         }
         else {
-            const newUser = await this.userRepository.save({
-                email,
-                name,
-                nickname: name,
-                password: accessToken,
-            });
-            return newUser;
+            const newUser = new user_entity_1.UserEntity();
+            const newUserProfile = new user_profile_entity_1.UserProfileEntity();
+            newUser.email = email;
+            newUser.name = name;
+            newUser.nickname = 'none';
+            newUser.password = '1234';
+            newUser.profile = newUserProfile;
+            return await this.userRepository.save(newUser);
+        }
+    }
+    async validateKakaoUser(email, name, accessToken) {
+        const exUser = await this.userRepository.findOne({
+            where: { email },
+        });
+        if (exUser) {
+            return exUser;
+        }
+        else {
+            const newUser = new user_entity_1.UserEntity();
+            const newUserProfile = new user_profile_entity_1.UserProfileEntity();
+            newUser.email = email;
+            newUser.name = name;
+            newUser.nickname = 'none';
+            newUser.password = '1234';
+            newUser.profile = newUserProfile;
+            return await this.userRepository.save(newUser);
         }
     }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(user_profile_entity_1.UserProfileEntity)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

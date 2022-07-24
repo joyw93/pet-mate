@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class SetAccountDto {
+export class EditAccountDto {
   @IsNotEmpty()
   @IsString()
   public currentPassword: string;

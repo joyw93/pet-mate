@@ -5,11 +5,5 @@ export class SetProfileDto {
   @IsString()
   public nickname: string;
 
-  @IsOptional()
-  @IsString()
-  public birthday: string;
-
-  @IsOptional()
-  @IsString()
-  public comment: string;
 }
+

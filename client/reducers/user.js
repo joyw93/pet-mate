@@ -17,6 +17,10 @@ export const initialState = {
   signOutDone: false,
   signOutError: null,
 
+  setProfileLoading: false,
+  setProfileDone: false,
+  setProfileError: null,
+
   editProfileLoading: false,
   editProfileDone: false,
   editProfileError: null,
@@ -29,7 +33,12 @@ export const initialState = {
   loadProfileDone: false,
   loadProfileError: null,
 
+  loadUserInfoLoading: false,
+  loadUserInfoDone: false,
+  loadUserInfoError: null,
+
   me: null,
+  userInfo: null, // SNS로그인 전용
   signUpData: {},
   loginData: {},
 
@@ -73,6 +82,10 @@ export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST";
 export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS";
 export const LOAD_PROFILE_FAILURE = "LOAD_PROFILE_FAILURE";
 
+export const LOAD_USERINFO_REQUEST = "LOAD_USERINFO_REQUEST";
+export const LOAD_USERINFO_SUCCESS = "LOAD_USERINFO_SUCCESS";
+export const LOAD_USERINFO_FAILURE = "LOAD_USERINFO_FAILURE";
+
 export const LOAD_MY_POSTS_REQUEST = "LOAD_MY_POSTS_REQUEST";
 export const LOAD_MY_POSTS_SUCCESS = "LOAD_MY_POSTS_SUCCESS";
 export const LOAD_MY_POSTS_FAILURE = "LOAD_MY_POSTS_FAILURE";
@@ -84,6 +97,11 @@ export const LOAD_MY_COMMENTS_FAILURE = "LOAD_MY_COMMENTS_FAILURE";
 export const LOAD_MY_LIKED_REQUEST = "LOAD_MY_LIKED_REQUEST";
 export const LOAD_MY_LIKED_SUCCESS = "LOAD_MY_LIKED_SUCCESS";
 export const LOAD_MY_LIKED_FAILURE = "LOAD_MY_LIKED_FAILURE";
+
+export const SET_PROFILE_REQUEST = "SET_PROFILE_REQUEST";
+export const SET_PROFILE_SUCCESS = "SET_PROFILE_SUCCESS";
+export const SET_PROFILE_FAILURE = "SET_PROFILE_FAILURE";
+export const SET_PROFILE_RESET = "SET_PROFILE_RESET";
 
 export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
 export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
@@ -129,6 +147,10 @@ export const loadProfileRequestAction = () => ({
   type: LOAD_PROFILE_REQUEST,
 });
 
+export const loadUserInfoRequestAction = () => ({
+  type: LOAD_USERINFO_REQUEST,
+});
+
 export const loadMyPostsAction = () => ({
   type: LOAD_MY_POSTS_REQUEST,
 });
@@ -139,6 +161,11 @@ export const loadMyCommentsAction = () => ({
 
 export const loadMyLikedAction = () => ({
   type: LOAD_MY_LIKED_REQUEST,
+});
+
+export const setProfileRequestAction = (data) => ({
+  type: SET_PROFILE_REQUEST,
+  data,
 });
 
 export const editProfileRequestAction = (data) => ({
@@ -175,7 +202,6 @@ const reducer = (state = initialState, action) =>
         draft.signUpLoading = false;
         draft.signUpError = action.error;
         break;
-
       case SIGN_UP_RESET:
         draft.signUpDone = false;
         break;
@@ -195,7 +221,6 @@ const reducer = (state = initialState, action) =>
         draft.signOutLoading = false;
         draft.signOutError = action.error;
         break;
-
       case SIGN_OUT_RESET:
         draft.signOutDone = false;
         break;
@@ -229,7 +254,6 @@ const reducer = (state = initialState, action) =>
         draft.logOutLoading = false;
         draft.logOutError = action.error;
         break;
-
       case LOG_OUT_RESET:
         draft.logOutDone = false;
         draft.logOutLoading = false;
@@ -249,6 +273,21 @@ const reducer = (state = initialState, action) =>
       case LOAD_PROFILE_FAILURE:
         draft.loadProfileLoading = false;
         draft.loadProfileError = action.error;
+        break;
+
+      case LOAD_USERINFO_REQUEST:
+        draft.loadUserInfoLoading = true;
+        draft.loadUserInfoError = null;
+        draft.loadUserInfoDone = false;
+        break;
+      case LOAD_USERINFO_SUCCESS:
+        draft.loadUserInfoLoading = false;
+        draft.loadUserInfoDone = true;
+        draft.userInfo = action.data;
+        break;
+      case LOAD_USERINFO_FAILURE:
+        draft.loadUserInfoLoading = false;
+        draft.loadUserInfoError = action.error;
         break;
 
       case LOAD_MY_POSTS_REQUEST:
@@ -295,6 +334,24 @@ const reducer = (state = initialState, action) =>
         draft.loadMyLikedLoading = false;
         draft.loadMyLikedError = action.error;
 
+      case SET_PROFILE_REQUEST:
+        draft.setProfileLoading = true;
+        draft.setProfileError = null;
+        draft.setProfileDone = false;
+        break;
+      case SET_PROFILE_SUCCESS:
+        draft.setProfileLoading = false;
+        draft.setProfileDone = true;
+        break;
+      case SET_PROFILE_FAILURE:
+        draft.setProfileLoading = false;
+        draft.setProfileError = action.error;
+        break;
+      case SET_PROFILE_RESET:
+        draft.setProfileLoading = false;
+        draft.setProfileDone = false;
+        break;
+
       case EDIT_PROFILE_REQUEST:
         draft.editProfileLoading = true;
         draft.editProfileError = null;
@@ -308,7 +365,6 @@ const reducer = (state = initialState, action) =>
         draft.editProfileLoading = false;
         draft.editProfileError = action.error;
         break;
-
       case EDIT_PROFILE_RESET:
         draft.editProfileLoading = false;
         draft.editProfileDone = false;

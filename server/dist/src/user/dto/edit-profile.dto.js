@@ -9,14 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SetProfileDto = void 0;
+exports.EditProfileDto = void 0;
 const class_validator_1 = require("class-validator");
-class SetProfileDto {
+class EditProfileDto {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], SetProfileDto.prototype, "nickname", void 0);
-exports.SetProfileDto = SetProfileDto;
-//# sourceMappingURL=set-profile.dto.js.map
+], EditProfileDto.prototype, "nickname", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], EditProfileDto.prototype, "birthday", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], EditProfileDto.prototype, "comment", void 0);
+exports.EditProfileDto = EditProfileDto;
+//# sourceMappingURL=edit-profile.dto.js.map

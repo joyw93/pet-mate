@@ -22,7 +22,8 @@ const s3_1 = require("../common/aws/s3");
 const user_decorator_1 = require("../common/decorators/user.decorator");
 const image_file_pipe_1 = require("../common/pipes/image-file.pipe");
 const create_user_dto_1 = require("./dto/create-user.dto");
-const set_account_dto_1 = require("./dto/set-account.dto");
+const edit_account_dto_1 = require("./dto/edit-account.dto");
+const edit_profile_dto_1 = require("./dto/edit-profile.dto");
 const set_profile_dto_1 = require("./dto/set-profile.dto");
 const user_entity_1 = require("./user.entity");
 const user_service_1 = require("./user.service");
@@ -45,11 +46,14 @@ let UserController = class UserController {
     async login(user) {
         return user;
     }
-    async setProfile(user, imgUrls, setProfileDto) {
-        return await this.userService.setProfile(user.id, setProfileDto, imgUrls);
+    async setProfile(user, setProfileDto) {
+        return await this.userService.setProfile(user.id, setProfileDto);
     }
-    async setAccount(user, setAccountDto) {
-        return await this.userService.setAccount(user.id, setAccountDto);
+    async editProfile(user, imgUrls, editProfileDto) {
+        return await this.userService.editProfile(user.id, editProfileDto, imgUrls);
+    }
+    async setAccount(user, editAccountDto) {
+        return await this.userService.editAccount(user.id, editAccountDto);
     }
     async googleLogin(req) { }
     async googleLoginCallback(req, res) {
@@ -126,21 +130,30 @@ __decorate([
 ], UserController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('profile'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity,
+        set_profile_dto_1.SetProfileDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "setProfile", null);
+__decorate([
+    (0, common_1.Patch)('profile'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('image', 1, s3_1.setProfileConfig)),
     __param(0, (0, user_decorator_1.User)()),
     __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, set_profile_dto_1.SetProfileDto]),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, edit_profile_dto_1.EditProfileDto]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "setProfile", null);
+], UserController.prototype, "editProfile", null);
 __decorate([
-    (0, common_1.Post)('account'),
+    (0, common_1.Patch)('account'),
     __param(0, (0, user_decorator_1.User)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.UserEntity,
-        set_account_dto_1.SetAccountDto]),
+        edit_account_dto_1.EditAccountDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "setAccount", null);
 __decorate([

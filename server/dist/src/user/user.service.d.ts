@@ -3,9 +3,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 import { Request, Response } from 'express';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
-import { SetProfileDto } from './dto/set-profile.dto';
+import { EditProfileDto } from './dto/edit-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
-import { SetAccountDto } from './dto/set-account.dto';
+import { EditAccountDto } from './dto/edit-account.dto';
+import { SetProfileDto } from './dto/set-profile.dto';
 export declare class UserService {
     private userRepository;
     private userProfileRepository;
@@ -30,16 +31,11 @@ export declare class UserService {
         communityComments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
         sanchaekComments: import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity[];
     }>;
-    setProfile(userId: number, setProfileDto: SetProfileDto, imgUrls: string[]): Promise<UserEntity>;
-    setAccount(userId: number, setAccountDto: SetAccountDto): Promise<UserEntity>;
-    googleLoginCallback(req: Request, res: Response): Promise<"no user from google" | {
-        message: string;
-        user: Express.User;
-    }>;
-    kakaoLoginCallback(req: any, res: any): Promise<"no user from kakao" | {
-        message: string;
-        user: any;
-    }>;
+    setProfile(userId: number, setProfileDto: SetProfileDto): Promise<UserEntity>;
+    editProfile(userId: number, editProfileDto: EditProfileDto, imgUrls: string[]): Promise<UserEntity>;
+    editAccount(userId: number, editAccountDto: EditAccountDto): Promise<UserEntity>;
+    googleLoginCallback(req: Request, res: Response): Promise<void | Response<any, Record<string, any>>>;
+    kakaoLoginCallback(req: any, res: any): Promise<any>;
     getMyPosts(userId: number): Promise<CommunityEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;

@@ -8,12 +8,15 @@ import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as res from '../common/responses/message';
+import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserProfileEntity)
+    private userProfileRepository: Repository<UserProfileEntity>,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -48,13 +51,32 @@ export class AuthService {
     if (exUser) {
       return exUser;
     } else {
-      const newUser = await this.userRepository.save({
-        email,
-        name,
-        nickname: name,
-        password: accessToken,
-      });
-      return newUser;
+      const newUser = new UserEntity();
+      const newUserProfile = new UserProfileEntity();
+      newUser.email = email;
+      newUser.name = name;
+      newUser.nickname = 'none';
+      newUser.password = '1234';
+      newUser.profile = newUserProfile;
+      return await this.userRepository.save(newUser);
+    }
+  }
+
+  async validateKakaoUser(email: string, name: string, accessToken: string) {
+    const exUser = await this.userRepository.findOne({
+      where: { email },
+    });
+    if (exUser) {
+      return exUser;
+    } else {
+      const newUser = new UserEntity();
+      const newUserProfile = new UserProfileEntity();
+      newUser.email = email;
+      newUser.name = name;
+      newUser.nickname = 'none';
+      newUser.password = '1234';
+      newUser.profile = newUserProfile;
+      return await this.userRepository.save(newUser);
     }
   }
 }

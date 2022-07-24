@@ -16,13 +16,14 @@ const local_strategy_1 = require("./local/local.strategy");
 const serializer_1 = require("./serializer");
 const google_strategy_1 = require("./google/google.strategy");
 const kakao_strategy_1 = require("./kakao/kakao.strategy");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             passport_1.PassportModule.register({ session: true }),
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, user_profile_entity_1.UserProfileEntity]),
         ],
         providers: [
             auth_service_1.AuthService,

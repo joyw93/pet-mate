@@ -341,7 +341,10 @@ export const ImageDeleteBtn = styled.button`
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50px;
 `;
-
+export const GoogleLogin = styled.div`
+  width: 500px;
+  margin: 0 auto;
+`;
 export const NicknameWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -395,3 +398,6 @@ export const InputTitle = styled.div`
     color: #777;
   }
 `;
+
+export const AdditionalInfo = styled.h2`
+margin-bottom: 50px;`

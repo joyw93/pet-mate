@@ -11,6 +11,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  Patch,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
@@ -20,7 +21,8 @@ import { setProfileConfig } from 'src/common/aws/s3';
 import { User } from 'src/common/decorators/user.decorator';
 import { ImageFilePipe } from 'src/common/pipes/image-file.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
-import { SetAccountDto } from './dto/set-account.dto';
+import { EditAccountDto } from './dto/edit-account.dto';
+import { EditProfileDto } from './dto/edit-profile.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -56,21 +58,29 @@ export class UserController {
   }
 
   @Post('profile')
-  @UseInterceptors(FilesInterceptor('image', 1, setProfileConfig))
   async setProfile(
     @User() user: UserEntity,
-    @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body() setProfileDto: SetProfileDto,
   ) {
-    return await this.userService.setProfile(user.id, setProfileDto, imgUrls);
+    return await this.userService.setProfile(user.id, setProfileDto);
   }
 
-  @Post('account')
+  @Patch('profile')
+  @UseInterceptors(FilesInterceptor('image', 1, setProfileConfig))
+  async editProfile(
+    @User() user: UserEntity,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
+    @Body() editProfileDto: EditProfileDto,
+  ) {
+    return await this.userService.editProfile(user.id, editProfileDto, imgUrls);
+  }
+
+  @Patch('account')
   async setAccount(
     @User() user: UserEntity,
-    @Body() setAccountDto: SetAccountDto,
+    @Body() editAccountDto: EditAccountDto,
   ) {
-    return await this.userService.setAccount(user.id, setAccountDto);
+    return await this.userService.editAccount(user.id, editAccountDto);
   }
 
   @Get('google')

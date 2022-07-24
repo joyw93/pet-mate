@@ -5,7 +5,12 @@ import React, { useEffect, useState } from "react";
 import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import { SnackBarContent } from "../components/Header/styled";
-import { logoutResetAction, signupResetAction } from "../reducers/user";
+import {
+  loadProfileRequestAction,
+  loadUserInfoRequestAction,
+  logoutResetAction,
+  signupResetAction,
+} from "../reducers/user";
 
 const App = ({ Component, pageProps }) => {
   const feedback = [
@@ -20,12 +25,19 @@ const App = ({ Component, pageProps }) => {
       message: "회원가입 되었습니다! 🐾",
     },
   ];
-  const { logOutDone, signUpDone } = useSelector((state) => state.user);
+  const { logOutDone, signUpDone, userInfo } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
   const [snackBar, setSnackBar] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState("");
   const handleClose = () => {
     setSnackBar(false);
   };
+
+  useEffect(() => {
+    dispatch(loadProfileRequestAction());
+  }, []);
 
   useEffect(() => {
     if (logOutDone) {

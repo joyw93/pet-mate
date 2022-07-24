@@ -1,5 +1,7 @@
+/// <reference types="express" />
 import { CreateUserDto } from './dto/create-user.dto';
-import { SetAccountDto } from './dto/set-account.dto';
+import { EditAccountDto } from './dto/edit-account.dto';
+import { EditProfileDto } from './dto/edit-profile.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -30,18 +32,13 @@ export declare class UserController {
         sanchaekComments: import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity[];
     }>;
     login(user: UserEntity): Promise<UserEntity>;
-    setProfile(user: UserEntity, imgUrls: string[], setProfileDto: SetProfileDto): Promise<UserEntity>;
-    setAccount(user: UserEntity, setAccountDto: SetAccountDto): Promise<UserEntity>;
+    setProfile(user: UserEntity, setProfileDto: SetProfileDto): Promise<UserEntity>;
+    editProfile(user: UserEntity, imgUrls: string[], editProfileDto: EditProfileDto): Promise<UserEntity>;
+    setAccount(user: UserEntity, editAccountDto: EditAccountDto): Promise<UserEntity>;
     googleLogin(req: any): Promise<void>;
-    googleLoginCallback(req: any, res: any): Promise<"no user from google" | {
-        message: string;
-        user: Express.User;
-    }>;
+    googleLoginCallback(req: any, res: any): Promise<void | import("express").Response<any, Record<string, any>>>;
     kakaoLogin(req: any): Promise<void>;
-    kakaoLoginCallback(req: any, res: any): Promise<"no user from kakao" | {
-        message: string;
-        user: any;
-    }>;
+    kakaoLoginCallback(req: any, res: any): Promise<any>;
     logout(response: any): Promise<any>;
     getMyPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
     getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;

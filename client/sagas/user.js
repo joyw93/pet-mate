@@ -31,6 +31,12 @@ import {
   EDIT_ACCOUNT_SUCCESS,
   EDIT_ACCOUNT_FAILURE,
   EDIT_ACCOUNT_REQUEST,
+  LOAD_USERINFO_SUCCESS,
+  LOAD_USERINFO_FAILURE,
+  LOAD_USERINFO_REQUEST,
+  SET_PROFILE_SUCCESS,
+  SET_PROFILE_FAILURE,
+  SET_PROFILE_REQUEST,
 } from "../reducers/user";
 
 
@@ -143,6 +149,27 @@ function* loadProfile(action) {
   }
 }
 
+function loadUserInfoAPI() {
+  return axios.get(`${serverUrl}/user`, { withCredentials: true });
+}
+
+function* loadUserInfo(action) {
+  try {
+    const result = yield call(loadUserInfoAPI);
+    const payload = result.data;
+    yield put({
+      type: LOAD_USERINFO_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USERINFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function loadMyPostsAPI() {
   return axios.get(`${serverUrl}/user/posts`, { withCredentials: true });
 }
@@ -208,8 +235,30 @@ function* loadMyLiked(action) {
   }
 }
 
-function editProfileAPI(data) {
+function setProfileAPI(data) {
   return axios.post(`${serverUrl}/user/profile`, data, {
+    withCredentials: true,
+  });
+}
+
+function* setProfile(action) {
+  try {
+    const result = yield call(setProfileAPI, action.data);
+    const payload = result.data;
+    yield put({
+      type: SET_PROFILE_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: SET_PROFILE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function editProfileAPI(data) {
+  return axios.patch(`${serverUrl}/user/profile`, data, {
     withCredentials: true,
   });
 }
@@ -273,6 +322,10 @@ function* watchLoadProfile() {
   yield takeLatest(LOAD_PROFILE_REQUEST, loadProfile);
 }
 
+function* watchLoadUserInfo() {
+  yield takeLatest(LOAD_USERINFO_REQUEST, loadUserInfo);
+}
+
 function* watchLoadMyPosts() {
   yield takeLatest(LOAD_MY_POSTS_REQUEST, loadMyPosts);
 }
@@ -283,6 +336,10 @@ function* watchLoadMyComments() {
 
 function* watchLoadMyLiked() {
   yield takeLatest(LOAD_MY_LIKED_REQUEST, loadMyLiked);
+}
+
+function* watchSetProfile() {
+  yield takeLatest(SET_PROFILE_REQUEST, setProfile);
 }
 
 function* watchEditProfile() {
@@ -303,7 +360,9 @@ export default function* userSaga() {
     fork(watchLoadMyComments),
     fork(watchLoadMyLiked),
     fork(watchLoadProfile),
+    fork(watchLoadUserInfo),
     fork(watchEditProfile),
     fork(watchEditAccount),
+    fork(watchSetProfile),
   ]);
 }

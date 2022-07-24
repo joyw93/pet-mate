@@ -12,9 +12,10 @@ import * as bcrypt from 'bcrypt';
 import * as res from '../common/responses/message';
 import { Request, Response } from 'express';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
-import { SetProfileDto } from './dto/set-profile.dto';
+import { EditProfileDto } from './dto/edit-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
-import { SetAccountDto } from './dto/set-account.dto';
+import { EditAccountDto } from './dto/edit-account.dto';
+import { SetProfileDto } from './dto/set-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -91,12 +92,27 @@ export class UserService {
     }
   }
 
-  async setProfile(
+  async setProfile(userId: number, setProfileDto: SetProfileDto) {
+    const { nickname } = setProfileDto;
+    const userByNickname = await this.userRepository.findOne({
+      where: { nickname },
+    });
+    if (userByNickname) {
+      throw new UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
+    }
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    user.nickname = nickname;
+    return await this.userRepository.save(user);
+  }
+
+  async editProfile(
     userId: number,
-    setProfileDto: SetProfileDto,
+    editProfileDto: EditProfileDto,
     imgUrls: string[],
   ) {
-    const { nickname, birthday, comment } = setProfileDto;
+    const { nickname, birthday, comment } = editProfileDto;
     const userByNickname = await this.userRepository.findOne({
       where: { nickname },
     });
@@ -114,8 +130,8 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async setAccount(userId: number, setAccountDto: SetAccountDto) {
-    const { currentPassword, newPassword } = setAccountDto;
+  async editAccount(userId: number, editAccountDto: EditAccountDto) {
+    const { currentPassword, newPassword } = editAccountDto;
     const user = await this.userRepository
       .createQueryBuilder('user')
       .select([
@@ -141,34 +157,34 @@ export class UserService {
 
   async googleLoginCallback(req: Request, res: Response) {
     if (!req.user) {
-      res.send('login error');
-      return 'no user from google';
+      return res.send('login error');
     } else {
-      res.redirect('http://127.0.0.1:800');
-      return {
-        message: 'User info from Google',
-        user: req.user,
-      };
+      const user = req.user;
+      if (user.nickname === 'none') {
+        return res.redirect(`http://127.0.0.1:800/auth/google`);
+      } else {
+        return res.redirect(`http://127.0.0.1:800`);
+      }
     }
   }
 
   async kakaoLoginCallback(req, res) {
     if (!req.user) {
-      res.send('login error');
-      return 'no user from kakao';
+      return res.send('login error');
     } else {
-      res.redirect('http://127.0.0.1:800');
-      return {
-        message: 'User info from Kakao',
-        user: req.user,
-      };
+      const user = req.user;
+      if (user.nickname === 'none') {
+        return res.redirect(`http://127.0.0.1:800/auth/kakao`);
+      } else {
+        return res.redirect(`http://127.0.0.1:800`);
+      }
     }
   }
 
   async getMyPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id', 'post.title','post.content','images.url'])
+      .select(['post.id', 'post.title', 'post.content', 'images.url'])
       .leftJoin('post.author', 'author')
       .leftJoin('post.images', 'images')
       .where('author.id = :id', { id: userId })
@@ -179,7 +195,7 @@ export class UserService {
   async getLikedPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id', 'post.title','post.content','images.url'])
+      .select(['post.id', 'post.title', 'post.content', 'images.url'])
       .leftJoin('post.likes', 'likes')
       .leftJoin('post.images', 'images')
       .where('likes.userId = :id', { id: userId })
@@ -190,7 +206,7 @@ export class UserService {
   async getCommentedPosts(userId: number) {
     const posts = await this.communityRepository
       .createQueryBuilder('post')
-      .select(['post.id', 'post.title','post.content','images.url'])
+      .select(['post.id', 'post.title', 'post.content', 'images.url'])
       .leftJoin('post.images', 'images')
       .leftJoin('post.comments', 'comments')
       .leftJoin('comments.author', 'author')

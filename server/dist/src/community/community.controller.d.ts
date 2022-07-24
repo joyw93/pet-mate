@@ -11,7 +11,7 @@ export declare class CommunityController {
     getPosts(offset: number, postCount: number, orderBy: string): Promise<import("./community.entity").CommunityEntity[]>;
     getHotPosts(): Promise<import("./community.entity").CommunityEntity[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
-    likePost(user: UserEntity, postId: number): Promise<"unlike" | "like">;
+    likePost(user: UserEntity, postId: number): Promise<"like" | "unlike">;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
     editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
         title: string;

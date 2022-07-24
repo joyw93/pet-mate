@@ -90,8 +90,22 @@ let UserService = class UserService {
             throw new common_1.InternalServerErrorException();
         }
     }
-    async setProfile(userId, setProfileDto, imgUrls) {
-        const { nickname, birthday, comment } = setProfileDto;
+    async setProfile(userId, setProfileDto) {
+        const { nickname } = setProfileDto;
+        const userByNickname = await this.userRepository.findOne({
+            where: { nickname },
+        });
+        if (userByNickname) {
+            throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
+        }
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+        });
+        user.nickname = nickname;
+        return await this.userRepository.save(user);
+    }
+    async editProfile(userId, editProfileDto, imgUrls) {
+        const { nickname, birthday, comment } = editProfileDto;
         const userByNickname = await this.userRepository.findOne({
             where: { nickname },
         });
@@ -108,8 +122,8 @@ let UserService = class UserService {
         user.profile.imageUrl = imgUrls[0];
         return await this.userRepository.save(user);
     }
-    async setAccount(userId, setAccountDto) {
-        const { currentPassword, newPassword } = setAccountDto;
+    async editAccount(userId, editAccountDto) {
+        const { currentPassword, newPassword } = editAccountDto;
         const user = await this.userRepository
             .createQueryBuilder('user')
             .select([
@@ -131,28 +145,30 @@ let UserService = class UserService {
     }
     async googleLoginCallback(req, res) {
         if (!req.user) {
-            res.send('login error');
-            return 'no user from google';
+            return res.send('login error');
         }
         else {
-            res.redirect('http://127.0.0.1:800');
-            return {
-                message: 'User info from Google',
-                user: req.user,
-            };
+            const user = req.user;
+            if (user.nickname === 'none') {
+                return res.redirect(`http://127.0.0.1:800/auth/google`);
+            }
+            else {
+                return res.redirect(`http://127.0.0.1:800`);
+            }
         }
     }
     async kakaoLoginCallback(req, res) {
         if (!req.user) {
-            res.send('login error');
-            return 'no user from kakao';
+            return res.send('login error');
         }
         else {
-            res.redirect('http://127.0.0.1:800');
-            return {
-                message: 'User info from Kakao',
-                user: req.user,
-            };
+            const user = req.user;
+            if (user.nickname === 'none') {
+                return res.redirect(`http://127.0.0.1:800/auth/kakao`);
+            }
+            else {
+                return res.redirect(`http://127.0.0.1:800`);
+            }
         }
     }
     async getMyPosts(userId) {
