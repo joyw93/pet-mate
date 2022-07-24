@@ -86,7 +86,7 @@ const SanchaekPostDetail = () => {
 
   return (
     <>
-      {sanchaekPost ? (
+      {sanchaekPost &&
         <PostDetailContainer>
           <h1>산책메이트</h1>
           <Title>
@@ -108,7 +108,7 @@ const SanchaekPostDetail = () => {
             </div>
           </PostInfo>
           <div id="content">
-            {sanchaekPost.images.length !== 0 ? (
+            {sanchaekPost.images.length !== 0 &&
               <Images>
                 <Slider {...settings}>
                   {sanchaekPost.map((img) => (
@@ -118,7 +118,7 @@ const SanchaekPostDetail = () => {
                   ))}
                 </Slider>
               </Images>
-            ) : null}
+            }
             <div id="content_text">
               <p>{sanchaekPost.content}</p>
             </div>
@@ -179,7 +179,7 @@ const SanchaekPostDetail = () => {
             </CommentWrapper>
           </div>
         </PostDetailContainer>
-      ) : null}
+      }
     </>
   );
 };
