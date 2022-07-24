@@ -20,6 +20,7 @@ const rootReducer = combineReducers({
   },
   user,
   community,
+  sanchaek,
   search,
   sanchaek,
 });

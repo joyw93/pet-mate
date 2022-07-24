@@ -6,22 +6,20 @@ const DetailedMap = ({ lat, lng, placeResult }) => {
   return (
     <>
       <div>hi</div>
-      <Map // 지도를 표시할 Container
+      <Map
         center={{
           // 지도의 중심좌표
           lat: lat,
           lng: lng,
         }}
         style={{
-          // 지도의 크기
           width: "100%",
           height: "450px",
         }}
-        level={3} // 지도의 확대 레벨
+        level={3}
       >
         <MapMarker
           position={{
-            // 지도의 중심좌표
             lat: lat,
             lng: lng,
           }}
