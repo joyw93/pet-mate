@@ -15,8 +15,8 @@ import {
 // }
 
 
-const serverUrl = "http://127.0.0.1:3000";
-// const serverUrl = "http://api.petmate.kr";
+//const serverUrl = "http://127.0.0.1:3000";
+const serverUrl = "http://api.petmate.kr";
 
 //글 불러오기
 function loadHashtagPostsAPI(data) {
