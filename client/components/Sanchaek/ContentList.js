@@ -1,5 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Router from "next/router";
+import Link from "next/link";
 
 import { Item, SanchaekContent, BtnContainer, ItemImage } from "./styled";
 import {
@@ -26,6 +28,10 @@ const ContentList = () => {
     console.log(sanchaekPosts);
   }, []);
 
+  useEffect(() => {
+    dispatch(sanchaekLoadPostDetailResetAction());
+  }, []);
+
   return (
     <>
       <SanchaekContent>
@@ -38,19 +44,29 @@ const ContentList = () => {
             {sanchaekPosts &&
               sanchaekPosts.map((item) => (
                 <Grid item xs={12} sm={6} md={3} key={item.id}>
-                  <Item key={item.id}>
-                    {item.image ? (
-                      <ItemImage src={item.image} />
-                    ) : (
-                      <ItemImage src="../img/defaultimg1.png" />
-                    )}
-                    <div id="text_box">
-                      <h2>{item.title}</h2>
-                      {item.mapInfo && item.mapInfo.location && (
-                        <span>{item.mapInfo.location}</span>
+                  <Link href={`/sanchaek/${item.id}`}>
+                    <Item key={item.id}>
+                      {item.image ? (
+                        <ItemImage src={item.image} />
+                      ) : (
+                        <ItemImage src="../img/defaultimg1.png" />
                       )}
-                    </div>
-                  </Item>
+                      <div id="text_box">
+                        <h2>{item.title}</h2>
+                        {item.mapInfo && item.mapInfo.location && (
+                          <div>
+                            <span>
+                              <img
+                                src="../img/locationEmojiBk.png"
+                                style={{ width: 24 }}
+                              />
+                            </span>
+                            <span>{item.mapInfo.location}</span>
+                          </div>
+                        )}
+                      </div>
+                    </Item>
+                  </Link>
                 </Grid>
               ))}
           </Grid>

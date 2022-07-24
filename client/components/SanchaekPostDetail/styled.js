@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
 
-import LoadingButton from "@mui/lab/LoadingButton";
-
-export const Button = styled(LoadingButton)`
+export const Button = styled.button`
   font-size: 0.9rem;
   width: 60px;
   height: 35px;
@@ -55,6 +53,7 @@ export const PostInfo = styled.div`
   margin: 10px 0 30px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   line-height: 32px;
   font-size: 0.8rem;
 
@@ -66,18 +65,34 @@ export const PostInfo = styled.div`
     color: #fff;
     padding: 0 15px;
     border-radius: 20px;
-    margin-right: 10px;
+  }
+  #post_created_time,
+  #views {
+    margin-left: 10px;
+  }
+  #like_wrapper {
+    display: flex;
+
+    #like_count {
+      margin-left: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: ${Colors.primaryColor};
+    }
   }
   button {
-    width: 32px;
+    display: block;
+    width: 28px;
     height: 32px;
     cursor: pointer;
     background: none;
     border: none;
 
     img {
+      display: block;
       width: 28px;
       height: 26px;
+      margin: auto;
     }
   }
 `;
@@ -108,63 +123,71 @@ export const CommentWrapper = styled.div`
       color: ${Colors.primaryColor};
     }
   }
+`;
 
-  #cmt_input {
+export const CommentInput = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  input {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    input {
-      width: 100%;
-      height: 35px;
-      border: 1px solid #ddd;
-      padding-left: 10px;
-    }
-
-    button {
-      background-color: ${Colors.primaryColor};
-      color: #fff;
+    height: 35px;
+    border: 1px solid #ddd;
+    padding-left: 10px;
+    &:focus {
+      border: 1px solid ${Colors.primaryColor};
     }
   }
 
-  #cmts_area {
-    width: 100%;
-    margin-top: 30px;
-    padding-right: 80px;
-    display: flex;
-    flex-direction: column-reverse;
-
-    .cmts {
-      width: 100%;
-      margin-bottom: 32px;
-      h3 {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 12px;
-      }
-      p {
-        width: 90%;
-        font-size: 1rem;
-      }
-      div {
-        margin-top: 18px;
-        span {
-          color: #888;
-          font-size: 0.8rem;
-          font-weight: bold;
-        }
-        #delete_btn {
-          cursor: pointer;
-          margin-left: 10px;
-        }
-        #delete_btn:hover {
-          color: ${Colors.primaryColor};
-          transition: all 0.1s;
-        }
-      }
-    }
+  button {
+    background-color: ${Colors.primaryColor};
+    color: #fff;
   }
 `;
+export const CommentArea = styled.div`
+  width: 100%;
+  margin-top: 30px;
+  padding-right: 80px;
+  display: flex;
+  flex-direction: column;
+`;
+export const CommentItem = styled.div`
+  width: 100%;
+  margin-bottom: 32px;
+
+  p {
+    width: 90%;
+    font-size: 1rem;
+  }
+`;
+export const CommentContentInfo = styled.div`
+  span {
+    color: #888;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  #delete_btn {
+    cursor: pointer;
+  }
+  #delete_btn:hover {
+    color: ${Colors.primaryColor};
+    transition: all 0.1s;
+  }
+`;
+export const CommentHandler = styled.div`
+  display: flex;
+  margin-bottom: 12px;
+  justify-content: space-between;
+  align-items: center;
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-right: 24px;
+  }
+`;
+
 export const Images = styled.div`
   max-width: 720px;
   height: 420px;
