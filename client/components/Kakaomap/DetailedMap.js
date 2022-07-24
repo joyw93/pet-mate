@@ -5,7 +5,6 @@ const DetailedMap = ({ lat, lng, placeResult }) => {
   console.log(lat);
   return (
     <>
-      <div>hi</div>
       <Map
         center={{
           // 지도의 중심좌표
@@ -24,7 +23,7 @@ const DetailedMap = ({ lat, lng, placeResult }) => {
             lng: lng,
           }}
         >
-          <div style={{ color: "#000" }}>hi{placeResult}</div>
+          <div style={{ color: "#000" }}>{placeResult}</div>
         </MapMarker>
       </Map>
     </>
