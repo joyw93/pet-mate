@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import user from "./user";
 import community from "./community";
 import search from "./search";
+import sanchaek from './sanchaek';
 
 // (이전상태, 액션) => 다음상태
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   user,
   community,
   search,
+  sanchaek,
 });
 
 export default rootReducer;

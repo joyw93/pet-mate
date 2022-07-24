@@ -1,11 +1,22 @@
 import Link from "next/link";
 import { SanchaekContainer, SanchaekBanner } from "./styled";
 import ContentList from "./ContentList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
+import { sanchaekPostResetAction } from "../../reducers/sanchaek";
+import { useEffect } from "react";
 
 const SanchaekMain = () => {
   const { me } = useSelector((state) => state.user);
+  const { postDone } = useSelector((state) => state.sanchaek);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (postDone) {
+      dispatch(sanchaekPostResetAction());
+      console.log(posts);
+    }
+  }, [postDone]);
 
   const goToNew = () => {
     if (!me) {
