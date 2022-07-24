@@ -36,8 +36,19 @@ const App = ({ Component, pageProps }) => {
   };
 
   useEffect(() => {
-    dispatch(loadProfileRequestAction());
+    dispatch(loadUserInfoRequestAction());
   }, []);
+
+  useEffect(() => {
+    if (userInfo && userInfo?.nickname !== "none") {
+      console.log(userInfo)
+      dispatch(loadProfileRequestAction());
+    }
+  }, [userInfo]);
+
+  // useEffect(() => {
+  //   dispatch(loadProfileRequestAction());
+  // }, []);
 
   useEffect(() => {
     if (logOutDone) {
