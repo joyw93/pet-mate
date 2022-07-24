@@ -27,9 +27,8 @@ const LogIn = () => {
   const passwordRef = useRef();
 
   useEffect(() => {
-    if (logInError !== null) {
+    if (logInError) {
       setSnackBar(true);
-      // alert(logInError.message);
     }
   }, [logInError]);
 

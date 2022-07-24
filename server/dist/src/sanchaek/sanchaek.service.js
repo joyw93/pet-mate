@@ -117,10 +117,10 @@ let SanchaekService = class SanchaekService {
         try {
             const sanchaek = await this.sanchaekRepository
                 .createQueryBuilder('sanchaek')
-                .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'sanchaek.createdAt'])
+                .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'sanchaek.createdAt', 'sanchaek.views'])
                 .addSelect(['user.nickname'])
                 .addSelect(['images.url'])
-                .addSelect(['comments.content'])
+                .addSelect(['comments.content', 'comments.id'])
                 .addSelect(['author.nickname'])
                 .leftJoin('sanchaek.comments', 'comments')
                 .leftJoin('comments.author', 'author')
