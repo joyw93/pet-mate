@@ -46,10 +46,6 @@ const Kakaomap = ({ place }) => {
     });
   }, [place]);
 
-  const handleMarkerClick = (e) => {
-    console.log(e.n);
-  };
-
   console.log(lat, lng);
   useEffect(() => {
     if (info) {
@@ -110,22 +106,6 @@ const Kakaomap = ({ place }) => {
           <span>{placeResult}이 선택되었습니다!</span>
         ) : null}
       </div>
-      <>
-        {/* <Map
-          center={{
-            lat: 37.566826,
-            lng: 126.9786567,
-          }}
-          style={{
-            width: "100%",
-            height: "350px",
-          }}
-          level={3}
-          onCreate={setMap}
-        >
-          {" "}
-        </Map> */}
-      </>
       <DetailedMap
         lat={Number(lat)}
         lng={Number(lng)}

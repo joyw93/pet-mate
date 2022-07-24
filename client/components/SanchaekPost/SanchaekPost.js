@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CreatePostContainer } from "./styled";
 import {
   TitleWrapper,
@@ -7,17 +7,35 @@ import {
   MapWrapper,
   Button,
 } from "./styled";
-import Kakaomap from "../Kakaomap/Kakaomap";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { postRequestAction, updatePostRequestAction } from '../../reducers/sanchaek';
+import { useDispatch } from 'react-redux';
 
-const SanchaekPost = () => {
+const SanchaekPost = ({ editState }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const [fileImages, setFileImages] = useState([]);
-  //const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
 
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
+  const [noMatchedPlace, setNoMatchedPlace] = useState(false);
+  const [address, setAddress] = useState('');
+  const [roadAddress, setRoadAddress] = useState('');
+
+  const titleRef = useRef();
+  const contentRef = useRef();
+  const imageRef = useRef();
+
+  //맵에서 사용하는 변수
+  const [info, setInfo] = useState();
+  const [markers, setMarkers] = useState([]);
+  const [map, setMap] = useState();
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
+  const [placeResult, setPlaceResult] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,39 +50,195 @@ const SanchaekPost = () => {
   //   }
   // }, []);
 
+  useEffect(() => {
+    //수정상태일 때 선택된 게시글값 넣어주기
+    if (editState) {
+      if (selectedPost) {
+        setTitle(selectedPost.title);
+        setContent(selectedPost.content);
+
+        let imageFiles = [];
+        if (selectedPost.images) {
+          for (let i = 0; i < selectedPost.images.length; i++) {
+            let newImg = selectedPost.images[i].url;
+            imageFiles = imageFiles.concat(newImg);
+            setFileImages(imageFiles);
+          }
+          setImages(imageFiles);
+        }
+
+        let keywords = [];
+        if (selectedPost.tags) {
+          for (let i = 0; i < selectedPost.tags.length; i++) {
+            const keyword = selectedPost.tags[i].hashtag.keyword;
+            keywords = keywords.concat(keyword);
+          }
+          setHashArr(keywords);
+        }
+      }
+    }
+  }, [selectedPost, editState]);
+
   const handleAddImages = (event) => {
-    const imageLists = event.target.files;
-    let imageUrlLists = [...fileImages];
+    const pathPoint = imageRef.current.value.lastIndexOf(".");
+    const filePoint = imageRef.current.value.substring(
+      pathPoint + 1,
+      imageRef.current.length
+    );
+    const fileType = filePoint.toLowerCase();
 
-    for (let i = 0; i < imageLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
-    }
+    if (
+      fileType == "jpg" ||
+      fileType == "gif" ||
+      fileType == "png" ||
+      fileType == "jpeg" ||
+      fileType == "bmp"
+    ) {
+      //이미지 확장자 파일일 때
+      const imageLists = event.target.files;
+      let imageUrlLists = [...fileImages];
 
-    if (imageUrlLists.length > 3) {
-      imageUrlLists = imageUrlLists.slice(0, 3);
-      alert("이미지는 3장까지 업로드 할 수 있습니다.");
+      for (let i = 0; i < imageLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imageLists[i]);
+        imageUrlLists.push(currentImageUrl);
+      }
+
+      if (fileImages.length > 2) {
+        imageUrlLists = imageUrlLists.slice(0, 3);
+        return alert("이미지는 3장까지 업로드 할 수 있습니다.");
+      }
+
+      const imagesFile = event.target.files[0];
+      const imageFileList = [...images];
+      imageFileList.push(imagesFile);
+      setImages(imageFileList);
+      setFileImages(imageUrlLists);
+    } else {
+      // 이미지 확장자 파일이 아닐 때
+      return alert("이미지 파일만 업로드할 수 있습니다.");
     }
-    setFileImages(imageUrlLists);
   };
 
   const handleDeleteImage = (id) => {
     setFileImages(fileImages.filter((_, index) => index !== id));
+    setImages(images.filter((_, index) => index !== id));
     window.URL.revokeObjectURL(fileImages.filter((_, index) => index === id));
-    console.log(fileImages);
   };
+
+
+  const serverUrl = "http://api.petmate.kr";
+
+  const handlePost = async () => {
+    if (!title) {
+      return titleRef.current.focus();
+    }
+    if (!content) {
+      return contentRef.current.focus();
+    }
+
+    //데이터 전송
+    const post = new FormData();
+    post.append("title", title);
+    post.append("content", content);
+    post.append("mapInfo[lat]", lat);
+    post.append("mapInfo[lng]", lng);
+    post.append("mapInfo[location]", placeResult);
+    post.append("mapInfo[address]", address);
+    post.append("mapInfo[roadAddress]", roadAddress);
+
+    if (images.length > 0) {
+      [].forEach.call(images, (img) => {
+        post.append("images", img);
+      });
+    }
+
+    //수정 모드일 때
+    if (editState) {
+      dispatch(updatePostRequestAction({ post, id }));
+    } else {
+      //새로 작성할 때
+      dispatch(postRequestAction(post));
+    }
+
+  };
+
+
+  useEffect(() => {
+    if (!map || !place) return;
+
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(place, (data, status, _pagination) => {
+      //검색 결과 없을 때
+      if (status === 'ZERO_RESULT') {
+        setNoMatchedPlace(true);
+        return;
+      } else if (status === kakao.maps.services.Status.OK) {
+        setNoMatchedPlace(false);
+        const bounds = new kakao.maps.LatLngBounds();
+        let markers = [];
+        for (var i = 0; i < data.length; i++) {
+          markers.push({
+            position: {
+              lat: data[i].y,
+              lng: data[i].x,
+            },
+            content: data[i].place_name,
+          });
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+        setMarkers(markers);
+        map.setBounds(bounds);
+      }
+    });
+  }, [place]);
+
+  useEffect(() => {
+    if (info) {
+      setPlaceResult(info.content);
+    }
+    if (lat && lng) {
+      getAddr(lat, lng);
+    }
+  }, [info, lat, lng]);
+
+  const getAddr = (lat, lng) => {
+    // 주소-좌표 변환 객체를 생성합니다
+    let geocoder = new kakao.maps.services.Geocoder();
+
+    let coord = new kakao.maps.LatLng(lat, lng);
+    let callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        const arr = { ...result };
+        console.log(arr[0]);
+        if (arr[0].address === null) {
+          setAddress('');
+        } else {
+          setAddress(arr[0].address.address_name);
+        }
+
+        if (arr[0].road_address === null) {
+          setRoadAddress('');
+        } else {
+          setRoadAddress(arr[0].road_address.address_name);
+        }
+
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }
+
   return (
     <CreatePostContainer>
       <TitleWrapper>
         <h1>산책메이트 글쓰기</h1>
         <div id="buttons">
-          <Button>등록</Button>
+          <Button onClick={handlePost}>등록</Button>
           <Button>취소</Button>
         </div>
       </TitleWrapper>
-
       <TextEditWrapper>
         <input
+          ref={titleRef}
           autoFocus
           maxLength="40"
           type="text"
@@ -73,6 +247,7 @@ const SanchaekPost = () => {
           placeholder="제목을 입력해 주세요."
         />
         <textarea
+          ref={contentRef}
           maxLength="350"
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -85,8 +260,8 @@ const SanchaekPost = () => {
         <div id="photos">
           <div id="add_photo">
             <label htmlFor="add_file" onChange={handleAddImages}>
-              <input type="file" id="add_file" />
-              <img src="../img/photo.png" alt="이미지 업로드" />
+              <input type="file" id="add_file" ref={imageRef} accept="image/*" />
+              <img src="../../img/photo.png" alt="이미지 업로드" />
             </label>
           </div>
           {fileImages.map((image, id) => (
@@ -109,7 +284,7 @@ const SanchaekPost = () => {
         </div>
       </AddPhotoWrapper>
       <MapWrapper>
-        <h2>지도 등록</h2>
+        <h2>지도 등록 (만날 장소를 검색하세요!)</h2>
         <form id="map_search">
           <input
             id="map_search_input"
@@ -122,8 +297,43 @@ const SanchaekPost = () => {
             검색
           </button>
         </form>
-        {/* <div id="map_view"></div> */}
-        <Kakaomap id="map_view" place={place} />
+        <>
+          <Map
+            center={{
+              lat: 37.566826,
+              lng: 126.9786567,
+            }}
+            style={{
+              width: "100%",
+              height: "350px",
+            }}
+            level={3}
+            onCreate={setMap}
+          >
+            {markers.map((marker) => (
+              <MapMarker
+                key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+                position={marker.position}
+                onClick={() => {
+                  setInfo(marker);
+                  setLat(marker.position.lat);
+                  setLng(marker.position.lng);
+                  getAddr(lat, lng);
+                }}
+              >
+                {info && info.content === marker.content && (
+                  <div style={{ color: "#000" }}>{marker.content}</div>
+                )}
+              </MapMarker>
+            ))}
+          </Map>
+          <div>
+            {noMatchedPlace ? <span>검색된 결과가 없습니다.</span> : placeResult !== "" ? (
+              <span>{placeResult}이 선택되었습니다!</span>
+            ) : null}
+          </div>
+        </>
+        {/* <Kakaomap id="map_view" place={place} /> */}
       </MapWrapper>
     </CreatePostContainer>
   );

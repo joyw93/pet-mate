@@ -19,24 +19,13 @@ export const SanchaekContent = styled.div`
   margin: 0 auto 100px auto;
   padding: 0 14px;
 `;
-export const Item = styled.div`
+export const ItemContainer = styled.div`
   /* background-color: #eee; */
 
   margin: 0 10px 80px;
   cursor: pointer;
   border-radius: 10px;
-  #text_box {
-    margin: 10px  0;
-    h2 {
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
 
-    span {
-      font-size: 0.8rem;
-    }
-  }
   &:hover {
     transform: scale(1.1);
     transition: all 0.3s;
@@ -81,3 +70,21 @@ export const BtnContainer = styled.div`
     }
   }
 `;
+
+export const ItemWrapper = styled.div``;
+export const ImageWrapper = styled.div``;
+export const ContentArea = styled.div`
+ margin: 10px  0;
+`;
+export const ContentTitle = styled.h2`
+font-size: 0.9rem;
+font-weight: bold;
+margin-bottom: 10px;
+`;
+
+export const ContentInfo = styled.span`
+  font-size: 0.8rem;
+`;
+
+export const LocaImg = styled.img`
+width:24px`;

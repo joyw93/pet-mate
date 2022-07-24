@@ -42,7 +42,6 @@ const CommunityPost = ({ editState }) => {
   const [fileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
 
-  const [tagsLength, setTagsLength] = useState(0);
   const [hashTagVal, setHashTagVal] = useState("");
   const [hashArr, setHashArr] = useState([]);
 
@@ -83,16 +82,12 @@ const CommunityPost = ({ editState }) => {
         }
 
         let keywords = [];
-        //post.delete("hashtags");
         if (selectedPost.tags) {
-          // for (let i = 0; i < selectedPost.tags.length; i++) {
-          //   const keyword = selectedPost.tags[i].hashtag.keyword;
-          //   keywords = keywords.concat(keyword);
-          // }
-          const keywords = selectedPost.tags.map((tag) => tag.hashtag.keyword);
-          //setEditedHash(keywords);
+          for (let i = 0; i < selectedPost.tags.length; i++) {
+            const keyword = selectedPost.tags[i].hashtag.keyword;
+            keywords = keywords.concat(keyword);
+          }
           setHashArr(keywords);
-          setTagsLength(selectedPost.tags.length);
         }
       }
     }
@@ -213,16 +208,10 @@ const CommunityPost = ({ editState }) => {
       });
     }
 
-    if (editState) {
+    if (hashArr.length > 0) {
       hashArr.forEach((hashtag) => {
         post.append("hashtags", hashtag);
       });
-    } else {
-      if (hashArr.length > 0) {
-        hashArr.forEach((hashtag) => {
-          post.append("hashtags", hashtag);
-        });
-      }
     }
 
     //수정 모드일 때

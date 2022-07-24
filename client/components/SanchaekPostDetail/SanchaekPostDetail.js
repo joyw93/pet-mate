@@ -1,68 +1,80 @@
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { PostDetailContainer, Images, Title, PostInfo, MapWrapper, CommentWrapper, Button } from "./styled";
+import DetailedMap from "../Kakaomap/DetailedMap";
+import {
+  PostDetailContainer,
+  Images,
+  Title,
+  PostInfo,
+  MapWrapper,
+  CommentWrapper,
+  Button,
+  CommentInput,
+  CommentArea,
+  CommentContentInfo,
+  CommentHandler,
+  CommentItem,
+} from "./styled";
+import { getElapsedTime } from "../../utils";
+import {
+  sanchaekLoadPostDetailRequestAction,
+  sanchaekAddCommentRequestAction,
+  sanchaekRemoveCommentRequestAction,
+} from "../../reducers/sanchaek";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
 
 const SanchaekPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
-  const [cmtContentArr, setCmtContentArr] = useState([]);
-
-  const handleCmtContent = () => {
-    if (cmtContent) {
-      setCmtContentArr([...cmtContentArr, { id: new Date().getTime(), author: "멍멍아 야옹해봐", content: cmtContent }]);
-    }
-    setCmtContent("");
-  };
-
-  const handleDeletCmt = (id) => {
-    setCmtContentArr(cmtContentArr.filter((it) => it.id !== id));
-  };
-
-  const keyUp = (e) => {
-    if (e.keyCode === 13 && e.target.value.trim() !== "") {
-      if (cmtContent) {
-        setCmtContentArr([...cmtContentArr, { id: new Date().getTime(), author: "멍멍아 야옹해봐", content: cmtContent }]);
-      }
-      setCmtContent("");
-    }
-  };
+  const router = useRouter();
+  const { id } = router.query;
+  const { me } = useSelector((state) => state.user);
+  const { sanchaekPost, sanchaekLoadPostDetailDone } = useSelector(
+    (state) => state.sanchaek
+  );
+  const dispatch = useDispatch();
+  const commentInputRef = useRef();
 
   useEffect(() => {
-    console.log(cmtContentArr);
-  }, [cmtContentArr]);
+    if (router.isReady && !sanchaekPost) {
+      dispatch(sanchaekLoadPostDetailRequestAction(id));
+    }
+  }, [router.isReady, sanchaekPost]);
 
-  const postItem = {
-    id: "1",
-    title: "울집 댕댕이랑 산책하실 분 구함",
-    author: "댕댕이네",
-    created_time: "1시간 전",
-    src: ["../img/pet1.jpg", "../img/pet2.jpg", "../img/pet3.jpg"],
-    content: `아니글쎄 우리 댕댕이가~~어쩌구 저쩌구~~~~~~~ 
-    보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. 보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다.보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. 보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다.보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. 보이는 역사를 이상의 듣기만 봄바람을 능히 고동을 평화스러운 있으랴? 구하지 보배를 있는 사막이다. `,
-    map: {
-      lat: 37.5207,
-      lng: 127.012304,
+  const handleCmtContent = useCallback(() => {
+    if (!cmtContent.trim()) {
+      return alert("내용을 입력하세요");
+    }
+    dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
+    setCmtContent("");
+    commentInputRef.current.blur();
+  }, [cmtContent]);
+
+  const keyUp = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        if (!e.target.value.trim()) {
+          return alert("내용을 입력하세요");
+        }
+        dispatch(
+          sanchaekAddCommentRequestAction({ postId: id, content: cmtContent })
+        );
+        setCmtContent("");
+        commentInputRef.current.blur();
+      }
     },
-    comments: [...cmtContentArr],
-    hashtag: [
-      {
-        id: "111",
-        keyword: "사료",
-      },
-      {
-        id: "222",
-        keyword: "어쩌고",
-      },
+    [cmtContent]
+  );
 
-      {
-        id: "333",
-        keyword: "무엇이든 물어보세요",
-      },
-    ],
+  const handleDeleteCmt = (commentId) => {
+    if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
+      console.log(commentId);
+      dispatch(sanchaekRemoveCommentRequestAction(commentId));
+    }
   };
-
   const settings = {
     arrows: true,
     dots: true,
@@ -72,82 +84,103 @@ const SanchaekPostDetail = () => {
     slidesToScroll: 1,
   };
 
-  const [like, setLike] = useState("../img/heart2.png");
-
-  const handlelike = () => {
-    if (like === "../img/heart2.png") {
-      setLike("../img/filled_heart2.png");
-    } else if (like === "../img/filled_heart2.png") {
-      setLike("../img/heart2.png");
-    }
-  };
-
   return (
-    <PostDetailContainer>
-      <h1>산책메이트</h1>
-      <Title>
-        <h2>{postItem.title}</h2>
-        <div>
-          <Link href={"/sanchaek/post"}>
-            <Button>수정</Button>
-          </Link>
-          <Button>삭제</Button>
-        </div>
-      </Title>
-      <PostInfo>
-        <div>
-          <span id="post_author">{postItem.author}</span>
-          <span id="post_created_time">{postItem.created_time}</span>
-        </div>
-        <button onClick={handlelike}>
-          <img src={like} alt="좋아요" />
-        </button>
-      </PostInfo>
-      <div id="content">
-        <Images>
-          <Slider {...settings}>
-            {postItem.src.map((image, index) => (
-              <div key={index}>
-                <img src={image} alt="이미지" />
-              </div>
-            ))}
-          </Slider>
-        </Images>
-        <div id="content_text">
-          <p>{postItem.content}</p>
-        </div>
-        <MapWrapper>
-          <h2>지도</h2>
-          <div id="map">
-            <p>lat : {postItem.map.lat}</p>
-            <p>lng : {postItem.map.lng}</p>
+    <>
+      {sanchaekPost &&
+        <PostDetailContainer>
+          <h1>산책메이트</h1>
+          <Title>
+            <h2>{sanchaekPost.title}</h2>
+            <div>
+              <Button>수정</Button>
+              <Button>삭제</Button>
+            </div>
+          </Title>
+          <PostInfo>
+            <div>
+              <span id="post_author">작성자</span>
+              {/* <span id="post_author">{sanchaekPost.author.nickname}</span> */}
+              <span id="post_created_time">
+                {getElapsedTime(sanchaekPost.createdAt)}
+              </span>
+              {/* <span id="views">조회수 {sanchaekPost.views}</span> */}
+              <span id="views">조회수 0</span>
+            </div>
+          </PostInfo>
+          <div id="content">
+            {sanchaekPost.images.length !== 0 &&
+              <Images>
+                <Slider {...settings}>
+                  {sanchaekPost.map((img) => (
+                    <div key={img}>
+                      <img src={img.url} alt="이미지" />
+                    </div>
+                  ))}
+                </Slider>
+              </Images>
+            }
+            <div id="content_text">
+              <p>{sanchaekPost.content}</p>
+            </div>
+            {sanchaekPost.mapInfo.length !== 0 ? (
+              <MapWrapper>
+                <h2>지도</h2>
+                <DetailedMap
+                  lat={sanchaekPost.mapInfo.lat}
+                  lng={sanchaekPost.mapInfo.lng}
+                  placeResult={sanchaekPost.mapInfo.location}
+                />
+              </MapWrapper>
+            ) : null}
+            <CommentWrapper>
+              <h2>
+                댓글 <span>{sanchaekPost.comments.length}</span>
+              </h2>
+              <CommentInput>
+                <input
+                  ref={commentInputRef}
+                  onKeyUp={keyUp}
+                  onChange={(e) => setCmtContent(e.target.value)}
+                  value={cmtContent}
+                  type="text"
+                  placeholder="댓글을 남겨보세요."
+                />
+                <Button onClick={handleCmtContent}>입력</Button>
+              </CommentInput>
+              <CommentArea>
+                {sanchaekPost.comments &&
+                  sanchaekPost.comments
+                    .slice(0)
+                    .reverse()
+                    .map((comment) => (
+                      <CommentItem key={comment.id}>
+                        <CommentHandler>
+                          <h3>{comment.author.nickname}</h3>
+                          <CommentContentInfo>
+                            <span>{getElapsedTime(comment.createdAt)}</span>
+                            {comment?.author?.id === me?.id ? (
+                              <>
+                                <span>·</span>
+                                <span
+                                  id="delete_btn"
+                                  onClick={() => handleDeleteCmt(comment.id)}
+                                >
+                                  삭제
+                                </span>
+                              </>
+                            ) : null}
+                          </CommentContentInfo>
+                        </CommentHandler>
+
+                        <p>{comment.content}</p>
+                      </CommentItem>
+                    ))}
+              </CommentArea>
+            </CommentWrapper>
           </div>
-        </MapWrapper>
-        <CommentWrapper>
-          <h2>
-            댓글 <span>{postItem.comments.length}</span>
-          </h2>
-          <div id="cmt_input">
-            <input
-              onKeyUp={keyUp}
-              onChange={(e) => setCmtContent(e.target.value)}
-              value={cmtContent}
-              type="text"
-              placeholder="댓글을 남겨보세요."
-            />
-            <Button onClick={handleCmtContent}>입력</Button>
-          </div>
-          <div id="cmts_area">
-            {postItem.comments.map((comment, index) => (
-              <div key={index} className="cmts">
-                <h3>{comment.author}</h3>
-                <p>{comment.content}</p>
-              </div>
-            ))}
-          </div>
-        </CommentWrapper>
-      </div>
-    </PostDetailContainer>
+        </PostDetailContainer>
+      }
+    </>
   );
 };
 
