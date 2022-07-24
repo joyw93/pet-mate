@@ -8,15 +8,15 @@ import { useEffect } from "react";
 
 const SanchaekMain = () => {
   const { me } = useSelector((state) => state.user);
-  const { postDone } = useSelector((state) => state.sanchaek);
+  const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (postDone) {
+    if (sanchaekAddPostDone) {
       dispatch(sanchaekPostResetAction());
       console.log(posts);
     }
-  }, [postDone]);
+  }, [sanchaekAddPostDone]);
 
   const goToNew = () => {
     if (!me) {

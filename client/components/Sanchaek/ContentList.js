@@ -12,8 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 const ContentList = () => {
   const [noMoreList, setNoMoreList] = useState();
-  const { sanchaekPosts, loadPostsDone, loadMoreDone, sanchaekMorePosts } =
-    useSelector((state) => state.sanchaek);
+  const {
+    sanchaekPosts,
+    sanchaekLoadPostsDone,
+    sanchaekLoadMoreDone,
+    sanchaekMorePosts,
+  } = useSelector((state) => state.sanchaek);
   const dispatch = useDispatch();
   // const morePostsRef = useRef(1);
 

@@ -2,9 +2,8 @@ import produce from "immer";
 
 export const initialState = {
   sanchaekPosts: [],
-  //content: [],
   sanchaekCommentId: [],
-  sanchaekPost: null, // post = {...post, comments:[...comments, '새로운댓글']}
+  sanchaekPost: null,
   sanchaekMorePosts: null,
 
   editing: false,
@@ -175,7 +174,6 @@ const reducer = (state = initialState, action) =>
         draft.sanchaekLoadPostsLoading = false;
         draft.sanchaekLoadPostsDone = true;
         draft.sanchaekPosts = action.data;
-        // draft.hasMorePosts = draft.posts.length < 100;
         break;
       case SANCHAEK_LOAD_POSTS_FAILURE:
         draft.sanchaekLoadPostsLoading = false;
@@ -191,7 +189,7 @@ const reducer = (state = initialState, action) =>
       case SANCHAEK_LOAD_MORE_SUCCESS:
         draft.sanchaekLoadMoreLoading = false;
         draft.sanchaekLoadMoreDone = true;
-        draft.sanchaekPosts = draft.posts.concat(action.data);
+        draft.sanchaekPosts = draft.sanchaekPosts.concat(action.data);
         draft.sanchaekMorePosts = action.data;
         break;
       case SANCHAEK_LOAD_MORE_FAILURE:
@@ -212,7 +210,6 @@ const reducer = (state = initialState, action) =>
       case SANCHAEK_ADD_POST_SUCCESS:
         draft.sanchaekAddPostLoading = false;
         draft.sanchaekAddPostDone = true;
-        // draft.posts.unshift(action.data);
         draft.sanchaekPosts.unshift(action.data);
         break;
       case SANCHAEK_ADD_POST_FAILURE:
@@ -268,7 +265,7 @@ const reducer = (state = initialState, action) =>
         break;
       case SANCHAEK_ADD_COMMENT_SUCCESS:
         // draft.content.unshift(action.data.content);
-        draft.post.comments.push(action.data);
+        draft.sanchaekPost.comments.push(action.data);
         draft.sanchaekAddCommentLoading = false;
         draft.sanchaekAddCommentDone = true;
         break;

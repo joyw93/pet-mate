@@ -58,15 +58,15 @@ const Notice = ({ hotPosts }) => {
 const CommunityMain = (hotPosts) => {
   const [filterCond, setFilterCond] = useState("new");
   const { me } = useSelector((state) => state.user);
-  const { postDone, posts } = useSelector((state) => state.community);
+  const { addPostDone } = useSelector((state) => state.community);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (postDone) {
+    if (addPostDone) {
       dispatch(postResetAction());
       //console.log("글 리셋");
     }
-  }, [postDone]);
+  }, [addPostDone]);
 
   // useEffect(() => {
   //   //setFilterCond("new");
