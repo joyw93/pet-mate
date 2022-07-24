@@ -1,3 +1,4 @@
+import { bool } from 'aws-sdk/clients/signer';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { SanchaekCommentEntity } from 'src/common/entities/sanchaek-comment.entity';
@@ -32,6 +33,12 @@ export class UserEntity {
 
   @Column('varchar', { name: 'password', select: false })
   password: string;
+
+  @Column('varchar', { name: 'provider' })
+  provider: string;
+
+  @Column('boolean', { name: 'active' })
+  active: boolean;
 
   @Column('int', { name: 'profileId' })
   profileId: number;
@@ -88,11 +95,11 @@ export class UserEntity {
   communityComments: CommunityCommentEntity[];
 
   @OneToMany(
-    ()=>SanchaekCommentEntity,
-    (comment: SanchaekCommentEntity)=>comment.author,
+    () => SanchaekCommentEntity,
+    (comment: SanchaekCommentEntity) => comment.author,
     {
-      cascade: true
-    }
+      cascade: true,
+    },
   )
   sanchaekComments: SanchaekCommentEntity[];
 }

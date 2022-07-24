@@ -40,8 +40,7 @@ const App = ({ Component, pageProps }) => {
   }, []);
 
   useEffect(() => {
-    if (userInfo && userInfo?.nickname !== "none") {
-      console.log(userInfo)
+    if (userInfo && userInfo.active) {
       dispatch(loadProfileRequestAction());
     }
   }, [userInfo]);

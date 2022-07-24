@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   Injectable,
   UnauthorizedException,
@@ -28,14 +29,21 @@ export class AuthService {
         'user.nickname',
         'user.email',
         'user.password',
+        'user.provider',
       ])
       .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
       .leftJoin('user.profile', 'profile')
       .where('user.email= :email', { email })
       .getOne();
+
+    if (user && user.provider !== 'local') {
+      throw new BadRequestException(res.msg.LOGIN_PROVIDER_WRONG);
+    }
+
     if (!user) {
       return null;
     }
+
     const result = await bcrypt.compare(password, user.password);
     if (result) {
       const { password, ...userWithoutPassword } = user;
@@ -48,17 +56,20 @@ export class AuthService {
     const exUser = await this.userRepository.findOne({
       where: { email },
     });
-    if (exUser) {
-      return exUser;
+
+    if (!exUser) {
+      const user = new UserEntity();
+      user.email = email;
+      user.name = name;
+      user.nickname = name;
+      user.password = accessToken;
+      user.provider = 'google';
+      user.active = false;
+      const userProfile = new UserProfileEntity();
+      user.profile = userProfile;
+      return await this.userRepository.save(user);
     } else {
-      const newUser = new UserEntity();
-      const newUserProfile = new UserProfileEntity();
-      newUser.email = email;
-      newUser.name = name;
-      newUser.nickname = 'none';
-      newUser.password = '1234';
-      newUser.profile = newUserProfile;
-      return await this.userRepository.save(newUser);
+      return exUser;
     }
   }
 
@@ -66,17 +77,19 @@ export class AuthService {
     const exUser = await this.userRepository.findOne({
       where: { email },
     });
-    if (exUser) {
-      return exUser;
+    if (!exUser) {
+      const user = new UserEntity();
+      user.email = email;
+      user.name = name;
+      user.nickname = name;
+      user.password = accessToken;
+      user.provider = 'kakao';
+      user.active = false;
+      const userProfile = new UserProfileEntity();
+      user.profile = userProfile;
+      return await this.userRepository.save(user);
     } else {
-      const newUser = new UserEntity();
-      const newUserProfile = new UserProfileEntity();
-      newUser.email = email;
-      newUser.name = name;
-      newUser.nickname = 'none';
-      newUser.password = '1234';
-      newUser.profile = newUserProfile;
-      return await this.userRepository.save(newUser);
+      return exUser;
     }
   }
 }

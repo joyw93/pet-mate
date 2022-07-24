@@ -16,7 +16,7 @@ const Google = () => {
   }, []);
 
   useEffect(() => {
-    if (userInfo && userInfo?.nickname !== "none") {
+    if (userInfo && userInfo.active) {
       dispatch(loadProfileRequestAction())
     }
   }, [userInfo]);

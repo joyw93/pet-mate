@@ -41,7 +41,7 @@ let UserService = class UserService {
     async getUserProfile(userId) {
         const user = await this.userRepository
             .createQueryBuilder('user')
-            .select(['user.id', 'user.name', 'user.nickname', 'user.email'])
+            .select(['user.id', 'user.name', 'user.nickname', 'user.email', 'user.active'])
             .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
             .leftJoin('user.profile', 'profile')
             .where('user.id= :id', { id: userId })
@@ -81,7 +81,7 @@ let UserService = class UserService {
         const hashedPassword = await bcrypt.hash(password, 12);
         try {
             const userProfile = new user_profile_entity_1.UserProfileEntity();
-            const user = await this.userRepository.save(Object.assign(Object.assign({}, createUserDto), { password: hashedPassword, profile: userProfile }));
+            const user = await this.userRepository.save(Object.assign(Object.assign({}, createUserDto), { password: hashedPassword, provider: 'local', active: true, profile: userProfile }));
             const { password } = user, userWithoutPassword = __rest(user, ["password"]);
             return userWithoutPassword;
         }
@@ -102,6 +102,7 @@ let UserService = class UserService {
             where: { id: userId },
         });
         user.nickname = nickname;
+        user.active = true;
         return await this.userRepository.save(user);
     }
     async editProfile(userId, editProfileDto, imgUrls) {
@@ -110,16 +111,24 @@ let UserService = class UserService {
             where: { nickname },
         });
         const user = await this.userRepository.findOne({
-            relations: ['profile'],
             where: { id: userId },
+        });
+        const userProfile = await this.userProfileRepository.findOne({
+            where: { id: user.profileId },
         });
         if (userByNickname && user.nickname !== nickname) {
             throw new common_1.UnauthorizedException(res.msg.SIGNUP_REDUNDANT_NICKNAME);
         }
+        if (imgUrls.length == 0) {
+            userProfile.imageUrl = null;
+        }
+        else {
+            userProfile.imageUrl = imgUrls[0];
+        }
+        userProfile.comment = comment;
+        userProfile.birth = birthday;
         user.nickname = nickname;
-        user.profile.comment = comment;
-        user.profile.birth = birthday;
-        user.profile.imageUrl = imgUrls[0];
+        user.profile = userProfile;
         return await this.userRepository.save(user);
     }
     async editAccount(userId, editAccountDto) {
@@ -149,7 +158,7 @@ let UserService = class UserService {
         }
         else {
             const user = req.user;
-            if (user.nickname === 'none') {
+            if (!user.active) {
                 return res.redirect(`http://127.0.0.1:800/auth/google`);
             }
             else {
@@ -163,7 +172,7 @@ let UserService = class UserService {
         }
         else {
             const user = req.user;
-            if (user.nickname === 'none') {
+            if (!user.active) {
                 return res.redirect(`http://127.0.0.1:800/auth/kakao`);
             }
             else {
