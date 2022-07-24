@@ -22,6 +22,7 @@ const rootReducer = combineReducers({
   community,
   sanchaek,
   search,
+  sanchaek,
 });
 
 export default rootReducer;

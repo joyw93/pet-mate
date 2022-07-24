@@ -1,38 +1,40 @@
 import { all, call, fork, put, takeLatest, throttle } from "redux-saga/effects";
 import axios from "axios";
 import {
-  LOAD_MORE_REQUEST,
-  LOAD_MORE_SUCCESS,
-  LOAD_MORE_FAILURE,
-  LOAD_POSTS_REQUEST,
-  LOAD_POSTS_SUCCESS,
-  LOAD_POSTS_FAILURE,
-  LOAD_POST_DETAIL_REQUEST,
-  LOAD_POST_DETAIL_SUCCESS,
-  LOAD_POST_DETAIL_FAILURE,
-  ADD_POST_REQUEST,
-  ADD_POST_SUCCESS,
-  ADD_POST_FAILURE,
-  REMOVE_POST_REQUEST,
-  REMOVE_POST_SUCCESS,
-  REMOVE_POST_FAILURE,
-  UPDATE_POST_REQUEST,
-  UPDATE_POST_SUCCESS,
-  UPDATE_POST_FAILURE,
-  ADD_COMMENT_REQUEST,
-  ADD_COMMENT_SUCCESS,
-  ADD_COMMENT_FAILURE,
-  REMOVE_COMMENT_REQUEST,
-  REMOVE_COMMENT_SUCCESS,
-  REMOVE_COMMENT_FAILURE,
-  LIKE_POST_REQUEST,
-  LIKE_POST_SUCCESS,
-  LIKE_POST_FAILURE,
+  SANCHAEK_LOAD_MORE_REQUEST,
+  SANCHAEK_LOAD_MORE_SUCCESS,
+  SANCHAEK_LOAD_MORE_FAILURE,
+  SANCHAEK_LOAD_POSTS_REQUEST,
+  SANCHAEK_LOAD_POSTS_SUCCESS,
+  SANCHAEK_LOAD_POSTS_FAILURE,
+  SANCHAEK_LOAD_POST_DETAIL_REQUEST,
+  SANCHAEK_LOAD_POST_DETAIL_SUCCESS,
+  SANCHAEK_LOAD_POST_DETAIL_FAILURE,
+  SANCHAEK_ADD_POST_REQUEST,
+  SANCHAEK_ADD_POST_SUCCESS,
+  SANCHAEK_ADD_POST_FAILURE,
+  SANCHAEK_REMOVE_POST_REQUEST,
+  SANCHAEK_REMOVE_POST_SUCCESS,
+  SANCHAEK_REMOVE_POST_FAILURE,
+  SANCHAEK_UPDATE_POST_REQUEST,
+  SANCHAEK_UPDATE_POST_SUCCESS,
+  SANCHAEK_UPDATE_POST_FAILURE,
+  SANCHAEK_ADD_COMMENT_REQUEST,
+  SANCHAEK_ADD_COMMENT_SUCCESS,
+  SANCHAEK_ADD_COMMENT_FAILURE,
+  SANCHAEK_REMOVE_COMMENT_REQUEST,
+  SANCHAEK_REMOVE_COMMENT_SUCCESS,
+  SANCHAEK_REMOVE_COMMENT_FAILURE,
 } from "../reducers/sanchaek";
 
-//const serverUrl = "http://127.0.0.1:3000";
-const serverUrl = "http://api.petmate.kr";
+// function postAPI(data) {
+//   return axios.post(`${serverUrl}/community`, data, {
+//     withCredentials: true,
+//   });
+// }
 
+// const serverUrl = "http://127.0.0.1:3000";
+const serverUrl = "http://api.petmate.kr";
 
 //글 작성
 function postAPI(data) {
@@ -46,21 +48,21 @@ function* post(action) {
     const result = yield call(postAPI, action.data);
     const payload = result.data;
     yield put({
-      type: ADD_POST_SUCCESS,
+      type: SANCHAEK_ADD_POST_SUCCESS,
       data: payload.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: ADD_POST_FAILURE,
+      type: SANCHAEK_ADD_POST_FAILURE,
       error: err.response.data,
     });
   }
 }
 
 //글 불러오기
-function loadPostsAPI(data) {
-  return axios.get(`${serverUrl}/sanchaek?orderBy=${data}`);
+function loadPostsAPI() {
+  return axios.get(`${serverUrl}/sanchaek`);
 }
 
 function* loadPosts(action) {
@@ -68,14 +70,14 @@ function* loadPosts(action) {
     const result = yield call(loadPostsAPI, action.data);
     const payload = result.data;
     yield put({
-      type: LOAD_POSTS_SUCCESS,
+      type: SANCHAEK_LOAD_POSTS_SUCCESS,
       data: payload.data,
     });
     //console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({
-      type: LOAD_POSTS_FAILURE,
+      type: SANCHAEK_LOAD_POSTS_FAILURE,
       data: err.response.data,
     });
   }
@@ -91,14 +93,14 @@ function* loadPostDetail(action) {
     const result = yield call(loadPostDetailAPI, action.data);
     const payload = result.data;
     yield put({
-      type: LOAD_POST_DETAIL_SUCCESS,
+      type: SANCHAEK_LOAD_POST_DETAIL_SUCCESS,
       data: payload.data,
     });
     //console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({
-      type: LOAD_POST_DETAIL_FAILURE,
+      type: SANCHAEK_LOAD_POST_DETAIL_FAILURE,
       data: err.response.data,
     });
   }
@@ -117,14 +119,14 @@ function* loadMorePosts(action) {
     const result = yield call(loadMoreAPI, action.data);
     const payload = result.data;
     yield put({
-      type: LOAD_MORE_SUCCESS,
+      type: SANCHAEK_LOAD_MORE_SUCCESS,
       data: payload.data,
     });
     console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({
-      type: LOAD_MORE_FAILURE,
+      type: SANCHAEK_LOAD_MORE_FAILURE,
       data: err.response.data,
     });
   }
@@ -142,13 +144,13 @@ function* removePost(action) {
     const result = yield call(removePostAPI, action.data);
     const payload = result.data;
     yield put({
-      type: REMOVE_POST_SUCCESS,
+      type: SANCHAEK_REMOVE_POST_SUCCESS,
       data: payload.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: REMOVE_POST_FAILURE,
+      type: SANCHAEK_REMOVE_POST_FAILURE,
       data: err.response.data,
     });
   }
@@ -165,13 +167,13 @@ function* addComment(action) {
     const result = yield call(addCommentAPI, action.data);
     const payload = result.data;
     yield put({
-      type: ADD_COMMENT_SUCCESS,
+      type: SANCHAEK_ADD_COMMENT_SUCCESS,
       data: payload.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: ADD_COMMENT_FAILURE,
+      type: SANCHAEK_ADD_COMMENT_FAILURE,
       error: err.response.data,
     });
   }
@@ -190,36 +192,13 @@ function* removeComment(action) {
     console.log("payload.data", payload.data);
     console.log("action.data", action.data);
     yield put({
-      type: REMOVE_COMMENT_SUCCESS,
+      type: SANCHAEK_REMOVE_COMMENT_SUCCESS,
       data: action.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: REMOVE_COMMENT_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-
-function likePostAPI(data) {
-  return axios.get(`${serverUrl}/sanchaek/${data}/like`, {
-    withCredentials: true,
-  });
-}
-
-function* likePost(action) {
-  try {
-    const result = yield call(likePostAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LIKE_POST_SUCCESS,
-      data: payload.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: LIKE_POST_FAILURE,
+      type: SANCHAEK_REMOVE_COMMENT_FAILURE,
       error: err.response.data,
     });
   }
@@ -237,51 +216,47 @@ function* updatePost(action) {
     const result = yield call(updatePostAPI, action.data);
     const payload = result.data;
     yield put({
-      type: UPDATE_POST_SUCCESS,
+      type: SANCHAEK_UPDATE_POST_SUCCESS,
       data: payload.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: UPDATE_POST_FAILURE,
+      type: SANCHAEK_UPDATE_POST_FAILURE,
       error: err.response.data,
     });
   }
 }
 
 function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, post);
+  yield takeLatest(SANCHAEK_ADD_POST_REQUEST, post);
 }
 
 function* watchRemovePost() {
-  yield takeLatest(REMOVE_POST_REQUEST, removePost);
+  yield takeLatest(SANCHAEK_REMOVE_POST_REQUEST, removePost);
 }
 
 function* watchLoadPosts() {
-  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
+  yield takeLatest(SANCHAEK_LOAD_POSTS_REQUEST, loadPosts);
 }
 function* watchLoadPostDetail() {
-  yield takeLatest(LOAD_POST_DETAIL_REQUEST, loadPostDetail);
+  yield takeLatest(SANCHAEK_LOAD_POST_DETAIL_REQUEST, loadPostDetail);
 }
 
 function* watchMorePosts() {
-  yield takeLatest(LOAD_MORE_REQUEST, loadMorePosts);
+  yield takeLatest(SANCHAEK_LOAD_MORE_REQUEST, loadMorePosts);
 }
 
 function* watchAddComment() {
-  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+  yield takeLatest(SANCHAEK_ADD_COMMENT_REQUEST, addComment);
 }
 
 function* watchRemoveComment() {
-  yield takeLatest(REMOVE_COMMENT_REQUEST, removeComment);
-}
-
-function* watchLikePost() {
-  yield takeLatest(LIKE_POST_REQUEST, likePost);
+  yield takeLatest(SANCHAEK_REMOVE_COMMENT_REQUEST, removeComment);
 }
 
 function* watchUpdatePost() {
-  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+  yield takeLatest(SANCHAEK_UPDATE_POST_REQUEST, updatePost);
 }
 
 export default function* sanchaekSaga() {
@@ -293,7 +268,6 @@ export default function* sanchaekSaga() {
     fork(watchRemovePost),
     fork(watchAddComment),
     fork(watchRemoveComment),
-    fork(watchLikePost),
     fork(watchUpdatePost),
   ]);
 }
