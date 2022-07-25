@@ -8,8 +8,10 @@ import {
   Button,
   PostBtn,
   BackBtn,
+  ShowPlaceResult,
+  CustomOverlay,
 } from "./styled";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 
 import {
   sanchaekPostRequestAction,
@@ -324,7 +326,16 @@ const SanchaekPost = ({ editState }) => {
         </div>
       </AddPhotoWrapper>
       <MapWrapper>
-        <h2>지도 등록 (만날 장소를 검색하세요!)</h2>
+        <div>
+          <h2>지도 등록 (만날 장소를 검색하세요!)</h2>
+          <ShowPlaceResult>
+            {noMatchedPlace ? (
+              <span>검색된 결과가 없습니다.</span>
+            ) : placeResult !== "" ? (
+              <span>{placeResult}이 선택되었습니다!</span>
+            ) : null}
+          </ShowPlaceResult>
+        </div>
         <form id="map_search">
           <input
             id="map_search_input"
@@ -351,29 +362,48 @@ const SanchaekPost = ({ editState }) => {
             onCreate={setMap}
           >
             {markers.map((marker) => (
-              <MapMarker
-                key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
-                position={marker.position}
-                onClick={() => {
-                  setInfo(marker);
-                  setLat(marker.position.lat);
-                  setLng(marker.position.lng);
-                  getAddr(lat, lng);
-                }}
-              >
+              <>
+                <MapMarker
+                  key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+                  position={marker.position}
+                  image={{
+                    src: "../img/locationEmojiBlk.png",
+                    size: {
+                      width: 48,
+                      height: 48,
+                    },
+                    options: {
+                      offset: {
+                        x: 26,
+                        y: 52,
+                      },
+                    },
+                  }}
+                  onClick={() => {
+                    setInfo(marker);
+                    setLat(marker.position.lat);
+                    setLng(marker.position.lng);
+                    getAddr(lat, lng);
+                  }}
+                />
                 {info && info.content === marker.content && (
-                  <div style={{ color: "#000" }}>{marker.content}</div>
+                  // <SelectedLocation style={{ color: "#000" }}>
+                  //   {marker.content}
+                  // </SelectedLocation>
+                  <CustomOverlayMap
+                    position={{ lat: lat, lng: lng }}
+                    xAnchor={0.5}
+                    yAnchor={2.9}
+                  >
+                    <CustomOverlay className="customoverlay">
+                      <span className="title">{marker.content}</span>
+                    </CustomOverlay>
+                  </CustomOverlayMap>
                 )}
-              </MapMarker>
+                {/* </MapMarker> */}
+              </>
             ))}
           </Map>
-          <div>
-            {noMatchedPlace ? (
-              <span>검색된 결과가 없습니다.</span>
-            ) : placeResult !== "" ? (
-              <span>{placeResult}이 선택되었습니다!</span>
-            ) : null}
-          </div>
         </>
       </MapWrapper>
     </CreatePostContainer>

@@ -23,6 +23,7 @@ import {
   sanchaekAddCommentRequestAction,
   sanchaekRemovePostRequestAction,
   sanchaekRemoveCommentRequestAction,
+  addCommentRequestAction,
 } from "../../reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,12 +35,18 @@ const SanchaekPostDetail = () => {
   const router = useRouter();
   const { id } = router.query;
   const { me } = useSelector((state) => state.user);
-  const { sanchaekPost, sanchaekLoadPostDetailDone } = useSelector(
+  const { sanchaekPost, sanchaekAddCommentDone } = useSelector(
     (state) => state.sanchaek
   );
 
   const dispatch = useDispatch();
   const commentInputRef = useRef();
+
+  useEffect(() => {
+    if (sanchaekAddCommentDone) {
+      console.log(sanchaekPost.comments);
+    }
+  }, [sanchaekPost]);
 
   useEffect(() => {
     if (router.isReady && !sanchaekPost) {
@@ -103,20 +110,14 @@ const SanchaekPostDetail = () => {
           <h1>산책메이트</h1>
           <Title>
             <h2>{sanchaekPost.title}</h2>
-            {/* {me && me?.id === sanchaekPost?.author?.id ? (
+            {me && me?.id === sanchaekPost?.author?.id ? (
               <div>
                 <Link href={`/sanchaek/${id}/edit`}>
                   <Button>수정</Button>
                 </Link>
                 <Button onClick={handleDeletePost}>삭제</Button>
               </div>
-            ) : null} */}
-            <div>
-              <Link href={`/sanchaek/${id}/edit`}>
-                <Button>수정</Button>
-              </Link>
-              <Button onClick={handleDeletePost}>삭제</Button>
-            </div>
+            ) : null}
           </Title>
           <PostInfo>
             <div>
@@ -196,7 +197,6 @@ const SanchaekPostDetail = () => {
                             ) : null}
                           </CommentContentInfo>
                         </CommentHandler>
-
                         <p>{comment.content}</p>
                       </CommentItem>
                     ))}

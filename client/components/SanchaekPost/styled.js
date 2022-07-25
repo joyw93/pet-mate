@@ -160,11 +160,13 @@ export const AddPhotoWrapper = styled.div`
 
 export const MapWrapper = styled.div`
   margin: 40px 0;
+  position: relative;
 
   h2 {
     font-size: 1.1rem;
     font-weight: bold;
     color: #444;
+    margin-bottom: 38px;
   }
   #map_search {
     display: flex;
@@ -176,6 +178,7 @@ export const MapWrapper = styled.div`
     height: 35px;
     border: none;
     border-bottom: 2px solid #ddd;
+    padding-left: 10px;
   }
   #map_search_input::placeholder {
     font-weight: bold;
@@ -196,5 +199,33 @@ export const MapWrapper = styled.div`
     width: 100%;
     height: 400px;
     background-color: #eee;
+  }
+`;
+
+export const ShowPlaceResult = styled.div`
+  margin: 10px 0;
+  position: absolute;
+  top: 18px;
+  left: 0;
+  height: 20px;
+  span {
+    color: ${Colors.primaryColor};
+    font-weight: bold;
+  }
+`;
+
+export const CustomOverlay = styled.div`
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 5px;
+  /* background: rgba(252, 157, 3, 0.8); */
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 5px ${Colors.primaryColor};
+  /* box-shadow: 0 0 5px #333; */
+  span {
+    font-size: 0.9rem;
+    font-weight: bold;
+    line-height: 32px;
+    color: #000;
   }
 `;

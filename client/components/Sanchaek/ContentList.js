@@ -8,6 +8,10 @@ import {
   sanchaekLoadPostsRequestAction,
   sanchaekLoadPostDetailResetAction,
   sanchaekLoadMoreResetAction,
+<<<<<<< HEAD
+  sanchaekLoadMorePostsAction,
+=======
+>>>>>>> 45de8e3c622668d63d5cb6ef9b86788b1a76c16f
 } from "../../reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
