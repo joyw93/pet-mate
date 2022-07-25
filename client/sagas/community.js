@@ -30,7 +30,14 @@ import {
   LIKE_POST_FAILURE,
 } from "../reducers/community";
 
+<<<<<<< HEAD
 // const serverUrl = "http://127.0.0.1:3000";
+=======
+
+
+// const serverUrl = "http://127.0.0.1:3000";
+
+>>>>>>> 45de8e3c622668d63d5cb6ef9b86788b1a76c16f
 const serverUrl = "http://api.petmate.kr";
 
 //글 작성

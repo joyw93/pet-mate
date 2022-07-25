@@ -159,10 +159,10 @@ let UserService = class UserService {
         else {
             const user = req.user;
             if (!user.active) {
-                return res.redirect(`http://127.0.0.1:800/auth/google`);
+                return res.redirect(`http://petmate.kr/auth/google`);
             }
             else {
-                return res.redirect(`http://127.0.0.1:800`);
+                return res.redirect(`http://petmate.kr`);
             }
         }
     }
@@ -173,10 +173,10 @@ let UserService = class UserService {
         else {
             const user = req.user;
             if (!user.active) {
-                return res.redirect(`http://127.0.0.1:800/auth/kakao`);
+                return res.redirect(`http://petmate.kr/auth/kakao`);
             }
             else {
-                return res.redirect(`http://127.0.0.1:800`);
+                return res.redirect(`http://petmate.kr`);
             }
         }
     }

@@ -8,7 +8,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
     super({
       clientID: process.env.KAKAO_CLIENT_ID,
-      callbackURL: 'http://127.0.0.1:3000/user/kakao/callback',
+      callbackURL: 'http://api.petmate.kr/user/kakao/callback',
     });
   }
   async validate(

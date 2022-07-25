@@ -268,7 +268,7 @@ const SanchaekPost = ({ editState }) => {
           </div>
         ) : (
           <div id="buttons">
-            <Button onClick={handlePost}>등록</Button>
+            <PostBtn onClick={handlePost}>등록</PostBtn>
             <BackBtn onClick={() => router.push("/sanchaek")}>취소</BackBtn>
           </div>
         )}

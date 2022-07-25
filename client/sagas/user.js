@@ -42,6 +42,10 @@ import {
 } from "../reducers/user";
 
 // const serverUrl = `http://127.0.0.1:3000`;
+<<<<<<< HEAD
+=======
+//const serverUrl = `http://127.0.0.1:3000`;
+>>>>>>> 45de8e3c622668d63d5cb6ef9b86788b1a76c16f
 const serverUrl = "http://api.petmate.kr";
 
 function signUpAPI(data) {

@@ -122,6 +122,7 @@ let CommunityService = class CommunityService {
                 'comments.id',
                 'comments.content',
                 'comments.createdAt',
+                'commentAuthor.id',
                 'commentAuthor.nickname',
                 'commentAuthorProfile.imageUrl',
                 'commentAuthorProfile.id',

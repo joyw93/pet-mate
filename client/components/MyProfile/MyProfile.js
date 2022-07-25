@@ -74,7 +74,7 @@ const MyProfile = () => {
                 {me?.profile?.imageUrl ? (
                   <img src={me?.profile?.imageUrl} alt="프로필이미지" />
                 ) : (
-                  <img src="img/default_profile.png" alt="프로필이미지" />
+                  <img src="img/defaultimgGrey.png" alt="프로필이미지" />
                 )}
               </ProfileImg>
               <UserInfo>
