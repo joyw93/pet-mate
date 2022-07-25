@@ -78,7 +78,7 @@ export class CommunityService {
           'LikeCount.likeCount',
         ])
         .leftJoin('post.author', 'author')
-        .leftJoin('author.profile','profile')
+        .leftJoin('author.profile', 'profile')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
@@ -137,7 +137,7 @@ export class CommunityService {
         .leftJoin('author.profile', 'authorProfile')
         .leftJoin('post.comments', 'comments')
         .leftJoin('comments.author', 'commentAuthor')
-        .leftJoin('commentAuthor.profile','commentAuthorProfile')
+        .leftJoin('commentAuthor.profile', 'commentAuthorProfile')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
@@ -159,8 +159,8 @@ export class CommunityService {
         .select(['post.id', 'post.title', 'post.createdAt', 'post.views'])
         .addSelect(['images.url'])
         .addSelect(['author.nickname'])
-        .leftJoin('post.images','images')
-        .leftJoin('post.author','author')
+        .leftJoin('post.images', 'images')
+        .leftJoin('post.author', 'author')
         .take(4)
         .orderBy({ 'post.views': 'DESC' })
         .getMany();
@@ -279,6 +279,9 @@ export class CommunityService {
   ) {
     const { content } = createCommentDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });
+    const userProfile = await this.userProfileRepository.findOne({
+      where: { id: user.profileId },
+    });
     const post = await this.communityRepository.findOne({
       where: { id: postId },
     });
@@ -288,6 +291,7 @@ export class CommunityService {
       comment.author = user;
       comment.post = post;
       comment.content = content;
+      comment.author.profile = userProfile;
       return await this.communityCommentRepository.save(comment);
     } catch (err) {
       console.error(err);

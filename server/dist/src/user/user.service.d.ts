@@ -41,5 +41,6 @@ export declare class UserService {
     getMyPosts(userId: number): Promise<CommunityEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;
+    getMyProfile(userId: number): Promise<UserEntity>;
     signout(userId: number): Promise<import("typeorm").DeleteResult>;
 }

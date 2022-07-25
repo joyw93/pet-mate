@@ -24,6 +24,7 @@ import {
   loadMyCommentsAction,
   loadMyLikedAction,
   loadProfileRequestAction,
+  loadMyProfileRequestAction,
 } from "../../reducers/user";
 
 const MyProfile = () => {
@@ -35,11 +36,11 @@ const MyProfile = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(loadProfileRequestAction());
+    // dispatch(loadProfileRequestAction());
+    dispatch(loadMyProfileRequestAction());
     dispatch(loadMyPostsAction());
     dispatch(loadMyCommentsAction());
     dispatch(loadMyLikedAction());
-    console.log("전체");
   }, []);
 
   const posts = [myPostsData, myCommentsData, myLikedData];

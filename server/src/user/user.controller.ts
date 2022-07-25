@@ -12,6 +12,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   Patch,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
@@ -32,9 +34,10 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getUserProfile(@User() user: UserEntity) {
-    return await this.userService.getUserProfile(user.id);
+  async getMyProfile(@User() user: UserEntity) {
+    return await this.userService.getMyProfile(user.id);
   }
+
 
   @Post('nickname-check')
   async checkNickname(@Body() data: { nickname: string }) {
@@ -134,6 +137,11 @@ export class UserController {
   @Delete('signout')
   async signout(@User() user: UserEntity) {
     return await this.userService.signout(user.id);
+  }
+
+  @Get(':userId')
+  async getUserProfile(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.userService.getUserProfile(userId);
   }
 
   @Get('session')

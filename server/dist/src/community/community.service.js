@@ -260,6 +260,9 @@ let CommunityService = class CommunityService {
     async addComment(userId, postId, createCommentDto) {
         const { content } = createCommentDto;
         const user = await this.userRepository.findOne({ where: { id: userId } });
+        const userProfile = await this.userProfileRepository.findOne({
+            where: { id: user.profileId },
+        });
         const post = await this.communityRepository.findOne({
             where: { id: postId },
         });
@@ -270,6 +273,7 @@ let CommunityService = class CommunityService {
             comment.author = user;
             comment.post = post;
             comment.content = content;
+            comment.author.profile = userProfile;
             return await this.communityCommentRepository.save(comment);
         }
         catch (err) {
