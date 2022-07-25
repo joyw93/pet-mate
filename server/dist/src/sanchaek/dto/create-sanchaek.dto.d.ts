@@ -1,4 +1,4 @@
-declare class MapInfo {
+export declare class MapInfo {
     lat: string;
     lng: string;
     location: string;
@@ -10,4 +10,3 @@ export declare class CreateSanchaekDto {
     content: string;
     mapInfo: MapInfo;
 }
-export {};

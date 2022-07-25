@@ -5,5 +5,6 @@ export declare class SanchaekEditPipe implements PipeTransform {
         title: string;
         content: string;
         images: string[];
+        mapInfo: import("src/sanchaek/dto/edit-sanchaek.dto").MapInfo;
     };
 }

@@ -14,6 +14,13 @@ const SanchaekMain = () => {
   const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (sanchaekAddPostDone) {
+      dispatch(sanchaekPostResetAction());
+    }
+  }, [sanchaekAddPostDone]);
+
+
   const goToNew = () => {
     if (!me) {
       Router.replace("/login");

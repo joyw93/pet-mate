@@ -73,7 +73,6 @@ function* loadPosts(action) {
       type: SANCHAEK_LOAD_POSTS_SUCCESS,
       data: payload.data,
     });
-    //console.log(payload);
   } catch (err) {
     console.error(err);
     yield put({

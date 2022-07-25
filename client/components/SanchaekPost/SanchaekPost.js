@@ -63,15 +63,13 @@ const SanchaekPost = ({ editState }) => {
   //   }
   // }, []);
 
+
   useEffect(() => {
     if (sanchaekAddPostDone) {
-      dispatch(sanchaekLoadPostsRequestAction());
+      router.replace('/sanchaek');
       dispatch(sanchaekPostResetAction());
-      router.replace("/sanchaek");
     }
   }, [sanchaekAddPostDone]);
-
-  console.log(selectedPost);
 
   useEffect(() => {
     //수정상태일 때 선택된 게시글값 넣어주기
