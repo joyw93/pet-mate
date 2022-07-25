@@ -22,7 +22,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction } from "../../reducers/user";
+import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction, loadMyProfileRequestAction } from "../../reducers/user";
 
 const ProfileTab = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const ProfileTab = () => {
       alert("회원정보가 변경되었습니다.");
       Router.back();
     }
-    dispatch(loadProfileRequestAction());
+    dispatch(loadMyProfileRequestAction());
   }, [editProfileDone]);
 
   useEffect(() => {

@@ -30,22 +30,15 @@ const UserProfile = () => {
   const { id } = router.query;
   const { user } = useSelector((state) => state.user);
 
-  //   useEffect(() => {
-  //     if (router.isReady) {
-  //       dispatch(loadProfileRequestAction(id));
-  //     }
-  //   }, [router.isReady]);
+
 
   useEffect(() => {
     if (router.isReady) {
-      console.log("asdf");
       dispatch(loadProfileRequestAction(id));
     }
   }, [router.isReady]);
 
   useEffect(() => {
-    console.log("asdf");
-    console.log(user);
   }, [user]);
 
   return (
