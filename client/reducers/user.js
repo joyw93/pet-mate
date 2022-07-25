@@ -72,17 +72,18 @@ export const SIGN_OUT_RESET = "SIGN_OUT_RESET";
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
+export const LOG_IN_RESET = "LOG_IN_RESET";
 
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 export const LOG_OUT_RESET = "LOG_OUT_RESET";
 
-export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST";
+export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST"; 
 export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS";
 export const LOAD_PROFILE_FAILURE = "LOAD_PROFILE_FAILURE";
 
-export const LOAD_USERINFO_REQUEST = "LOAD_USERINFO_REQUEST";
+export const LOAD_USERINFO_REQUEST = "LOAD_USERINFO_REQUEST"; // SNS로그인 때 유저 이메일/이름 가져오는 용도
 export const LOAD_USERINFO_SUCCESS = "LOAD_USERINFO_SUCCESS";
 export const LOAD_USERINFO_FAILURE = "LOAD_USERINFO_FAILURE";
 
@@ -133,6 +134,10 @@ export const signOutResetAction = () => ({
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
   data,
+});
+
+export const loginResetAction = () => ({
+  type: LOG_IN_RESET,
 });
 
 export const logoutRequestAction = () => ({
@@ -238,6 +243,11 @@ const reducer = (state = initialState, action) =>
       case LOG_IN_FAILURE:
         draft.logInLoading = false;
         draft.logInError = action.error;
+        break;
+      case LOG_IN_RESET:
+        draft.logInDone = false;
+        draft.logInLoading = false;
+        draft.logInError = null;
         break;
 
       case LOG_OUT_REQUEST:

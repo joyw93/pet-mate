@@ -39,11 +39,8 @@ import {
   SET_PROFILE_REQUEST,
 } from "../reducers/user";
 
-
-
-// const serverUrl = `http://127.0.0.1:3000`;
+//const serverUrl = `http://127.0.0.1:3000`;
 const serverUrl = "http://api.petmate.kr";
-
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -285,7 +282,6 @@ function editAccountAPI(data) {
     withCredentials: true,
   });
 }
-
 
 function* editAccount(action) {
   try {

@@ -45,11 +45,15 @@ let AuthService = class AuthService {
             'user.nickname',
             'user.email',
             'user.password',
+            'user.provider',
         ])
             .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
             .leftJoin('user.profile', 'profile')
             .where('user.email= :email', { email })
             .getOne();
+        if (user && user.provider !== 'local') {
+            throw new common_1.BadRequestException(res.msg.LOGIN_PROVIDER_WRONG);
+        }
         if (!user) {
             return null;
         }
@@ -64,36 +68,40 @@ let AuthService = class AuthService {
         const exUser = await this.userRepository.findOne({
             where: { email },
         });
-        if (exUser) {
-            return exUser;
+        if (!exUser) {
+            const user = new user_entity_1.UserEntity();
+            user.email = email;
+            user.name = name;
+            user.nickname = name;
+            user.password = accessToken;
+            user.provider = 'google';
+            user.active = false;
+            const userProfile = new user_profile_entity_1.UserProfileEntity();
+            user.profile = userProfile;
+            return await this.userRepository.save(user);
         }
         else {
-            const newUser = new user_entity_1.UserEntity();
-            const newUserProfile = new user_profile_entity_1.UserProfileEntity();
-            newUser.email = email;
-            newUser.name = name;
-            newUser.nickname = 'none';
-            newUser.password = '1234';
-            newUser.profile = newUserProfile;
-            return await this.userRepository.save(newUser);
+            return exUser;
         }
     }
     async validateKakaoUser(email, name, accessToken) {
         const exUser = await this.userRepository.findOne({
             where: { email },
         });
-        if (exUser) {
-            return exUser;
+        if (!exUser) {
+            const user = new user_entity_1.UserEntity();
+            user.email = email;
+            user.name = name;
+            user.nickname = name;
+            user.password = accessToken;
+            user.provider = 'kakao';
+            user.active = false;
+            const userProfile = new user_profile_entity_1.UserProfileEntity();
+            user.profile = userProfile;
+            return await this.userRepository.save(user);
         }
         else {
-            const newUser = new user_entity_1.UserEntity();
-            const newUserProfile = new user_profile_entity_1.UserProfileEntity();
-            newUser.email = email;
-            newUser.name = name;
-            newUser.nickname = 'none';
-            newUser.password = '1234';
-            newUser.profile = newUserProfile;
-            return await this.userRepository.save(newUser);
+            return exUser;
         }
     }
 };

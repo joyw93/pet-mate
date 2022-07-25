@@ -5,6 +5,7 @@ export const msg = {
   LOGIN_USER_NOT_EXIST: '존재하지 않는 유저입니다.',
   LOGIN_PASSWORD_WRONG: '패스워드가 일치하지 않습니다.',
   LOGIN_REQUIRED: '로그인이 필요합니다.',
+  LOGIN_PROVIDER_WRONG: '다른 방법으로 가입 된 회원입니다.',
 
   LOGOUT_SUCCESS: '로그아웃 성공',
 

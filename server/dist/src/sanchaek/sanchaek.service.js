@@ -18,26 +18,27 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const sanchaek_entity_1 = require("./sanchaek.entity");
-const res = require("../common/responses/message");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
 const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
+const res = require("../common/responses/message");
 let SanchaekService = class SanchaekService {
-    constructor(sanchaekRepository, userRepository, sanchaekImageRepository, sanchaekCommentRepository) {
+    constructor(sanchaekRepository, userRepository, sanchaekImageRepository, sanchaekCommentRepository, sanchaekMapRepository) {
         this.sanchaekRepository = sanchaekRepository;
         this.userRepository = userRepository;
         this.sanchaekImageRepository = sanchaekImageRepository;
         this.sanchaekCommentRepository = sanchaekCommentRepository;
+        this.sanchaekMapRepository = sanchaekMapRepository;
     }
     async createSanchaek(userId, createSanchaekDto) {
         try {
             const { title, content, mapInfo } = createSanchaekDto;
+            const { lat, lng, location, address, roadAddress } = mapInfo;
             const user = await this.userRepository.findOne({ where: { id: userId } });
             const sanchaek = new sanchaek_entity_1.SanchaekEntity();
             sanchaek.title = title;
             sanchaek.content = content;
             sanchaek.user = user;
-            const { lat, lng, location, address, roadAddress } = mapInfo;
             const sanchaekMap = new sanchaek_map_entity_1.SanchaekMapEntity();
             sanchaekMap.lat = lat;
             sanchaekMap.lng = lng;
@@ -53,15 +54,35 @@ let SanchaekService = class SanchaekService {
         }
     }
     async editSanchaek(sanchaekId, editSanchaekDto) {
-        const { title, content, images } = editSanchaekDto;
+        const { title, content, mapInfo, images } = editSanchaekDto;
+        const { lat, lng, location, address, roadAddress } = mapInfo;
         try {
-            const oldSanchaek = await this.sanchaekRepository.findOne({
+            const sanchaek = await this.sanchaekRepository.findOne({
                 where: { id: sanchaekId },
             });
-            const newSanchaek = Object.assign(Object.assign({}, oldSanchaek), { title, content });
+            const newSanchaek = Object.assign(Object.assign({}, sanchaek), { title, content });
             const savedImages = await this.sanchaekImageRepository.find({
                 where: { sanchaekId },
             });
+            const sanchaekMap = await this.sanchaekMapRepository.findOne({
+                where: { id: sanchaek.mapId },
+            });
+            if (sanchaekMap) {
+                sanchaekMap.lat = lat;
+                sanchaekMap.lng = lng;
+                sanchaekMap.location = location;
+                sanchaekMap.address = address;
+                sanchaekMap.roadAddress = roadAddress;
+            }
+            else {
+                const sanchaekMap = new sanchaek_map_entity_1.SanchaekMapEntity();
+                sanchaekMap.lat = lat;
+                sanchaekMap.lng = lng;
+                sanchaekMap.location = location;
+                sanchaekMap.address = address;
+                sanchaekMap.roadAddress = roadAddress;
+            }
+            newSanchaek.mapInfo = sanchaekMap;
             if (images) {
                 const imagesToDelete = savedImages.filter((savedImage) => !images.includes(savedImage.url));
                 await this.sanchaekImageRepository.remove(imagesToDelete);
@@ -89,7 +110,12 @@ let SanchaekService = class SanchaekService {
         try {
             const sanchaeks = this.sanchaekRepository
                 .createQueryBuilder('sanchaek')
-                .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'sanchaek.createdAt'])
+                .select([
+                'sanchaek.id',
+                'sanchaek.title',
+                'sanchaek.content',
+                'sanchaek.createdAt',
+            ])
                 .addSelect(['user.nickname'])
                 .addSelect(['images.url'])
                 .leftJoin('sanchaek.images', 'images')
@@ -117,10 +143,16 @@ let SanchaekService = class SanchaekService {
         try {
             const sanchaek = await this.sanchaekRepository
                 .createQueryBuilder('sanchaek')
-                .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'sanchaek.createdAt'])
+                .select([
+                'sanchaek.id',
+                'sanchaek.title',
+                'sanchaek.content',
+                'sanchaek.createdAt',
+                'sanchaek.views',
+            ])
                 .addSelect(['user.nickname'])
                 .addSelect(['images.url'])
-                .addSelect(['comments.content'])
+                .addSelect(['comments.content', 'comments.id'])
                 .addSelect(['author.nickname'])
                 .leftJoin('sanchaek.comments', 'comments')
                 .leftJoin('comments.author', 'author')
@@ -187,7 +219,9 @@ SanchaekService = __decorate([
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(sanchaek_image_entity_1.SanchaekImageEntity)),
     __param(3, (0, typeorm_1.InjectRepository)(sanchaek_comment_entity_1.SanchaekCommentEntity)),
+    __param(4, (0, typeorm_1.InjectRepository)(sanchaek_map_entity_1.SanchaekMapEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])

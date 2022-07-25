@@ -6,7 +6,7 @@ import { SanchaekService } from './sanchaek.service';
 export declare class SanchaekController {
     private readonly sanchaekService;
     constructor(sanchaekService: SanchaekService);
-    createSanchaek(user: UserEntity, imgUrls: string[], createSanchaekDto: CreateSanchaekDto): Promise<void>;
+    createSanchaek(user: UserEntity, imgUrls: string[], createSanchaekDto: CreateSanchaekDto): Promise<import("./sanchaek.entity").SanchaekEntity>;
     editSanchaek(user: UserEntity, sanchaekId: number, imgUrls: string[], editSanchaekDto: EditSanchaekDto): Promise<{
         title: string;
         content: string;

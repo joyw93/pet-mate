@@ -16,6 +16,8 @@ export declare class UserController {
         email: string;
     }): Promise<void>;
     signup(createUserDto: CreateUserDto): Promise<{
+        provider: string;
+        active: true;
         profile: import("../common/entities/user-profile.entity").UserProfileEntity;
         email: string;
         name: string;
@@ -38,7 +40,7 @@ export declare class UserController {
     googleLogin(req: any): Promise<void>;
     googleLoginCallback(req: any, res: any): Promise<void | import("express").Response<any, Record<string, any>>>;
     kakaoLogin(req: any): Promise<void>;
-    kakaoLoginCallback(req: any, res: any): Promise<any>;
+    kakaoLoginCallback(req: any, res: any): Promise<void | import("express").Response<any, Record<string, any>>>;
     logout(response: any): Promise<any>;
     getMyPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
     getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;

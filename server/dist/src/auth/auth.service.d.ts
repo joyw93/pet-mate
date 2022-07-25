@@ -10,6 +10,8 @@ export declare class AuthService {
         name: string;
         nickname: string;
         email: string;
+        provider: string;
+        active: boolean;
         profileId: number;
         createdAt: Date;
         updatedAt: Date;

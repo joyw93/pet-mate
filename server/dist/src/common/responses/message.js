@@ -7,6 +7,7 @@ exports.msg = {
     LOGIN_USER_NOT_EXIST: '존재하지 않는 유저입니다.',
     LOGIN_PASSWORD_WRONG: '패스워드가 일치하지 않습니다.',
     LOGIN_REQUIRED: '로그인이 필요합니다.',
+    LOGIN_PROVIDER_WRONG: '다른 방법으로 가입 된 회원입니다.',
     LOGOUT_SUCCESS: '로그아웃 성공',
     COMMUNITY_POST_NOT_EXIST: '게시물이 존재하지 않습니다.',
     COMMUNITY_GET_POST_FAIL: '게시물 불러오기 실패',

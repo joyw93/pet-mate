@@ -30,18 +30,13 @@ import {
   LIKE_POST_FAILURE,
 } from "../reducers/community";
 
-
 // function postAPI(data) {
 //   return axios.post(`${serverUrl}/community`, data, {
 //     withCredentials: true,
 //   });
 // }
 
-
-
-
 //const serverUrl = "http://127.0.0.1:3000";
-
 const serverUrl = "http://api.petmate.kr";
 
 

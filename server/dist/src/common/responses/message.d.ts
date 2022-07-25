@@ -4,6 +4,7 @@ export declare const msg: {
     LOGIN_USER_NOT_EXIST: string;
     LOGIN_PASSWORD_WRONG: string;
     LOGIN_REQUIRED: string;
+    LOGIN_PROVIDER_WRONG: string;
     LOGOUT_SUCCESS: string;
     COMMUNITY_POST_NOT_EXIST: string;
     COMMUNITY_GET_POST_FAIL: string;

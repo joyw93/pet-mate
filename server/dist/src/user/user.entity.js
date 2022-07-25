@@ -40,6 +40,14 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 __decorate([
+    (0, typeorm_1.Column)('varchar', { name: 'provider' }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "provider", void 0);
+__decorate([
+    (0, typeorm_1.Column)('boolean', { name: 'active' }),
+    __metadata("design:type", Boolean)
+], UserEntity.prototype, "active", void 0);
+__decorate([
     (0, typeorm_1.Column)('int', { name: 'profileId' }),
     __metadata("design:type", Number)
 ], UserEntity.prototype, "profileId", void 0);
@@ -88,7 +96,7 @@ __decorate([
 ], UserEntity.prototype, "communityComments", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => sanchaek_comment_entity_1.SanchaekCommentEntity, (comment) => comment.author, {
-        cascade: true
+        cascade: true,
     }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "sanchaekComments", void 0);

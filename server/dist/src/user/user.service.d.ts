@@ -16,6 +16,8 @@ export declare class UserService {
     checkNickname(nickname: string): Promise<void>;
     checkEmail(email: string): Promise<void>;
     createUser(createUserDto: CreateUserDto): Promise<{
+        provider: string;
+        active: true;
         profile: UserProfileEntity;
         email: string;
         name: string;
@@ -35,7 +37,7 @@ export declare class UserService {
     editProfile(userId: number, editProfileDto: EditProfileDto, imgUrls: string[]): Promise<UserEntity>;
     editAccount(userId: number, editAccountDto: EditAccountDto): Promise<UserEntity>;
     googleLoginCallback(req: Request, res: Response): Promise<void | Response<any, Record<string, any>>>;
-    kakaoLoginCallback(req: any, res: any): Promise<any>;
+    kakaoLoginCallback(req: Request, res: Response): Promise<void | Response<any, Record<string, any>>>;
     getMyPosts(userId: number): Promise<CommunityEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;

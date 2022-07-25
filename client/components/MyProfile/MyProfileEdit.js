@@ -26,13 +26,13 @@ const MyProfile = () => {
             <TabWrapper>
               <TabList>
                 <li
-                  className={activeIndex === 0 ? "isActive" : ""}
+                  className={activeIndex === 0 ? "is_active" : ""}
                   onClick={() => tabClickHandler(0)}
                 >
                   프로필 설정
                 </li>
                 <li
-                  className={activeIndex === 1 ? "isActive" : ""}
+                  className={activeIndex === 1 ? "is_active" : ""}
                   onClick={() => tabClickHandler(1)}
                 >
                   계정 설정

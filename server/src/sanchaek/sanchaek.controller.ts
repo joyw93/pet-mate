@@ -39,6 +39,8 @@ export class SanchaekController {
     if (imgUrls) {
       await this.sanchaekService.uploadImages(sanchaek, imgUrls);
     }
+
+    return sanchaek;
   }
 
   @Patch(':sanchaekId')

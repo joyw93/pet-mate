@@ -36,8 +36,18 @@ const App = ({ Component, pageProps }) => {
   };
 
   useEffect(() => {
-    dispatch(loadProfileRequestAction());
+    dispatch(loadUserInfoRequestAction());
   }, []);
+
+  useEffect(() => {
+    if (userInfo && userInfo.active) {
+      dispatch(loadProfileRequestAction());
+    }
+  }, [userInfo]);
+
+  // useEffect(() => {
+  //   dispatch(loadProfileRequestAction());
+  // }, []);
 
   useEffect(() => {
     if (logOutDone) {

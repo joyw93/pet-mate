@@ -4,7 +4,8 @@ import Snackbar from "@mui/material/Snackbar";
 import { useEffect, useRef, useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginRequestAction } from "../../reducers/user";
+
+import { loginRequestAction, loginResetAction } from "../../reducers/user";
 import {
   LogInContainer,
   FormWrapper,
@@ -40,9 +41,14 @@ const LogIn = () => {
   const passwordRef = useRef();
 
   useEffect(() => {
-    if (logInError !== null) {
+    dispatch(loginResetAction());
+    setSnackBar(false);
+  }, []);
+
+  useEffect(() => {
+    if (logInError) {
       setSnackBar(true);
-      // alert(logInError.message);
+      // dispatch(loginResetAction())
     }
   }, [logInError]);
 
@@ -141,6 +147,24 @@ const LogIn = () => {
       >
         <SnackBarContent>{logInError?.message}</SnackBarContent>
       </Snackbar>
+      <p>
+        <Link href="/signup">
+          <a>아직 아이디가 없으신가요? 회원가입 하러가기</a>
+        </Link>
+      </p>
+      {logInError ? (
+        <>
+          <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={snackBar}
+            autoHideDuration={2000}
+            onClose={handleClose}
+            key={"bottomcenter"}
+          >
+            <SnackBarContent>{logInError?.message}</SnackBarContent>
+          </Snackbar>
+        </>
+      ) : null}
     </LogInContainer>
   );
 };

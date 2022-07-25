@@ -10,6 +10,7 @@ import {
   FormWrapper,
   CheckInput,
   CheckContainer,
+  CheckBoxInput,
 } from "./styled";
 import { signupRequestAction, signupResetAction } from "../../reducers/user";
 import Router from "next/router";
@@ -49,39 +50,54 @@ const SignUp = () => {
   const [restCheck2, setRestCheck2] = useState(false);
   const [checkboxIsValid, setCheckboxIsValid] = useState(true);
 
-  const handleCheckbox = (e) => {
-    console.log(e.target);
+  const handleCheckbox =useCallback( (e) => {
     const { checked, name } = e.target;
-    //전체 동의
-    if (name === "check1" && checked === true) {
-      setEntireCheck(true);
-      setRestCheck1(true);
-      setRestCheck2(true);
-    }
-    //전체 동의 안 할 때
-    if (name === "check1" && checked === false) {
-      setEntireCheck(false);
-      setRestCheck1(false);
-      setRestCheck2(false);
-    }
+    // //전체 동의
+    // if (name === "check1" && checked === true) {
+    //   setEntireCheck(true);
+    //   setRestCheck1(true);
+    //   setRestCheck2(true);
+    // }
+    // //전체 동의 안 할 때
+    // if (name === "check1" && checked === false) {
+    //   setEntireCheck(false);
+    //   setRestCheck1(false);
+    //   setRestCheck2(false);
+    // }
 
-    //따로따로
+    // //따로따로
+    // if (name === "check2") {
+    //   if (checked === true) {
+    //     return setRestCheck1(true);
+    //   } else {
+    //     return setRestCheck1(false);
+    //   }
+    // }
+
+    // if (name === "check3") {
+    //   if (checked === true) {
+    //     return setRestCheck2(true);
+    //   } else {
+    //     return setRestCheck2(false);
+    //   }
+    // }
+    console.log(checkboxIsValid)
+
+    if (name === "check1") {
+      setEntireCheck(checked);
+      setRestCheck1(checked);
+      setRestCheck2(checked);
+    }
     if (name === "check2") {
-      if (checked === true) {
-        return setRestCheck1(true);
-      } else {
-        return setRestCheck1(false);
-      }
+      setRestCheck1(checked);
+      setEntireCheck(restCheck2 && checked);
     }
-
     if (name === "check3") {
-      if (checked === true) {
-        return setRestCheck2(true);
-      } else {
-        return setRestCheck2(false);
-      }
+      setRestCheck2(checked);
+      setEntireCheck(restCheck1 && checked);
     }
-  };
+  },[entireCheck, restCheck1, restCheck2]);
+
 
   const nameRef = useRef();
   const nicknameRef = useRef();
@@ -300,33 +316,33 @@ const SignUp = () => {
         </InputWrapper>
         <CheckContainer>
           <label>
-            <input
+            <CheckBoxInput
               name="check1"
               value={entireCheck}
               type="checkbox"
               onChange={handleCheckbox}
               checked={entireCheck}
-            ></input>
+            ></CheckBoxInput>
             모든 약관에 동의
           </label>
           <label>
-            <input
+            <CheckBoxInput
               name="check2"
               value={restCheck1}
               onChange={handleCheckbox}
               type="checkbox"
               checked={restCheck1}
-            ></input>
+            ></CheckBoxInput>
             개인정보처리방침에 동의 (필수)
           </label>
           <label>
-            <input
+            <CheckBoxInput
               name="check3"
               value={restCheck2}
               onChange={handleCheckbox}
               type="checkbox"
               checked={restCheck2}
-            ></input>
+            ></CheckBoxInput>
             이용약관에 동의 (필수)
           </label>
           {!checkboxIsValid && (

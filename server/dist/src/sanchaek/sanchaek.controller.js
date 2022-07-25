@@ -33,6 +33,7 @@ let SanchaekController = class SanchaekController {
         if (imgUrls) {
             await this.sanchaekService.uploadImages(sanchaek, imgUrls);
         }
+        return sanchaek;
     }
     async editSanchaek(user, sanchaekId, imgUrls, editSanchaekDto) {
         const editedSanchaek = await this.sanchaekService.editSanchaek(sanchaekId, editSanchaekDto);
