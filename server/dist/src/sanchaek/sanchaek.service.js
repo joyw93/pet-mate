@@ -80,7 +80,7 @@ let SanchaekService = class SanchaekService {
                 .addSelect(['user.nickname'])
                 .addSelect(['images.url'])
                 .addSelect(['comments.content', 'comments.id'])
-                .addSelect(['author.nickname'])
+                .addSelect(['author.nickname', 'author.id'])
                 .leftJoin('sanchaek.comments', 'comments')
                 .leftJoin('comments.author', 'author')
                 .leftJoin('sanchaek.images', 'images')
