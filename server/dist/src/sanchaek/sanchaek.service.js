@@ -30,6 +30,94 @@ let SanchaekService = class SanchaekService {
         this.sanchaekCommentRepository = sanchaekCommentRepository;
         this.sanchaekMapRepository = sanchaekMapRepository;
     }
+    async getSanchaeks(offset, sanchaekCount) {
+        try {
+            const sanchaeks = this.sanchaekRepository
+                .createQueryBuilder('sanchaek')
+                .select([
+                'sanchaek.id',
+                'sanchaek.title',
+                'sanchaek.content',
+                'sanchaek.createdAt',
+            ])
+                .addSelect(['user.nickname'])
+                .addSelect(['images.url'])
+                .leftJoin('sanchaek.images', 'images')
+                .leftJoinAndSelect('sanchaek.mapInfo', 'map')
+                .leftJoin('sanchaek.user', 'user')
+                .skip(offset)
+                .take(sanchaekCount)
+                .orderBy({ 'sanchaek.createdAt': 'DESC' })
+                .getMany();
+            return sanchaeks;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
+        }
+    }
+    async getOneSanchaek(postId) {
+        const sanchaek = await this.sanchaekRepository.findOne({
+            where: { id: postId },
+        });
+        if (!sanchaek) {
+            throw new common_1.NotFoundException(res.msg.SANCHAEK_POST_NOT_EXIST);
+        }
+        else {
+            sanchaek.views++;
+            await this.sanchaekRepository.save(sanchaek);
+        }
+        try {
+            const sanchaek = await this.sanchaekRepository
+                .createQueryBuilder('sanchaek')
+                .select([
+                'sanchaek.id',
+                'sanchaek.title',
+                'sanchaek.content',
+                'sanchaek.createdAt',
+                'sanchaek.views',
+            ])
+                .addSelect(['user.nickname'])
+                .addSelect(['images.url'])
+                .addSelect(['comments.content', 'comments.id'])
+                .addSelect(['author.nickname'])
+                .leftJoin('sanchaek.comments', 'comments')
+                .leftJoin('comments.author', 'author')
+                .leftJoin('sanchaek.images', 'images')
+                .leftJoinAndSelect('sanchaek.mapInfo', 'map')
+                .leftJoin('sanchaek.user', 'user')
+                .where('sanchaek.id= :id', { id: postId })
+                .getOne();
+            return sanchaek;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
+        }
+    }
+    async getHotSanchaeks() {
+        try {
+            const sanchaeks = await this.sanchaekRepository
+                .createQueryBuilder('sanchaek')
+                .select([
+                'sanchaek.title',
+                'sanchaek.id',
+                'sanchaek.createdAt',
+                'sanchaek.views',
+            ])
+                .addSelect(['images.url'])
+                .addSelect(['user.nickname'])
+                .leftJoin('sanchaek.images', 'images')
+                .leftJoin('sanchaek.user', 'user')
+                .leftJoinAndSelect('sanchaek.mapInfo', 'mapInfo')
+                .getMany();
+            return sanchaeks;
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
+        }
+    }
     async createSanchaek(userId, createSanchaekDto) {
         try {
             const { title, content, mapInfo } = createSanchaekDto;
@@ -104,68 +192,6 @@ let SanchaekService = class SanchaekService {
         catch (err) {
             console.error(err);
             throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_DELETE_POST_FAIL);
-        }
-    }
-    async getSanchaeks() {
-        try {
-            const sanchaeks = this.sanchaekRepository
-                .createQueryBuilder('sanchaek')
-                .select([
-                'sanchaek.id',
-                'sanchaek.title',
-                'sanchaek.content',
-                'sanchaek.createdAt',
-            ])
-                .addSelect(['user.nickname'])
-                .addSelect(['images.url'])
-                .leftJoin('sanchaek.images', 'images')
-                .leftJoinAndSelect('sanchaek.mapInfo', 'map')
-                .leftJoin('sanchaek.user', 'user')
-                .getMany();
-            return sanchaeks;
-        }
-        catch (err) {
-            console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
-        }
-    }
-    async getOneSanchaek(postId) {
-        const sanchaek = await this.sanchaekRepository.findOne({
-            where: { id: postId },
-        });
-        if (!sanchaek) {
-            throw new common_1.NotFoundException(res.msg.SANCHAEK_POST_NOT_EXIST);
-        }
-        else {
-            sanchaek.views++;
-            await this.sanchaekRepository.save(sanchaek);
-        }
-        try {
-            const sanchaek = await this.sanchaekRepository
-                .createQueryBuilder('sanchaek')
-                .select([
-                'sanchaek.id',
-                'sanchaek.title',
-                'sanchaek.content',
-                'sanchaek.createdAt',
-                'sanchaek.views',
-            ])
-                .addSelect(['user.nickname'])
-                .addSelect(['images.url'])
-                .addSelect(['comments.content', 'comments.id'])
-                .addSelect(['author.nickname'])
-                .leftJoin('sanchaek.comments', 'comments')
-                .leftJoin('comments.author', 'author')
-                .leftJoin('sanchaek.images', 'images')
-                .leftJoinAndSelect('sanchaek.mapInfo', 'map')
-                .leftJoin('sanchaek.user', 'user')
-                .where('sanchaek.id= :id', { id: postId })
-                .getOne();
-            return sanchaek;
-        }
-        catch (err) {
-            console.error(err);
-            throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
         }
     }
     async addComment(userId, postId, createCommentDto) {

@@ -13,6 +13,7 @@ const community_comment_entity_1 = require("../common/entities/community-comment
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const hashtag_service_1 = require("../hashtag/hashtag.service");
 const user_entity_1 = require("../user/user.entity");
@@ -32,6 +33,7 @@ CommunityModule = __decorate([
                 community_image_entity_1.CommunityImageEntity,
                 hashtag_entity_1.HashtagEntity,
                 user_entity_1.UserEntity,
+                user_profile_entity_1.UserProfileEntity
             ]),
         ],
         controllers: [community_controller_1.CommunityController],

@@ -4,6 +4,7 @@ import { CommunityCommentEntity } from 'src/common/entities/community-comment.en
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
+import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { HashtagService } from 'src/hashtag/hashtag.service';
 import { UserEntity } from 'src/user/user.entity';
@@ -21,6 +22,7 @@ import { CommunityService } from './community.service';
       CommunityImageEntity,
       HashtagEntity,
       UserEntity,
+      UserProfileEntity
     ]),
   ],
   controllers: [CommunityController],

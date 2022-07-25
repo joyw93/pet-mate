@@ -58,9 +58,9 @@ let HashtagService = class HashtagService {
         const likeCount = this.communityLikeRepository
             .createQueryBuilder()
             .subQuery()
-            .select(['post_id', 'COUNT(likes.user_id) AS likeCount'])
+            .select(['postId', 'COUNT(likes.userId) AS likeCount'])
             .from(community_like_entity_1.CommunityLikeEntity, 'likes')
-            .groupBy('post_id')
+            .groupBy('postId')
             .getQuery();
         const posts = await this.communityRepository
             .createQueryBuilder('post')
@@ -81,13 +81,13 @@ let HashtagService = class HashtagService {
             .innerJoin('post.tags', 'tags')
             .leftJoin('post.likes', 'likes')
             .innerJoin('tags.hashtag', 'hashtag')
-            .leftJoin(likeCount, 'LikeCount', 'LikeCount.post_id = post.id')
+            .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
             .loadRelationCountAndMap('post.likeCount', 'post.likes')
             .loadRelationCountAndMap('post.commentCount', 'post.comments')
             .where((qb) => {
             const subQuery = qb
                 .subQuery()
-                .select(['post_id'])
+                .select(['postId'])
                 .from(community_hashtag_entity_1.CommunityHashtagEntity, 'tags')
                 .where((qb) => {
                 const subQuery = qb
@@ -96,7 +96,7 @@ let HashtagService = class HashtagService {
                     .from(hashtag_entity_1.HashtagEntity, 'hashtag')
                     .where('keyword=:keyword', { keyword })
                     .getQuery();
-                return 'tag_id=' + subQuery;
+                return 'tagId=' + subQuery;
             })
                 .getQuery();
             return 'post.id IN' + subQuery;
