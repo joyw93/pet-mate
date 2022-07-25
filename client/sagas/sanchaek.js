@@ -108,7 +108,7 @@ function* loadPostDetail(action) {
 //글 더 불러오기
 function loadMoreAPI(data) {
   return axios.get(
-    `${serverUrl}/sanchaek?offset=${data.offset}&count=10&orderBy=${data.orderBy}`,
+    `${serverUrl}/sanchaek?offset=${data.offset}&count=12`,
     data
   );
 }

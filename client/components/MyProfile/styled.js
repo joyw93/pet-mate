@@ -283,10 +283,18 @@ export const NicknameValidWrapper = styled.div`
 export const ValidMessage = styled.div`
   /* color: ${(props) => props.ValidMessage === ""} */
   color: green;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  font-size: 0.9rem;
 `;
 
 export const InvalidMessage = styled.div`
   color: red;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  font-size: 0.9rem;
 `;
 
 export const ImageEditWrapper = styled.div`
@@ -371,6 +379,7 @@ export const PasswordWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+  position: relative;
 `;
 
 export const PasswordCheckWrapper = styled.div`
