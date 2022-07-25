@@ -30,8 +30,7 @@ const SanchaekMain = () => {
 
   return (
     <SanchaekContainer>
-      <SanchaekBanner onClick={goToNew}>
-      </SanchaekBanner>
+      <SanchaekBanner onClick={goToNew}></SanchaekBanner>
       <ContentList />
     </SanchaekContainer>
   );

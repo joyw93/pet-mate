@@ -94,6 +94,8 @@ const SanchaekPostDetail = () => {
     }
   };
 
+  // console.log("기본 lat", sanchaekPost.mapInfo.lat);
+  // console.log("기본 lng", sanchaekPost.mapInfo.lng);
   return (
     <>
       {sanchaekPost && (
@@ -142,12 +144,17 @@ const SanchaekPostDetail = () => {
             </div>
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
-                <h2>지도</h2>
-                <DetailedMap
-                  lat={sanchaekPost.mapInfo.lat}
-                  lng={sanchaekPost.mapInfo.lng}
-                  placeResult={sanchaekPost.mapInfo.location}
-                />
+                {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
+                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                  <>
+                    <h2>지도</h2>
+                    <DetailedMap
+                      lat={sanchaekPost.mapInfo.lat}
+                      lng={sanchaekPost.mapInfo.lng}
+                      placeResult={sanchaekPost.mapInfo.location}
+                    />
+                  </>
+                )}
               </MapWrapper>
             ) : null}
             <CommentWrapper>
