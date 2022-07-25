@@ -136,6 +136,7 @@ export const ContentInfo = styled.div`
   display: flex;
   font-size: 14px;
   margin-bottom: 10px;
+  align-items: center;
 `;
 
 export const ContentDetail = styled.span`
@@ -224,3 +225,16 @@ export const MoreBtn = styled(MoreButton)`
     opacity: 0.6;
   }
 `;
+
+export const AuthorProfile = styled.div`
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
+

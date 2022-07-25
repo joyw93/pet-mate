@@ -18,6 +18,7 @@ import {
   ImageWrapper,
   TitleContentWrapper,
   ContentArea,
+  AuthorProfile,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
@@ -46,6 +47,13 @@ const CommunityItem = (post) => {
               <Content>{post.content}</Content>
             </TitleContentWrapper>
             <ContentInfo>
+              <AuthorProfile>
+                {post?.author?.profile?.imageUrl ? (
+                  <img src={post.author.profile.imageUrl} />
+                ) : (
+                  <img src={'../img/defaultimgGrey.png'} />
+                )}
+              </AuthorProfile>
               <Author>{post.author.nickname}</Author>
               <ContentDetail>{getElapsedTime(post.createdAt)}</ContentDetail>
               <ContentDetail>·</ContentDetail>
@@ -55,13 +63,21 @@ const CommunityItem = (post) => {
             </ContentInfo>
           </ContentArea>
           {post?.images && (
-            <ImageWrapper onClick={itemSelect}>{post?.images?.length === 0 ? null : <ItemImage src={post.images[0].url} />}</ImageWrapper>
+            <ImageWrapper onClick={itemSelect}>
+              {post?.images?.length === 0 ? null : (
+                <ItemImage src={post.images[0].url} />
+              )}
+            </ImageWrapper>
           )}
         </ContentWrapper>
         <KeywordWrapper>
           {post.tags &&
             post.tags.map((word, index) => (
-              <Link href={`/search/hashtag?keyword=${word.hashtag.keyword}`} key={index} passHref>
+              <Link
+                href={`/search/hashtag?keyword=${word.hashtag.keyword}`}
+                key={index}
+                passHref
+              >
                 <KeywordItem>
                   <span>#</span>
                   {word.hashtag.keyword}

@@ -2,7 +2,7 @@ import AppLayout from "../../components/AppLayout";
 import GoogleProfile from "../../components/MyProfile/GoogleProfile";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
-import { loadProfileRequestAction, loadUserInfoRequestAction } from "../../reducers/user";
+import { loadMyProfileRequestAction, loadProfileRequestAction, loadUserInfoRequestAction } from "../../reducers/user";
 import { useEffect } from "react";
 
 const Google = () => {
@@ -17,7 +17,7 @@ const Google = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.active) {
-      dispatch(loadProfileRequestAction())
+      dispatch(loadMyProfileRequestAction())
     }
   }, [userInfo]);
 

@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -24,6 +25,27 @@ import { SanchaekService } from './sanchaek.service';
 @Controller('sanchaek')
 export class SanchaekController {
   constructor(private readonly sanchaekService: SanchaekService) {}
+
+  @Get()
+  async getSanchaeks(
+    @Query('offset') offset: number,
+    @Query('count') sanchaekCount: number,
+  ) {
+    return await this.sanchaekService.getSanchaeks(
+      offset ?? 0,
+      sanchaekCount ?? 12,
+    );
+  }
+
+  @Get('hot-sanchaek-posts')
+  async getHotSanchaeks() {
+    return await this.sanchaekService.getHotSanchaeks();
+  }
+
+  @Get(':sanchaekId')
+  async getOneSanchaek(@Param('sanchaekId', ParseIntPipe) sanchaekId: number) {
+    return await this.sanchaekService.getOneSanchaek(sanchaekId);
+  }
 
   @Post()
   @UseInterceptors(FilesInterceptor('images', 3, createSanchaekConfig))
@@ -67,16 +89,6 @@ export class SanchaekController {
     @Param('sanchaekId', ParseIntPipe) sanchaekId: number,
   ) {
     return await this.sanchaekService.deleteSanchaek(sanchaekId);
-  }
-
-  @Get()
-  async getSanchaeks() {
-    return await this.sanchaekService.getSanchaeks();
-  }
-
-  @Get(':sanchaekId')
-  async getOneSanchaek(@Param('sanchaekId', ParseIntPipe) sanchaekId: number) {
-    return await this.sanchaekService.getOneSanchaek(sanchaekId);
   }
 
   @Post(':sanchaekId/comment')

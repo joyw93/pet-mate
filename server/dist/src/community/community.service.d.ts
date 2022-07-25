@@ -1,7 +1,7 @@
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CommunityEntity } from './community.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -9,16 +9,17 @@ import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
+import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 export declare class CommunityService {
     private communityRepository;
     private userRepository;
+    private userProfileRepository;
     private communityLikeRepository;
     private communityCommentRepository;
     private communityImageRepository;
     private communityHashtagRepository;
     private hashtagRepository;
-    private dataSource;
-    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>, dataSource: DataSource);
+    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<CommunityEntity[]>;

@@ -22,6 +22,8 @@ import {
   CommentContentInfo,
   CommentHandler,
   CommentItem,
+  AuthorProfile,
+  AuthorInfo,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import {
@@ -71,7 +73,7 @@ const CommunityPostDetail = () => {
     }
     if (post && post.likes) {
       post.likes.forEach((likers) => {
-        setLike(likers.user_id === me.id);
+        setLike(likers.userId === me.id);
       });
     }
   }, [me, loadPostDetailDone]);
@@ -144,6 +146,13 @@ const CommunityPostDetail = () => {
           </Title>
           <PostInfo>
             <div>
+              <AuthorProfile>
+                {post?.author?.profile?.imageUrl ? (
+                  <img src={post.author.profile.imageUrl} />
+                ) : (
+                  <img src="../img/defaultimgGrey.png" />
+                )}
+              </AuthorProfile>
               <span id="post_author">{post.author.nickname}</span>
               <span id="post_created_time">
                 {getElapsedTime(post.createdAt)}
@@ -218,7 +227,16 @@ const CommunityPostDetail = () => {
                     .map((comment) => (
                       <CommentItem key={comment.id}>
                         <CommentHandler>
-                          <h3>{comment.author.nickname}</h3>
+                          <AuthorInfo>
+                            <AuthorProfile>
+                              {comment?.author?.profile?.imageUrl ? (
+                                <img src={comment.author.profile.imageUrl} />
+                              ) : (
+                                <img src="../img/defaultimgGrey.png" />
+                              )}
+                            </AuthorProfile>
+                            <h3>{comment.author.nickname}</h3>
+                          </AuthorInfo>
                           <CommentContentInfo>
                             <span>{getElapsedTime(comment.createdAt)}</span>
                             {comment?.author?.id === me?.id ? (

@@ -21,7 +21,7 @@ import { useCallback } from "react";
 import {
   signOutRequestAction,
   signOutResetAction,
-  loadProfileRequestAction,
+  loadMyProfileRequestAction,
   editProfileResetAction,
   editAccountRequestAction,
   editAccountResetAction,
@@ -65,7 +65,7 @@ const AccountTab = () => {
       alert("계정정보가 변경되었습니다.");
       Router.back();
     }
-    dispatch(loadProfileRequestAction());
+    dispatch(loadMyProfileRequestAction());
   }, [editProfileDone]);
 
   useEffect(() => {
