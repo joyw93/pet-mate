@@ -83,6 +83,7 @@ function* loadPosts(action) {
   }
 }
 
+
 //디테일 페이지
 function loadPostDetailAPI(data) {
   return axios.get(`${serverUrl}/sanchaek/${data}`);
