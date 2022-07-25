@@ -132,15 +132,21 @@ export const CommentInput = styled.div`
 
   input {
     width: 100%;
-    height: 35px;
+    height: 43px;
     border: 1px solid #ddd;
+    border-radius: 8px;
     padding-left: 10px;
+    &:hover {
+      background-color: #FAFAFA;
+    }
     &:focus {
       border: 1px solid ${Colors.primaryColor};
     }
   }
 
   button {
+    width: 70px;
+    height: 43px;
     background-color: ${Colors.primaryColor};
     color: #fff;
   }

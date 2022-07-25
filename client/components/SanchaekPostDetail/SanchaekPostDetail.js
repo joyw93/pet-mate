@@ -23,7 +23,6 @@ import {
   sanchaekAddCommentRequestAction,
   sanchaekRemovePostRequestAction,
   sanchaekRemoveCommentRequestAction,
-  addCommentRequestAction,
 } from "../../reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,11 +41,10 @@ const SanchaekPostDetail = () => {
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
-  useEffect(() => {
-    if (sanchaekAddCommentDone) {
-      console.log(sanchaekPost.comments);
-    }
-  }, [sanchaekPost]);
+  // useEffect(() => {
+  //   if (sanchaekAddCommentDone) {
+  //   }
+  // }, [sanchaekPost]);
 
   useEffect(() => {
     if (router.isReady && !sanchaekPost) {
@@ -58,7 +56,7 @@ const SanchaekPostDetail = () => {
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
-    dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
+    dispatch(sanchaekAddCommentRequestAction({ postId: id, content: cmtContent }));
     setCmtContent("");
     commentInputRef.current.blur();
   }, [cmtContent]);
@@ -110,7 +108,7 @@ const SanchaekPostDetail = () => {
           <h1>산책메이트</h1>
           <Title>
             <h2>{sanchaekPost.title}</h2>
-            {me && me?.id === sanchaekPost?.author?.id ? (
+            {me && me?.id === sanchaekPost?.user?.id ? (
               <div>
                 <Link href={`/sanchaek/${id}/edit`}>
                   <Button>수정</Button>
