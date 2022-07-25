@@ -19,14 +19,14 @@ const Banner = () => {
               </Link>
             </div>
             <div className="banner_item_img">
-              <img src="img/walkingmate-banner-img.png" alt="" />
+              <img src="../img/walkingmate-banner-img.png" alt="" />
             </div>
           </div>
         </BannerItem>
         <BannerItem>
           <div className="banner_container">
             <div className="banner_item_img">
-              <img src="img/community-banner-img.png" alt="" />
+              <img src="../img/community-banner-img.png" alt="" />
             </div>
             <div className="banner_item_box">
               <h1>

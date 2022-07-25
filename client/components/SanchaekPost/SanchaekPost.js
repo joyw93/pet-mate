@@ -367,7 +367,7 @@ const SanchaekPost = ({ editState }) => {
                   key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
                   position={marker.position}
                   image={{
-                    src: "../img/locationEmojiBlk.png",
+                    src: "../../img/locationEmojiBlk.png",
                     size: {
                       width: 48,
                       height: 48,

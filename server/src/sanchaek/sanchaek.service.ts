@@ -77,7 +77,7 @@ export class SanchaekService {
           'sanchaek.createdAt',
           'sanchaek.views',
         ])
-        .addSelect(['user.nickname'])
+        .addSelect(['user.nickname','user.id'])
         .addSelect(['images.url'])
         .addSelect(['comments.content', 'comments.id'])
         .addSelect(['author.nickname','author.id'])

@@ -8,7 +8,7 @@ export const SanchaekContainer = styled.div`
 export const SanchaekBanner = styled.div`
   width: 100%;
   height: 520px;
-  background-image: url("../img/sanchaekbanner.png");
+  background-image: url("../../img/sanchaekbanner.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

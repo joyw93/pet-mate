@@ -73,7 +73,10 @@ const CommunityPostDetail = () => {
     }
     if (post && post.likes) {
       post.likes.forEach((likers) => {
-        setLike(likers.userId === me.id);
+        if (likers.userId === me.id) {
+          setLike(true);
+          return;
+        }
       });
     }
   }, [me, loadPostDetailDone]);

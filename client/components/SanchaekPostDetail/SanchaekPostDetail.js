@@ -41,11 +41,10 @@ const SanchaekPostDetail = () => {
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
-  useEffect(() => {
-    if (sanchaekAddCommentDone) {
-      console.log(sanchaekPost.comments);
-    }
-  }, [sanchaekPost]);
+  // useEffect(() => {
+  //   if (sanchaekAddCommentDone) {
+  //   }
+  // }, [sanchaekPost]);
 
   useEffect(() => {
     if (router.isReady && !sanchaekPost) {
@@ -112,7 +111,7 @@ const SanchaekPostDetail = () => {
           <h1>산책메이트</h1>
           <Title>
             <h2>{sanchaekPost.title}</h2>
-            {me && me?.id === sanchaekPost?.author?.id ? (
+            {me && me?.id === sanchaekPost?.user?.id ? (
               <div>
                 <Link href={`/sanchaek/${id}/edit`}>
                   <Button>수정</Button>

@@ -33,9 +33,9 @@ const SanchaekItem = (post) => {
           )}
           <ContentArea>
             <ContentTitle>{post.title.slice(0, 12)}</ContentTitle>
-            {post.mapInfo && post.mapInfo.location && (
+            {post && post.mapInfo && post.mapInfo.location && (
               <ContentInfo>
-                <LocaImg src="../img/locationEmojiBlk.png" />
+                <LocaImg src="../../img/locationEmojiBlk.png" />
                 {post.mapInfo.location}
               </ContentInfo>
             )}
