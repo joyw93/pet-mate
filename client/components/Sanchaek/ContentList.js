@@ -7,9 +7,10 @@ import { SanchaekContent, BtnContainer, BtnLine, MoreBtn } from "./styled";
 import {
   sanchaekLoadPostsRequestAction,
   sanchaekLoadPostDetailResetAction,
+  sanchaekLoadMoreResetAction,
 } from "../../reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const ContentList = () => {
   const [noMoreList, setNoMoreList] = useState(false);

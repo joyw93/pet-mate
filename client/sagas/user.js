@@ -41,8 +41,8 @@ import {
   LOAD_MY_PROFILE_REQUEST,
 } from "../reducers/user";
 
-const serverUrl = `http://127.0.0.1:3000`;
-// const serverUrl = "http://api.petmate.kr";
+//const serverUrl = `http://127.0.0.1:3000`;
+const serverUrl = "http://api.petmate.kr";
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -134,7 +134,7 @@ function loadProfileAPI(data) {
 
 function* loadProfile(action) {
   try {
-    console.log(action.data)
+    console.log(action.data);
     const result = yield call(loadProfileAPI, action.data);
     const payload = result.data;
     yield put({
