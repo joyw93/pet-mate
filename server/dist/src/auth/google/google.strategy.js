@@ -19,7 +19,7 @@ let GoogleStrategy = class GoogleStrategy extends (0, passport_1.PassportStrateg
         super({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: 'http://127.0.0.1:3000/user/google/callback',
+            callbackURL: 'http://api.petmate.kr/user/google/callback',
             scope: ['email', 'profile'],
         });
         this.authService = authService;

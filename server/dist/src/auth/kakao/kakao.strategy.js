@@ -18,7 +18,7 @@ let KakaoStrategy = class KakaoStrategy extends (0, passport_1.PassportStrategy)
     constructor(authService) {
         super({
             clientID: process.env.KAKAO_CLIENT_ID,
-            callbackURL: 'http://127.0.0.1:3000/user/kakao/callback',
+            callbackURL: 'http://api.petmate.kr/user/kakao/callback',
         });
         this.authService = authService;
     }
