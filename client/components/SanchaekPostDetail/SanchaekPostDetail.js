@@ -23,7 +23,6 @@ import {
   sanchaekAddCommentRequestAction,
   sanchaekRemovePostRequestAction,
   sanchaekRemoveCommentRequestAction,
-  addCommentRequestAction,
 } from "../../reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,9 +57,12 @@ const SanchaekPostDetail = () => {
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
-    dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
+    dispatch(
+      sanchaekAddCommentRequestAction({ postId: id, content: cmtContent })
+    );
     setCmtContent("");
     commentInputRef.current.blur();
+    console.log(cmtContent);
   }, [cmtContent]);
 
   const keyUp = useCallback(
