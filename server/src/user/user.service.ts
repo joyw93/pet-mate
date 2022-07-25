@@ -172,9 +172,9 @@ export class UserService {
     } else {
       const user = req.user;
       if (!user.active) {
-        return res.redirect(`http://api.petmate.kr/auth/google`);
+        return res.redirect(`http://petmate.kr/auth/google`);
       } else {
-        return res.redirect(`http://api.petmate.kr`);
+        return res.redirect(`http://petmate.kr`);
       }
     }
   }
@@ -185,9 +185,9 @@ export class UserService {
     } else {
       const user = req.user;
       if (!user.active) {
-        return res.redirect(`http://api.petmate.kr/auth/kakao`);
+        return res.redirect(`http://petmate.kr/auth/kakao`);
       } else {
-        return res.redirect(`http://api.petmate.kr`);
+        return res.redirect(`http://petmate.kr`);
       }
     }
   }
