@@ -2,7 +2,7 @@ import Head from "next/head";
 import AppLayout from "../../components/AppLayout";
 import SanchaekMain from "../../components/Sanchaek/SanchaekMain";
 
-const WalkingMate = () => {
+const SanchaekMate = () => {
   return (
     <>
       <Head>
@@ -15,4 +15,4 @@ const WalkingMate = () => {
   );
 };
 
-export default WalkingMate;
+export default SanchaekMate;

@@ -1,35 +1,24 @@
 import Grid from "@mui/material/Grid";
-import Link from "next/link";
 import Box from "@mui/material/Box";
 
 import SanchaekItem from "./SanchaekItem";
 
-import { Item, SanchaekContent, BtnContainer, ItemImage } from "./styled";
+import { SanchaekContent, BtnContainer } from "./styled";
 import {
-  sanchaekLoadMorePostsAction,
   sanchaekLoadPostsRequestAction,
   sanchaekLoadPostDetailResetAction,
-  sanchaekLoadMoreResetAction,
 } from "../../reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ContentList = () => {
   const [noMoreList, setNoMoreList] = useState();
-  const {
-    sanchaekPosts,
-    sanchaekLoadPostsDone,
-    sanchaekLoadMoreDone,
-    sanchaekMorePosts,
-    sanchaekAddPostDone,
-  } = useSelector((state) => state.sanchaek);
+  const { sanchaekPosts } = useSelector((state) => state.sanchaek);
   const dispatch = useDispatch();
-  // const morePostsRef = useRef(1);
 
   useEffect(() => {
     dispatch(sanchaekLoadPostsRequestAction());
   }, []);
-  console.log(sanchaekPosts);
 
   useEffect(() => {
     dispatch(sanchaekLoadPostDetailResetAction());

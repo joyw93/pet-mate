@@ -29,13 +29,6 @@ const CommunityItem = (post) => {
     Router.push(`/community/${post.id}`);
   };
 
-  useEffect(() => {
-    if (post.id === 50) {
-      console.log("post", post);
-      console.log("postImages", post.images);
-    }
-  }, []);
-
   return (
     <ItemContainer>
       <ItemWrapper>
@@ -55,13 +48,21 @@ const CommunityItem = (post) => {
             </ContentInfo>
           </ContentArea>
           {post?.images && (
-            <ImageWrapper onClick={itemSelect}>{post?.images?.length === 0 ? null : <ItemImage src={post.images[0].url} />}</ImageWrapper>
+            <ImageWrapper onClick={itemSelect}>
+              {post?.images?.length === 0 ? null : (
+                <ItemImage src={post.images[0].url} />
+              )}
+            </ImageWrapper>
           )}
         </ContentWrapper>
         <KeywordWrapper>
           {post.tags &&
             post.tags.map((word, index) => (
-              <Link href={`/search/hashtag?keyword=${word.hashtag.keyword}`} key={index} passHref>
+              <Link
+                href={`/search/hashtag?keyword=${word.hashtag.keyword}`}
+                key={index}
+                passHref
+              >
                 <KeywordItem>
                   <span>#</span>
                   {word.hashtag.keyword}

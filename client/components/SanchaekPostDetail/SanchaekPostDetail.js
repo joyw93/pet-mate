@@ -27,7 +27,7 @@ import {
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 
 const SanchaekPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
@@ -123,8 +123,7 @@ const SanchaekPostDetail = () => {
               <span id="post_created_time">
                 {getElapsedTime(sanchaekPost.createdAt)}
               </span>
-              {/* <span id="views">조회수 {sanchaekPost.views}</span> */}
-              <span id="views">조회수 0</span>
+              <span id="views">조회수 {sanchaekPost.views}</span>
             </div>
           </PostInfo>
           <div id="content">
