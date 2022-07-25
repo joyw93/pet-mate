@@ -21,19 +21,15 @@ const SanchaekMain = () => {
     if (!me) {
       Router.replace("/login");
     } else {
-      // if (window.confirm("글 작성하러 가시겠습니까?")) {
-      //   Router.replace("/sanchaek/new");
-      // }
-      Router.replace("/sanchaek/new");
+      if (window.confirm("글 작성하러 가시겠습니까?")) {
+        Router.replace("/sanchaek/new");
+      }
     }
   };
 
   return (
     <SanchaekContainer>
-      <SanchaekBanner onClick={goToNew}>
-        <img src="../../img/sanchaekbanner.png" />
-        <div></div>
-      </SanchaekBanner>
+      <SanchaekBanner onClick={goToNew}></SanchaekBanner>
       <ContentList />
     </SanchaekContainer>
   );
