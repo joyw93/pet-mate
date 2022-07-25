@@ -4,8 +4,8 @@ import ContentList from "./ContentList";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
 import {
-  sanchaekPostResetAction,
   sanchaekLoadPostsRequestAction,
+  sanchaekPostResetAction,
 } from "../../reducers/sanchaek";
 import { useEffect } from "react";
 
@@ -20,6 +20,7 @@ const SanchaekMain = () => {
     }
   }, [sanchaekAddPostDone]);
 
+
   const goToNew = () => {
     if (!me) {
       Router.replace("/login");
@@ -33,6 +34,12 @@ const SanchaekMain = () => {
   // useEffect(() => {
   //   dispatch(sanchaekLoadPostsRequestAction());
   // }, []);
+
+  useEffect(() => {
+    if (sanchaekAddPostDone) {
+      dispatch(sanchaekPostResetAction());
+    }
+  }, [sanchaekAddPostDone]);
 
   return (
     <SanchaekContainer>

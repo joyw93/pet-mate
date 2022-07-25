@@ -3,6 +3,8 @@ import { Map } from "react-kakao-maps-sdk";
 
 const DetailedMap = ({ lat, lng, placeResult }) => {
   console.log(lat);
+  console.log(lng);
+  console.log(placeResult);
   return (
     <>
       <Map
@@ -15,7 +17,7 @@ const DetailedMap = ({ lat, lng, placeResult }) => {
           width: "100%",
           height: "450px",
         }}
-        level={3}
+        level={2}
       >
         <MapMarker
           position={{
