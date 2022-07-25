@@ -4,7 +4,7 @@ import { Colors } from "../../styles/ColorVariable";
 export const LogInContainer = styled.div`
   width: 400px;
   margin: 0 auto;
-  margin-top: 70px;
+  margin-top: 40px;
   margin-bottom: 120px;
   display: flex;
   flex-direction: column;
@@ -19,12 +19,16 @@ export const LogInContainer = styled.div`
     font-size: 24px;
     margin-bottom: 30px;
   }
+`;
 
-  p {
-    margin-top: 10px;
+export const GotoSignup = styled.div`
+  margin-top: 12px;
+  text-align: center;
+  a {
+    font-size: 0.8rem;
   }
 
-  p:hover {
+  &:hover span {
     text-decoration: underline;
     cursor: pointer;
   }
@@ -49,9 +53,10 @@ export const InputWrapper = styled.div`
 
 export const UserInput = styled.input`
   height: 40px;
+  line-height: 40px;
   width: 100%;
   border-radius: 5px;
-
+  padding-left: 10px;
   border: 0.5px solid ${Colors.btnGray};
 `;
 
@@ -60,7 +65,7 @@ export const MainBtn = styled.button`
   height: 40px;
   border: none;
   border-radius: 10px;
-
+  font-size: 0.8rem;
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 10px;
@@ -68,16 +73,69 @@ export const MainBtn = styled.button`
 
 export const LoginBtn = styled(MainBtn)`
   background-color: ${Colors.primaryColor};
+  font-size: 0.8rem;
+  color: #fff;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    transition: all 0.2s;
+  }
 `;
 
-export const GoogleBtn = styled(MainBtn)`
-  background-color: #fff;
-  border: 1px solid #000;
+export const SnsLogin = styled.p`
+  font-size: 0.6rem;
+  text-align: center;
+  margin: 30px 0 15px;
+  color: #666;
 `;
 
-export const KakaoBtn = styled(MainBtn)`
+export const SnsLoginBtns = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const GoogleBtn = styled.button`
   background-color: #fff;
-  border: 2px solid ${Colors.profileYellow};
+  width: 48px;
+  height: 48px;
+  border: 2px solid #ddd;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 20px;
+  img {
+    width: 60%;
+    height: 60%;
+    text-align: center;
+  }
+  &:hover {
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
+`;
+export const KakaoBtn = styled.button`
+  background-color: #ffda00;
+  width: 48px;
+  height: 48px;
+  border: 2px solid #ffda00;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  cursor: pointer;
+  img {
+    width: 60%;
+    height: 60%;
+    text-align: center;
+  }
+  &:hover {
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
 `;
 
 export const CheckInput = styled.p`

@@ -74,17 +74,24 @@ export const BtnContainer = styled.div`
 export const ItemWrapper = styled.div``;
 export const ImageWrapper = styled.div``;
 export const ContentArea = styled.div`
- margin: 10px  0;
+  margin: 10px 0;
 `;
 export const ContentTitle = styled.h2`
-font-size: 0.9rem;
-font-weight: bold;
-margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: 5px;
 `;
 
-export const ContentInfo = styled.span`
-  font-size: 0.8rem;
+export const ContentInfo = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  span {
+    font-size: 0.7rem;
+  }
 `;
 
 export const LocaImg = styled.img`
-width:24px`;
+  width: 24px;
+`;

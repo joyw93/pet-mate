@@ -4,6 +4,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { useEffect, useRef, useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { loginRequestAction, loginResetAction } from "../../reducers/user";
 import {
   LogInContainer,
@@ -11,10 +12,13 @@ import {
   InputWrapper,
   UserInput,
   LoginBtn,
+  SnsLogin,
+  SnsLoginBtns,
   GoogleBtn,
   KakaoBtn,
   CheckInput,
   SnackBarContent,
+  GotoSignup,
 } from "./styled";
 
 // const serverUrl = 'http://127.0.0.1:3000';
@@ -116,9 +120,33 @@ const LogIn = () => {
           ></UserInput>
         </InputWrapper>
         <LoginBtn onClick={handleLoginSubmit}>로그인</LoginBtn>
-        <GoogleBtn onClick={handleGoogleLoginSubmit}>구글 로그인</GoogleBtn>
-        <KakaoBtn onClick={handleKakaoLoginSubmit}>카카오 로그인</KakaoBtn>
+        <GotoSignup>
+          <Link href="/signup">
+            <a>
+              아직 아이디가 없으신가요? <span>회원가입</span> 하러가기
+            </a>
+          </Link>
+        </GotoSignup>
+
+        <SnsLogin>SNS계정으로 간편 로그인/회원가입</SnsLogin>
+        <SnsLoginBtns>
+          <GoogleBtn onClick={handleGoogleLoginSubmit}>
+            <img src="../img/googleLogin.png" alt="" />
+          </GoogleBtn>
+          <KakaoBtn onClick={handleKakaoLoginSubmit}>
+            <img src="../img/kakaoLogin.png" alt="" />
+          </KakaoBtn>
+        </SnsLoginBtns>
       </FormWrapper>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackBar}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        key={"bottomcenter"}
+      >
+        <SnackBarContent>{logInError?.message}</SnackBarContent>
+      </Snackbar>
       <p>
         <Link href="/signup">
           <a>아직 아이디가 없으신가요? 회원가입 하러가기</a>

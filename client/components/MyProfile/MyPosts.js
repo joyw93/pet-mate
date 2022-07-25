@@ -14,9 +14,15 @@ const MyPosts = ({ id, images, title, content }) => {
 
   return (
     <MyPostItem>
-      <Link href={`/community/${id}`}>{images[0] ? <img src={images[0].url} /> : <img src={defaultImages[randomNum]} />}</Link>
-      <h1>{title}</h1>
-      <div>{content}</div>
+      <Link href={`/community/${id}`}>
+        {images[0] ? (
+          <img src={images[0].url} />
+        ) : (
+          <img src={defaultImages[randomNum]} />
+        )}
+      </Link>
+      <h1>{title.slice(0, 12)}</h1>
+      <p>{content.slice(0, 12)}</p>
     </MyPostItem>
   );
 };
