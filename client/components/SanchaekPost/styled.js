@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
-import LoadingButton from "@mui/lab/LoadingButton";
 
-export const Button = styled(LoadingButton)`
+export const Button = styled.button`
   font-size: 0.9rem;
   width: 60px;
   height: 35px;
@@ -16,22 +15,23 @@ export const Button = styled(LoadingButton)`
   margin-left: 10px;
   transition: all 0.1s;
 
-  &:first-child {
-    background-color: ${Colors.primaryColor};
-  }
-
-  &:last-child {
-    background-color: #000;
-    color: #fff;
-  }
-
-  &:first-child:hover {
-    color: #fff;
+  &:hover {
     background-color: rgba(0, 0, 0, 0.5);
   }
-  &:last-child:hover {
-    background-color: rgba(0, 0, 0, 0.5);
+`;
+
+export const PostBtn = styled(Button)`
+  background-color: ${Colors.primaryColor};
+  font-size: 0.7rem;
+
+  &:hover {
+    color: #fff;
   }
+`;
+
+export const BackBtn = styled(Button)`
+  background-color: #000;
+  color: #fff;
 `;
 
 export const CreatePostContainer = styled.div`

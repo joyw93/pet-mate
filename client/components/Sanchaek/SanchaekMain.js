@@ -3,10 +3,7 @@ import { SanchaekContainer, SanchaekBanner } from "./styled";
 import ContentList from "./ContentList";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
-import {
-  sanchaekLoadPostsRequestAction,
-  sanchaekPostResetAction,
-} from "../../reducers/sanchaek";
+import { sanchaekPostResetAction } from "../../reducers/sanchaek";
 import { useEffect } from "react";
 
 const SanchaekMain = () => {
@@ -20,31 +17,22 @@ const SanchaekMain = () => {
     }
   }, [sanchaekAddPostDone]);
 
-
   const goToNew = () => {
     if (!me) {
       Router.replace("/login");
     } else {
-      if (window.confirm("글 작성하러 가시겠습니까?")) {
-        Router.replace("/sanchaek/new");
-      }
+      // if (window.confirm("글 작성하러 가시겠습니까?")) {
+      //   Router.replace("/sanchaek/new");
+      // }
+      Router.replace("/sanchaek/new");
     }
   };
-
-  // useEffect(() => {
-  //   dispatch(sanchaekLoadPostsRequestAction());
-  // }, []);
-
-  useEffect(() => {
-    if (sanchaekAddPostDone) {
-      dispatch(sanchaekPostResetAction());
-    }
-  }, [sanchaekAddPostDone]);
 
   return (
     <SanchaekContainer>
       <SanchaekBanner onClick={goToNew}>
-        <img src="../img/sanchaekbanner.png" />
+        <img src="../../img/sanchaekbanner.png" />
+        <div></div>
       </SanchaekBanner>
       <ContentList />
     </SanchaekContainer>

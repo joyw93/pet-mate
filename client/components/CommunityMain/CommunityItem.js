@@ -30,13 +30,6 @@ const CommunityItem = (post) => {
     Router.push(`/community/${post.id}`);
   };
 
-  useEffect(() => {
-    if (post.id === 50) {
-      console.log("post", post);
-      console.log("postImages", post.images);
-    }
-  }, []);
-
   return (
     <ItemContainer>
       <ItemWrapper>

@@ -6,24 +6,28 @@ import {
   AddPhotoWrapper,
   MapWrapper,
   Button,
+  PostBtn,
+  BackBtn,
 } from "./styled";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+
 import {
   sanchaekPostRequestAction,
   sanchaekUpdatePostRequestAction,
   sanchaekPostResetAction,
-  sanchaekLoadPostsRequestAction,
+  sanchaekUpdatePostResetAction,
 } from "../../reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import DetailedMap from "../Kakaomap/DetailedMap";
 
 const SanchaekPost = ({ editState }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
 
-  const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
+  const { sanchaekAddPostDone, sanchaekUpdatePostDone } = useSelector(
+    (state) => state.sanchaek
+  );
   const selectedPost = useSelector((state) => state.sanchaek.sanchaekPost);
 
   //const { me } = useSelector((state) => state.user);
@@ -52,24 +56,21 @@ const SanchaekPost = ({ editState }) => {
   const [lng, setLng] = useState("");
   const [placeResult, setPlaceResult] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setPlace(inputText);
-  };
-
   // useEffect(() => {
   //   if (!me) {
   //     Router.push("/login");
   //   }
   // }, []);
 
-
   useEffect(() => {
     if (sanchaekAddPostDone) {
-      router.replace('/sanchaek');
+      router.replace("/sanchaek");
       dispatch(sanchaekPostResetAction());
+    } else if (sanchaekUpdatePostDone) {
+      router.replace("/sanchaek");
+      dispatch(sanchaekUpdatePostResetAction());
     }
-  }, [sanchaekAddPostDone]);
+  }, [sanchaekAddPostDone, sanchaekUpdatePostDone]);
 
   useEffect(() => {
     //수정상태일 때 선택된 게시글값 넣어주기
@@ -181,10 +182,15 @@ const SanchaekPost = ({ editState }) => {
     if (info) {
       setPlaceResult(info.content);
     }
-    if (lat && lng) {
-      getAddr(lat, lng);
-    }
+    // if (lat && lng) {
+    //   getAddr(lat, lng);
+    // }
   }, [info, lat, lng]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPlace(inputText);
+  };
 
   useEffect(() => {
     if (!map || !place) return;
@@ -253,16 +259,23 @@ const SanchaekPost = ({ editState }) => {
     <CreatePostContainer>
       <TitleWrapper>
         <h1>산책메이트 글쓰기</h1>
-        <div id="buttons">
-          <Button onClick={handlePost}>등록</Button>
-          <Button>취소</Button>
-        </div>
+        {editState ? (
+          <div id="buttons">
+            <PostBtn onClick={handlePost}>수정완료</PostBtn>
+            <BackBtn onClick={() => router.back()}>취소</BackBtn>
+          </div>
+        ) : (
+          <div id="buttons">
+            <Button onClick={handlePost}>등록</Button>
+            <BackBtn onClick={() => router.push("/sanchaek")}>취소</BackBtn>
+          </div>
+        )}
       </TitleWrapper>
       <TextEditWrapper>
         <input
           ref={titleRef}
           autoFocus
-          maxLength="40"
+          maxLength="25"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}

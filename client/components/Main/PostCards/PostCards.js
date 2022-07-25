@@ -1,54 +1,19 @@
 import { PostCardContainer, Title, PostContainer } from "./styled";
 import Link from "next/link";
-import PostItem from "./PostItem";
+import { HotCommunityItem } from "./PostItem";
+import { HotSanchaekItem } from "./PostItem";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { loadPostDetailResetAction } from "../../../reducers/community";
+import { sanchaekLoadPostDetailResetAction } from "../../../reducers/sanchaek";
 
-const PostCards = () => {
-  const MateItems = [
-    {
-      id: 1,
-      src: "img/pet1.jpg",
-      title: "울집 댕댕이랑  ",
-    },
-    {
-      id: 2,
-      src: "img/pet2.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함2",
-    },
-    {
-      id: 3,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함3",
-    },
-    {
-      id: 4,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함",
-    },
-  ];
+const PostCards = ({ hotCommunity, hotSanchaek }) => {
+  const dispatch = useDispatch();
 
-  const CommunityItems = [
-    {
-      id: 1,
-      src: "img/pet1.jpg",
-      title: "울집 댕댕이 궁물 타임~!~!~!",
-    },
-    {
-      id: 2,
-      src: "img/pet2.jpg",
-      title: "궁금해요 울집 댕댕이",
-    },
-    {
-      id: 3,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함",
-    },
-    {
-      id: 4,
-      src: "img/pet3.jpg",
-      title: "울집 댕댕이랑 산책하실 분 구함",
-    },
-  ];
-
+  useEffect(() => {
+    dispatch(loadPostDetailResetAction());
+    dispatch(sanchaekLoadPostDetailResetAction());
+  }, []);
   return (
     <>
       <PostCardContainer>
@@ -59,8 +24,8 @@ const PostCards = () => {
           </a>
         </Link>
         <PostContainer>
-          {MateItems.map((item) => (
-            <PostItem key={item.id} {...item} />
+          {hotSanchaek.map((item) => (
+            <HotSanchaekItem key={item.id} {...item} />
           ))}
         </PostContainer>
         <Link href="/community">
@@ -69,8 +34,8 @@ const PostCards = () => {
           </a>
         </Link>
         <PostContainer>
-          {CommunityItems.map((item) => (
-            <PostItem key={item.id} {...item} />
+          {hotCommunity.map((item) => (
+            <HotCommunityItem key={item.id} {...item} />
           ))}
         </PostContainer>
       </PostCardContainer>

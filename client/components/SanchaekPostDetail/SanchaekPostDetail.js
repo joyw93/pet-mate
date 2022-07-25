@@ -27,7 +27,7 @@ import {
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 
 const SanchaekPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
@@ -38,7 +38,6 @@ const SanchaekPostDetail = () => {
     (state) => state.sanchaek
   );
 
-  console.log(sanchaekPost);
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
@@ -75,10 +74,10 @@ const SanchaekPostDetail = () => {
 
   const handleDeleteCmt = (commentId) => {
     if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
-      console.log(commentId);
       dispatch(sanchaekRemoveCommentRequestAction(commentId));
     }
   };
+
   const settings = {
     arrows: true,
     dots: true,
@@ -123,8 +122,7 @@ const SanchaekPostDetail = () => {
               <span id="post_created_time">
                 {getElapsedTime(sanchaekPost.createdAt)}
               </span>
-              {/* <span id="views">조회수 {sanchaekPost.views}</span> */}
-              <span id="views">조회수 0</span>
+              <span id="views">조회수 {sanchaekPost.views}</span>
             </div>
           </PostInfo>
           <div id="content">

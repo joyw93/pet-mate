@@ -36,7 +36,7 @@ const ListSelection = ({ onChange }) => {
 const Notice = ({ hotPosts }) => {
   const [noticeList, setNoticeList] = useState([]);
   useEffect(() => {
-    setNoticeList(hotPosts.hotPosts.data);
+    setNoticeList(hotPosts.hotPosts.data.slice(0, 2));
   }, []);
 
   return (

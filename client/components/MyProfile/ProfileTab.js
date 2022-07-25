@@ -24,11 +24,14 @@ import Router from "next/router";
 import { useCallback } from "react";
 import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction, loadMyProfileRequestAction } from "../../reducers/user";
 
+
 const ProfileTab = () => {
   const dispatch = useDispatch();
   const [birthday, setBirthday] = useState("");
   const [date, setDate] = useState(null);
-  const { me, editProfileError, editProfileDone } = useSelector((state) => state.user);
+  const { me, editProfileError, editProfileDone } = useSelector(
+    (state) => state.user
+  );
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
   const [comment, setComment] = useState("");
@@ -62,7 +65,6 @@ const ProfileTab = () => {
     }
   }, [editProfileError]);
 
-  
   const onChangeNickname = (e) => {
     setNickname(e.target.value);
   };
@@ -120,9 +122,14 @@ const ProfileTab = () => {
             <span>닉네임</span>
             <span>(10자 이내)</span>
           </InputTitle>
-          <Input maxLength="10" onChange={onChangeNickname} value={nickname || ""} />
+          <Input
+            maxLength="10"
+            onChange={onChangeNickname}
+            value={nickname || ""}
+          />
           <NicknameValidWrapper>
-            {nicknameValid === "닉네임을 입력하세요." || nicknameValid === "중복된 닉네임입니다." ? (
+            {nicknameValid === "닉네임을 입력하세요." ||
+            nicknameValid === "중복된 닉네임입니다." ? (
               <InvalidMessage>{nicknameValid}</InvalidMessage>
             ) : (
               <ValidMessage>{nicknameValid}</ValidMessage>
@@ -150,14 +157,25 @@ const ProfileTab = () => {
             <span>한줄 소개</span>
             <span>(20자 이내)</span>
           </InputTitle>
-          <Input maxLength="20" onChange={onChangeComment} value={comment || ""} />
+          <Input
+            maxLength="20"
+            onChange={onChangeComment}
+            value={comment || ""}
+          />
         </BioWrapper>
         <ImageEditWrapper>
           <span>프로필 이미지</span>
           <ImageInputArea onChange={onChangeImage}>
             <ImageInput type="file" />
-            {image ? <ImageHolder src={image} alt="이미지 업로드" /> : <ImageHolder src="../../img/defaultimg1.png" alte="이미지없음" />}
-          </ImageInputArea>{" "}
+            {image ? (
+              <ImageHolder src={image} alt="이미지 업로드" />
+            ) : (
+              <ImageHolder
+                src="../../img/defaultimgGrey.png"
+                alte="이미지없음"
+              />
+            )}
+          </ImageInputArea>
           {image && (
             <ImageDeleteBtn onClick={handleDeleteImage}>
               <svg
