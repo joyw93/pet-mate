@@ -8,19 +8,28 @@ import {
   Button,
 } from "./styled";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { sanchaekPostRequestAction, sanchaekUpdatePostRequestAction, sanchaekPostResetAction } from '../../reducers/sanchaek';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import {
+  sanchaekPostRequestAction,
+  sanchaekUpdatePostRequestAction,
+  sanchaekPostResetAction,
+  sanchaekLoadPostsRequestAction,
+} from "../../reducers/sanchaek";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import DetailedMap from "../Kakaomap/DetailedMap";
 
 const SanchaekPost = ({ editState }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const sanchaekPost = useSelector((state) => state.sanchaek);
+  const { id } = router.query;
 
   const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
+  const selectedPost = useSelector((state) => state.sanchaek.sanchaekPost);
 
+  //const { me } = useSelector((state) => state.user);
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const [fileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
@@ -28,8 +37,8 @@ const SanchaekPost = ({ editState }) => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
   const [noMatchedPlace, setNoMatchedPlace] = useState(false);
-  const [address, setAddress] = useState('');
-  const [roadAddress, setRoadAddress] = useState('');
+  const [address, setAddress] = useState("");
+  const [roadAddress, setRoadAddress] = useState("");
 
   const titleRef = useRef();
   const contentRef = useRef();
@@ -48,8 +57,6 @@ const SanchaekPost = ({ editState }) => {
     setPlace(inputText);
   };
 
-  //const { me } = useSelector((state) => state.user);
-
   // useEffect(() => {
   //   if (!me) {
   //     Router.push("/login");
@@ -58,10 +65,13 @@ const SanchaekPost = ({ editState }) => {
 
   useEffect(() => {
     if (sanchaekAddPostDone) {
+      dispatch(sanchaekLoadPostsRequestAction());
       dispatch(sanchaekPostResetAction());
-      router.replace('/sanchaek');
+      router.replace("/sanchaek");
     }
-  }, []);
+  }, [sanchaekAddPostDone]);
+
+  console.log(selectedPost);
 
   useEffect(() => {
     //수정상태일 때 선택된 게시글값 넣어주기
@@ -69,6 +79,12 @@ const SanchaekPost = ({ editState }) => {
       if (selectedPost) {
         setTitle(selectedPost.title);
         setContent(selectedPost.content);
+        setLat(Number(selectedPost.mapInfo.lat));
+        setLng(Number(selectedPost.mapInfo.lng));
+        setPlace(selectedPost.mapInfo.location);
+        setPlaceResult(selectedPost.mapInfo.location);
+        setAddress(selectedPost.mapInfo.address);
+        setRoadAddress(selectedPost.mapInfo.roadAddress);
 
         let imageFiles = [];
         if (selectedPost.images) {
@@ -78,15 +94,6 @@ const SanchaekPost = ({ editState }) => {
             setFileImages(imageFiles);
           }
           setImages(imageFiles);
-        }
-
-        let keywords = [];
-        if (selectedPost.tags) {
-          for (let i = 0; i < selectedPost.tags.length; i++) {
-            const keyword = selectedPost.tags[i].hashtag.keyword;
-            keywords = keywords.concat(keyword);
-          }
-          setHashArr(keywords);
         }
       }
     }
@@ -138,9 +145,6 @@ const SanchaekPost = ({ editState }) => {
     window.URL.revokeObjectURL(fileImages.filter((_, index) => index === id));
   };
 
-
-  const serverUrl = "http://api.petmate.kr";
-
   const handlePost = async () => {
     if (!title) {
       return titleRef.current.focus();
@@ -172,9 +176,17 @@ const SanchaekPost = ({ editState }) => {
       //새로 작성할 때
       dispatch(sanchaekPostRequestAction(post));
     }
-
   };
 
+  //맵 관련
+  useEffect(() => {
+    if (info) {
+      setPlaceResult(info.content);
+    }
+    if (lat && lng) {
+      getAddr(lat, lng);
+    }
+  }, [info, lat, lng]);
 
   useEffect(() => {
     if (!map || !place) return;
@@ -182,7 +194,7 @@ const SanchaekPost = ({ editState }) => {
     const ps = new kakao.maps.services.Places();
     ps.keywordSearch(place, (data, status, _pagination) => {
       //검색 결과 없을 때
-      if (status === 'ZERO_RESULT') {
+      if (status === "ZERO_RESULT") {
         setNoMatchedPlace(true);
         return;
       } else if (status === kakao.maps.services.Status.OK) {
@@ -205,15 +217,6 @@ const SanchaekPost = ({ editState }) => {
     });
   }, [place]);
 
-  useEffect(() => {
-    if (info) {
-      setPlaceResult(info.content);
-    }
-    if (lat && lng) {
-      getAddr(lat, lng);
-    }
-  }, [info, lat, lng]);
-
   const getAddr = (lat, lng) => {
     // 주소-좌표 변환 객체를 생성합니다
     let geocoder = new kakao.maps.services.Geocoder();
@@ -224,21 +227,29 @@ const SanchaekPost = ({ editState }) => {
         const arr = { ...result };
         console.log(arr[0]);
         if (arr[0].address === null) {
-          setAddress('');
+          setAddress("");
         } else {
           setAddress(arr[0].address.address_name);
         }
 
         if (arr[0].road_address === null) {
-          setRoadAddress('');
+          setRoadAddress("");
         } else {
           setRoadAddress(arr[0].road_address.address_name);
         }
-
       }
     };
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-  }
+  };
+
+  useEffect(() => {
+    if (!lat) {
+      setLat(37.566826);
+    }
+    if (!lng) {
+      setLng(126.9786567);
+    }
+  }, [lat, lng]);
 
   return (
     <CreatePostContainer>
@@ -273,7 +284,12 @@ const SanchaekPost = ({ editState }) => {
         <div id="photos">
           <div id="add_photo">
             <label htmlFor="add_file" onChange={handleAddImages}>
-              <input type="file" id="add_file" ref={imageRef} accept="image/*" />
+              <input
+                type="file"
+                id="add_file"
+                ref={imageRef}
+                accept="image/*"
+              />
               <img src="../../img/photo.png" alt="이미지 업로드" />
             </label>
           </div>
@@ -313,8 +329,8 @@ const SanchaekPost = ({ editState }) => {
         <>
           <Map
             center={{
-              lat: 37.566826,
-              lng: 126.9786567,
+              lat: lat,
+              lng: lng,
             }}
             style={{
               width: "100%",
@@ -341,12 +357,13 @@ const SanchaekPost = ({ editState }) => {
             ))}
           </Map>
           <div>
-            {noMatchedPlace ? <span>검색된 결과가 없습니다.</span> : placeResult !== "" ? (
+            {noMatchedPlace ? (
+              <span>검색된 결과가 없습니다.</span>
+            ) : placeResult !== "" ? (
               <span>{placeResult}이 선택되었습니다!</span>
             ) : null}
           </div>
         </>
-        {/* <Kakaomap id="map_view" place={place} /> */}
       </MapWrapper>
     </CreatePostContainer>
   );

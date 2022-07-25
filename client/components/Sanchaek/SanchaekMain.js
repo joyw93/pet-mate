@@ -3,20 +3,16 @@ import { SanchaekContainer, SanchaekBanner } from "./styled";
 import ContentList from "./ContentList";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
-import { sanchaekPostResetAction, sanchaekLoadPostsRequestAction } from "../../reducers/sanchaek";
+import {
+  sanchaekLoadPostsRequestAction,
+  sanchaekPostResetAction,
+} from "../../reducers/sanchaek";
 import { useEffect } from "react";
 
 const SanchaekMain = () => {
   const { me } = useSelector((state) => state.user);
   const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (sanchaekAddPostDone) {
-      dispatch(sanchaekPostResetAction());
-      console.log(posts);
-    }
-  }, [sanchaekAddPostDone]);
 
   const goToNew = () => {
     if (!me) {
@@ -31,6 +27,12 @@ const SanchaekMain = () => {
   // useEffect(() => {
   //   dispatch(sanchaekLoadPostsRequestAction());
   // }, []);
+
+  useEffect(() => {
+    if (sanchaekAddPostDone) {
+      dispatch(sanchaekPostResetAction());
+    }
+  }, [sanchaekAddPostDone]);
 
   return (
     <SanchaekContainer>
