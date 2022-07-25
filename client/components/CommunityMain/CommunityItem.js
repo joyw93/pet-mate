@@ -18,6 +18,7 @@ import {
   ImageWrapper,
   TitleContentWrapper,
   ContentArea,
+  AuthorProfile,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
 import Router from "next/router";
@@ -39,6 +40,13 @@ const CommunityItem = (post) => {
               <Content>{post.content}</Content>
             </TitleContentWrapper>
             <ContentInfo>
+              <AuthorProfile>
+                {post?.author?.profile?.imageUrl ? (
+                  <img src={post.author.profile.imageUrl} />
+                ) : (
+                  <img src={'../img/defaultimgGrey.png'} />
+                )}
+              </AuthorProfile>
               <Author>{post.author.nickname}</Author>
               <ContentDetail>{getElapsedTime(post.createdAt)}</ContentDetail>
               <ContentDetail>·</ContentDetail>

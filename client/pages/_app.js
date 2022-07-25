@@ -6,6 +6,7 @@ import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import { SnackBarContent } from "../components/Header/styled";
 import {
+  loadMyProfileRequestAction,
   loadProfileRequestAction,
   loadUserInfoRequestAction,
   logoutResetAction,
@@ -41,7 +42,7 @@ const App = ({ Component, pageProps }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.active) {
-      dispatch(loadProfileRequestAction());
+      dispatch(loadMyProfileRequestAction());
     }
   }, [userInfo]);
 

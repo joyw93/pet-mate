@@ -28,10 +28,10 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
-const bcrypt = require("bcrypt");
-const res = require("../common/responses/message");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
+const bcrypt = require("bcrypt");
+const res = require("../common/responses/message");
 let UserService = class UserService {
     constructor(userRepository, userProfileRepository, communityRepository) {
         this.userRepository = userRepository;
@@ -41,10 +41,10 @@ let UserService = class UserService {
     async getUserProfile(userId) {
         const user = await this.userRepository
             .createQueryBuilder('user')
-            .select(['user.id', 'user.name', 'user.nickname', 'user.email', 'user.active'])
+            .select(['user.nickname'])
             .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
             .leftJoin('user.profile', 'profile')
-            .where('user.id= :id', { id: userId })
+            .where('user.id=:id', { id: userId })
             .getOne();
         return user;
     }
@@ -210,6 +210,22 @@ let UserService = class UserService {
             .where('author.id=:id', { id: userId })
             .getMany();
         return posts;
+    }
+    async getMyProfile(userId) {
+        const user = await this.userRepository
+            .createQueryBuilder('user')
+            .select([
+            'user.id',
+            'user.name',
+            'user.nickname',
+            'user.email',
+            'user.active',
+        ])
+            .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
+            .leftJoin('user.profile', 'profile')
+            .where('user.id= :id', { id: userId })
+            .getOne();
+        return user;
     }
     async signout(userId) {
         return await this.userRepository.delete(userId);

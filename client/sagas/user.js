@@ -37,10 +37,12 @@ import {
   SET_PROFILE_SUCCESS,
   SET_PROFILE_FAILURE,
   SET_PROFILE_REQUEST,
+  LOAD_MY_PROFILE_SUCCESS,
+  LOAD_MY_PROFILE_REQUEST,
 } from "../reducers/user";
 
-//const serverUrl = `http://127.0.0.1:3000`;
-const serverUrl = "http://api.petmate.kr";
+const serverUrl = `http://127.0.0.1:3000`;
+// const serverUrl = "http://api.petmate.kr";
 
 function signUpAPI(data) {
   return axios.post(`${serverUrl}/user/signup`, data);
@@ -126,13 +128,14 @@ function* logOut() {
   }
 }
 
-function loadProfileAPI() {
-  return axios.get(`${serverUrl}/user`, { withCredentials: true });
+function loadProfileAPI(data) {
+  return axios.get(`${serverUrl}/user/${data}`, { withCredentials: true });
 }
 
 function* loadProfile(action) {
   try {
-    const result = yield call(loadProfileAPI);
+    console.log(action.data)
+    const result = yield call(loadProfileAPI, action.data);
     const payload = result.data;
     yield put({
       type: LOAD_PROFILE_SUCCESS,
@@ -142,6 +145,27 @@ function* loadProfile(action) {
     console.error(err);
     yield put({
       type: LOAD_PROFILE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadMyProfileAPI() {
+  return axios.get(`${serverUrl}/user`, { withCredentials: true });
+}
+
+function* loadMyProfile(action) {
+  try {
+    const result = yield call(loadMyProfileAPI);
+    const payload = result.data;
+    yield put({
+      type: LOAD_MY_PROFILE_SUCCESS,
+      data: payload.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_PROFILE_REQUEST,
       error: err.response.data,
     });
   }
@@ -319,6 +343,10 @@ function* watchLoadProfile() {
   yield takeLatest(LOAD_PROFILE_REQUEST, loadProfile);
 }
 
+function* watchLoadMyProfile() {
+  yield takeLatest(LOAD_MY_PROFILE_REQUEST, loadMyProfile);
+}
+
 function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USERINFO_REQUEST, loadUserInfo);
 }
@@ -361,5 +389,6 @@ export default function* userSaga() {
     fork(watchEditProfile),
     fork(watchEditAccount),
     fork(watchSetProfile),
+    fork(watchLoadMyProfile),
   ]);
 }

@@ -14,6 +14,9 @@ export declare class SanchaekService {
     private sanchaekCommentRepository;
     private sanchaekMapRepository;
     constructor(sanchaekRepository: Repository<SanchaekEntity>, userRepository: Repository<UserEntity>, sanchaekImageRepository: Repository<SanchaekImageEntity>, sanchaekCommentRepository: Repository<SanchaekCommentEntity>, sanchaekMapRepository: Repository<SanchaekMapEntity>);
+    getSanchaeks(offset: number, sanchaekCount: number): Promise<SanchaekEntity[]>;
+    getOneSanchaek(postId: number): Promise<SanchaekEntity>;
+    getHotSanchaeks(): Promise<SanchaekEntity[]>;
     createSanchaek(userId: number, createSanchaekDto: CreateSanchaekDto): Promise<SanchaekEntity>;
     editSanchaek(sanchaekId: number, editSanchaekDto: EditSanchaekDto): Promise<{
         title: string;
@@ -31,8 +34,6 @@ export declare class SanchaekService {
         mapInfo: SanchaekMapEntity;
     } & SanchaekEntity>;
     deleteSanchaek(sanchaekId: number): Promise<import("typeorm").DeleteResult>;
-    getSanchaeks(): Promise<SanchaekEntity[]>;
-    getOneSanchaek(postId: number): Promise<SanchaekEntity>;
     addComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<SanchaekCommentEntity>;
     deleteComment(commentId: number): Promise<import("typeorm").DeleteResult>;
     uploadImages(sanchaek: SanchaekEntity, imgUrls: string[]): Promise<SanchaekImageEntity[]>;

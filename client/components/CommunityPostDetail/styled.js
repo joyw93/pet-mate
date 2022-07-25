@@ -57,12 +57,15 @@ export const PostInfo = styled.div`
   line-height: 32px;
   font-size: 0.8rem;
 
+  div {
+    display: flex;
+  }
   #post_author {
     display: inline-block;
     height: 32px;
-    background-color: ${Colors.primaryColor};
+    /* background-color: ${Colors.primaryColor}; */
     /* font-weight: bold; */
-    color: #fff;
+    color: black;
     padding: 0 15px;
     border-radius: 20px;
   }
@@ -251,5 +254,21 @@ export const Images = styled.div`
   }
   .slick-next::before {
     background-image: url("../../img/rightBtn.png");
+  }
+`;
+
+export const AuthorInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+export const AuthorProfile = styled.div`
+  width: 28px;
+  height: 28px;
+  margin-right: 5px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
   }
 `;

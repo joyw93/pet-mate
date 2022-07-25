@@ -275,7 +275,7 @@ const SanchaekPost = ({ editState }) => {
         <input
           ref={titleRef}
           autoFocus
-          maxLength="40"
+          maxLength="25"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}

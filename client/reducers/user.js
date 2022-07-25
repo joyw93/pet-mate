@@ -33,12 +33,17 @@ export const initialState = {
   loadProfileDone: false,
   loadProfileError: null,
 
+  loadMyProfileLoading: false,
+  loadMyProfileDone: false,
+  loadMyProfileError: null,
+
   loadUserInfoLoading: false,
   loadUserInfoDone: false,
   loadUserInfoError: null,
 
   me: null,
   userInfo: null, // SNS로그인 전용
+  user: null,
   signUpData: {},
   loginData: {},
 
@@ -79,9 +84,13 @@ export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 export const LOG_OUT_RESET = "LOG_OUT_RESET";
 
-export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST"; 
+export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST";
 export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS";
 export const LOAD_PROFILE_FAILURE = "LOAD_PROFILE_FAILURE";
+
+export const LOAD_MY_PROFILE_REQUEST = "LOAD_MY_PROFILE_REQUEST";
+export const LOAD_MY_PROFILE_SUCCESS = "LOAD_MY_PROFILE_SUCCESS";
+export const LOAD_MY_PROFILE_FAILURE = "LOAD_MY_PROFILE_FAILURE";
 
 export const LOAD_USERINFO_REQUEST = "LOAD_USERINFO_REQUEST"; // SNS로그인 때 유저 이메일/이름 가져오는 용도
 export const LOAD_USERINFO_SUCCESS = "LOAD_USERINFO_SUCCESS";
@@ -148,8 +157,13 @@ export const logoutResetAction = () => ({
   type: LOG_OUT_RESET,
 });
 
-export const loadProfileRequestAction = () => ({
+export const loadProfileRequestAction = (data) => ({
   type: LOAD_PROFILE_REQUEST,
+  data,
+});
+
+export const loadMyProfileRequestAction = () => ({
+  type: LOAD_MY_PROFILE_REQUEST,
 });
 
 export const loadUserInfoRequestAction = () => ({
@@ -270,6 +284,21 @@ const reducer = (state = initialState, action) =>
         draft.logOutError = null;
         break;
 
+      case LOAD_MY_PROFILE_REQUEST:
+        draft.loadMyProfileLoading = true;
+        draft.loadMyProfileError = null;
+        draft.loadMyProfileDone = false;
+        break;
+      case LOAD_MY_PROFILE_SUCCESS:
+        draft.loadMyProfileLoading = false;
+        draft.loadMyProfileDone = true;
+        draft.me = action.data;
+        break;
+      case LOAD_MY_PROFILE_FAILURE:
+        draft.loadMyProfileLoading = false;
+        draft.loadMyProfileError = action.error;
+        break;
+
       case LOAD_PROFILE_REQUEST:
         draft.loadProfileLoading = true;
         draft.loadProfileError = null;
@@ -278,7 +307,7 @@ const reducer = (state = initialState, action) =>
       case LOAD_PROFILE_SUCCESS:
         draft.loadProfileLoading = false;
         draft.loadProfileDone = true;
-        draft.me = action.data;
+        draft.user = action.data;
         break;
       case LOAD_PROFILE_FAILURE:
         draft.loadProfileLoading = false;

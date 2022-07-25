@@ -8,14 +8,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
-import * as bcrypt from 'bcrypt';
-import * as res from '../common/responses/message';
 import { Request, Response } from 'express';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { EditProfileDto } from './dto/edit-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
 import { EditAccountDto } from './dto/edit-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
+import * as bcrypt from 'bcrypt';
+import * as res from '../common/responses/message';
 
 @Injectable()
 export class UserService {
@@ -31,10 +31,10 @@ export class UserService {
   async getUserProfile(userId: number) {
     const user = await this.userRepository
       .createQueryBuilder('user')
-      .select(['user.id', 'user.name', 'user.nickname', 'user.email', 'user.active'])
+      .select(['user.nickname'])
       .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
       .leftJoin('user.profile', 'profile')
-      .where('user.id= :id', { id: userId })
+      .where('user.id=:id', { id: userId })
       .getOne();
     return user;
   }
@@ -184,7 +184,7 @@ export class UserService {
       return res.send('login error');
     } else {
       const user = req.user;
-      if (!user.active ) {
+      if (!user.active) {
         return res.redirect(`http://127.0.0.1:800/auth/kakao`);
       } else {
         return res.redirect(`http://127.0.0.1:800`);
@@ -224,6 +224,23 @@ export class UserService {
       .where('author.id=:id', { id: userId })
       .getMany();
     return posts;
+  }
+
+  async getMyProfile(userId: number) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.nickname',
+        'user.email',
+        'user.active',
+      ])
+      .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
+      .leftJoin('user.profile', 'profile')
+      .where('user.id= :id', { id: userId })
+      .getOne();
+    return user;
   }
 
   async signout(userId: number) {

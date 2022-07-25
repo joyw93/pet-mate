@@ -33,8 +33,8 @@ import {
 //   });
 // }
 
-// const serverUrl = "http://127.0.0.1:3000";
-const serverUrl = "http://api.petmate.kr";
+const serverUrl = "http://127.0.0.1:3000";
+// const serverUrl = "http://api.petmate.kr";
 
 //글 작성
 function postAPI(data) {
@@ -108,7 +108,7 @@ function* loadPostDetail(action) {
 //글 더 불러오기
 function loadMoreAPI(data) {
   return axios.get(
-    `${serverUrl}/sanchaek?offset=${data.offset}&count=10&orderBy=${data.orderBy}`,
+    `${serverUrl}/sanchaek?offset=${data.offset}&count=12`,
     data
   );
 }

@@ -21,7 +21,7 @@ import { useCallback } from "react";
 import {
   signOutRequestAction,
   signOutResetAction,
-  loadProfileRequestAction,
+  loadMyProfileRequestAction,
   editProfileResetAction,
   editAccountRequestAction,
   editAccountResetAction,
@@ -29,7 +29,13 @@ import {
 
 const AccountTab = () => {
   const dispatch = useDispatch();
-  const { me, editProfileDone, signOutDone, editAccountDone, editAccountError } = useSelector((state) => state.user);
+  const {
+    me,
+    editProfileDone,
+    signOutDone,
+    editAccountDone,
+    editAccountError,
+  } = useSelector((state) => state.user);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -59,7 +65,7 @@ const AccountTab = () => {
       alert("계정정보가 변경되었습니다.");
       Router.back();
     }
-    dispatch(loadProfileRequestAction());
+    dispatch(loadMyProfileRequestAction());
   }, [editProfileDone]);
 
   useEffect(() => {
@@ -106,7 +112,11 @@ const AccountTab = () => {
     <>
       <ProfileEditArea>
         <input type="text" style={{ width: 0, height: 0, border: "none" }} />
-        <input type="password" autoComplete="new-password" style={{ width: 0, height: 0, border: "none" }} />
+        <input
+          type="password"
+          autoComplete="new-password"
+          style={{ width: 0, height: 0, border: "none" }}
+        />
         <DeleteAccountButton onClick={signOut}>회원탈퇴</DeleteAccountButton>
         <NameWrapper>
           <InputTitle>
@@ -134,7 +144,8 @@ const AccountTab = () => {
             }}
             autoComplete="no"
           />
-          {currentPasswordValid === "비밀번호가 일치하지 않습니다." || currentPasswordValid === "현재 비밀번호를 입력하세요." ? (
+          {currentPasswordValid === "비밀번호가 일치하지 않습니다." ||
+          currentPasswordValid === "현재 비밀번호를 입력하세요." ? (
             <InvalidMessage>{currentPasswordValid}</InvalidMessage>
           ) : (
             <ValidMessage>{currentPasswordValid}</ValidMessage>

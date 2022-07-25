@@ -24,16 +24,17 @@ const community_image_entity_1 = require("../common/entities/community-image.ent
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const res = require("../common/responses/message");
+const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 let CommunityService = class CommunityService {
-    constructor(communityRepository, userRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository, dataSource) {
+    constructor(communityRepository, userRepository, userProfileRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository) {
         this.communityRepository = communityRepository;
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.communityLikeRepository = communityLikeRepository;
         this.communityCommentRepository = communityCommentRepository;
         this.communityImageRepository = communityImageRepository;
         this.communityHashtagRepository = communityHashtagRepository;
         this.hashtagRepository = hashtagRepository;
-        this.dataSource = dataSource;
     }
     async getPosts(offset, postCount, orderBy) {
         let cond;
@@ -66,12 +67,14 @@ let CommunityService = class CommunityService {
                 'post.createdAt',
                 'post.views',
                 'author.nickname',
+                'profile.imageUrl',
                 'images.url',
                 'tags.id',
                 'hashtag.keyword',
                 'LikeCount.likeCount',
             ])
                 .leftJoin('post.author', 'author')
+                .leftJoin('author.profile', 'profile')
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
@@ -112,19 +115,25 @@ let CommunityService = class CommunityService {
                 'post.views',
                 'author.nickname',
                 'author.id',
+                'authorProfile.id',
+                'authorProfile.imageUrl',
                 'images.id',
                 'images.url',
                 'comments.id',
                 'comments.content',
                 'comments.createdAt',
                 'commentAuthor.nickname',
+                'commentAuthorProfile.imageUrl',
+                'commentAuthorProfile.id',
                 'likes.userId',
                 'tags.id',
                 'hashtag.keyword',
             ])
                 .leftJoin('post.author', 'author')
+                .leftJoin('author.profile', 'authorProfile')
                 .leftJoin('post.comments', 'comments')
                 .leftJoin('comments.author', 'commentAuthor')
+                .leftJoin('commentAuthor.profile', 'commentAuthorProfile')
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
@@ -141,25 +150,15 @@ let CommunityService = class CommunityService {
     }
     async getHotPosts() {
         try {
-            const likeCount = this.communityLikeRepository
-                .createQueryBuilder()
-                .subQuery()
-                .select(['postId', 'COUNT(likes.userId) AS likeCount'])
-                .from(community_like_entity_1.CommunityLikeEntity, 'likes')
-                .groupBy('postId')
-                .getQuery();
             const posts = await this.communityRepository
                 .createQueryBuilder('post')
-                .select([
-                'post.id',
-                'post.title',
-                'post.createdAt',
-                'LikeCount.likeCount',
-            ])
-                .leftJoin('post.likes', 'likes')
-                .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
-                .take(2)
-                .orderBy({ likeCount: 'DESC' })
+                .select(['post.id', 'post.title', 'post.createdAt', 'post.views'])
+                .addSelect(['images.url'])
+                .addSelect(['author.nickname'])
+                .leftJoin('post.images', 'images')
+                .leftJoin('post.author', 'author')
+                .take(4)
+                .orderBy({ 'post.views': 'DESC' })
                 .getMany();
             return posts;
         }
@@ -261,6 +260,9 @@ let CommunityService = class CommunityService {
     async addComment(userId, postId, createCommentDto) {
         const { content } = createCommentDto;
         const user = await this.userRepository.findOne({ where: { id: userId } });
+        const userProfile = await this.userProfileRepository.findOne({
+            where: { id: user.profileId },
+        });
         const post = await this.communityRepository.findOne({
             where: { id: postId },
         });
@@ -271,6 +273,7 @@ let CommunityService = class CommunityService {
             comment.author = user;
             comment.post = post;
             comment.content = content;
+            comment.author.profile = userProfile;
             return await this.communityCommentRepository.save(comment);
         }
         catch (err) {
@@ -327,11 +330,12 @@ CommunityService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __param(2, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
-    __param(3, (0, typeorm_1.InjectRepository)(community_comment_entity_1.CommunityCommentEntity)),
-    __param(4, (0, typeorm_1.InjectRepository)(community_image_entity_1.CommunityImageEntity)),
-    __param(5, (0, typeorm_1.InjectRepository)(community_hashtag_entity_1.CommunityHashtagEntity)),
-    __param(6, (0, typeorm_1.InjectRepository)(hashtag_entity_1.HashtagEntity)),
+    __param(2, (0, typeorm_1.InjectRepository)(user_profile_entity_1.UserProfileEntity)),
+    __param(3, (0, typeorm_1.InjectRepository)(community_like_entity_1.CommunityLikeEntity)),
+    __param(4, (0, typeorm_1.InjectRepository)(community_comment_entity_1.CommunityCommentEntity)),
+    __param(5, (0, typeorm_1.InjectRepository)(community_image_entity_1.CommunityImageEntity)),
+    __param(6, (0, typeorm_1.InjectRepository)(community_hashtag_entity_1.CommunityHashtagEntity)),
+    __param(7, (0, typeorm_1.InjectRepository)(hashtag_entity_1.HashtagEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
@@ -339,7 +343,7 @@ CommunityService = __decorate([
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
-        typeorm_2.DataSource])
+        typeorm_2.Repository])
 ], CommunityService);
 exports.CommunityService = CommunityService;
 //# sourceMappingURL=community.service.js.map

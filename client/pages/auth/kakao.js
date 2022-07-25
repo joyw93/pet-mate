@@ -1,7 +1,7 @@
 import AppLayout from "../../components/AppLayout";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
-import { loadProfileRequestAction, loadUserInfoRequestAction } from "../../reducers/user";
+import { loadMyProfileRequestAction, loadProfileRequestAction, loadUserInfoRequestAction } from "../../reducers/user";
 import { useEffect } from "react";
 import KakaoProfile from "../../components/MyProfile/KakaoProfile";
 
@@ -17,7 +17,7 @@ const Kakao = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.active) {
-      dispatch(loadProfileRequestAction())
+      dispatch(loadMyProfileRequestAction())
     }
   }, [userInfo]);
 

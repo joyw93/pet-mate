@@ -38,7 +38,6 @@ const SanchaekPostDetail = () => {
     (state) => state.sanchaek
   );
 
-  console.log(sanchaekPost);
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
@@ -75,10 +74,10 @@ const SanchaekPostDetail = () => {
 
   const handleDeleteCmt = (commentId) => {
     if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
-      console.log(commentId);
       dispatch(sanchaekRemoveCommentRequestAction(commentId));
     }
   };
+
   const settings = {
     arrows: true,
     dots: true,

@@ -20,6 +20,7 @@ import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.en
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 
 import * as res from '../common/responses/message';
+import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 
 @Injectable()
 export class CommunityService {
@@ -28,6 +29,8 @@ export class CommunityService {
     private communityRepository: Repository<CommunityEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserProfileEntity)
+    private userProfileRepository: Repository<UserProfileEntity>,
     @InjectRepository(CommunityLikeEntity)
     private communityLikeRepository: Repository<CommunityLikeEntity>,
     @InjectRepository(CommunityCommentEntity)
@@ -38,7 +41,6 @@ export class CommunityService {
     private communityHashtagRepository: Repository<CommunityHashtagEntity>,
     @InjectRepository(HashtagEntity)
     private hashtagRepository: Repository<HashtagEntity>,
-    private dataSource: DataSource,
   ) {}
 
   async getPosts(offset: number, postCount: number, orderBy: string) {
@@ -69,12 +71,14 @@ export class CommunityService {
           'post.createdAt',
           'post.views',
           'author.nickname',
+          'profile.imageUrl',
           'images.url',
           'tags.id',
           'hashtag.keyword',
           'LikeCount.likeCount',
         ])
         .leftJoin('post.author', 'author')
+        .leftJoin('author.profile', 'profile')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
@@ -115,19 +119,25 @@ export class CommunityService {
           'post.views',
           'author.nickname',
           'author.id',
+          'authorProfile.id',
+          'authorProfile.imageUrl',
           'images.id',
           'images.url',
           'comments.id',
           'comments.content',
           'comments.createdAt',
           'commentAuthor.nickname',
+          'commentAuthorProfile.imageUrl',
+          'commentAuthorProfile.id',
           'likes.userId',
           'tags.id',
           'hashtag.keyword',
         ])
         .leftJoin('post.author', 'author')
+        .leftJoin('author.profile', 'authorProfile')
         .leftJoin('post.comments', 'comments')
         .leftJoin('comments.author', 'commentAuthor')
+        .leftJoin('commentAuthor.profile', 'commentAuthorProfile')
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
@@ -144,25 +154,15 @@ export class CommunityService {
 
   async getHotPosts() {
     try {
-      const likeCount = this.communityLikeRepository
-        .createQueryBuilder()
-        .subQuery()
-        .select(['postId', 'COUNT(likes.userId) AS likeCount'])
-        .from(CommunityLikeEntity, 'likes')
-        .groupBy('postId')
-        .getQuery();
       const posts = await this.communityRepository
         .createQueryBuilder('post')
-        .select([
-          'post.id',
-          'post.title',
-          'post.createdAt',
-          'LikeCount.likeCount',
-        ])
-        .leftJoin('post.likes', 'likes')
-        .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
-        .take(2)
-        .orderBy({ likeCount: 'DESC' })
+        .select(['post.id', 'post.title', 'post.createdAt', 'post.views'])
+        .addSelect(['images.url'])
+        .addSelect(['author.nickname'])
+        .leftJoin('post.images', 'images')
+        .leftJoin('post.author', 'author')
+        .take(4)
+        .orderBy({ 'post.views': 'DESC' })
         .getMany();
       return posts;
     } catch (err) {
@@ -272,8 +272,6 @@ export class CommunityService {
     }
   }
 
-
-
   async addComment(
     userId: number,
     postId: number,
@@ -281,6 +279,9 @@ export class CommunityService {
   ) {
     const { content } = createCommentDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });
+    const userProfile = await this.userProfileRepository.findOne({
+      where: { id: user.profileId },
+    });
     const post = await this.communityRepository.findOne({
       where: { id: postId },
     });
@@ -290,6 +291,7 @@ export class CommunityService {
       comment.author = user;
       comment.post = post;
       comment.content = content;
+      comment.author.profile = userProfile;
       return await this.communityCommentRepository.save(comment);
     } catch (err) {
       console.error(err);
@@ -316,7 +318,7 @@ export class CommunityService {
 
   async deleteComment(userId: number, commentId: number) {
     const comment = await this.communityCommentRepository.findOne({
-      relations:['author'],
+      relations: ['author'],
       where: { id: commentId },
     });
     if (comment.author.id !== userId) {

@@ -25,7 +25,7 @@ const SanchaekItem = (post) => {
           {post?.images && (
             <ImageWrapper>
               {post?.images?.length === 0 ? (
-                <ItemImage src="../img/defaultimg1.png" />
+                <ItemImage src="../img/defaultimgGrey.png" />
               ) : (
                 <ItemImage src={post.images[0].url} />
               )}
@@ -35,9 +35,8 @@ const SanchaekItem = (post) => {
             <ContentTitle>{post.title.slice(0, 12)}</ContentTitle>
             {post.mapInfo && post.mapInfo.location && (
               <ContentInfo>
-                {" "}
                 <LocaImg src="../img/locationEmojiBlk.png" />
-                {post.mapInfo.location.slice(0, 18)}
+                {post.mapInfo.location}
               </ContentInfo>
             )}
           </ContentArea>
