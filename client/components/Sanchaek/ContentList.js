@@ -33,29 +33,32 @@ const ContentList = () => {
     dispatch(sanchaekLoadPostDetailResetAction());
   }, []);
 
+
   return (
-    <>
-      <SanchaekContent>
-        <Box sx={{ width: "100%" }}>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 4 }}
-          >
-            {sanchaekPosts &&
-              sanchaekPosts.map((item) => (
-                <Grid item xs={12} sm={6} md={3} key={item.id}>
-                  <SanchaekItem key={item.id} {...item} />
-                </Grid>
-              ))}
-          </Grid>
-        </Box>
-        <BtnContainer>
-          <span></span>
-          <button>더보기</button>
-        </BtnContainer>
-      </SanchaekContent>
-    </>
+
+    <SanchaekContent>
+      <Box sx={{ width: "100%" }}>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 4 }}
+        >
+          {sanchaekPosts &&
+            sanchaekPosts.map((item) => (
+              <SanchaekItem key={item.id} {...item} />
+            ))}
+          {/* {sanchaekPosts &&
+            sanchaekPosts.map((item) => (
+              <>{item.id}</>
+            ))} */}
+        </Grid>
+      </Box>
+      <BtnContainer>
+        <span></span>
+        <button>더보기</button>
+      </BtnContainer>
+    </SanchaekContent>
+
   );
 };
 

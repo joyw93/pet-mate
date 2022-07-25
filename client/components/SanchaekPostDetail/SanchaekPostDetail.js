@@ -21,11 +21,13 @@ import { getElapsedTime } from "../../utils";
 import {
   sanchaekLoadPostDetailRequestAction,
   sanchaekAddCommentRequestAction,
+  sanchaekRemovePostRequestAction,
   sanchaekRemoveCommentRequestAction,
 } from "../../reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
+import Link from 'next/link';
 
 const SanchaekPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
@@ -35,6 +37,8 @@ const SanchaekPostDetail = () => {
   const { sanchaekPost, sanchaekLoadPostDetailDone } = useSelector(
     (state) => state.sanchaek
   );
+
+  console.log(sanchaekPost);
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
@@ -84,6 +88,13 @@ const SanchaekPostDetail = () => {
     slidesToScroll: 1,
   };
 
+  const handleDeletePost = () => {
+    if (window.confirm("글을 삭제하겠습니까?")) {
+      dispatch(sanchaekRemovePostRequestAction(parseInt(id)));
+      router.push(`/sanchaek`);
+    }
+  };
+
   return (
     <>
       {sanchaekPost &&
@@ -91,9 +102,19 @@ const SanchaekPostDetail = () => {
           <h1>산책메이트</h1>
           <Title>
             <h2>{sanchaekPost.title}</h2>
+            {/* {me && me?.id === sanchaekPost?.author?.id ? (
+              <div>
+                <Link href={`/sanchaek/${id}/edit`}>
+                  <Button>수정</Button>
+                </Link>
+                <Button onClick={handleDeletePost}>삭제</Button>
+              </div>
+            ) : null} */}
             <div>
-              <Button>수정</Button>
-              <Button>삭제</Button>
+              <Link href={`/sanchaek/${id}/edit`}>
+                <Button>수정</Button>
+              </Link>
+              <Button onClick={handleDeletePost}>삭제</Button>
             </div>
           </Title>
           <PostInfo>
@@ -111,7 +132,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.images.length !== 0 &&
               <Images>
                 <Slider {...settings}>
-                  {sanchaekPost.map((img) => (
+                  {sanchaekPost.images.map((img) => (
                     <div key={img}>
                       <img src={img.url} alt="이미지" />
                     </div>

@@ -8,13 +8,19 @@ import {
   Button,
 } from "./styled";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { postRequestAction, updatePostRequestAction } from '../../reducers/sanchaek';
-import { useDispatch } from 'react-redux';
+import { sanchaekPostRequestAction, sanchaekUpdatePostRequestAction, sanchaekPostResetAction } from '../../reducers/sanchaek';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 const SanchaekPost = ({ editState }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const sanchaekPost = useSelector((state) => state.sanchaek);
+
+  const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
+
 
   const [fileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
@@ -51,6 +57,13 @@ const SanchaekPost = ({ editState }) => {
   // }, []);
 
   useEffect(() => {
+    if (sanchaekAddPostDone) {
+      dispatch(sanchaekPostResetAction());
+      router.replace('/sanchaek');
+    }
+  }, []);
+
+  useEffect(() => {
     //수정상태일 때 선택된 게시글값 넣어주기
     if (editState) {
       if (selectedPost) {
@@ -77,7 +90,7 @@ const SanchaekPost = ({ editState }) => {
         }
       }
     }
-  }, [selectedPost, editState]);
+  }, [editState]);
 
   const handleAddImages = (event) => {
     const pathPoint = imageRef.current.value.lastIndexOf(".");
@@ -154,10 +167,10 @@ const SanchaekPost = ({ editState }) => {
 
     //수정 모드일 때
     if (editState) {
-      dispatch(updatePostRequestAction({ post, id }));
+      dispatch(sanchaekUpdatePostRequestAction({ post, id }));
     } else {
       //새로 작성할 때
-      dispatch(postRequestAction(post));
+      dispatch(sanchaekPostRequestAction(post));
     }
 
   };

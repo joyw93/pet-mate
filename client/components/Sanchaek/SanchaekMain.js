@@ -3,7 +3,7 @@ import { SanchaekContainer, SanchaekBanner } from "./styled";
 import ContentList from "./ContentList";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
-import { sanchaekPostResetAction } from "../../reducers/sanchaek";
+import { sanchaekPostResetAction, sanchaekLoadPostsRequestAction } from "../../reducers/sanchaek";
 import { useEffect } from "react";
 
 const SanchaekMain = () => {
@@ -27,6 +27,10 @@ const SanchaekMain = () => {
       }
     }
   };
+
+  // useEffect(() => {
+  //   dispatch(sanchaekLoadPostsRequestAction());
+  // }, []);
 
   return (
     <SanchaekContainer>
