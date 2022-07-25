@@ -110,6 +110,7 @@ let SanchaekService = class SanchaekService {
                 .leftJoin('sanchaek.images', 'images')
                 .leftJoin('sanchaek.user', 'user')
                 .leftJoinAndSelect('sanchaek.mapInfo', 'mapInfo')
+                .take(4)
                 .getMany();
             return sanchaeks;
         }

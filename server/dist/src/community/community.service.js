@@ -115,19 +115,25 @@ let CommunityService = class CommunityService {
                 'post.views',
                 'author.nickname',
                 'author.id',
+                'authorProfile.id',
+                'authorProfile.imageUrl',
                 'images.id',
                 'images.url',
                 'comments.id',
                 'comments.content',
                 'comments.createdAt',
                 'commentAuthor.nickname',
+                'commentAuthorProfile.imageUrl',
+                'commentAuthorProfile.id',
                 'likes.userId',
                 'tags.id',
                 'hashtag.keyword',
             ])
                 .leftJoin('post.author', 'author')
+                .leftJoin('author.profile', 'authorProfile')
                 .leftJoin('post.comments', 'comments')
                 .leftJoin('comments.author', 'commentAuthor')
+                .leftJoin('commentAuthor.profile', 'commentAuthorProfile')
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
@@ -151,7 +157,7 @@ let CommunityService = class CommunityService {
                 .addSelect(['author.nickname'])
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.author', 'author')
-                .take(2)
+                .take(4)
                 .orderBy({ 'post.views': 'DESC' })
                 .getMany();
             return posts;
