@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import Link from "next/link";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
-import SanchaekItem from './SanchaekItem';
+import SanchaekItem from "./SanchaekItem";
 
 import { Item, SanchaekContent, BtnContainer, ItemImage } from "./styled";
 import {
@@ -26,23 +26,20 @@ const ContentList = () => {
 
   useEffect(() => {
     dispatch(sanchaekLoadPostsRequestAction());
-    console.log(sanchaekPosts);
   }, []);
 
   useEffect(() => {
     dispatch(sanchaekLoadPostDetailResetAction());
   }, []);
 
+  useEffect(() => {
+    console.log(sanchaekPosts);
+  }, [sanchaekPosts]);
 
   return (
-
     <SanchaekContent>
       <Box sx={{ width: "100%" }}>
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 4 }}
-        >
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4 }}>
           {sanchaekPosts &&
             sanchaekPosts.map((item) => (
               <SanchaekItem key={item.id} {...item} />
@@ -58,7 +55,6 @@ const ContentList = () => {
         <button>더보기</button>
       </BtnContainer>
     </SanchaekContent>
-
   );
 };
 

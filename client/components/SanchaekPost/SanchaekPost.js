@@ -20,7 +20,7 @@ const SanchaekPost = ({ editState }) => {
   const sanchaekPost = useSelector((state) => state.sanchaek);
 
   const { sanchaekAddPostDone } = useSelector((state) => state.sanchaek);
-
+  
 
   const [fileImages, setFileImages] = useState([]);
   const [images, setImages] = useState([]);
@@ -56,12 +56,14 @@ const SanchaekPost = ({ editState }) => {
   //   }
   // }, []);
 
+
   useEffect(() => {
+  
     if (sanchaekAddPostDone) {
-      dispatch(sanchaekPostResetAction());
       router.replace('/sanchaek');
+      dispatch(sanchaekPostResetAction());
     }
-  }, []);
+  }, [sanchaekAddPostDone]);
 
   useEffect(() => {
     //수정상태일 때 선택된 게시글값 넣어주기

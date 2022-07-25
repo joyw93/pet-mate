@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsNumber, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 
-class MapInfo {
+export class MapInfo {
   @IsString()
   public lat: string;
   @IsString()

@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-class MapInfo {
+export class MapInfo {
   @IsString()
   public lat: string;
   @IsString()

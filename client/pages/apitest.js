@@ -54,7 +54,7 @@ const Test = () => {
     });
 
     await axios
-      .patch(`${localServerUrl}/sanchaek/1`, body, {
+      .post(`${localServerUrl}/sanchaek`, body, {
         withCredentials: true,
       })
       .then((res) => console.log(res))
