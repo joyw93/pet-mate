@@ -86,7 +86,7 @@ const SanchaekPostDetail = () => {
 
   return (
     <>
-      {sanchaekPost &&
+      {sanchaekPost && (
         <PostDetailContainer>
           <h1>산책메이트</h1>
           <Title>
@@ -98,8 +98,7 @@ const SanchaekPostDetail = () => {
           </Title>
           <PostInfo>
             <div>
-              <span id="post_author">작성자</span>
-              {/* <span id="post_author">{sanchaekPost.author.nickname}</span> */}
+              <span id="post_author">{sanchaekPost.user.nickname}</span>
               <span id="post_created_time">
                 {getElapsedTime(sanchaekPost.createdAt)}
               </span>
@@ -108,17 +107,17 @@ const SanchaekPostDetail = () => {
             </div>
           </PostInfo>
           <div id="content">
-            {sanchaekPost.images.length !== 0 &&
+            {sanchaekPost.images.length !== 0 && (
               <Images>
                 <Slider {...settings}>
-                  {sanchaekPost.map((img) => (
+                  {sanchaekPost.images.map((img) => (
                     <div key={img}>
                       <img src={img.url} alt="이미지" />
                     </div>
                   ))}
                 </Slider>
               </Images>
-            }
+            )}
             <div id="content_text">
               <p>{sanchaekPost.content}</p>
             </div>
@@ -179,7 +178,7 @@ const SanchaekPostDetail = () => {
             </CommentWrapper>
           </div>
         </PostDetailContainer>
-      }
+      )}
     </>
   );
 };

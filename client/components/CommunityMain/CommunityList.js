@@ -17,7 +17,6 @@ const CommunityList = (filterCond) => {
   const { posts, loadPostsDone, loadMoreDone, morePosts } = useSelector(
     (state) => state.community
   );
-  const [list, setList] = useState([]);
   const [noMoreList, setNoMoreList] = useState(false);
 
   useEffect(() => {
@@ -32,7 +31,6 @@ const CommunityList = (filterCond) => {
   useEffect(() => {
     //로딩 완료 되면 list업데이트
     if (loadPostsDone) {
-      setList(posts);
       dispatch(loadMoreResetAction());
     }
     //더보기 눌렀을 때
@@ -59,7 +57,8 @@ const CommunityList = (filterCond) => {
   return (
     <>
       <ListContainer>
-        {posts && posts.map((item) => <CommunityItem key={item.id} {...item} />)}
+        {posts &&
+          posts.map((item) => <CommunityItem key={item.id} {...item} />)}
         {noMoreList ? (
           <BtnContainer>
             <div>

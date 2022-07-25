@@ -2,7 +2,15 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import CommunityItem from "../CommunityMain/CommunityItem";
-import { SearchContainer, NoResultImg, ListContainer, SearchResultComment, SearchKeyword, ResultLength } from "./styled";
+import {
+  SearchContainer,
+  NoResult,
+  NoResultImg,
+  ListContainer,
+  SearchResultComment,
+  SearchKeyword,
+  ResultLength,
+} from "./styled";
 
 import { loadHashtagPostsRequestAction } from "../../reducers/search";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,18 +32,22 @@ const HashtagSearch = () => {
   return (
     <SearchContainer>
       <SearchResultComment>
-        <SearchKeyword>{`#${keyword}`}</SearchKeyword>에 대한 검색결과 <ResultLength>{`(${searchPosts.length}개)`}</ResultLength>
+        <SearchKeyword>{`#${keyword}`}</SearchKeyword>에 대한 검색결과{" "}
+        <ResultLength>{`(${searchPosts.length}개)`}</ResultLength>
       </SearchResultComment>
       {searchPosts && searchPosts.length === 0 ? (
-        <>
-          <p>검색 결과가 없습니다. 다른 검색어를 입력하세요.</p>
+        <NoResult>
+          <p>검색결과가 없습니다&#128546; 다른 검색어를 입력하세요.</p>
           <NoResultImg src="../img/no-search-result.png" />
-        </>
+        </NoResult>
       ) : (
         <>
           {searchPosts && (
             <ListContainer>
-              {searchPosts && searchPosts.map((item) => <CommunityItem key={item.id} {...item} />)}
+              {searchPosts &&
+                searchPosts.map((item) => (
+                  <CommunityItem key={item.id} {...item} />
+                ))}
               {/* <BtnContainer>
                 <span></span>
                 <button onClick={handleMorePosts}>더보기</button>

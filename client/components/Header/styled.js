@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Colors } from "../../styles/ColorVariable";
-import Link from "next/link";
 
 export const NavContainer = styled.header`
   display: flex;
@@ -192,7 +191,8 @@ export const AuthTab = styled.li`
 `;
 
 export const SanchaekWrapper = styled.a`
-  color: ${(props) => (props.path === "sanchaek" ? Colors.primaryColor : "black")};
+  color: ${(props) =>
+    props.path === "sanchaek" ? Colors.primaryColor : "black"};
   font-size: 1rem;
   &:hover {
     cursor: pointer;
@@ -202,7 +202,8 @@ export const SanchaekWrapper = styled.a`
 `;
 
 export const CommunityWrapper = styled.a`
-  color: ${(props) => (props.path === "community" ? Colors.primaryColor : "black")};
+  color: ${(props) =>
+    props.path === "community" ? Colors.primaryColor : "black"};
   font-size: 1rem;
   &:hover {
     cursor: pointer;
@@ -226,7 +227,7 @@ export const SnackBarContent = styled.div`
   align-items: center;
   width: 350px;
   height: 50px;
-  background-color: #2F3438;
+  background-color: #2f3438;
   color: white;
   border-radius: 5px;
   font-size: 14px;

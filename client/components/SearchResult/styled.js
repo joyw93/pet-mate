@@ -22,9 +22,19 @@ export const ResultLength = styled.span`
   color: #bbb;
 `;
 
+export const NoResult = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80px;
+  p {
+    margin-bottom: 5px;
+  }
+`;
+
 export const NoResultImg = styled.img`
-  width: 300px;
-  margin-bottom: 100px;
+  width: 400px;
 `;
 
 //CommunityList

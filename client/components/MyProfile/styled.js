@@ -151,7 +151,10 @@ export const MyPostItem = styled.div`
   }
   h1 {
     font-size: 1rem;
-    margin-top: 5px;
+    margin: 10px 0;
+  }
+  p {
+    font-size: 0.9rem;
   }
 `;
 
@@ -400,4 +403,5 @@ export const InputTitle = styled.div`
 `;
 
 export const AdditionalInfo = styled.h2`
-margin-bottom: 50px;`
+  margin-bottom: 50px;
+`;

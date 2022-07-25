@@ -1,6 +1,15 @@
-import { ItemContainer, ItemWrapper, ImageWrapper, ContentArea, ContentTitle, ItemImage, ContentInfo, LocaImg } from './styled';
+import {
+  ItemContainer,
+  ItemWrapper,
+  ImageWrapper,
+  ContentArea,
+  ContentTitle,
+  ItemImage,
+  ContentInfo,
+  LocaImg,
+} from "./styled";
 
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 const SanchaekItem = (post) => {
   const Router = useRouter();
@@ -10,19 +19,27 @@ const SanchaekItem = (post) => {
 
   return (
     <ItemContainer onClick={itemSelect}>
-      <ItemWrapper >
+      <ItemWrapper>
         {post?.images && (
-          <ImageWrapper>{post?.images?.length === 0 ? <ItemImage src='../img/defaultimg1.png' /> : <ItemImage src={post.images[0].url} />}</ImageWrapper>
+          <ImageWrapper>
+            {post?.images?.length === 0 ? (
+              <ItemImage src="../img/defaultimg1.png" />
+            ) : (
+              <ItemImage src={post.images[0].url} />
+            )}
+          </ImageWrapper>
         )}
         <ContentArea>
-          <ContentTitle>{post.title}</ContentTitle>
+          <ContentTitle>{post.title.slice(0, 12)}</ContentTitle>
           {post.mapInfo && post.mapInfo.location && (
-            <ContentInfo> <LocaImg src='../img/locationEmojiBk.png' />{post.mapInfo.location}</ContentInfo>
+            <ContentInfo>
+              <LocaImg src="../img/locationEmojiBlk.png" />
+              <span>{post.mapInfo.location.slice(0, 18)}</span>
+            </ContentInfo>
           )}
         </ContentArea>
       </ItemWrapper>
     </ItemContainer>
-
   );
 };
 
