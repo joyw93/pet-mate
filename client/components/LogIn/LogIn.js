@@ -147,11 +147,6 @@ const LogIn = () => {
       >
         <SnackBarContent>{logInError?.message}</SnackBarContent>
       </Snackbar>
-      <p>
-        <Link href="/signup">
-          <a>아직 아이디가 없으신가요? 회원가입 하러가기</a>
-        </Link>
-      </p>
       {logInError ? (
         <>
           <Snackbar

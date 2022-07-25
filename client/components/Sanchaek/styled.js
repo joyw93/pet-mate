@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Colors } from "../../styles/ColorVariable";
 
 export const SanchaekContainer = styled.div`
   margin: 0 auto;
@@ -6,11 +7,16 @@ export const SanchaekContainer = styled.div`
 
 export const SanchaekBanner = styled.div`
   width: 100%;
+  height: 520px;
+  background-image: url("../img/sanchaekbanner.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   margin-bottom: 100px;
   cursor: pointer;
-
-  img {
-    width: 100%;
+  &:hover {
+    opacity: 0.8;
+    transition: all 0.3s;
   }
 `;
 
@@ -40,34 +46,54 @@ export const ItemImage = styled.img`
   border-radius: 10px;
 `;
 
+//
+
 export const BtnContainer = styled.div`
   position: relative;
+  margin-bottom: 200px;
 
-  span {
+  div {
     width: 100%;
-    border: 0.3px solid #eee;
-    position: absolute;
-    top: 50%;
-  }
 
-  button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    background-color: #eee;
-    padding: 10px 20px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-
-    &:hover {
-      transition: all 0.3s;
-      opacity: 0.6;
+    p {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      span {
+        font-size: 1.5rem;
+      }
     }
+  }
+`;
+
+export const BtnLine = styled.span`
+  width: 100%;
+  border: 0.3px solid #eee;
+  position: absolute;
+  top: 50%;
+`;
+
+export const MoreButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const MoreBtn = styled(MoreButton)`
+  background-color: #eee;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.3s;
+    opacity: 0.6;
   }
 `;
 
@@ -84,14 +110,17 @@ export const ContentTitle = styled.h2`
 `;
 
 export const ContentInfo = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  padding-left: 24px;
+  line-height: 23px;
+  position: relative;
   span {
     font-size: 0.7rem;
   }
 `;
 
 export const LocaImg = styled.img`
-  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 0;
+  top: 0;
 `;

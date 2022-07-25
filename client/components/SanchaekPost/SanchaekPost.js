@@ -63,10 +63,9 @@ const SanchaekPost = ({ editState }) => {
   //   }
   // }, []);
 
-
   useEffect(() => {
     if (sanchaekAddPostDone) {
-      router.replace('/sanchaek');
+      router.replace("/sanchaek");
       dispatch(sanchaekPostResetAction());
     }
   }, [sanchaekAddPostDone]);
@@ -181,9 +180,9 @@ const SanchaekPost = ({ editState }) => {
     if (info) {
       setPlaceResult(info.content);
     }
-    if (lat && lng) {
-      getAddr(lat, lng);
-    }
+    // if (lat && lng) {
+    //   getAddr(lat, lng);
+    // }
   }, [info, lat, lng]);
 
   useEffect(() => {
@@ -262,7 +261,7 @@ const SanchaekPost = ({ editState }) => {
         <input
           ref={titleRef}
           autoFocus
-          maxLength="40"
+          maxLength="25"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
