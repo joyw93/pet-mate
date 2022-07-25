@@ -12,7 +12,8 @@ export declare class SanchaekService {
     private userRepository;
     private sanchaekImageRepository;
     private sanchaekCommentRepository;
-    constructor(sanchaekRepository: Repository<SanchaekEntity>, userRepository: Repository<UserEntity>, sanchaekImageRepository: Repository<SanchaekImageEntity>, sanchaekCommentRepository: Repository<SanchaekCommentEntity>);
+    private sanchaekMapRepository;
+    constructor(sanchaekRepository: Repository<SanchaekEntity>, userRepository: Repository<UserEntity>, sanchaekImageRepository: Repository<SanchaekImageEntity>, sanchaekCommentRepository: Repository<SanchaekCommentEntity>, sanchaekMapRepository: Repository<SanchaekMapEntity>);
     createSanchaek(userId: number, createSanchaekDto: CreateSanchaekDto): Promise<SanchaekEntity>;
     editSanchaek(sanchaekId: number, editSanchaekDto: EditSanchaekDto): Promise<{
         title: string;

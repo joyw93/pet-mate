@@ -44,17 +44,17 @@ const Test = () => {
 
     // append nested object
     body.append("mapInfo[lat]", 1.23);
-    body.append("mapInfo[lng]", 1.23);
-    body.append("mapInfo[location]", 'asdf');
-    body.append("mapInfo[address]", 'asdf');
-    body.append("mapInfo[roadAddress]", 'asdf');
+    body.append("mapInfo[lng]", 1.253);
+    body.append("mapInfo[location]", 'a5sdf');
+    body.append("mapInfo[address]", 'as5df');
+    body.append("mapInfo[roadAddress]", 'asd5f');
 
     [].forEach.call(images, (img) => {
       body.append("images", img);
     });
 
     await axios
-      .post(`${localServerUrl}/sanchaek`, body, {
+      .patch(`${localServerUrl}/sanchaek/1`, body, {
         withCredentials: true,
       })
       .then((res) => console.log(res))

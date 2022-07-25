@@ -10,7 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EditSanchaekDto = void 0;
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+class MapInfo {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MapInfo.prototype, "lat", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MapInfo.prototype, "lng", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MapInfo.prototype, "location", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MapInfo.prototype, "address", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], MapInfo.prototype, "roadAddress", void 0);
 class EditSanchaekDto {
 }
 __decorate([
@@ -25,5 +48,11 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
 ], EditSanchaekDto.prototype, "images", void 0);
+__decorate([
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => MapInfo),
+    __metadata("design:type", MapInfo)
+], EditSanchaekDto.prototype, "mapInfo", void 0);
 exports.EditSanchaekDto = EditSanchaekDto;
 //# sourceMappingURL=edit-sanchaek.dto.js.map
