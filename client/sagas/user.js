@@ -302,7 +302,7 @@ function* editProfile(action) {
 }
 
 function editAccountAPI(data) {
-  return axios.post(`${serverUrl}/user/account`, data, {
+  return axios.patch(`${serverUrl}/user/account`, data, {
     withCredentials: true,
   });
 }
