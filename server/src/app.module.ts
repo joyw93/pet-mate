@@ -14,6 +14,7 @@ import { CommunityHashtagEntity } from './common/entities/community-hashtag.enti
 import * as ormconfig from '../ormconfig';
 import { UserProfileEntity } from './common/entities/user-profile.entity';
 import { SanchaekModule } from './sanchaek/sanchaek.module';
+import { SanchaekEntity } from './sanchaek/sanchaek.entity';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SanchaekModule } from './sanchaek/sanchaek.module';
       CommunityEntity,
       CommunityLikeEntity,
       CommunityHashtagEntity,
+      SanchaekEntity
     ]),
     UserModule,
     AuthModule,
