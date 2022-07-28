@@ -1,4 +1,6 @@
 # :pushpin: 펫메이트
+<img width="949" alt="캡처" src="https://user-images.githubusercontent.com/48177285/181407026-7aba65ce-96ae-43b6-9c0e-df677ae49376.PNG">
+
 >애완동물 커뮤니티  
 >http://petmate.kr 
 
@@ -24,7 +26,10 @@
 </br>
 
 ## 3. ERD
-<iframe width="600" height="336" src="https://www.erdcloud.com/p/4i3JW87RGiuJyFCNL" frameborder="0" allowfullscreen></iframe>
+<img width="567" alt="erd" src="https://user-images.githubusercontent.com/48177285/181406759-a37ea181-7cc6-4691-b8f2-92c687ef2376.PNG">
+
+>상세보기
+https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 
 ## 4. 핵심 기능
 
