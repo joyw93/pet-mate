@@ -26,7 +26,8 @@
 </br>
 
 ## 3. ERD
-<img width="648" alt="erd2" src="https://user-images.githubusercontent.com/48177285/181679639-bfecea1c-c5d7-4221-ae79-cbe4bb437063.PNG">
+<img width="659" alt="erd" src="https://user-images.githubusercontent.com/48177285/181696667-c02c865e-eb52-492b-aae9-4146d96beece.PNG">
+
 
 
 
@@ -38,14 +39,40 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 <summary><b>백엔드</b></summary>
 <div markdown="1">
 
-#### 1. 회원가입 / 로그인 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/user)
 
+#### 4.1. 인증 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/auth)
+- 로그인
+  - 이메일
+  - 구글
+  - 카카오
 
-#### 2. 커뮤니티 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/community)
+#### 4.2. 유저 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/user)
+- 회원가입
+- 프로필 수정
+- 계정정보 수정
+- 내 게시글 조회
 
+#### 4.3. 커뮤니티 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/community)
+- 게시글
+  - 조회
+  - 등록
+  - 수정
+  - 삭제
+- 댓글
+  - 등록
+  - 삭제
+- 해쉬태그
+- 좋아요
 
-#### 3. 산책메이트 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/sanchaek)
-  
+#### 4.4. 산책메이트 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/sanchaek)
+- 산책
+  - 조회
+  - 등록
+  - 수정
+  - 삭제
+- 댓글
+  - 등록
+  - 삭제
   
 </div>
 </details>
@@ -53,12 +80,6 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 <summary><b>프론트엔드</b></summary>
 <div markdown="1">
 
-  
 </div>
 </details>
-
-## 5. 트러블 슈팅
-
-
-
 
