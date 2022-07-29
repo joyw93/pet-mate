@@ -26,13 +26,36 @@
 </br>
 
 ## 3. ERD
-<img width="567" alt="erd" src="https://user-images.githubusercontent.com/48177285/181406759-a37ea181-7cc6-4691-b8f2-92c687ef2376.PNG">
+<img width="648" alt="erd2" src="https://user-images.githubusercontent.com/48177285/181679639-bfecea1c-c5d7-4221-ae79-cbe4bb437063.PNG">
+
+
 
 >상세보기
 https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 
 ## 4. 핵심 기능
+<details>
+<summary><b>백엔드</b></summary>
+<div markdown="1">
 
+#### 1. 회원가입 / 로그인 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/user)
+
+
+#### 2. 커뮤니티 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/community)
+
+
+#### 3. 산책메이트 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/sanchaek)
+  
+  
+</div>
+</details>
+<details>
+<summary><b>프론트엔드</b></summary>
+<div markdown="1">
+
+  
+</div>
+</details>
 
 ## 5. 트러블 슈팅
 
