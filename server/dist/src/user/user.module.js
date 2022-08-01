@@ -12,6 +12,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
+const sanchaek_entity_1 = require("../sanchaek/sanchaek.entity");
 const user_controller_1 = require("./user.controller");
 const user_entity_1 = require("./user.entity");
 const user_service_1 = require("./user.service");
@@ -25,6 +26,7 @@ UserModule = __decorate([
                 user_profile_entity_1.UserProfileEntity,
                 community_like_entity_1.CommunityLikeEntity,
                 community_entity_1.CommunityEntity,
+                sanchaek_entity_1.SanchaekEntity
             ]),
         ],
         controllers: [user_controller_1.UserController],

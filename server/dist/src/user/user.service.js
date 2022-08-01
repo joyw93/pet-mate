@@ -32,11 +32,13 @@ const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
 const bcrypt = require("bcrypt");
 const res = require("../common/responses/message");
+const sanchaek_entity_1 = require("../sanchaek/sanchaek.entity");
 let UserService = class UserService {
-    constructor(userRepository, userProfileRepository, communityRepository) {
+    constructor(userRepository, userProfileRepository, communityRepository, sanchaekRepository) {
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
         this.communityRepository = communityRepository;
+        this.sanchaekRepository = sanchaekRepository;
     }
     async getUserProfile(userId) {
         const user = await this.userRepository
@@ -190,6 +192,21 @@ let UserService = class UserService {
             .getMany();
         return posts;
     }
+    async getMySanchaeks(userId) {
+        const sanchaeks = await this.sanchaekRepository
+            .createQueryBuilder('sanchaek')
+            .select([
+            'sanchaek.id',
+            'sanchaek.title',
+            'sanchaek.content',
+            'images.url',
+        ])
+            .leftJoin('sanchaek.user', 'user')
+            .leftJoin('sanchaek.images', 'images')
+            .where('user.id =:id', { id: userId })
+            .getMany();
+        return sanchaeks;
+    }
     async getLikedPosts(userId) {
         const posts = await this.communityRepository
             .createQueryBuilder('post')
@@ -236,7 +253,9 @@ UserService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(user_profile_entity_1.UserProfileEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(community_entity_1.CommunityEntity)),
+    __param(3, (0, typeorm_1.InjectRepository)(sanchaek_entity_1.SanchaekEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], UserService);

@@ -4,6 +4,7 @@ import { GoogleStrategy } from 'src/auth/google/google.strategy';
 import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import { CommunityEntity } from 'src/community/community.entity';
+import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
 import { UserController } from './user.controller';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -15,6 +16,7 @@ import { UserService } from './user.service';
       UserProfileEntity,
       CommunityLikeEntity,
       CommunityEntity,
+      SanchaekEntity
     ]),
   ],
   controllers: [UserController],

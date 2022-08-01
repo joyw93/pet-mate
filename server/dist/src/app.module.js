@@ -23,6 +23,7 @@ const community_hashtag_entity_1 = require("./common/entities/community-hashtag.
 const ormconfig = require("../ormconfig");
 const user_profile_entity_1 = require("./common/entities/user-profile.entity");
 const sanchaek_module_1 = require("./sanchaek/sanchaek.module");
+const sanchaek_entity_1 = require("./sanchaek/sanchaek.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -35,6 +36,7 @@ AppModule = __decorate([
                 community_entity_1.CommunityEntity,
                 community_like_entity_1.CommunityLikeEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,
+                sanchaek_entity_1.SanchaekEntity
             ]),
             user_module_1.UserModule,
             auth_module_1.AuthModule,

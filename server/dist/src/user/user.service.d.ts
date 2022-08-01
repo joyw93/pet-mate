@@ -7,11 +7,13 @@ import { EditProfileDto } from './dto/edit-profile.dto';
 import { CommunityEntity } from 'src/community/community.entity';
 import { EditAccountDto } from './dto/edit-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
+import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
 export declare class UserService {
     private userRepository;
     private userProfileRepository;
     private communityRepository;
-    constructor(userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityRepository: Repository<CommunityEntity>);
+    private sanchaekRepository;
+    constructor(userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityRepository: Repository<CommunityEntity>, sanchaekRepository: Repository<SanchaekEntity>);
     getUserProfile(userId: number): Promise<UserEntity>;
     checkNickname(nickname: string): Promise<void>;
     checkEmail(email: string): Promise<void>;
@@ -28,7 +30,7 @@ export declare class UserService {
         updatedAt: Date;
         deletedAt: Date;
         posts: CommunityEntity[];
-        sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
+        sanchaeks: SanchaekEntity[];
         likes: import("../common/entities/community-like.entity").CommunityLikeEntity[];
         communityComments: import("../common/entities/community-comment.entity").CommunityCommentEntity[];
         sanchaekComments: import("../common/entities/sanchaek-comment.entity").SanchaekCommentEntity[];
@@ -39,6 +41,7 @@ export declare class UserService {
     googleLoginCallback(req: Request, res: Response): Promise<void | Response<any, Record<string, any>>>;
     kakaoLoginCallback(req: Request, res: Response): Promise<void | Response<any, Record<string, any>>>;
     getMyPosts(userId: number): Promise<CommunityEntity[]>;
+    getMySanchaeks(userId: number): Promise<SanchaekEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;
     getMyProfile(userId: number): Promise<UserEntity>;

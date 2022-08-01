@@ -16,6 +16,7 @@ import { EditAccountDto } from './dto/edit-account.dto';
 import { SetProfileDto } from './dto/set-profile.dto';
 import * as bcrypt from 'bcrypt';
 import * as res from '../common/responses/message';
+import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,8 @@ export class UserService {
     private userProfileRepository: Repository<UserProfileEntity>,
     @InjectRepository(CommunityEntity)
     private communityRepository: Repository<CommunityEntity>,
+    @InjectRepository(SanchaekEntity)
+    private sanchaekRepository: Repository<SanchaekEntity>,
   ) {}
 
   async getUserProfile(userId: number) {
@@ -201,6 +204,22 @@ export class UserService {
       .where('author.id = :id', { id: userId })
       .getMany();
     return posts;
+  }
+
+  async getMySanchaeks(userId: number) {
+    const sanchaeks = await this.sanchaekRepository
+      .createQueryBuilder('sanchaek')
+      .select([
+        'sanchaek.id',
+        'sanchaek.title',
+        'sanchaek.content',
+        'images.url',
+      ])
+      .leftJoin('sanchaek.user', 'user')
+      .leftJoin('sanchaek.images', 'images')
+      .where('user.id =:id', { id: userId })
+      .getMany();
+    return sanchaeks;
   }
 
   async getLikedPosts(userId: number) {
