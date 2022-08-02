@@ -82,6 +82,7 @@ export class CommunityController {
     return post;
   }
 
+
   @Patch(':postId')
   @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
   async editPost(

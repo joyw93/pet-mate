@@ -245,6 +245,23 @@ export class UserService {
     return posts;
   }
 
+  async getCommentedSanchaeks(userId: number) {
+    const sanchaeks = await this.sanchaekRepository
+      .createQueryBuilder('sanchaek')
+      .select([
+        'sanchaek.id',
+        'sanchaek.title',
+        'sanchaek.content',
+        'images.url',
+      ])
+      .leftJoin('sanchaek.images', 'images')
+      .leftJoin('sanchaek.comments', 'comments')
+      .leftJoin('comments.author', 'author')
+      .where('author.id=:id', { id: userId })
+      .getMany();
+    return sanchaeks;
+  }
+
   async getMyProfile(userId: number) {
     const user = await this.userRepository
       .createQueryBuilder('user')
