@@ -21,7 +21,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { createPostConfig, editPostConfig } from '../common/aws/s3';
 import { EditPostDto } from './dto/edit-post.dto';
-import { HashtagPipe } from 'src/common/pipes/hashtag.pipe';
 import { ImageFilePipe } from 'src/common/pipes/image-file.pipe';
 import { CommunityEditPipe } from 'src/common/pipes/community-edit.pipe';
 import { CommunityCreatePipe } from 'src/common/pipes/community-create.pipe';
