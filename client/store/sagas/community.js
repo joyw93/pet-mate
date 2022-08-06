@@ -18,7 +18,7 @@ function* post(action) {
     yield put(communityActions.addPostSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put(communityActions.addPostFailure({ data: err.response.data }))
+    yield put(communityActions.addPostFailure({ data: err.response.data }));
   }
 }
 
@@ -34,7 +34,7 @@ function* loadPosts(action) {
     //console.log(payload);
   } catch (err) {
     console.error(err);
-    yield put(communityActions.loadPostsFailure({ data: err.response.data }))
+    yield put(communityActions.loadPostsFailure({ data: err.response.data }));
   }
 }
 

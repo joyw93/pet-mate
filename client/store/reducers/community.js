@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
   posts: [],
@@ -46,10 +46,8 @@ export const initialState = {
   likePostError: null,
 };
 
-
-
 const communitySlice = createSlice({
-  name: 'community',
+  name: "community",
   initialState,
   reducers: {
     //디테일 페이지
@@ -215,9 +213,8 @@ const communitySlice = createSlice({
     },
     likePostReset(state, action) {
       state.likePostDone = false;
-
     },
-  }
+  },
 });
 
 export const communityActions = communitySlice.actions;

@@ -1,44 +1,32 @@
-import produce from "immer";
+import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
   searchPosts: [],
   loadHashtagPostsLoading: false,
   loadHashtagPostsDone: false,
   loadHashtagPostsError: null,
-
-  //   loadSearchKeywordPostsLoading: false,
-  //   loadSearchKeywordPostsDone: false,
-  //   loadSearchKeywordPostsError: null,
 };
 
-export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST";
-export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAG_POSTS_SUCCESS";
-export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAG_POSTS_FAILURE";
-
-export const loadHashtagPostsRequestAction = (data) => ({
-  type: LOAD_HASHTAG_POSTS_REQUEST,
-  data,
+const searchSlice = createSlice({
+  name: "search",
+  initialState,
+  reducers: {
+    loadHashtagPostsRequest(state, action) {
+      state.loadHashtagPostsLoading = true;
+      state.loadHashtagPostsDone = false;
+      state.loadHashtagPostsError = null;
+    },
+    loadHashtagPostsSuccess(state, action) {
+      state.loadHashtagPostsLoading = false;
+      state.loadHashtagPostsDone = true;
+      state.searchPosts = action.payload.data;
+    },
+    loadHashtagPostsFailure(state, action) {
+      state.loadHashtagPostsLoading = false;
+      state.loadHashtagPostsError = action.payload.error;
+    },
+  },
 });
 
-const reducer = (state = initialState, action) =>
-  produce(state, (draft) => {
-    switch (action.type) {
-      //글 불러오기
-      case LOAD_HASHTAG_POSTS_REQUEST:
-        draft.loadHashtagPostsLoading = true;
-        draft.loadHashtagPostsDone = false;
-        draft.loadHashtagPostsError = null;
-        break;
-      case LOAD_HASHTAG_POSTS_SUCCESS:
-        draft.loadHashtagPostsLoading = false;
-        draft.loadHashtagPostsDone = true;
-        draft.searchPosts = action.data;
-        break;
-      case LOAD_HASHTAG_POSTS_FAILURE:
-        draft.loadHashtagPostsLoading = false;
-        draft.loadHashtagPostsError = action.error;
-        break;
-    }
-  });
-
-export default reducer;
+export const searchActions = searchSlice.actions;
+export default searchSlice.reducer;
