@@ -20,6 +20,7 @@ import {
   SnackBarContent,
   GotoSignup,
 } from "./styled";
+import { userActions } from '../../store/reducers/user';
 
 // const serverUrl = 'http://127.0.0.1:3000';
 
@@ -41,7 +42,8 @@ const LogIn = () => {
   const passwordRef = useRef();
 
   useEffect(() => {
-    dispatch(loginResetAction());
+    dispatch(userActions.logInReset());
+    //dispatch(loginResetAction());
     setSnackBar(false);
   }, []);
 
@@ -68,8 +70,8 @@ const LogIn = () => {
       email,
       password,
     };
-
-    dispatch(loginRequestAction(newUser));
+    dispatch(userActions.logInRequest(newUser));
+    //dispatch(loginRequestAction(newUser));
   }, [email, password]);
 
   const handleLoginEmail = (e) => {

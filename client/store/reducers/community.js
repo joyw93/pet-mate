@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import produce from "immer";
 
 export const initialState = {
   posts: [],
@@ -52,7 +51,7 @@ const communitySlice = createSlice({
   initialState,
   reducers: {
     //디테일 페이지
-    loadPostsDetailRequest(state, action) {
+    loadPostDetailRequest(state, action) {
       state.loadPostDetailLoading = true;
       state.loadPostDetailDone = false;
       state.loadPostDetailError = null;
@@ -65,6 +64,12 @@ const communitySlice = createSlice({
     loadPostDetailFailure(state, action) {
       state.loadPostDetailLoading = false;
       state.loadPostDetailError = action.payload.error;
+    },
+    loadPostDetailReset(state, action) {
+      state.loadPostsLoading = false;
+      state.post = null;
+      state.loadPostsDone = false;
+      state.loadPostsError = null;
     },
     //글 불러오기
     loadPostsRequest(state, action) {
@@ -97,7 +102,7 @@ const communitySlice = createSlice({
       state.loadMoreLoading = false;
       state.loadMoreError = action.payload.error;
     },
-    loadMoreRest(state, action) {
+    loadMoreReset(state, action) {
       state.loadMoreDone = false;
       state.morePosts = [];
     },
@@ -214,108 +219,3 @@ const communitySlice = createSlice({
 
 export const communityActions = communitySlice.actions;
 export default communitySlice.reducer;
-
-export const LOAD_POST_DETAIL_REQUEST = "LOAD_POST_DETAIL_REQUEST";
-export const LOAD_POST_DETAIL_SUCCESS = "LOAD_POST_DETAIL_SUCCESS";
-export const LOAD_POST_DETAIL_FAILURE = "LOAD_POST_DETAIL_FAILURE";
-export const LOAD_POST_DETAIL_RESET = "LOAD_POST_DETAIL_RESET";
-
-export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
-export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
-export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
-
-export const LOAD_MORE_REQUEST = "LOAD_MORE_REQUEST";
-export const LOAD_MORE_SUCCESS = "LOAD_MORE_SUCCESS";
-export const LOAD_MORE_FAILURE = "LOAD_MORE_FAILURE";
-export const LOAD_MORE_RESET = "LOAD_MORE_RESET";
-
-export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
-export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
-export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
-export const ADD_POST_RESET = "ADD_POST_RESET";
-
-export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST";
-export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
-export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
-
-export const UPDATE_POST_REQUEST = "UPDATE_POST_REQUEST";
-export const UPDATE_POST_SUCCESS = "UPDATE_POST_SUCCESS";
-export const UPDATE_POST_FAILURE = "UPDATE_POST_FAILURE";
-export const UPDATE_POST_RESET = "UPDATE_POST_RESET";
-
-export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
-export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
-export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
-
-export const REMOVE_COMMENT_REQUEST = "REMOVE_COMMENT_REQUEST";
-export const REMOVE_COMMENT_SUCCESS = "REMOVE_COMMENT_SUCCESS";
-export const REMOVE_COMMENT_FAILURE = "REMOVE_COMMENT_FAILURE";
-
-export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
-export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
-export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
-export const LIKE_POST_RESET = "LIKE_RESET";
-
-export const postRequestAction = (data) => ({
-  type: ADD_POST_REQUEST,
-  data,
-});
-
-export const postResetAction = () => ({
-  type: ADD_POST_RESET,
-});
-
-export const updatePostResetAction = () => ({
-  type: UPDATE_POST_RESET,
-});
-
-export const loadPostDetailRequestAction = (data) => ({
-  type: LOAD_POST_DETAIL_REQUEST,
-  data,
-});
-
-export const loadPostDetailResetAction = () => ({
-  type: LOAD_POST_DETAIL_RESET,
-});
-
-export const loadPostsRequestAction = (data) => ({
-  type: LOAD_POSTS_REQUEST,
-  data,
-});
-
-export const loadMorePostsAction = (data) => ({
-  type: LOAD_MORE_REQUEST,
-  data,
-});
-
-export const loadMoreResetAction = () => ({
-  type: LOAD_MORE_RESET,
-});
-
-export const removePostRequestAction = (data) => ({
-  type: REMOVE_POST_REQUEST,
-  data,
-});
-
-export const updatePostRequestAction = (data) => ({
-  type: UPDATE_POST_REQUEST,
-  data,
-});
-
-export const addCommentRequestAction = (data) => ({
-  type: ADD_COMMENT_REQUEST,
-  data,
-});
-
-export const removeCommentRequestAction = (data) => ({
-  type: REMOVE_COMMENT_REQUEST,
-  data,
-});
-
-export const likePostRequestAction = (data) => ({
-  type: LIKE_POST_REQUEST,
-  data,
-});
-export const likeResetAction = () => ({
-  type: LIKE_POST_RESET,
-});

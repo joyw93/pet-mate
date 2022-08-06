@@ -13,8 +13,8 @@ import CommunityList from "./CommunityList";
 import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
+import { communityActions } from '../../store/reducers/community';
 
-import { postResetAction } from "../../store/reducers/community";
 
 const SelectOptions = [
   { id: "latest", name: "최신순" },
@@ -63,7 +63,8 @@ const CommunityMain = (hotPosts) => {
 
   useEffect(() => {
     if (addPostDone) {
-      dispatch(postResetAction());
+      dispatch(communityActions.addPostReset());
+      //dispatch(postResetAction());
       //console.log("글 리셋");
     }
   }, [addPostDone]);
