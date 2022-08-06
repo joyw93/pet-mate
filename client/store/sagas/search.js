@@ -1,16 +1,6 @@
 import { all, call, fork, put, takeLatest, throttle } from "redux-saga/effects";
 import axios from "axios";
-import {
-  LOAD_HASHTAG_POSTS_REQUEST,
-  LOAD_HASHTAG_POSTS_SUCCESS,
-  LOAD_HASHTAG_POSTS_FAILURE,
-} from "../reducers/search";
-
-// function postAPI(data) {
-//   return axios.post(`${serverUrl}/community`, data, {
-//     withCredentials: true,
-//   });
-// }
+import { searchActions } from "../reducers/search";
 
 // const serverUrl = "http://127.0.0.1:3000";
 const serverUrl = "http://api.petmate.kr";
@@ -23,23 +13,16 @@ function loadHashtagPostsAPI(data) {
 function* loadHashtagPosts(action) {
   try {
     console.log(action);
-    const result = yield call(loadHashtagPostsAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LOAD_HASHTAG_POSTS_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadHashtagPostsAPI, action.payload);
+    yield put(searchActions.loadHashtagPostsSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_HASHTAG_POSTS_FAILURE,
-      data: err.response.data,
-    });
+    yield put(searchActions.loadHashtagPostsFailure(err.response.data));
   }
 }
 
 function* watchLoadHashtagPosts() {
-  yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+  yield takeLatest(searchActions.loadHashtagPostsRequest, loadHashtagPosts);
 }
 
 export default function* searchSaga() {

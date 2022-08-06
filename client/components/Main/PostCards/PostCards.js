@@ -5,14 +5,14 @@ import { HotSanchaekItem } from "./PostItem";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { loadPostDetailResetAction } from "../../../store/reducers/community";
-import { sanchaekLoadPostDetailResetAction } from "../../../store/reducers/sanchaek";
+import { sanchaekActions } from "../../../store/reducers/sanchaek";
 
 const PostCards = ({ hotCommunity, hotSanchaek }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadPostDetailResetAction());
-    dispatch(sanchaekLoadPostDetailResetAction());
+    dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
   }, []);
   return (
     <>

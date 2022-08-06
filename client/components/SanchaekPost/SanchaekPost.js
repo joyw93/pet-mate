@@ -13,12 +13,14 @@ import {
 } from "./styled";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 
-import {
-  sanchaekPostRequestAction,
-  sanchaekUpdatePostRequestAction,
-  sanchaekPostResetAction,
-  sanchaekUpdatePostResetAction,
-} from "../../reducers/sanchaek";
+// import {
+//   sanchaekPostRequestAction,
+//   sanchaekUpdatePostRequestAction,
+//   sanchaekPostResetAction,
+//   sanchaekUpdatePostResetAction,
+// } from "../../reducers/sanchaek";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -67,10 +69,10 @@ const SanchaekPost = ({ editState }) => {
   useEffect(() => {
     if (sanchaekAddPostDone) {
       router.replace("/sanchaek");
-      dispatch(sanchaekPostResetAction());
+      dispatch(sanchaekActions.sanchaekAddPostReset());
     } else if (sanchaekUpdatePostDone) {
       router.replace("/sanchaek");
-      dispatch(sanchaekUpdatePostResetAction());
+      dispatch(sanchaekActions.sanchaekUpdatePostReset());
     }
   }, [sanchaekAddPostDone, sanchaekUpdatePostDone]);
 
@@ -172,10 +174,10 @@ const SanchaekPost = ({ editState }) => {
 
     //수정 모드일 때
     if (editState) {
-      dispatch(sanchaekUpdatePostRequestAction({ post, id }));
+      dispatch(sanchaekActions.sanchaekUpdatePostRequest({ post, id }));
     } else {
       //새로 작성할 때
-      dispatch(sanchaekPostRequestAction(post));
+      dispatch(sanchaekActions.sanchaekAddPostRequest(post));
     }
   };
 

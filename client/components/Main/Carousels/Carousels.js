@@ -10,12 +10,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const Carousels = () => {
-  // const imageUrls = [
-  //   "../../img/mainbanner1.png",
-  //   "../../img/mainbanner2.png",
-  //   "../../img/mainbanner3.png",
-  //   "../../img/mainbanner4.png",
-  // ];
+  const bggImageUrls = [
+    "../../img/mainbanner1.png",
+    "../../img/mainbanner2.png",
+    "../../img/mainbanner3.png",
+    "../../img/mainbanner4.png",
+  ];
+
   const bgImageUrls = [
     "../img/mainbanner1_0.png",
     "../img/mainbanner2_0.png",

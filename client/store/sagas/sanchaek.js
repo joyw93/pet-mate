@@ -1,37 +1,6 @@
 import { all, call, fork, put, takeLatest, throttle } from "redux-saga/effects";
 import axios from "axios";
-import {
-  SANCHAEK_LOAD_MORE_REQUEST,
-  SANCHAEK_LOAD_MORE_SUCCESS,
-  SANCHAEK_LOAD_MORE_FAILURE,
-  SANCHAEK_LOAD_POSTS_REQUEST,
-  SANCHAEK_LOAD_POSTS_SUCCESS,
-  SANCHAEK_LOAD_POSTS_FAILURE,
-  SANCHAEK_LOAD_POST_DETAIL_REQUEST,
-  SANCHAEK_LOAD_POST_DETAIL_SUCCESS,
-  SANCHAEK_LOAD_POST_DETAIL_FAILURE,
-  SANCHAEK_ADD_POST_REQUEST,
-  SANCHAEK_ADD_POST_SUCCESS,
-  SANCHAEK_ADD_POST_FAILURE,
-  SANCHAEK_REMOVE_POST_REQUEST,
-  SANCHAEK_REMOVE_POST_SUCCESS,
-  SANCHAEK_REMOVE_POST_FAILURE,
-  SANCHAEK_UPDATE_POST_REQUEST,
-  SANCHAEK_UPDATE_POST_SUCCESS,
-  SANCHAEK_UPDATE_POST_FAILURE,
-  SANCHAEK_ADD_COMMENT_REQUEST,
-  SANCHAEK_ADD_COMMENT_SUCCESS,
-  SANCHAEK_ADD_COMMENT_FAILURE,
-  SANCHAEK_REMOVE_COMMENT_REQUEST,
-  SANCHAEK_REMOVE_COMMENT_SUCCESS,
-  SANCHAEK_REMOVE_COMMENT_FAILURE,
-} from "../reducers/sanchaek";
-
-// function postAPI(data) {
-//   return axios.post(`${serverUrl}/community`, data, {
-//     withCredentials: true,
-//   });
-// }
+import { sanchaekActions } from "../reducers/sanchaek";
 
 // const serverUrl = "http://127.0.0.1:3000";
 const serverUrl = "http://api.petmate.kr";
@@ -45,18 +14,11 @@ function postAPI(data) {
 
 function* post(action) {
   try {
-    const result = yield call(postAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_ADD_POST_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(postAPI, action.payload);
+    yield put(sanchaekActions.sanchaekAddPostSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SANCHAEK_ADD_POST_FAILURE,
-      error: err.response.data,
-    });
+    yield put(sanchaekActions.sanchaekAddPostFailure(err.response.data));
   }
 }
 
@@ -67,18 +29,11 @@ function loadPostsAPI() {
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_LOAD_POSTS_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadPostsAPI, action.payload);
+    yield put(sanchaekActions.sanchaekLoadPostsSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SANCHAEK_LOAD_POSTS_FAILURE,
-      data: err.response.data,
-    });
+    yield put(sanchaekActions.sanchaekLoadPostsFailure(err.response.data));
   }
 }
 
@@ -89,19 +44,12 @@ function loadPostDetailAPI(data) {
 
 function* loadPostDetail(action) {
   try {
-    const result = yield call(loadPostDetailAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_LOAD_POST_DETAIL_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadPostDetailAPI, action.payload);
+    yield put(sanchaekActions.sanchaekLoadPostDetailSuccess(data));
     //console.log(payload);
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SANCHAEK_LOAD_POST_DETAIL_FAILURE,
-      data: err.response.data,
-    });
+    yield put(sanchaekActions.sanchaekLoadPostDetailFailure(err.response.data));
   }
 }
 
@@ -115,19 +63,12 @@ function loadMoreAPI(data) {
 
 function* loadMorePosts(action) {
   try {
-    const result = yield call(loadMoreAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_LOAD_MORE_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadMoreAPI, action.payload);
+    yield put(sanchaekActions.sanchaekLoadMoreSuccess(data));
     console.log(payload);
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SANCHAEK_LOAD_MORE_FAILURE,
-      data: err.response.data,
-    });
+    yield put(sanchaekActions.sanchaekLoadMoreFailure(err.response.data));
   }
 }
 
@@ -140,66 +81,11 @@ function removePostAPI(data) {
 
 function* removePost(action) {
   try {
-    const result = yield call(removePostAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_REMOVE_POST_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(removePostAPI, action.payload);
+    yield put(sanchaekActions.sanchaekRemovePostSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SANCHAEK_REMOVE_POST_FAILURE,
-      data: err.response.data,
-    });
-  }
-}
-
-function addCommentAPI(data) {
-  return axios.post(`${serverUrl}/sanchaek/${data.postId}/comment`, data, {
-    withCredentials: true,
-  });
-}
-
-function* addComment(action) {
-  try {
-    const result = yield call(addCommentAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_ADD_COMMENT_SUCCESS,
-      data: payload.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: SANCHAEK_ADD_COMMENT_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-
-function removeCommentAPI(data) {
-  return axios.delete(`${serverUrl}/sanchaek/comment/${data}`, {
-    withCredentials: true,
-  });
-}
-
-function* removeComment(action) {
-  try {
-    const result = yield call(removeCommentAPI, action.data);
-    const payload = result.data;
-    console.log("payload.data", payload.data);
-    console.log("action.data", action.data);
-    yield put({
-      type: SANCHAEK_REMOVE_COMMENT_SUCCESS,
-      data: action.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: SANCHAEK_REMOVE_COMMENT_FAILURE,
-      error: err.response.data,
-    });
+    yield put(sanchaekActions.sanchaekRemovePostFailure(err.response.data));
   }
 }
 
@@ -212,50 +98,83 @@ function updatePostAPI(data) {
 
 function* updatePost(action) {
   try {
-    const result = yield call(updatePostAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SANCHAEK_UPDATE_POST_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(updatePostAPI, action.payload);
+    yield put(sanchaekActions.sanchaekUpdatePostSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SANCHAEK_UPDATE_POST_FAILURE,
-      error: err.response.data,
-    });
+    yield put(sanchaekActions.sanchaekUpdatePostFailure(err.response.data));
+  }
+}
+
+//댓글 추가
+function addCommentAPI(data) {
+  return axios.post(`${serverUrl}/sanchaek/${data.postId}/comment`, data, {
+    withCredentials: true,
+  });
+}
+
+function* addComment(action) {
+  try {
+    const { data } = yield call(addCommentAPI, action.payload);
+    yield put(sanchaekActions.sanchaekAddCommentSuccess(data));
+  } catch (err) {
+    console.error(err);
+    yield put(sanchaekActions.sanchaekAddCommentFailure(err.response.data));
+  }
+}
+
+//댓글 삭제
+function removeCommentAPI(data) {
+  return axios.delete(`${serverUrl}/sanchaek/comment/${data}`, {
+    withCredentials: true,
+  });
+}
+
+function* removeComment(action) {
+  try {
+    const { data } = yield call(removeCommentAPI, action.payload);
+    console.log("payload.data", data);
+    console.log("action.data", action.data);
+    yield put(sanchaekActions.sanchaekRemoveCommentSuccess(data));
+  } catch (err) {
+    console.error(err);
+    yield put(sanchaekActions.sanchaekRemoveCommentFailure(err.response.data));
   }
 }
 
 function* watchAddPost() {
-  yield takeLatest(SANCHAEK_ADD_POST_REQUEST, post);
-}
-
-function* watchRemovePost() {
-  yield takeLatest(SANCHAEK_REMOVE_POST_REQUEST, removePost);
+  yield takeLatest(sanchaekActions.sanchaekAddPostRequest, post);
 }
 
 function* watchLoadPosts() {
-  yield takeLatest(SANCHAEK_LOAD_POSTS_REQUEST, loadPosts);
+  yield takeLatest(sanchaekActions.sanchaekLoadPostsRequest, loadPosts);
 }
+
 function* watchLoadPostDetail() {
-  yield takeLatest(SANCHAEK_LOAD_POST_DETAIL_REQUEST, loadPostDetail);
+  yield takeLatest(
+    sanchaekActions.sanchaekLoadPostDetailRequest,
+    loadPostDetail
+  );
 }
 
-function* watchMorePosts() {
-  yield takeLatest(SANCHAEK_LOAD_MORE_REQUEST, loadMorePosts);
-}
-
-function* watchAddComment() {
-  yield takeLatest(SANCHAEK_ADD_COMMENT_REQUEST, addComment);
-}
-
-function* watchRemoveComment() {
-  yield takeLatest(SANCHAEK_REMOVE_COMMENT_REQUEST, removeComment);
+function* watchRemovePost() {
+  yield takeLatest(sanchaekActions.sanchaekRemovePostRequest, removePost);
 }
 
 function* watchUpdatePost() {
-  yield takeLatest(SANCHAEK_UPDATE_POST_REQUEST, updatePost);
+  yield takeLatest(sanchaekActions.sanchaekUpdatePostRequest, updatePost);
+}
+
+function* watchMorePosts() {
+  yield takeLatest(sanchaekActions.sanchaekLoadMoreRequest, loadMorePosts);
+}
+
+function* watchAddComment() {
+  yield takeLatest(sanchaekActions.sanchaekAddCommentRequest, addComment);
+}
+
+function* watchRemoveComment() {
+  yield takeLatest(sanchaekActions.sanchaekRemoveCommentRequest, removeComment);
 }
 
 export default function* sanchaekSaga() {

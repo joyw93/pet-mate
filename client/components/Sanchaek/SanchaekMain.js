@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { SanchaekContainer, SanchaekBanner } from "./styled";
-import ContentList from "./ContentList";
 import { useDispatch, useSelector } from "react-redux";
-import Router from "next/router";
-import { sanchaekPostResetAction } from "../../store/reducers/sanchaek";
 import { useEffect } from "react";
+import Link from "next/link";
+import Router from "next/router";
+import ContentList from "./ContentList";
+import { SanchaekContainer, SanchaekBanner } from "./styled";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 const SanchaekMain = () => {
   const { me } = useSelector((state) => state.user);
@@ -13,7 +13,7 @@ const SanchaekMain = () => {
 
   useEffect(() => {
     if (sanchaekAddPostDone) {
-      dispatch(sanchaekPostResetAction());
+      dispatch(sanchaekActions.sanchaekAddPostReset());
     }
   }, [sanchaekAddPostDone]);
 

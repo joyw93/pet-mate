@@ -45,8 +45,8 @@ export const ProfileImg = styled.div`
   margin: 0 auto;
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 160px;
+    height: 160px;
     object-fit: cover;
     border-radius: 50%;
     /* border: 1px solid ${Colors.primaryColor}; */

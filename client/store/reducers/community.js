@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 
 export const initialState = {
@@ -47,14 +47,12 @@ export const initialState = {
   likePostError: null,
 };
 
-
-
 const communitySlice = createSlice({
-  name: 'community',
+  name: "community",
   initialState,
   reducers: {
     //디테일 페이지
-    loadPostsRequest(state, action) {
+    loadPostsDetailRequest(state, action) {
       state.loadPostDetailLoading = true;
       state.loadPostDetailDone = false;
       state.loadPostDetailError = null;
@@ -83,7 +81,7 @@ const communitySlice = createSlice({
       state.loadPostsLoading = false;
       state.loadPostsError = action.payload.error;
     },
-    //   //글 더 불러오기
+    //글 더 불러오기
     loadMoreRequest(state, action) {
       state.loadMoreLoading = true;
       state.loadMoreDone = false;
@@ -156,7 +154,7 @@ const communitySlice = createSlice({
       state.updatePostDone = false;
       state.updatePostError = null;
     },
-    //   //댓글 추가
+    //댓글 추가
     addCommentRequest(state, action) {
       state.addCommentLoading = true;
       state.addCommentDone = false;
@@ -210,16 +208,12 @@ const communitySlice = createSlice({
     },
     likePostReset(state, action) {
       state.likePostDone = false;
-
     },
-  }
+  },
 });
 
 export const communityActions = communitySlice.actions;
 export default communitySlice.reducer;
-
-
-
 
 export const LOAD_POST_DETAIL_REQUEST = "LOAD_POST_DETAIL_REQUEST";
 export const LOAD_POST_DETAIL_SUCCESS = "LOAD_POST_DETAIL_SUCCESS";
