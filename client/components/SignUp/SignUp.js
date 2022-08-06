@@ -12,9 +12,11 @@ import {
   CheckContainer,
   CheckBoxInput,
 } from "./styled";
-import { signupRequestAction, signupResetAction } from "../../store/reducers/user";
+import { userActions } from '../../store/reducers/user';
 import Router from "next/router";
 import Snackbar from "@mui/material/Snackbar";
+
+
 const SignUp = () => {
   const serverUrl = "http://api.petmate.kr";
   // process.env.NODE_ENV === "production"
@@ -26,7 +28,8 @@ const SignUp = () => {
 
   useEffect(() => {
     if (signUpDone) {
-      dispatch(signupResetAction());
+      dispatch(userActions.signUpReset());
+      //dispatch(signupResetAction());
       Router.replace("/");
     }
   }, [signUpDone]);
@@ -231,7 +234,8 @@ const SignUp = () => {
       password,
     };
 
-    dispatch(signupRequestAction(newUser));
+    dispatch(userActions.signUpRequest(newUser));
+    //dispatch(signupRequestAction(newUser));
   }, [
     name,
     nickname,

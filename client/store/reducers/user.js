@@ -1,4 +1,4 @@
-import produce from "immer";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
   logInLoading: false, // 로그인 시도중
@@ -63,6 +63,236 @@ export const initialState = {
   myCommentsData: [],
   myLikedData: [],
 };
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    //signup
+    signUpRequest(state, action) {
+      state.signUpLoading = true;
+      state.signUpError = null;
+      state.signUpDone = false;
+    },
+    signUpSuccess(state, action) {
+      state.signUpLoading = false;
+      state.signUpDone = true;
+    },
+    signUpFailure(state, action) {
+      state.signUpLoading = false;
+      state.signUpError = action.payload.error;
+    },
+    signUpReset(state, action) {
+      state.signUpDone = false;
+    },
+    //signout
+    signOutRequest(state, action) {
+      state.signOutLoading = true;
+      state.signOutError = null;
+      state.signOutDone = false;
+    },
+    signOutSuccess(state, action) {
+      state.signOutLoading = false;
+      state.logOutDone = true;
+      state.me = null;
+      state.signOutDone = true;
+    },
+    signOutFailure(state, action) {
+      state.signOutLoading = false;
+      state.signOutError = action.payload.error;
+    },
+    signOutReset(state, action) {
+      state.signOutDone = false;
+    },
+    //signin
+    logInRequest(state, action) {
+      state.logInLoading = true;
+      state.logInError = null;
+      state.logInDone = false;
+    },
+    logInSuccess(state, action) {
+      state.logInLoading = false;
+      state.me = action.payload.data;
+      state.logInDone = true;
+    },
+    logInFailure(state, action) {
+      state.logInLoading = false;
+      state.logInError = action.payload.error;
+    },
+    logInReset(state, action) {
+      state.logInDone = false;
+      state.logInLoading = false;
+      state.logInError = null;
+    },
+    //logout
+    logOutRequest(state, action) {
+      state.logOutLoading = true;
+      state.logOutError = null;
+      state.logOutDone = false;
+    },
+    logOutSuccess(state, action) {
+      state.logOutLoading = false;
+      state.logOutDone = true;
+      state.me = null;
+    },
+    logOutFailure(state, action) {
+      state.logOutLoading = false;
+      state.logOutError = action.payload.error;
+    },
+    logOutReset(state, action) {
+      state.logOutDone = false;
+      state.logOutLoading = false;
+      state.logOutError = null;
+    },
+    //내 프로필 조회
+    loadMyProfileRequest(state, action) {
+      state.loadMyProfileLoading = true;
+      state.loadMyProfileError = null;
+      state.loadMyProfileDone = false;
+    },
+    loadMyProfileSuccess(state, action) {
+      state.loadMyProfileLoading = false;
+      state.loadMyProfileDone = true;
+      state.me = action.data;
+    },
+    loadMyProfileFailure(state, action) {
+      state.loadMyProfileLoading = false;
+      state.loadMyProfileError = action.payload.error;
+    },
+    //프로필 조회
+    loadProfileRequest(state, action) {
+      state.loadProfileLoading = true;
+      state.loadProfileError = null;
+      state.loadProfileDone = false;
+    },
+    loadProfileSuccess(state, action) {
+      state.loadProfileLoading = false;
+      state.loadProfileDone = true;
+      state.user = action.data;
+    },
+    loadProfileFailure(state, action) {
+      state.loadProfileLoading = false;
+      state.loadProfileError = action.payload.error;
+    },
+    //유저 인포
+    loadUserInfoRequest(state, action) {
+      state.loadUserInfoLoading = true;
+      state.loadUserInfoError = null;
+      state.loadUserInfoDone = false;
+    },
+    loadUserInfoSuccess(state, action) {
+      state.loadUserInfoLoading = false;
+      state.loadUserInfoDone = true;
+      state.userInfo = action.payload.data;
+    },
+    loadUserInfoFailure(state, action) {
+      state.loadUserInfoLoading = false;
+      state.loadUserInfoError = action.payload.error;
+    },
+    //내가 쓴 게시글
+    loadMyPostsRequest(state, action) {
+      state.loadMyPostsLoading = true;
+      state.loadMyPostsError = null;
+      state.loadMyPostsDone = false;
+    },
+    loadMyPostsSuccess(state, action) {
+      state.loadMyPostsLoading = false;
+      state.loadMyPostsDone = true;
+      state.myPostsData = action.payload.data;
+    },
+    loadMyPostsFailure(state, action) {
+      state.loadMyPostsLoading = false;
+      state.loadMyPostsError = action.payload.error;
+    },
+    //내가 쓴 댓글
+    loadMyCommentsRequest(state, action) {
+      state.loadMyCommentsLoading = true;
+      state.loadMyCommentsError = null;
+      state.loadMyCommentsDone = false;
+    },
+    loadMyCommentsSuccess(state, action) {
+      state.loadMyCommentsLoading = false;
+      state.loadMyCommentsDone = true;
+      state.myCommentsData = action.payload.data;
+    },
+    loadMyCommentsFailure(state, action) {
+      state.loadMyCommentsLoading = false;
+      state.loadMyCommentsError = action.payload.error;
+    },
+    //좋아요
+    loadMyLikedRequest(state, action) {
+      state.loadMyLikedLoading = true;
+      state.loadMyLikedError = null;
+      state.loadMyLikedDone = false;
+    },
+    loadMyLikedSuccess(state, action) {
+      state.loadMyLikedLoading = false;
+      state.loadMyLikedDone = true;
+      state.myLikedData = action.payload.data;
+    },
+    loadMyLikedFailure(state, action) {
+      state.loadMyLikedLoading = false;
+      state.loadMyLikedError = action.payload.error;
+    },
+    //프로필 set
+    setProfileRequest(state, action) {
+      state.setProfileLoading = true;
+      state.setProfileError = null;
+      state.setProfileDone = false;
+    },
+    setProfileSuccess(state, action) {
+      state.setProfileLoading = false;
+      state.setProfileDone = true;
+    },
+    setProfileFailure(state, action) {
+      state.setProfileLoading = false;
+      state.setProfileError = action.payload.error;
+    },
+    setProfileReset(state, action) {
+      state.setProfileLoading = false;
+      state.setProfileDone = false;
+    },
+    //프로필 수정
+    editProfileRequest(state, action) {
+      state.editProfileLoading = true;
+      state.editProfileError = null;
+      state.editProfileDone = false;
+    },
+    editProfileSuccess(state, action) {
+      state.editProfileLoading = false;
+      state.editProfileDone = true;
+    },
+    editProfileFailure(state, action) {
+      state.editProfileLoading = false;
+      state.editProfileError = action.payload.error;
+    },
+    editProfileReset(state, action) {
+      state.editProfileLoading = false;
+      state.editProfileDone = false;
+    },
+    //계정 수정
+    editAccountRequest(state, action) {
+      state.editAccountLoading = true;
+      state.editAccountError = null;
+      state.editAccountDone = false;
+    },
+    editAccountSuccess(state, action) {
+      state.editAccountLoading = false;
+      state.editAccountDone = true;
+    },
+    editAccountFailure(state, action) {
+      state.editAccountLoading = false;
+      state.editAccountError = action.payload.error;
+    },
+    editAccountReset(state, action) {
+      state.editAccountLoading = false;
+      state.editAccountDone = false;
+    },
+  }
+});
+
+export const userActions = userSlice.actions;
+export default userSlice.reducer;
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
@@ -204,233 +434,3 @@ export const editAccountRequestAction = (data) => ({
 export const editAccountResetAction = () => ({
   type: EDIT_ACCOUNT_RESET,
 });
-
-const reducer = (state = initialState, action) =>
-  produce(state, (draft) => {
-    switch (action.type) {
-      case SIGN_UP_REQUEST:
-        draft.signUpLoading = true;
-        draft.signUpError = null;
-        draft.signUpDone = false;
-        break;
-      case SIGN_UP_SUCCESS:
-        draft.signUpLoading = false;
-        draft.signUpDone = true;
-        break;
-      case SIGN_UP_FAILURE:
-        draft.signUpLoading = false;
-        draft.signUpError = action.error;
-        break;
-      case SIGN_UP_RESET:
-        draft.signUpDone = false;
-        break;
-
-      case SIGN_OUT_REQUEST:
-        draft.signOutLoading = true;
-        draft.signOutError = null;
-        draft.signOutDone = false;
-        break;
-      case SIGN_OUT_SUCCESS:
-        draft.signOutLoading = false;
-        draft.logOutDone = true;
-        draft.me = null;
-        draft.signOutDone = true;
-        break;
-      case SIGN_OUT_FAILURE:
-        draft.signOutLoading = false;
-        draft.signOutError = action.error;
-        break;
-      case SIGN_OUT_RESET:
-        draft.signOutDone = false;
-        break;
-
-      case LOG_IN_REQUEST:
-        draft.logInLoading = true;
-        draft.logInError = null;
-        draft.logInDone = false;
-        break;
-      case LOG_IN_SUCCESS:
-        draft.logInLoading = false;
-        draft.me = action.data;
-        draft.logInDone = true;
-        break;
-      case LOG_IN_FAILURE:
-        draft.logInLoading = false;
-        draft.logInError = action.error;
-        break;
-      case LOG_IN_RESET:
-        draft.logInDone = false;
-        draft.logInLoading = false;
-        draft.logInError = null;
-        break;
-
-      case LOG_OUT_REQUEST:
-        draft.logOutLoading = true;
-        draft.logOutError = null;
-        draft.logOutDone = false;
-        break;
-      case LOG_OUT_SUCCESS:
-        draft.logOutLoading = false;
-        draft.logOutDone = true;
-        draft.me = null;
-        break;
-      case LOG_OUT_FAILURE:
-        draft.logOutLoading = false;
-        draft.logOutError = action.error;
-        break;
-      case LOG_OUT_RESET:
-        draft.logOutDone = false;
-        draft.logOutLoading = false;
-        draft.logOutError = null;
-        break;
-
-      case LOAD_MY_PROFILE_REQUEST:
-        draft.loadMyProfileLoading = true;
-        draft.loadMyProfileError = null;
-        draft.loadMyProfileDone = false;
-        break;
-      case LOAD_MY_PROFILE_SUCCESS:
-        draft.loadMyProfileLoading = false;
-        draft.loadMyProfileDone = true;
-        draft.me = action.data;
-        break;
-      case LOAD_MY_PROFILE_FAILURE:
-        draft.loadMyProfileLoading = false;
-        draft.loadMyProfileError = action.error;
-        break;
-
-      case LOAD_PROFILE_REQUEST:
-        draft.loadProfileLoading = true;
-        draft.loadProfileError = null;
-        draft.loadProfileDone = false;
-        break;
-      case LOAD_PROFILE_SUCCESS:
-        draft.loadProfileLoading = false;
-        draft.loadProfileDone = true;
-        draft.user = action.data;
-        break;
-      case LOAD_PROFILE_FAILURE:
-        draft.loadProfileLoading = false;
-        draft.loadProfileError = action.error;
-        break;
-
-      case LOAD_USERINFO_REQUEST:
-        draft.loadUserInfoLoading = true;
-        draft.loadUserInfoError = null;
-        draft.loadUserInfoDone = false;
-        break;
-      case LOAD_USERINFO_SUCCESS:
-        draft.loadUserInfoLoading = false;
-        draft.loadUserInfoDone = true;
-        draft.userInfo = action.data;
-        break;
-      case LOAD_USERINFO_FAILURE:
-        draft.loadUserInfoLoading = false;
-        draft.loadUserInfoError = action.error;
-        break;
-
-      case LOAD_MY_POSTS_REQUEST:
-        draft.loadMyPostsLoading = true;
-        draft.loadMyPostsError = null;
-        draft.loadMyPostsDone = false;
-        break;
-      case LOAD_MY_POSTS_SUCCESS:
-        draft.loadMyPostsLoading = false;
-        draft.loadMyPostsDone = true;
-        draft.myPostsData = action.data;
-        break;
-      case LOAD_MY_POSTS_FAILURE:
-        draft.loadMyPostsLoading = false;
-        draft.loadMyPostsError = action.error;
-        break;
-
-      case LOAD_MY_COMMENTS_REQUEST:
-        draft.loadMyCommentsLoading = true;
-        draft.loadMyCommentsError = null;
-        draft.loadMyCommentsDone = false;
-        break;
-      case LOAD_MY_COMMENTS_SUCCESS:
-        draft.loadMyCommentsLoading = false;
-        draft.loadMyCommentsDone = true;
-        draft.myCommentsData = action.data;
-        break;
-      case LOAD_MY_COMMENTS_FAILURE:
-        draft.loadMyCommentsLoading = false;
-        draft.loadMyCommentsError = action.error;
-        break;
-
-      case LOAD_MY_LIKED_REQUEST:
-        draft.loadMyLikedLoading = true;
-        draft.loadMyLikedError = null;
-        draft.loadMyLikedDone = false;
-        break;
-      case LOAD_MY_LIKED_SUCCESS:
-        draft.loadMyLikedLoading = false;
-        draft.loadMyLikedDone = true;
-        draft.myLikedData = action.data;
-        break;
-      case LOAD_MY_LIKED_FAILURE:
-        draft.loadMyLikedLoading = false;
-        draft.loadMyLikedError = action.error;
-
-      case SET_PROFILE_REQUEST:
-        draft.setProfileLoading = true;
-        draft.setProfileError = null;
-        draft.setProfileDone = false;
-        break;
-      case SET_PROFILE_SUCCESS:
-        draft.setProfileLoading = false;
-        draft.setProfileDone = true;
-        break;
-      case SET_PROFILE_FAILURE:
-        draft.setProfileLoading = false;
-        draft.setProfileError = action.error;
-        break;
-      case SET_PROFILE_RESET:
-        draft.setProfileLoading = false;
-        draft.setProfileDone = false;
-        break;
-
-      case EDIT_PROFILE_REQUEST:
-        draft.editProfileLoading = true;
-        draft.editProfileError = null;
-        draft.editProfileDone = false;
-        break;
-      case EDIT_PROFILE_SUCCESS:
-        draft.editProfileLoading = false;
-        draft.editProfileDone = true;
-        break;
-      case EDIT_PROFILE_FAILURE:
-        draft.editProfileLoading = false;
-        draft.editProfileError = action.error;
-        break;
-      case EDIT_PROFILE_RESET:
-        draft.editProfileLoading = false;
-        draft.editProfileDone = false;
-        break;
-
-      case EDIT_ACCOUNT_REQUEST:
-        draft.editAccountLoading = true;
-        draft.editAccountError = null;
-        draft.editAccountDone = false;
-        break;
-      case EDIT_ACCOUNT_SUCCESS:
-        draft.editAccountLoading = false;
-        draft.editAccountDone = true;
-        break;
-      case EDIT_ACCOUNT_FAILURE:
-        draft.editAccountLoading = false;
-        draft.editAccountError = action.error;
-        break;
-
-      case EDIT_ACCOUNT_RESET:
-        draft.editAccountLoading = false;
-        draft.editAccountDone = false;
-        break;
-
-      default:
-        break;
-    }
-  });
-
-export default reducer;
