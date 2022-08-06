@@ -14,7 +14,7 @@ import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-import { postResetAction } from "../../reducers/community";
+import { postResetAction } from "../../store/reducers/community";
 
 const SelectOptions = [
   { id: "latest", name: "최신순" },

@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequestAction } from "../../reducers/user";
+import { logoutRequestAction } from "../../store/reducers/user";
 import {
   NavContainer,
   Tab,
@@ -237,7 +237,7 @@ const Header = () => {
           </div>
         </ToggleMenuWrapper>
       </NavContainer>
-      
+
     </>
   );
 };

@@ -22,7 +22,7 @@ import {
   loadMyCommentsAction,
   loadMyLikedAction,
   loadProfileRequestAction,
-} from "../../reducers/user";
+} from "../../store/reducers/user";
 
 const UserProfile = () => {
   const dispatch = useDispatch();

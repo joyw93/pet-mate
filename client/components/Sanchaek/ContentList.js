@@ -9,7 +9,7 @@ import {
   sanchaekLoadPostDetailResetAction,
   sanchaekLoadMoreResetAction,
   sanchaekLoadMorePostsAction,
-} from "../../reducers/sanchaek";
+} from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 

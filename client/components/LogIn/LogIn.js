@@ -5,7 +5,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loginRequestAction, loginResetAction } from "../../reducers/user";
+import { loginRequestAction, loginResetAction } from "../../store/reducers/user";
 import {
   LogInContainer,
   FormWrapper,
