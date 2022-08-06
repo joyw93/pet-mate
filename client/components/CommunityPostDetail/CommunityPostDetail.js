@@ -26,16 +26,9 @@ import {
   AuthorInfo,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import {
-  loadPostDetailRequestAction,
-  removePostRequestAction,
-  removeCommentRequestAction,
-  addCommentRequestAction,
-  likePostRequestAction,
-} from "../../store/reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { loadProfileRequestAction } from "../../store/reducers/user";
+import { communityActions } from '../../store/reducers/community';
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
@@ -61,7 +54,7 @@ const CommunityPostDetail = () => {
   // 게시물 로드
   useEffect(() => {
     if (router.isReady && !post) {
-      dispatch(loadPostDetailRequestAction(id));
+      dispatch(communityActions.loadPostDetailRequest(id));
     }
   }, [router.isReady, post]);
 
@@ -87,14 +80,20 @@ const CommunityPostDetail = () => {
       return router.push("/login");
     }
     setLike(!like);
-    dispatch(likePostRequestAction(id));
+    dispatch(communityActions.likePostRequest(id));
+    // dispatch(likePostRequestAction(id));
   }, [like]);
 
   const handleCmtContent = useCallback(() => {
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
-    dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
+    const data = {
+      postId: id,
+      content: cmtContent
+    };
+    dispatch(communityActions.addCommentRequest(data));
+    // dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
     setCmtContent("");
     commentInputRef.current.blur();
   }, [cmtContent]);
@@ -105,7 +104,12 @@ const CommunityPostDetail = () => {
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
-        dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
+        const data = {
+          postId: id,
+          content: cmtContent
+        };
+        dispatch(communityActions.addCommentRequest(data));
+        // dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
         setCmtContent("");
         commentInputRef.current.blur();
       }
@@ -116,13 +120,15 @@ const CommunityPostDetail = () => {
   const handleDeleteCmt = (commentId) => {
     if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
       console.log(commentId);
-      dispatch(removeCommentRequestAction(commentId));
+      dispatch(communityActions.removeCommentRequest(commentId));
+      // dispatch(removeCommentRequestAction(commentId));
     }
   };
 
   const handleDeletePost = () => {
     if (window.confirm("글을 삭제하겠습니까?")) {
-      dispatch(removePostRequestAction(parseInt(id)));
+      dispatch(communityActions.removePostRequest(parseInt(id)));
+      // dispatch(removePostRequestAction(parseInt(id)));
       router.push(`/community`);
     }
   };

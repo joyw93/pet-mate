@@ -40,6 +40,7 @@ import {
   LOAD_MY_PROFILE_SUCCESS,
   LOAD_MY_PROFILE_REQUEST,
 } from "../reducers/user";
+import { userActions } from '../reducers/user';
 
 // const serverUrl = `http://127.0.0.1:3000`;
 const serverUrl = "http://api.petmate.kr";
@@ -50,18 +51,11 @@ function signUpAPI(data) {
 
 function* signUp(action) {
   try {
-    const result = yield call(signUpAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SIGN_UP_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(signUpAPI, action.payload);
+    yield put(userActions.signUpSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SIGN_UP_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.signUpFailure(err.response.data));
   }
 }
 
@@ -72,17 +66,11 @@ function signOutAPI() {
 function* signOut(action) {
   try {
     const result = yield call(signOutAPI);
-    const payload = result.data;
-    yield put({
-      type: SIGN_OUT_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = result.payload;
+    yield put(userActions.signOutSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SIGN_OUT_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.signOutFailure(err.response.data));
   }
 }
 
@@ -94,18 +82,11 @@ function logInAPI(data) {
 
 function* logIn(action) {
   try {
-    const result = yield call(logInAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LOG_IN_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(logInAPI, action.payload);
+    yield put(userActions.logInSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOG_IN_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.logInFailure(err.response.data));
   }
 }
 
@@ -116,15 +97,10 @@ function logOutAPI() {
 function* logOut() {
   try {
     const result = yield call(logOutAPI);
-    yield put({
-      type: LOG_OUT_SUCCESS,
-    });
+    yield put(userActions.logOutSuccess());
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOG_OUT_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.logOutFailure(err.response.data));
   }
 }
 
@@ -134,19 +110,11 @@ function loadProfileAPI(data) {
 
 function* loadProfile(action) {
   try {
-    console.log(action.data);
-    const result = yield call(loadProfileAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LOAD_PROFILE_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadProfileAPI, action.payload);
+    yield put(userActions.loadProfileSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_PROFILE_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.loadProfileFailure(err.response.data))
   }
 }
 
@@ -157,17 +125,11 @@ function loadMyProfileAPI() {
 function* loadMyProfile(action) {
   try {
     const result = yield call(loadMyProfileAPI);
-    const payload = result.data;
-    yield put({
-      type: LOAD_MY_PROFILE_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = result.payload;
+    yield put(userActions.loadMyPostsSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_MY_PROFILE_REQUEST,
-      error: err.response.data,
-    });
+    yield put(userActions.loadMyProfileFailure(err.response.data));
   }
 }
 
@@ -178,17 +140,11 @@ function loadUserInfoAPI() {
 function* loadUserInfo(action) {
   try {
     const result = yield call(loadUserInfoAPI);
-    const payload = result.data;
-    yield put({
-      type: LOAD_USERINFO_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = result.payload;
+    yield put(userActions.loadUserInfoSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_USERINFO_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.loadUserInfoFailure(err.response.data));
   }
 }
 
@@ -198,18 +154,11 @@ function loadMyPostsAPI() {
 
 function* loadMyPosts(action) {
   try {
-    const result = yield call(loadMyPostsAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LOAD_MY_POSTS_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadMyPostsAPI, action.payload);
+    yield put(userActions.loadMyPostsSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_MY_POSTS_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.loadMyPostsFailure(err.response.data))
   }
 }
 
@@ -221,18 +170,11 @@ function loadMyCommentsAPI() {
 
 function* loadMyComments(action) {
   try {
-    const result = yield call(loadMyCommentsAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LOAD_MY_COMMENTS_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadMyCommentsAPI, action.payload);
+    yield put(userActions.loadMyCommentsSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_MY_COMMENTS_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.loadMyCommentsFailure(err.response.data));
   }
 }
 
@@ -242,18 +184,11 @@ function loadMyLikedAPI() {
 
 function* loadMyLiked(action) {
   try {
-    const result = yield call(loadMyLikedAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: LOAD_MY_LIKED_SUCCESS,
-      data: payload.data,
-    });
+    const { data } = yield call(loadMyLikedAPI, action.payload);
+    yield put(userActions.loadMyLikedSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_MY_LIKED_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.loadMyLikedFailure(err.response.data))
   }
 }
 
@@ -265,17 +200,11 @@ function setProfileAPI(data) {
 
 function* setProfile(action) {
   try {
-    const result = yield call(setProfileAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: SET_PROFILE_SUCCESS,
-    });
+    const { data } = yield call(setProfileAPI, action.payload);
+    yield put(userActions.setProfileSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: SET_PROFILE_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.setProfileFailure(err.response.data));
   }
 }
 
@@ -287,17 +216,11 @@ function editProfileAPI(data) {
 
 function* editProfile(action) {
   try {
-    const result = yield call(editProfileAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: EDIT_PROFILE_SUCCESS,
-    });
+    const { data } = yield call(editProfileAPI, action.payload);
+    yield put(userActions.editProfileSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: EDIT_PROFILE_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.editProfileFailure(err.response.data));
   }
 }
 
@@ -309,70 +232,64 @@ function editAccountAPI(data) {
 
 function* editAccount(action) {
   try {
-    const result = yield call(editAccountAPI, action.data);
-    const payload = result.data;
-    yield put({
-      type: EDIT_ACCOUNT_SUCCESS,
-    });
+    const { data } = yield call(editAccountAPI, action.payload);
+    yield put(userActions.editAccountSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put({
-      type: EDIT_ACCOUNT_FAILURE,
-      error: err.response.data,
-    });
+    yield put(userActions.editAccountFailure(err.response.data));
   }
 }
 
 function* watchLogIn() {
-  yield takeLatest(LOG_IN_REQUEST, logIn);
+  yield takeLatest(userActions.logInRequest, logIn);
 }
 
 function* watchLogOut() {
-  yield takeLatest(LOG_OUT_REQUEST, logOut);
+  yield takeLatest(userActions.logOutRequest, logOut);
 }
 
 function* watchSignUp() {
-  yield takeLatest(SIGN_UP_REQUEST, signUp);
+  yield takeLatest(userActions.signUpRequest, signUp);
 }
 
 function* watchSignOut() {
-  yield takeLatest(SIGN_OUT_REQUEST, signOut);
+  yield takeLatest(userActions.signOutRequest, signOut);
 }
 
 function* watchLoadProfile() {
-  yield takeLatest(LOAD_PROFILE_REQUEST, loadProfile);
+  yield takeLatest(userActions.loadProfileRequest, loadProfile);
 }
 
 function* watchLoadMyProfile() {
-  yield takeLatest(LOAD_MY_PROFILE_REQUEST, loadMyProfile);
+  yield takeLatest(userActions.loadMyProfileRequest, loadMyProfile);
 }
 
 function* watchLoadUserInfo() {
-  yield takeLatest(LOAD_USERINFO_REQUEST, loadUserInfo);
+  yield takeLatest(userActions.loadUserInfoRequest, loadUserInfo);
 }
 
 function* watchLoadMyPosts() {
-  yield takeLatest(LOAD_MY_POSTS_REQUEST, loadMyPosts);
+  yield takeLatest(userActions.loadMyPostsRequest, loadMyPosts);
 }
 
 function* watchLoadMyComments() {
-  yield takeLatest(LOAD_MY_COMMENTS_REQUEST, loadMyComments);
+  yield takeLatest(userActions.loadMyCommentsRequest, loadMyComments);
 }
 
 function* watchLoadMyLiked() {
-  yield takeLatest(LOAD_MY_LIKED_REQUEST, loadMyLiked);
+  yield takeLatest(userActions.loadMyLikedRequest, loadMyLiked);
 }
 
 function* watchSetProfile() {
-  yield takeLatest(SET_PROFILE_REQUEST, setProfile);
+  yield takeLatest(userActions.setProfileRequest, setProfile);
 }
 
 function* watchEditProfile() {
-  yield takeLatest(EDIT_PROFILE_REQUEST, editProfile);
+  yield takeLatest(userActions.editProfileRequest, editProfile);
 }
 
 function* watchEditAccount() {
-  yield takeLatest(EDIT_ACCOUNT_REQUEST, editAccount);
+  yield takeLatest(userActions.editAccountRequest, editAccount);
 }
 
 export default function* userSaga() {
