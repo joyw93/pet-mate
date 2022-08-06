@@ -9,9 +9,11 @@ import {
   loadPostsRequestAction,
   loadPostDetailResetAction,
   loadMoreResetAction,
-} from "../../reducers/community";
+} from "../../store/reducers/community";
+import { communityActions } from '../../store/reducers/community';
 
-const CommunityList = (filterCond) => {
+const CommunityList = ({ filterCond }) => {
+
   const morePostsRef = useRef(1);
   const dispatch = useDispatch();
   const { posts, loadPostsDone, loadMoreDone, morePosts } = useSelector(
@@ -19,8 +21,9 @@ const CommunityList = (filterCond) => {
   );
   const [noMoreList, setNoMoreList] = useState(false);
 
+  console.log(posts);
   useEffect(() => {
-    dispatch(loadPostsRequestAction(filterCond.filterCond));
+    dispatch(communityActions.loadPostsRequest(filterCond));
     morePostsRef.current = 1;
   }, [filterCond.filterCond]);
 
@@ -71,7 +74,7 @@ const CommunityList = (filterCond) => {
         ) : (
           <BtnContainer>
             <BtnLine></BtnLine>
-            {posts.length >= 10 ? (
+            {posts && posts.length >= 10 ? (
               <MoreBtn onClick={handleMorePosts}>더보기</MoreBtn>
             ) : null}
           </BtnContainer>

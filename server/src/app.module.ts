@@ -11,10 +11,10 @@ import { CommunityEntity } from './community/community.entity';
 import { CommunityLikeEntity } from './common/entities/community-like.entity';
 import { HashtagModule } from './hashtag/hashtag.module';
 import { CommunityHashtagEntity } from './common/entities/community-hashtag.entity';
-import * as ormconfig from '../ormconfig';
 import { UserProfileEntity } from './common/entities/user-profile.entity';
 import { SanchaekModule } from './sanchaek/sanchaek.module';
 import { SanchaekEntity } from './sanchaek/sanchaek.entity';
+import * as ormconfig from '../ormconfig';
 
 @Module({
   imports: [

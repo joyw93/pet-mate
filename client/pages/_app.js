@@ -11,7 +11,7 @@ import {
   loadUserInfoRequestAction,
   logoutResetAction,
   signupResetAction,
-} from "../reducers/user";
+} from "../store/reducers/user";
 
 const App = ({ Component, pageProps }) => {
   const feedback = [

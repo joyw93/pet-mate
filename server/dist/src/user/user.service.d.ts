@@ -44,6 +44,7 @@ export declare class UserService {
     getMySanchaeks(userId: number): Promise<SanchaekEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;
+    getCommentedSanchaeks(userId: number): Promise<SanchaekEntity[]>;
     getMyProfile(userId: number): Promise<UserEntity>;
     signout(userId: number): Promise<import("typeorm").DeleteResult>;
 }

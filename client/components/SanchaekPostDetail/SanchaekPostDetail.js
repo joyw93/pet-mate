@@ -23,7 +23,7 @@ import {
   sanchaekAddCommentRequestAction,
   sanchaekRemovePostRequestAction,
   sanchaekRemoveCommentRequestAction,
-} from "../../reducers/sanchaek";
+} from "../../store/reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
@@ -147,7 +147,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
                 {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
-                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                  Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
                   <>
                     <h2>지도</h2>
                     <DetailedMap

@@ -32,10 +32,10 @@ import {
   removeCommentRequestAction,
   addCommentRequestAction,
   likePostRequestAction,
-} from "../../reducers/community";
+} from "../../store/reducers/community";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { loadProfileRequestAction } from "../../reducers/user";
+import { loadProfileRequestAction } from "../../store/reducers/user";
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";

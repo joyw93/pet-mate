@@ -228,6 +228,22 @@ let UserService = class UserService {
             .getMany();
         return posts;
     }
+    async getCommentedSanchaeks(userId) {
+        const sanchaeks = await this.sanchaekRepository
+            .createQueryBuilder('sanchaek')
+            .select([
+            'sanchaek.id',
+            'sanchaek.title',
+            'sanchaek.content',
+            'images.url',
+        ])
+            .leftJoin('sanchaek.images', 'images')
+            .leftJoin('sanchaek.comments', 'comments')
+            .leftJoin('comments.author', 'author')
+            .where('author.id=:id', { id: userId })
+            .getMany();
+        return sanchaeks;
+    }
     async getMyProfile(userId) {
         const user = await this.userRepository
             .createQueryBuilder('user')
