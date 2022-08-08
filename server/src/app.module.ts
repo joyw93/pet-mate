@@ -15,6 +15,7 @@ import { UserProfileEntity } from './common/entities/user-profile.entity';
 import { SanchaekModule } from './sanchaek/sanchaek.module';
 import { SanchaekEntity } from './sanchaek/sanchaek.entity';
 import { MarketModule } from './market/market.module';
+import { SearchModule } from './search/search.module';
 import * as ormconfig from '../ormconfig';
 
 @Module({
@@ -34,6 +35,7 @@ import * as ormconfig from '../ormconfig';
     HashtagModule,
     SanchaekModule,
     MarketModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

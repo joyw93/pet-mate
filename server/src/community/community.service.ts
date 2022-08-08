@@ -18,9 +18,8 @@ import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
-
-import * as res from '../common/responses/message';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
+import * as res from '../common/responses/message';
 
 @Injectable()
 export class CommunityService {
@@ -95,6 +94,15 @@ export class CommunityService {
       console.error(err);
       throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
     }
+  }
+
+  async getSearchPosts(keyword: string) {
+    const posts = this.communityRepository
+      .createQueryBuilder('post')
+      .select()
+      // .where()
+      .getMany();
+    return posts
   }
 
   async getOnePost(postId: number) {
