@@ -5,7 +5,6 @@ import { useEffect, useRef, useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loginRequestAction, loginResetAction } from "../../store/reducers/user";
 import {
   LogInContainer,
   FormWrapper,
@@ -43,14 +42,12 @@ const LogIn = () => {
 
   useEffect(() => {
     dispatch(userActions.logInReset());
-    //dispatch(loginResetAction());
     setSnackBar(false);
   }, []);
 
   useEffect(() => {
     if (logInError) {
       setSnackBar(true);
-      // dispatch(loginResetAction())
     }
   }, [logInError]);
 
@@ -71,7 +68,6 @@ const LogIn = () => {
       password,
     };
     dispatch(userActions.logInRequest(newUser));
-    //dispatch(loginRequestAction(newUser));
   }, [email, password]);
 
   const handleLoginEmail = (e) => {

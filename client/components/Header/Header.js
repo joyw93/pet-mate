@@ -9,7 +9,8 @@ import React, {
 } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequestAction } from "../../store/reducers/user";
+
+import { userActions } from '../../store/reducers/user';
 import {
   NavContainer,
   Tab,
@@ -51,7 +52,7 @@ const Header = () => {
   }, [pathCheck]);
 
   const logOut = useCallback(() => {
-    dispatch(logoutRequestAction());
+    dispatch(userActions.logOutRequest());
     Router.replace("/");
     // alert("로그아웃되었습니다!");
   }, []);
