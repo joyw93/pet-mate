@@ -22,7 +22,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import { editProfileRequestAction, loadProfileRequestAction, editProfileResetAction, loadMyProfileRequestAction } from "../../reducers/user";
+
+import { userActions } from '../../store/reducers/user';
 
 
 const ProfileTab = () => {
@@ -40,11 +41,11 @@ const ProfileTab = () => {
 
   useEffect(() => {
     if (editProfileDone) {
-      dispatch(editProfileResetAction());
+      dispatch(userActions.editProfileReset());
       alert("회원정보가 변경되었습니다.");
       Router.back();
     }
-    dispatch(loadMyProfileRequestAction());
+    dispatch(userActions.loadMyProfileRequest());
   }, [editProfileDone]);
 
   useEffect(() => {
@@ -111,7 +112,7 @@ const ProfileTab = () => {
       data.append("comment", comment);
     }
     data.append("image", imageFile);
-    dispatch(editProfileRequestAction(data));
+    dispatch(userActions.editProfileRequest(data));
   }, [nickname, birthday, comment, imageFile]);
 
   return (
@@ -129,7 +130,7 @@ const ProfileTab = () => {
           />
           <NicknameValidWrapper>
             {nicknameValid === "닉네임을 입력하세요." ||
-            nicknameValid === "중복된 닉네임입니다." ? (
+              nicknameValid === "중복된 닉네임입니다." ? (
               <InvalidMessage>{nicknameValid}</InvalidMessage>
             ) : (
               <ValidMessage>{nicknameValid}</ValidMessage>

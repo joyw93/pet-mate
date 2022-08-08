@@ -17,13 +17,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-  loadUserInfoRequestAction,
-  setProfileRequestAction,
-} from "../../reducers/user";
+import { userActions } from '../../store/reducers/user';
 
 const KakaoProfile = () => {
   const dispatch = useDispatch();
@@ -32,8 +26,6 @@ const KakaoProfile = () => {
   );
   const [nickname, setNickname] = useState("");
   const [nicknameValid, setNicknameValid] = useState("");
-
-  
 
   useEffect(() => {
     if (nickname) {
@@ -64,7 +56,7 @@ const KakaoProfile = () => {
       return;
     }
     const data = { nickname };
-    dispatch(setProfileRequestAction(data));
+    dispatch(userActions.setProfileRequest(data));
   }, [nickname]);
 
   return (
@@ -98,7 +90,7 @@ const KakaoProfile = () => {
             />
             <NicknameValidWrapper>
               {nicknameValid === "닉네임을 입력하세요." ||
-              nicknameValid === "중복된 닉네임입니다." ? (
+                nicknameValid === "중복된 닉네임입니다." ? (
                 <InvalidMessage>{nicknameValid}</InvalidMessage>
               ) : null}
             </NicknameValidWrapper>

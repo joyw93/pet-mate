@@ -159,7 +159,7 @@ const userSlice = createSlice({
       state.loadMyProfileLoading = false;
       state.loadMyProfileError = action.payload.error;
     },
-    //프로필 조회
+    //프로필 조회 다른사람 정보 불러오기
     loadProfileRequest(state, action) {
       state.loadProfileLoading = true;
       state.loadProfileError = null;
@@ -174,7 +174,7 @@ const userSlice = createSlice({
       state.loadProfileLoading = false;
       state.loadProfileError = action.payload.error;
     },
-    //유저 인포
+    //유저 인포 sns전용
     loadUserInfoRequest(state, action) {
       state.loadUserInfoLoading = true;
       state.loadUserInfoError = null;
@@ -293,144 +293,3 @@ const userSlice = createSlice({
 
 export const userActions = userSlice.actions;
 export default userSlice.reducer;
-
-export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
-export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
-export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
-export const SIGN_UP_RESET = "SIGN_UP_RESET";
-
-export const SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST";
-export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS";
-export const SIGN_OUT_FAILURE = "SIGN_OUT_FAILURE";
-export const SIGN_OUT_RESET = "SIGN_OUT_RESET";
-
-export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
-export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
-export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
-export const LOG_IN_RESET = "LOG_IN_RESET";
-
-export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
-export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
-export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
-export const LOG_OUT_RESET = "LOG_OUT_RESET";
-
-export const LOAD_PROFILE_REQUEST = "LOAD_PROFILE_REQUEST";
-export const LOAD_PROFILE_SUCCESS = "LOAD_PROFILE_SUCCESS";
-export const LOAD_PROFILE_FAILURE = "LOAD_PROFILE_FAILURE";
-
-export const LOAD_MY_PROFILE_REQUEST = "LOAD_MY_PROFILE_REQUEST";
-export const LOAD_MY_PROFILE_SUCCESS = "LOAD_MY_PROFILE_SUCCESS";
-export const LOAD_MY_PROFILE_FAILURE = "LOAD_MY_PROFILE_FAILURE";
-
-export const LOAD_USERINFO_REQUEST = "LOAD_USERINFO_REQUEST"; // SNS로그인 때 유저 이메일/이름 가져오는 용도
-export const LOAD_USERINFO_SUCCESS = "LOAD_USERINFO_SUCCESS";
-export const LOAD_USERINFO_FAILURE = "LOAD_USERINFO_FAILURE";
-
-export const LOAD_MY_POSTS_REQUEST = "LOAD_MY_POSTS_REQUEST";
-export const LOAD_MY_POSTS_SUCCESS = "LOAD_MY_POSTS_SUCCESS";
-export const LOAD_MY_POSTS_FAILURE = "LOAD_MY_POSTS_FAILURE";
-
-export const LOAD_MY_COMMENTS_REQUEST = "LOAD_MY_COMMENTS_REQUEST";
-export const LOAD_MY_COMMENTS_SUCCESS = "LOAD_MY_COMMENTS_SUCCESS";
-export const LOAD_MY_COMMENTS_FAILURE = "LOAD_MY_COMMENTS_FAILURE";
-
-export const LOAD_MY_LIKED_REQUEST = "LOAD_MY_LIKED_REQUEST";
-export const LOAD_MY_LIKED_SUCCESS = "LOAD_MY_LIKED_SUCCESS";
-export const LOAD_MY_LIKED_FAILURE = "LOAD_MY_LIKED_FAILURE";
-
-export const SET_PROFILE_REQUEST = "SET_PROFILE_REQUEST";
-export const SET_PROFILE_SUCCESS = "SET_PROFILE_SUCCESS";
-export const SET_PROFILE_FAILURE = "SET_PROFILE_FAILURE";
-export const SET_PROFILE_RESET = "SET_PROFILE_RESET";
-
-export const EDIT_PROFILE_REQUEST = "EDIT_PROFILE_REQUEST";
-export const EDIT_PROFILE_SUCCESS = "EDIT_PROFILE_SUCCESS";
-export const EDIT_PROFILE_FAILURE = "EDIT_PROFILE_FAILURE";
-export const EDIT_PROFILE_RESET = "EDIT_PROFILE_RESET";
-
-export const EDIT_ACCOUNT_REQUEST = "EDIT_ACCOUNT_REQUEST";
-export const EDIT_ACCOUNT_SUCCESS = "EDIT_ACCOUNT_SUCCESS";
-export const EDIT_ACCOUNT_FAILURE = "EDIT_ACCOUNT_FAILURE";
-export const EDIT_ACCOUNT_RESET = "EDIT_ACCOUNT_RESET";
-
-export const signupRequestAction = (data) => ({
-  type: SIGN_UP_REQUEST,
-  data,
-});
-
-export const signupResetAction = () => ({
-  type: SIGN_UP_RESET,
-});
-
-export const signOutRequestAction = () => ({
-  type: SIGN_OUT_REQUEST,
-});
-
-export const signOutResetAction = () => ({
-  type: SIGN_OUT_RESET,
-});
-
-export const loginRequestAction = (data) => ({
-  type: LOG_IN_REQUEST,
-  data,
-});
-
-export const loginResetAction = () => ({
-  type: LOG_IN_RESET,
-});
-
-export const logoutRequestAction = () => ({
-  type: LOG_OUT_REQUEST,
-});
-
-export const logoutResetAction = () => ({
-  type: LOG_OUT_RESET,
-});
-
-export const loadProfileRequestAction = (data) => ({
-  type: LOAD_PROFILE_REQUEST,
-  data,
-});
-
-export const loadMyProfileRequestAction = () => ({
-  type: LOAD_MY_PROFILE_REQUEST,
-});
-
-export const loadUserInfoRequestAction = () => ({
-  type: LOAD_USERINFO_REQUEST,
-});
-
-export const loadMyPostsAction = () => ({
-  type: LOAD_MY_POSTS_REQUEST,
-});
-
-export const loadMyCommentsAction = () => ({
-  type: LOAD_MY_COMMENTS_REQUEST,
-});
-
-export const loadMyLikedAction = () => ({
-  type: LOAD_MY_LIKED_REQUEST,
-});
-
-export const setProfileRequestAction = (data) => ({
-  type: SET_PROFILE_REQUEST,
-  data,
-});
-
-export const editProfileRequestAction = (data) => ({
-  type: EDIT_PROFILE_REQUEST,
-  data,
-});
-
-export const editProfileResetAction = () => ({
-  type: EDIT_PROFILE_RESET,
-});
-
-export const editAccountRequestAction = (data) => ({
-  type: EDIT_ACCOUNT_REQUEST,
-  data,
-});
-
-export const editAccountResetAction = () => ({
-  type: EDIT_ACCOUNT_RESET,
-});
