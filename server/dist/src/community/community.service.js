@@ -23,8 +23,8 @@ const community_entity_1 = require("./community.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const hashtag_entity_1 = require("../hashtag/hashtag.entity");
-const res = require("../common/responses/message");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
+const res = require("../common/responses/message");
 let CommunityService = class CommunityService {
     constructor(communityRepository, userRepository, userProfileRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository) {
         this.communityRepository = communityRepository;
@@ -92,6 +92,24 @@ let CommunityService = class CommunityService {
             console.error(err);
             throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
         }
+    }
+    async getSearchPosts(keyword) {
+        const posts = this.communityRepository
+            .createQueryBuilder('post')
+            .select([
+            'post.id',
+            'post.title',
+            'post.content',
+            'post.createdAt',
+            'post.views',
+            'images.id',
+            'images.url'
+        ])
+            .leftJoin('post.images', 'images')
+            .where('post.title like :keyword', { keyword: `%${keyword}%` })
+            .orWhere('post.content like :keyword', { keyword: `%${keyword}%` })
+            .getMany();
+        return posts;
     }
     async getOnePost(postId) {
         const post = await this.communityRepository.findOne({

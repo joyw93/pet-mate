@@ -99,10 +99,20 @@ export class CommunityService {
   async getSearchPosts(keyword: string) {
     const posts = this.communityRepository
       .createQueryBuilder('post')
-      .select()
-      // .where()
+      .select([
+        'post.id',
+        'post.title',
+        'post.content',
+        'post.createdAt',
+        'post.views',
+        'images.id',
+        'images.url'
+      ])
+      .leftJoin('post.images', 'images')
+      .where('post.title like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('post.content like :keyword', { keyword: `%${keyword}%` })
       .getMany();
-    return posts
+    return posts;
   }
 
   async getOnePost(postId: number) {

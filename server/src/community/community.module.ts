@@ -27,5 +27,6 @@ import { CommunityService } from './community.service';
   ],
   controllers: [CommunityController],
   providers: [CommunityService, HashtagService],
+  exports:[CommunityService]
 })
 export class CommunityModule {}

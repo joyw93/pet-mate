@@ -56,6 +56,24 @@ let SanchaekService = class SanchaekService {
             throw new common_1.InternalServerErrorException(res.msg.SANCHAEK_GET_POST_FAIL);
         }
     }
+    async getSearchSanchaeks(keyword) {
+        const sanchaeks = this.sanchaekRepository
+            .createQueryBuilder('sanchaek')
+            .select([
+            'sanchaek.id',
+            'sanchaek.title',
+            'sanchaek.content',
+            'sanchaek.createdAt',
+        ])
+            .addSelect(['user.nickname'])
+            .addSelect(['images.url'])
+            .leftJoin('sanchaek.images', 'images')
+            .leftJoin('sanchaek.user', 'user')
+            .where('sanchaek.title like :keyword', { keyword: `%${keyword}%` })
+            .orWhere('sanchaek.content like :keyword', { keyword: `%${keyword}%` })
+            .getMany();
+        return sanchaeks;
+    }
     async getOneSanchaek(postId) {
         const sanchaek = await this.sanchaekRepository.findOne({
             where: { id: postId },

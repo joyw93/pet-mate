@@ -21,6 +21,7 @@ export declare class CommunityService {
     private hashtagRepository;
     constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<CommunityEntity[]>;
+    getSearchPosts(keyword: string): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<CommunityEntity[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
