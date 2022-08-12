@@ -1,4 +1,4 @@
-import { ListItem } from "./styled";
+import { ListItem, ItemImg, ItemInfo, ItemLocation, LocationInfo, LocationImg } from "./styled";
 import { useRouter } from "next/router";
 
 export const HotCommunityItem = ({ id, title, images }) => {
@@ -9,20 +9,20 @@ export const HotCommunityItem = ({ id, title, images }) => {
   return (
     <ListItem onClick={goToDetail}>
       {images?.length === 0 ? (
-        <img src="../../img/defaultimg1.png" />
+        <ItemImg src="../../img/defaultimg1.png" />
       ) : (
-        <img src={images[0].url} />
+        <ItemImg src={images[0].url} />
       )}
       {title.length > 15 ? (
-        <span>{title.slice(0, 15)}</span>
+        <ItemInfo>{title.slice(0, 15)}</ItemInfo>
       ) : (
-        <span>{title}</span>
+        <ItemInfo>{title}</ItemInfo>
       )}
     </ListItem>
   );
 };
 
-export const HotSanchaekItem = ({ id, title, images }) => {
+export const HotSanchaekItem = ({ id, title, images, mapInfo }) => {
   const Router = useRouter();
   const goToDetail = () => {
     Router.push(`/sanchaek/${id}`);
@@ -31,15 +31,22 @@ export const HotSanchaekItem = ({ id, title, images }) => {
   return (
     <ListItem onClick={goToDetail}>
       {images?.length === 0 ? (
-        <img src="../../img/defaultimg1.png" />
+        <ItemImg src="../../img/defaultimg1.png" />
       ) : (
-        <img src={images[0].url} />
+        <ItemImg src={images[0].url} />
       )}
       {title.length > 15 ? (
-        <span>{title.slice(0, 15)}</span>
+        <ItemInfo>{title.slice(0, 20)}</ItemInfo>
       ) : (
-        <span>{title}</span>
+        <ItemInfo>{title}</ItemInfo>
       )}
+      {mapInfo.location &&
+        <LocationInfo>
+          <LocationImg src="../../img/locationEmojiBlk.png" />
+          <ItemLocation>{mapInfo.location.slice(0, 19)}</ItemLocation>
+        </LocationInfo>
+
+      }
     </ListItem>
   );
 };
