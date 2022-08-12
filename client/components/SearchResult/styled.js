@@ -167,3 +167,8 @@ export const BtnContainer = styled.div`
     }
   }
 `;
+
+export const CommunityList = styled.div``;
+export const SanchaekList = styled.div``;
+export const TitleWrapper = styled.div``;
+export const MoreButton = styled.span``;

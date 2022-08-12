@@ -41,7 +41,6 @@ const Header = () => {
   const inputRef = useRef();
   const toggleInputRef = useRef();
 
-
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");
@@ -49,6 +48,10 @@ const Header = () => {
       setPathCheck("community");
     }
   }, [pathCheck]);
+
+  const goToSearchResult = (val) => {
+    Router.push(`/search/index?query=${val}`);
+  };
 
   const logOut = useCallback(() => {
     dispatch(logoutRequestAction());
@@ -85,6 +88,7 @@ const Header = () => {
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
+        goToSearchResult(inputVal);
         setInputVal("");
         setVisible(false);
         inputRef.current.blur();
@@ -237,7 +241,6 @@ const Header = () => {
           </div>
         </ToggleMenuWrapper>
       </NavContainer>
-
     </>
   );
 };
