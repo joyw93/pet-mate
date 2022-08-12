@@ -7,7 +7,7 @@ export declare class SearchController {
     private readonly searchService;
     constructor(communityService: CommunityService, sanchaekService: SanchaekService, searchService: SearchService);
     getSearchPosts(keyword: string): Promise<{
-        sanchaeks: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
+        sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
         communityPosts: import("../community/community.entity").CommunityEntity[];
     }>;
 }

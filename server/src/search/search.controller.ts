@@ -14,8 +14,8 @@ export class SearchController {
   @Get()
   async getSearchPosts(@Query('keyword') keyword: string) {
     const communityPosts = await this.communityService.getSearchPosts(keyword);
-    const sanchaeks = await this.sanchaekService.getSearchSanchaeks(keyword);
-    const posts = { sanchaeks, communityPosts };
+    const sanchaekPosts = await this.sanchaekService.getSearchSanchaeks(keyword);
+    const posts = { sanchaekPosts, communityPosts };
     return posts;
   }
 }

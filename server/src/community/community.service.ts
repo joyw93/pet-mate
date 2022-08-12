@@ -105,10 +105,12 @@ export class CommunityService {
         'post.content',
         'post.createdAt',
         'post.views',
+        'author.nickname',
         'images.id',
         'images.url'
       ])
       .leftJoin('post.images', 'images')
+      .leftJoin('post.author','author')
       .where('post.title like :keyword', { keyword: `%${keyword}%` })
       .orWhere('post.content like :keyword', { keyword: `%${keyword}%` })
       .getMany();
