@@ -1,17 +1,10 @@
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-
-import SanchaekItem from "./SanchaekItem";
-import { SanchaekContent, BtnContainer, BtnLine, MoreBtn } from "./styled";
-
-import {
-  sanchaekLoadPostsRequestAction,
-  sanchaekLoadPostDetailResetAction,
-  sanchaekLoadMoreResetAction,
-  sanchaekLoadMorePostsAction,
-} from "../../reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import SanchaekItem from "./SanchaekItem";
+import { SanchaekContent, BtnContainer, BtnLine, MoreBtn } from "./styled";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 const ContentList = () => {
   const [noMoreList, setNoMoreList] = useState(false);
@@ -25,17 +18,17 @@ const ContentList = () => {
   const moreSanchaekPostsRef = useRef(1);
 
   useEffect(() => {
-    dispatch(sanchaekLoadPostsRequestAction());
+    dispatch(sanchaekActions.sanchaekLoadPostsRequest());
     moreSanchaekPostsRef.current = 1;
   }, []);
 
   useEffect(() => {
-    dispatch(sanchaekLoadPostDetailResetAction());
+    dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
   }, []);
 
   useEffect(() => {
     if (sanchaekLoadPostsDone) {
-      dispatch(sanchaekLoadMoreResetAction());
+      dispatch(sanchaekActions.sanchaekLoadMoreReset());
     }
     if (
       sanchaekLoadMoreDone &&
@@ -55,7 +48,7 @@ const ContentList = () => {
     const data = {
       offset: 12 * moreSanchaekPostsRef.current,
     };
-    dispatch(sanchaekLoadMorePostsAction(data));
+    dispatch(sanchaekActions.sanchaekLoadMoreRequest(data));
     moreSanchaekPostsRef.current++;
   };
 

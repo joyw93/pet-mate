@@ -17,43 +17,41 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  signOutRequestAction,
-  signOutResetAction,
-  loadMyPostsAction,
-  loadMyCommentsAction,
-  loadMyLikedAction,
-  loadProfileRequestAction,
-  loadMyProfileRequestAction,
-} from "../../reducers/user";
+
+import { userActions } from '../../store/reducers/user';
+
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
   const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } = useSelector((state) => state.user);
+
+  console.log(myPostsData);
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);
 
   useEffect(() => {
-    // dispatch(loadProfileRequestAction());
-    dispatch(loadMyProfileRequestAction());
-    dispatch(loadMyPostsAction());
-    dispatch(loadMyCommentsAction());
-    dispatch(loadMyLikedAction());
+    //dispatch(userActions.loadProfileRequest());
+    dispatch(userActions.loadMyProfileRequest());
+    dispatch(userActions.loadMyPostsRequest());
+    dispatch(userActions.loadMyCommentsRequest());
+    dispatch(userActions.loadMyLikedRequest());
   }, []);
 
   const posts = [myPostsData, myCommentsData, myLikedData];
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
-      dispatch(signOutRequestAction());
+      dispatch(userActions.signOutRequest());
+      //dispatch(signOutRequestAction());
     }
   };
 
   useEffect(() => {
     if (signOutDone) {
-      dispatch(signOutResetAction());
+      dispatch(userActions.signOutReset());
+      //dispatch(signOutResetAction());
       Router.push("/");
       alert("회원탈퇴가 완료되었습니다.");
     }

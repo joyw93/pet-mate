@@ -18,12 +18,14 @@ import {
   CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-import {
-  sanchaekLoadPostDetailRequestAction,
-  sanchaekAddCommentRequestAction,
-  sanchaekRemovePostRequestAction,
-  sanchaekRemoveCommentRequestAction,
-} from "../../reducers/sanchaek";
+// import {
+//   sanchaekLoadPostDetailRequestAction,
+//   sanchaekAddCommentRequestAction,
+//   sanchaekRemovePostRequestAction,
+//   sanchaekRemoveCommentRequestAction,
+// } from "../../store/reducers/sanchaek";
+
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
@@ -48,7 +50,7 @@ const SanchaekPostDetail = () => {
 
   useEffect(() => {
     if (router.isReady && !sanchaekPost) {
-      dispatch(sanchaekLoadPostDetailRequestAction(id));
+      dispatch(sanchaekActions.sanchaekLoadPostDetailRequest(id));
     }
   }, [router.isReady, sanchaekPost]);
 
@@ -56,9 +58,15 @@ const SanchaekPostDetail = () => {
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
-    dispatch(sanchaekAddCommentRequestAction({ postId: id, content: cmtContent }));
+    dispatch(
+      sanchaekActions.sanchaekAddCommentRequest({
+        postId: id,
+        content: cmtContent,
+      })
+    );
     setCmtContent("");
     commentInputRef.current.blur();
+    console.log(cmtContent);
   }, [cmtContent]);
 
   const keyUp = useCallback(
@@ -68,7 +76,10 @@ const SanchaekPostDetail = () => {
           return alert("내용을 입력하세요");
         }
         dispatch(
-          sanchaekAddCommentRequestAction({ postId: id, content: cmtContent })
+          sanchaekActions.sanchaekAddCommentRequest({
+            postId: id,
+            content: cmtContent,
+          })
         );
         setCmtContent("");
         commentInputRef.current.blur();
@@ -79,7 +90,7 @@ const SanchaekPostDetail = () => {
 
   const handleDeleteCmt = (commentId) => {
     if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
-      dispatch(sanchaekRemoveCommentRequestAction(commentId));
+      dispatch(sanchaekActions.sanchaekRemoveCommentRequest(commentId));
     }
   };
 
@@ -94,7 +105,7 @@ const SanchaekPostDetail = () => {
 
   const handleDeletePost = () => {
     if (window.confirm("글을 삭제하겠습니까?")) {
-      dispatch(sanchaekRemovePostRequestAction(parseInt(id)));
+      dispatch(sanchaekActions.sanchaekRemovePostRequest(parseInt(id)));
       router.push(`/sanchaek`);
     }
   };

@@ -12,7 +12,9 @@ import {
   ResultLength,
 } from "./styled";
 
-import { loadHashtagPostsRequestAction } from "../../reducers/search";
+import { searchActions } from "../../store/reducers/search";
+
+// import { loadHashtagPostsRequestAction } from "../../reducers/search";
 import { useDispatch, useSelector } from "react-redux";
 
 const HashtagSearch = () => {
@@ -25,7 +27,7 @@ const HashtagSearch = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      dispatch(loadHashtagPostsRequestAction(keyword));
+      dispatch(searchActions.loadHashtagPostsRequest(keyword));
     }
   }, [router.isReady, keyword]);
 

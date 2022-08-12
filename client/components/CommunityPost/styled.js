@@ -3,7 +3,7 @@ import { Colors } from "../../styles/ColorVariable";
 
 export const Button = styled.button`
   font-size: 0.9rem;
-  width: 60px;
+  padding: 0 15px;
   height: 35px;
   line-height: 35px;
   border-radius: 20px;

@@ -18,14 +18,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  signOutRequestAction,
-  signOutResetAction,
-  loadMyProfileRequestAction,
-  editProfileResetAction,
-  editAccountRequestAction,
-  editAccountResetAction,
-} from "../../reducers/user";
+import { userActions } from '../../store/reducers/user';
 
 const AccountTab = () => {
   const dispatch = useDispatch();
@@ -47,7 +40,7 @@ const AccountTab = () => {
 
   useEffect(() => {
     if (editAccountDone) {
-      dispatch(editAccountResetAction());
+      dispatch(userActions.editAccountReset());
       alert("계정정보가 변경되었습니다.");
       Router.back();
     }
@@ -61,11 +54,11 @@ const AccountTab = () => {
 
   useEffect(() => {
     if (editProfileDone) {
-      dispatch(editProfileResetAction());
+      dispatch(userActions.editProfileReset());
       alert("계정정보가 변경되었습니다.");
       Router.back();
     }
-    dispatch(loadMyProfileRequestAction());
+    dispatch(userActions.loadMyProfileRequest());
   }, [editProfileDone]);
 
   useEffect(() => {
@@ -77,7 +70,7 @@ const AccountTab = () => {
 
   useEffect(() => {
     if (signOutDone) {
-      dispatch(signOutResetAction());
+      dispatch(userActions.signOutReset());
       Router.push("/");
       alert("회원탈퇴가 완료되었습니다.");
     }
@@ -86,7 +79,7 @@ const AccountTab = () => {
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
-      dispatch(signOutRequestAction());
+      dispatch(userActions.signOutRequest());
     }
   };
 
@@ -104,7 +97,7 @@ const AccountTab = () => {
       return;
     } else {
       const data = { currentPassword, newPassword };
-      dispatch(editAccountRequestAction(data));
+      dispatch(userActions.editAccountRequest(data));
     }
   }, [currentPassword, newPassword, newPasswordConfirm]);
 
@@ -145,7 +138,7 @@ const AccountTab = () => {
             autoComplete="no"
           />
           {currentPasswordValid === "비밀번호가 일치하지 않습니다." ||
-          currentPasswordValid === "현재 비밀번호를 입력하세요." ? (
+            currentPasswordValid === "현재 비밀번호를 입력하세요." ? (
             <InvalidMessage>{currentPasswordValid}</InvalidMessage>
           ) : (
             <ValidMessage>{currentPasswordValid}</ValidMessage>

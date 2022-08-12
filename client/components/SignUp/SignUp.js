@@ -12,9 +12,11 @@ import {
   CheckContainer,
   CheckBoxInput,
 } from "./styled";
-import { signupRequestAction, signupResetAction } from "../../reducers/user";
+import { userActions } from '../../store/reducers/user';
 import Router from "next/router";
 import Snackbar from "@mui/material/Snackbar";
+
+
 const SignUp = () => {
   const serverUrl = "http://api.petmate.kr";
   // process.env.NODE_ENV === "production"
@@ -26,7 +28,8 @@ const SignUp = () => {
 
   useEffect(() => {
     if (signUpDone) {
-      dispatch(signupResetAction());
+      dispatch(userActions.signUpReset());
+      //dispatch(signupResetAction());
       Router.replace("/");
     }
   }, [signUpDone]);
@@ -50,7 +53,7 @@ const SignUp = () => {
   const [restCheck2, setRestCheck2] = useState(false);
   const [checkboxIsValid, setCheckboxIsValid] = useState(true);
 
-  const handleCheckbox =useCallback( (e) => {
+  const handleCheckbox = useCallback((e) => {
     const { checked, name } = e.target;
     // //전체 동의
     // if (name === "check1" && checked === true) {
@@ -96,7 +99,7 @@ const SignUp = () => {
       setRestCheck2(checked);
       setEntireCheck(restCheck1 && checked);
     }
-  },[entireCheck, restCheck1, restCheck2]);
+  }, [entireCheck, restCheck1, restCheck2]);
 
 
   const nameRef = useRef();
@@ -231,7 +234,8 @@ const SignUp = () => {
       password,
     };
 
-    dispatch(signupRequestAction(newUser));
+    dispatch(userActions.signUpRequest(newUser));
+    //dispatch(signupRequestAction(newUser));
   }, [
     name,
     nickname,

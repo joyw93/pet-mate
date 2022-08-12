@@ -6,17 +6,9 @@ import { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  postRequestAction,
-  postResetAction,
-  updatePostResetAction,
-} from "../../reducers/community";
+import { communityActions } from '../../store/reducers/community';
 import { CreatePostContainer } from "./styled";
 
-import {
-  loadPostDetailRequestAction,
-  updatePostRequestAction,
-} from "../../reducers/community";
 import {
   TitleWrapper,
   TextEditWrapper,
@@ -216,10 +208,10 @@ const CommunityPost = ({ editState }) => {
 
     //수정 모드일 때
     if (editState) {
-      dispatch(updatePostRequestAction({ post, id }));
+      dispatch(communityActions.updatePostRequest({ post, id }));
     } else {
       //새로 작성할 때
-      dispatch(postRequestAction(post));
+      dispatch(communityActions.addPostRequest(post));
     }
   };
 

@@ -17,13 +17,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-import {
-  editProfileRequestAction,
-  loadProfileRequestAction,
-  editProfileResetAction,
-  loadUserInfoRequestAction,
-  setProfileRequestAction,
-} from "../../reducers/user";
+import { userActions } from '../../store/reducers/user';
 
 const GoogleProfile = () => {
   const dispatch = useDispatch();
@@ -63,7 +57,7 @@ const GoogleProfile = () => {
       return;
     }
     const data = { nickname };
-    dispatch(setProfileRequestAction(data));
+    dispatch(userActions.setProfileRequest(data));
   }, [nickname]);
 
   return (
@@ -97,7 +91,7 @@ const GoogleProfile = () => {
             />
             <NicknameValidWrapper>
               {nicknameValid === "닉네임을 입력하세요." ||
-              nicknameValid === "중복된 닉네임입니다." ? (
+                nicknameValid === "중복된 닉네임입니다." ? (
                 <InvalidMessage>{nicknameValid}</InvalidMessage>
               ) : null}
             </NicknameValidWrapper>

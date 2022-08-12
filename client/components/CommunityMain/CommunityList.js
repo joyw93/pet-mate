@@ -1,17 +1,11 @@
-import { useEffect } from "react";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
-
 import { ListContainer, BtnContainer, BtnLine, MoreBtn } from "./styled";
-import {
-  loadMorePostsAction,
-  loadPostsRequestAction,
-  loadPostDetailResetAction,
-  loadMoreResetAction,
-} from "../../reducers/community";
+import { communityActions } from '../../store/reducers/community';
 
-const CommunityList = (filterCond) => {
+const CommunityList = ({ filterCond }) => {
+
   const morePostsRef = useRef(1);
   const dispatch = useDispatch();
   const { posts, loadPostsDone, loadMoreDone, morePosts } = useSelector(
@@ -19,19 +13,21 @@ const CommunityList = (filterCond) => {
   );
   const [noMoreList, setNoMoreList] = useState(false);
 
+  console.log(posts);
   useEffect(() => {
-    dispatch(loadPostsRequestAction(filterCond.filterCond));
+    dispatch(communityActions.loadPostsRequest(filterCond));
     morePostsRef.current = 1;
-  }, [filterCond.filterCond]);
+  }, [filterCond]);
 
   useEffect(() => {
-    dispatch(loadPostDetailResetAction());
+    dispatch(communityActions.loadPostDetailReset());
+    // dispatch(loadPostDetailResetAction());
   }, []);
 
   useEffect(() => {
     //로딩 완료 되면 list업데이트
     if (loadPostsDone) {
-      dispatch(loadMoreResetAction());
+      dispatch(communityActions.loadMoreReset());
     }
     //더보기 눌렀을 때
     if (loadMoreDone && morePostsRef.current !== 1 && morePosts.length === 0) {
@@ -43,14 +39,14 @@ const CommunityList = (filterCond) => {
 
   useEffect(() => {
     setNoMoreList(false);
-  }, [filterCond.filterCond]);
+  }, [filterCond]);
 
   const handleMorePosts = () => {
     const data = {
-      orderBy: filterCond.filterCond,
+      orderBy: filterCond,
       offset: 10 * morePostsRef.current,
     };
-    dispatch(loadMorePostsAction(data));
+    dispatch(communityActions.loadMoreRequest(data));
     morePostsRef.current++;
   };
 
@@ -71,7 +67,7 @@ const CommunityList = (filterCond) => {
         ) : (
           <BtnContainer>
             <BtnLine></BtnLine>
-            {posts.length >= 10 ? (
+            {posts && posts.length >= 10 ? (
               <MoreBtn onClick={handleMorePosts}>더보기</MoreBtn>
             ) : null}
           </BtnContainer>

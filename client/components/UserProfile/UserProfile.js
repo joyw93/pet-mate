@@ -15,14 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
-import {
-  signOutRequestAction,
-  signOutResetAction,
-  loadMyPostsAction,
-  loadMyCommentsAction,
-  loadMyLikedAction,
-  loadProfileRequestAction,
-} from "../../reducers/user";
+import { userActions } from '../../store/reducers/user';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -34,7 +27,8 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      dispatch(loadProfileRequestAction(id));
+      dispatch(userActions.loadProfileRequest(id));
+      //dispatch(loadProfileRequestAction(id));
     }
   }, [router.isReady]);
 
