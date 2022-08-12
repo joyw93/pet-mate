@@ -32,7 +32,7 @@ const SanchaekItem = (post) => {
             </ImageWrapper>
           )}
           <ContentArea>
-            <ContentTitle>{post.title.slice(0, 12)}</ContentTitle>
+            <ContentTitle>{post.title.slice(0, 20)}</ContentTitle>
             {post && post.mapInfo && post.mapInfo.location && (
               <ContentInfo>
                 <LocaImg src="../../img/locationEmojiBlk.png" />

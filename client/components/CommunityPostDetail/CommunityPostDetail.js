@@ -162,7 +162,7 @@ const CommunityPostDetail = () => {
                   <img src="../img/defaultimgGrey.png" />
                 )}
               </AuthorProfile>
-              <span id="post_author">{post.author.nickname}</span>
+              {/* <span id="post_author">{post.author.nickname}</span> */}
               <span id="post_created_time">
                 {getElapsedTime(post.createdAt)}
               </span>
