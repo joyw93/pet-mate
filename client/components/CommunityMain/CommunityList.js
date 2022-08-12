@@ -20,7 +20,7 @@ const CommunityList = ({ filterCond }) => {
   }, [filterCond]);
 
   useEffect(() => {
-    dispatch(communityActions.loadPostDetailRequest());
+    dispatch(communityActions.loadPostDetailReset());
     // dispatch(loadPostDetailResetAction());
   }, []);
 

@@ -12,6 +12,7 @@ import {
   logoutResetAction,
   signupResetAction,
 } from "../store/reducers/user";
+import { userActions } from '../store/reducers/user';
 
 const App = ({ Component, pageProps }) => {
   const feedback = [
@@ -37,16 +38,19 @@ const App = ({ Component, pageProps }) => {
   };
 
   useEffect(() => {
-    dispatch(loadUserInfoRequestAction());
+    dispatch(userActions.loadUserInfoRequest());
+    //dispatch(loadUserInfoRequestAction());
   }, []);
 
   useEffect(() => {
     if (userInfo && userInfo.active) {
-      dispatch(loadMyProfileRequestAction());
+      dispatch(userActions.loadMyProfileRequest());
+      //dispatch(loadMyProfileRequestAction());
     }
   }, [userInfo]);
 
   // useEffect(() => {
+  //   dispatch(userActions.loadProfileRequest());
   //   dispatch(loadProfileRequestAction());
   // }, []);
 

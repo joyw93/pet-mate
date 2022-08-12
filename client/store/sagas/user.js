@@ -1,45 +1,5 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
-import {
-  SIGN_UP_FAILURE,
-  SIGN_UP_REQUEST,
-  SIGN_UP_SUCCESS,
-  SIGN_OUT_FAILURE,
-  SIGN_OUT_REQUEST,
-  SIGN_OUT_SUCCESS,
-  LOG_IN_FAILURE,
-  LOG_IN_REQUEST,
-  LOG_IN_SUCCESS,
-  LOG_OUT_FAILURE,
-  LOG_OUT_REQUEST,
-  LOG_OUT_SUCCESS,
-  LOAD_MY_POSTS_FAILURE,
-  LOAD_MY_POSTS_REQUEST,
-  LOAD_MY_POSTS_SUCCESS,
-  LOAD_MY_COMMENTS_FAILURE,
-  LOAD_MY_COMMENTS_REQUEST,
-  LOAD_MY_COMMENTS_SUCCESS,
-  LOAD_MY_LIKED_FAILURE,
-  LOAD_MY_LIKED_REQUEST,
-  LOAD_MY_LIKED_SUCCESS,
-  EDIT_PROFILE_FAILURE,
-  EDIT_PROFILE_REQUEST,
-  EDIT_PROFILE_SUCCESS,
-  LOAD_PROFILE_SUCCESS,
-  LOAD_PROFILE_FAILURE,
-  LOAD_PROFILE_REQUEST,
-  EDIT_ACCOUNT_SUCCESS,
-  EDIT_ACCOUNT_FAILURE,
-  EDIT_ACCOUNT_REQUEST,
-  LOAD_USERINFO_SUCCESS,
-  LOAD_USERINFO_FAILURE,
-  LOAD_USERINFO_REQUEST,
-  SET_PROFILE_SUCCESS,
-  SET_PROFILE_FAILURE,
-  SET_PROFILE_REQUEST,
-  LOAD_MY_PROFILE_SUCCESS,
-  LOAD_MY_PROFILE_REQUEST,
-} from "../reducers/user";
 import { userActions } from '../reducers/user';
 
 // const serverUrl = `http://127.0.0.1:3000`;
@@ -82,7 +42,8 @@ function logInAPI(data) {
 
 function* logIn(action) {
   try {
-    const { data } = yield call(logInAPI, action.payload);
+    const data = yield call(logInAPI, action.payload);
+
     yield put(userActions.logInSuccess(data));
   } catch (err) {
     console.error(err);
@@ -110,8 +71,9 @@ function loadProfileAPI(data) {
 
 function* loadProfile(action) {
   try {
-    const { data } = yield call(loadProfileAPI, action.payload);
-    yield put(userActions.loadProfileSuccess(data));
+    const data = yield call(loadProfileAPI, action.payload);
+    console.log(data);
+    //yield put(userActions.loadProfileSuccess(data));
   } catch (err) {
     console.error(err);
     yield put(userActions.loadProfileFailure(err.response.data))
@@ -125,11 +87,13 @@ function loadMyProfileAPI() {
 function* loadMyProfile(action) {
   try {
     const result = yield call(loadMyProfileAPI);
-    const { data } = result.payload;
-    yield put(userActions.loadMyPostsSuccess(data));
+    console.log(result);
+    const data = result.payload;
+    //console.log(data);
+    yield put(userActions.loadMyProfileSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put(userActions.loadMyProfileFailure(err.response.data));
+    yield put(userActions.loadMyProfileFailure(err.response));
   }
 }
 
@@ -140,7 +104,7 @@ function loadUserInfoAPI() {
 function* loadUserInfo(action) {
   try {
     const result = yield call(loadUserInfoAPI);
-    const { data } = result.payload;
+    const data = result.data;
     yield put(userActions.loadUserInfoSuccess(data));
   } catch (err) {
     console.error(err);
