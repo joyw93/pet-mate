@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -22,26 +22,53 @@ import { searchActions } from "../../store/reducers/search";
 import { useDispatch, useSelector } from "react-redux";
 
 const SearchAll = () => {
-  // const searchPosts = useSelector((state) => state.search.searchPosts);
-  // const router = useRouter();
-  // const { query } = router.query;
-  // const dispatch = useDispatch();
+  const searchPosts = useSelector((state) => state.search.searchPosts);
+  const router = useRouter();
+  const { keyword } = router.query;
+  const dispatch = useDispatch();
+  const [communityResults, setCommunityResults] = useState([]);
+  const [sanchaekResults, setSanchaekResults] = useState([]);
 
-  // console.log(query);
+  useEffect(() => {
+    if (router.isReady) {
+      dispatch(searchActions.loadSearchPostsRequest(keyword));
+    }
+  }, [router.isReady, keyword]);
+  console.log("postssssssss", searchPosts);
 
   // useEffect(() => {
-  //   if (router.isReady) {
-  //     dispatch(searchActions.loadHashtagPostsRequest(query));
+  //   if (searchPosts) {
+  //     if (searchPosts.communityPosts.length > 4) {
+  //       const result = searchPosts.communityPosts.splice(0, 4);
+  //       setCommunityResults(result);
+  //       console.log(result);
+  //     } else {
+  //       setCommunityResults(searchPosts.communityPosts);
+  //     }
+  //     if (searchPosts.communityPosts.length > 4) {
+  //       const result = searchPosts.sanchaekPosts.splice(0, 4);
+  //       setSanchaekResults(result);
+  //       console.log("산책", result);
+  //     } else {
+  //       setSanchaekResults(searchPosts.sanchaekPosts);
+  //     }
   //   }
-  // }, [router.isReady, query]);
+  // }, [searchPosts]);
+
+  // console.log("커뮤", communityResults);
+  // console.log("산책", sanchaekResults);
 
   return (
     <SearchContainer>
       <SearchResultComment>
-        <SearchKeyword>{query}</SearchKeyword>에 대한 검색결과
-        <ResultLength>{`(${
-          searchPosts.community.length + searchPosts.sanchaek
-        }개)`}</ResultLength>
+        <SearchKeyword>{keyword}</SearchKeyword>에 대한 검색결과
+        <ResultLength>
+          {searchPosts &&
+            `(${
+              searchPosts.communityPosts.length +
+              searchPosts.sanchaekPosts.length
+            }개)`}
+        </ResultLength>
       </SearchResultComment>
       {searchPosts && searchPosts.length === 0 ? (
         <NoResult>
@@ -55,24 +82,25 @@ const SearchAll = () => {
               <CommunityList>
                 <TitleWrapper>
                   <h1>
-                    커뮤니티 <span>${searchPosts.community.length}</span>
+                    커뮤니티 <span>${searchPosts.communityPosts.length}</span>
                   </h1>
                   <MoreButton>더보기</MoreButton>
                 </TitleWrapper>
-                {searchPosts.community &&
-                  searchPosts.community.map((item) => (
+                {searchPosts.communityPosts &&
+                  searchPosts.communityPosts.map((item) => (
                     <CommunityItem key={item.id} {...item} />
                   ))}
               </CommunityList>
               <SanchaekList>
                 <TitleWrapper>
                   <h1>
-                    산책메이트 <span>${searchPosts.sanchaek.length}</span>
+                    산책메이트{" "}
+                    <span>({searchPosts.sanchaekPosts.length})개</span>
                   </h1>
                   <MoreButton>더보기</MoreButton>
                 </TitleWrapper>
-                {searchPosts.sanchaek &&
-                  searchPosts.sanchaek.map((item) => (
+                {searchPosts.sanchaekPosts &&
+                  searchPosts.sanchaekPosts.map((item) => (
                     <SanchaekItem key={item.id} {...item} />
                   ))}
               </SanchaekList>

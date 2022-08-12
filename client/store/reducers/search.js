@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
-  searchPosts: [],
+  searchPosts: null,
   hashtagSearchPosts: [],
   loadHashtagPostsLoading: false,
   loadHashtagPostsDone: false,
@@ -38,6 +38,7 @@ const searchSlice = createSlice({
       state.loadHashtagPostsLoading = false;
       state.loadHashtagPostsDone = true;
       state.searchPosts = action.payload.data;
+      // console.log("포스트리듀서", state.searchPosts);
     },
     loadSearchPostsFailure(state, action) {
       state.loadHashtagPostsLoading = false;

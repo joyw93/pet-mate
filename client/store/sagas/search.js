@@ -15,6 +15,7 @@ function* loadHashtagPosts(action) {
     console.log(action);
     const { data } = yield call(loadHashtagPostsAPI, action.payload);
     yield put(searchActions.loadHashtagPostsSuccess(data));
+    console.log("data", data);
   } catch (err) {
     console.error(err);
     yield put(searchActions.loadHashtagPostsFailure(err.response.data));
@@ -23,7 +24,7 @@ function* loadHashtagPosts(action) {
 
 //검색어 글 불러오기
 function loadSearchPostsAPI(data) {
-  return axios.get(`${serverUrl}/index?qeury=${data}`);
+  return axios.get(`${serverUrl}/search?keyword=${data}`);
 }
 
 function* loadSearchPosts(action) {

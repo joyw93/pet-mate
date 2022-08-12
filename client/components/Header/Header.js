@@ -10,7 +10,7 @@ import React, {
 import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
 
-import { userActions } from '../../store/reducers/user';
+import { userActions } from "../../store/reducers/user";
 import {
   NavContainer,
   Tab,
@@ -51,7 +51,7 @@ const Header = () => {
   }, [pathCheck]);
 
   const goToSearchResult = (val) => {
-    Router.push(`/search/index?query=${val}`);
+    Router.push(`/search?keyword=${val}`);
   };
 
   const logOut = useCallback(() => {
