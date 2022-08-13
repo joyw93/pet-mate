@@ -24,8 +24,6 @@ const CommunityItem = (post) => {
     Router.push(`/community/${post.id}`);
   };
 
-  console.log(post.commentCount);
-
   return (
     <ItemContainer>
       <ItemWrapper>

@@ -35,6 +35,7 @@ function* signOut(action) {
 }
 
 function logInAPI(data) {
+  console.log(data);
   return axios.post(`${serverUrl}/user/login`, data, {
     withCredentials: true,
   });
@@ -43,7 +44,7 @@ function logInAPI(data) {
 function* logIn(action) {
   try {
     const data = yield call(logInAPI, action.payload);
-
+    console.log(data);
     yield put(userActions.logInSuccess(data));
   } catch (err) {
     console.error(err);
@@ -86,11 +87,9 @@ function loadMyProfileAPI() {
 
 function* loadMyProfile(action) {
   try {
-    const result = yield call(loadMyProfileAPI);
-    console.log(result);
-    const data = result.payload;
-    //console.log(data);
-    yield put(userActions.loadMyProfileSuccess(data));
+    const { data } = yield call(loadMyProfileAPI, action.payload);
+    console.log(data);
+    //yield put(userActions.loadMyProfileSuccess(data));
   } catch (err) {
     console.error(err);
     yield put(userActions.loadMyProfileFailure(err.response));
