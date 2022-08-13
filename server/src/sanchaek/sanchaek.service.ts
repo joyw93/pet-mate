@@ -73,6 +73,9 @@ export class SanchaekService {
       .leftJoinAndSelect('sanchaek.mapInfo', 'map')
       .where('sanchaek.title like :keyword', { keyword: `%${keyword}%` })
       .orWhere('sanchaek.content like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('map.location like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('map.address like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('map.roadAddress like :keyword', { keyword: `%${keyword}%` })
       .getMany();
     return sanchaeks;
   }
