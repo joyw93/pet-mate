@@ -237,4 +237,3 @@ export const AuthorProfile = styled.div`
     border-radius: 50%;
   }
 `;
-
