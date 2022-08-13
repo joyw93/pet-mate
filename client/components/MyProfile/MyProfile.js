@@ -26,7 +26,8 @@ const MyProfile = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } = useSelector((state) => state.user);
 
-  console.log(myPostsData);
+  console.log(me);
+
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
   }, []);

@@ -12,7 +12,6 @@ const CommunityList = ({ filterCond }) => {
   );
   const [noMoreList, setNoMoreList] = useState(false);
 
-  console.log(posts);
   useEffect(() => {
     dispatch(communityActions.loadPostsRequest(filterCond));
     morePostsRef.current = 1;

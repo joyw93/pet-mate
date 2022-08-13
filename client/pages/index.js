@@ -5,7 +5,6 @@ import Carousels from "../components/Main/Carousels/Carousels";
 import PostCards from "../components/Main/PostCards/PostCards";
 
 const Home = ({ hotSanchaekPosts, hotCommunityPosts }) => {
-  console.log(hotSanchaekPosts);
   return (
     <AppLayout>
       <Carousels />

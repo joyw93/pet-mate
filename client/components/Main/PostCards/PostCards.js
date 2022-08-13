@@ -9,12 +9,12 @@ import { communityActions } from "../../../store/reducers/community";
 
 const PostCards = ({ hotCommunity, hotSanchaek }) => {
   const dispatch = useDispatch();
-  console.log(hotSanchaek);
 
   useEffect(() => {
     dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
     dispatch(communityActions.loadPostDetailReset());
   }, []);
+
   return (
     <>
       <PostCardContainer>
