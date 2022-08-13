@@ -78,6 +78,9 @@ let UserController = class UserController {
     async getMyPosts(user) {
         return await this.userService.getMyPosts(user.id);
     }
+    async getMySanchaeks(user) {
+        return await this.userService.getMySanchaeks(user.id);
+    }
     async getLikedPosts(user) {
         return await this.userService.getLikedPosts(user.id);
     }
@@ -207,6 +210,13 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getMyPosts", null);
+__decorate([
+    (0, common_1.Get)('sanchaeks'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getMySanchaeks", null);
 __decorate([
     (0, common_1.Get)('liked-posts'),
     __param(0, (0, user_decorator_1.User)()),
