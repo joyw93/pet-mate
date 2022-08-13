@@ -104,12 +104,15 @@ let CommunityService = class CommunityService {
             'post.views',
             'author.nickname',
             'images.id',
-            'images.url'
+            'images.url',
         ])
             .leftJoin('post.images', 'images')
             .leftJoin('post.author', 'author')
+            .leftJoin('post.tags', 'tags')
+            .leftJoin('tags.hashtag', 'hashtag')
             .where('post.title like :keyword', { keyword: `%${keyword}%` })
             .orWhere('post.content like :keyword', { keyword: `%${keyword}%` })
+            .orWhere('hashtag.keyword like :keyword', { keyword: `%${keyword}%` })
             .getMany();
         return posts;
     }
