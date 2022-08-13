@@ -18,7 +18,9 @@ import { searchActions } from "../../store/reducers/search";
 import { useDispatch, useSelector } from "react-redux";
 
 const HashtagSearch = () => {
-  const searchPosts = useSelector((state) => state.search.searchPosts);
+  const hashtagSearchPosts = useSelector(
+    (state) => state.search.hashtagSearchPosts
+  );
   const router = useRouter();
   const { keyword } = router.query;
   const dispatch = useDispatch();
@@ -35,19 +37,19 @@ const HashtagSearch = () => {
     <SearchContainer>
       <SearchResultComment>
         <SearchKeyword>{`#${keyword}`}</SearchKeyword>에 대한 검색결과{" "}
-        <ResultLength>{`(${searchPosts.length}개)`}</ResultLength>
+        <ResultLength>{`(${hashtagSearchPosts.length}개)`}</ResultLength>
       </SearchResultComment>
-      {searchPosts && searchPosts.length === 0 ? (
+      {hashtagSearchPosts && hashtagSearchPosts.length === 0 ? (
         <NoResult>
           <p>검색결과가 없습니다&#128546; 다른 검색어를 입력하세요.</p>
           <NoResultImg src="../img/no-search-result.png" />
         </NoResult>
       ) : (
         <>
-          {searchPosts && (
+          {hashtagSearchPosts && (
             <ListContainer>
-              {searchPosts &&
-                searchPosts.map((item) => (
+              {hashtagSearchPosts &&
+                hashtagSearchPosts.map((item) => (
                   <CommunityItem key={item.id} {...item} />
                 ))}
               {/* <BtnContainer>

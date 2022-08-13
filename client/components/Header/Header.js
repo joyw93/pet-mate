@@ -10,7 +10,7 @@ import React, {
 import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
 
-import { userActions } from '../../store/reducers/user';
+import { userActions } from "../../store/reducers/user";
 import {
   NavContainer,
   Tab,
@@ -42,7 +42,6 @@ const Header = () => {
   const inputRef = useRef();
   const toggleInputRef = useRef();
 
-
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");
@@ -50,6 +49,10 @@ const Header = () => {
       setPathCheck("community");
     }
   }, [pathCheck]);
+
+  const goToSearchResult = (val) => {
+    Router.push(`/search?keyword=${val}`);
+  };
 
   const logOut = useCallback(() => {
     dispatch(userActions.logOutRequest());
@@ -86,6 +89,7 @@ const Header = () => {
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
+        goToSearchResult(inputVal);
         setInputVal("");
         setVisible(false);
         inputRef.current.blur();
@@ -238,7 +242,6 @@ const Header = () => {
           </div>
         </ToggleMenuWrapper>
       </NavContainer>
-
     </>
   );
 };
