@@ -69,6 +69,7 @@ let SanchaekService = class SanchaekService {
             .addSelect(['images.url'])
             .leftJoin('sanchaek.images', 'images')
             .leftJoin('sanchaek.user', 'user')
+            .leftJoinAndSelect('sanchaek.mapInfo', 'map')
             .where('sanchaek.title like :keyword', { keyword: `%${keyword}%` })
             .orWhere('sanchaek.content like :keyword', { keyword: `%${keyword}%` })
             .getMany();
