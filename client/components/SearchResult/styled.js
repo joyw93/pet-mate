@@ -42,16 +42,6 @@ export const ListContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-//CommunityItem
-export const ItemContainer = styled.div`
-  padding: 40px 0;
-  border-top: 1px solid #eee;
-
-  &:first-child {
-    border-top: none;
-  }
-`;
-
 export const ItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -168,7 +158,37 @@ export const BtnContainer = styled.div`
   }
 `;
 
-export const CommunityList = styled.div``;
+export const CommunityList = styled.div`
+  div.gmsoph {
+    border-top: none;
+  }
+`;
+export const CommunityResultsContainer = styled.div`
+  border: 1.5px solid #eee;
+  padding: 0 14px;
+`;
 export const SanchaekList = styled.div``;
-export const TitleWrapper = styled.div``;
-export const MoreButton = styled.span``;
+export const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 0.9rem;
+    span {
+      font-size: 1rem;
+      color: ${Colors.primaryColor};
+      margin-left: 5px;
+    }
+  }
+`;
+export const MoreButton = styled.span`
+  cursor: pointer;
+  color: ${Colors.primaryColor};
+  font-weight: bold;
+  font-size: 1rem;
+  &:hover {
+    color: ${Colors.profileYellow};
+    transition: all 0.2s;
+  }
+`;

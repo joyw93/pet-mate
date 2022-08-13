@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
 import CommunityItem from "../CommunityMain/CommunityItem";
 import SanchaekItem from "../Sanchaek/SanchaekItem";
@@ -16,9 +18,12 @@ import {
   SanchaekList,
   TitleWrapper,
   MoreButton,
+  CommunityResultsContainer,
 } from "./styled";
 
 import { searchActions } from "../../store/reducers/search";
+import { communityActions } from "../../store/reducers/community";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 
 const SearchAll = () => {
@@ -30,33 +35,40 @@ const SearchAll = () => {
   const [sanchaekResults, setSanchaekResults] = useState([]);
 
   useEffect(() => {
+    dispatch(communityActions.loadPostDetailReset());
+    dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
+  }, []);
+
+  useEffect(() => {
     if (router.isReady) {
       dispatch(searchActions.loadSearchPostsRequest(keyword));
     }
   }, [router.isReady, keyword]);
-  console.log("postssssssss", searchPosts);
 
-  // useEffect(() => {
-  //   if (searchPosts) {
-  //     if (searchPosts.communityPosts.length > 4) {
-  //       const result = searchPosts.communityPosts.splice(0, 4);
-  //       setCommunityResults(result);
-  //       console.log(result);
-  //     } else {
-  //       setCommunityResults(searchPosts.communityPosts);
-  //     }
-  //     if (searchPosts.communityPosts.length > 4) {
-  //       const result = searchPosts.sanchaekPosts.splice(0, 4);
-  //       setSanchaekResults(result);
-  //       console.log("산책", result);
-  //     } else {
-  //       setSanchaekResults(searchPosts.sanchaekPosts);
-  //     }
-  //   }
-  // }, [searchPosts]);
+  useEffect(() => {
+    if (searchPosts) {
+      if (searchPosts.communityPosts.length > 2) {
+        const result = searchPosts.communityPosts.slice(0, 2);
+        setCommunityResults(result);
+      } else {
+        setCommunityResults(searchPosts.communityPosts);
+      }
+      if (searchPosts.communityPosts.length > 4) {
+        const result = searchPosts.sanchaekPosts.slice(0, 4);
+        setSanchaekResults(result);
+        console.log("산책", result);
+      } else {
+        setSanchaekResults(searchPosts.sanchaekPosts);
+      }
+    }
+  }, [searchPosts]);
 
-  // console.log("커뮤", communityResults);
-  // console.log("산책", sanchaekResults);
+  const goToCommunitySearchResults = () => {
+    router.push(`/search/community?keyword=${keyword}`);
+  };
+  const goToSanchaekSearchResults = () => {
+    router.push(`/search/sanchaek?keyword=${keyword}`);
+  };
 
   return (
     <SearchContainer>
@@ -79,31 +91,56 @@ const SearchAll = () => {
         <>
           {searchPosts && (
             <ListContainer>
-              <CommunityList>
-                <TitleWrapper>
-                  <h1>
-                    커뮤니티 <span>${searchPosts.communityPosts.length}</span>
-                  </h1>
-                  <MoreButton>더보기</MoreButton>
-                </TitleWrapper>
-                {searchPosts.communityPosts &&
-                  searchPosts.communityPosts.map((item) => (
-                    <CommunityItem key={item.id} {...item} />
-                  ))}
-              </CommunityList>
-              <SanchaekList>
-                <TitleWrapper>
-                  <h1>
-                    산책메이트{" "}
-                    <span>({searchPosts.sanchaekPosts.length})개</span>
-                  </h1>
-                  <MoreButton>더보기</MoreButton>
-                </TitleWrapper>
-                {searchPosts.sanchaekPosts &&
-                  searchPosts.sanchaekPosts.map((item) => (
-                    <SanchaekItem key={item.id} {...item} />
-                  ))}
-              </SanchaekList>
+              {searchPosts.sanchaekPosts.length > 0 && (
+                <SanchaekList>
+                  <TitleWrapper>
+                    <h1>
+                      산책메이트
+                      <span>({searchPosts.sanchaekPosts.length})</span>
+                    </h1>
+                    <MoreButton onClick={goToSanchaekSearchResults}>
+                      더보기
+                    </MoreButton>
+                  </TitleWrapper>
+                  <Box
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
+                    {sanchaekResults && (
+                      <Grid
+                        container
+                        rowSpacing={1}
+                        columnSpacing={{ xs: 1, sm: 2, md: 4 }}
+                      >
+                        {sanchaekResults.map((item) => (
+                          <SanchaekItem key={item.id} {...item} />
+                        ))}
+                      </Grid>
+                    )}
+                  </Box>
+                </SanchaekList>
+              )}
+              {searchPosts.communityPosts.length > 0 && (
+                <CommunityList>
+                  <TitleWrapper>
+                    <h1>
+                      커뮤니티
+                      <span>({searchPosts.communityPosts.length})</span>
+                    </h1>
+                    <MoreButton onClick={goToCommunitySearchResults}>
+                      더보기
+                    </MoreButton>
+                  </TitleWrapper>
+                  {communityResults && (
+                    <CommunityResultsContainer>
+                      {communityResults.map((item) => (
+                        <CommunityItem key={item.id} {...item} />
+                      ))}
+                    </CommunityResultsContainer>
+                  )}
+                </CommunityList>
+              )}
             </ListContainer>
           )}
         </>
