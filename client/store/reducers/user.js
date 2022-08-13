@@ -42,6 +42,7 @@ export const initialState = {
   loadUserInfoError: null,
 
   me: null,
+
   userInfo: null, // SNS로그인 전용
   user: null,
   signUpData: {},
@@ -112,7 +113,7 @@ const userSlice = createSlice({
     },
     logInSuccess(state, action) {
       state.logInLoading = false;
-      state.me = action.payload.data;
+      state.me = action.payload.data.data;
       state.logInDone = true;
     },
     logInFailure(state, action) {
@@ -153,7 +154,7 @@ const userSlice = createSlice({
     loadMyProfileSuccess(state, action) {
       state.loadMyProfileLoading = false;
       state.loadMyProfileDone = true;
-      state.me = action.data;
+      state.me = action.payload;
     },
     loadMyProfileFailure(state, action) {
       state.loadMyProfileLoading = false;

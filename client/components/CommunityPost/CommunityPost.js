@@ -217,10 +217,12 @@ const CommunityPost = ({ editState }) => {
 
   useEffect(() => {
     if (addPostDone) {
-      dispatch(postResetAction());
+      dispatch(communityActions.addPostReset());
+      //dispatch(postResetAction());
       Router.replace("/community");
     } else if (updatePostDone) {
-      dispatch(updatePostResetAction());
+      dispatch(communityActions.updatePostReset());
+      //dispatch(updatePostResetAction());
       Router.replace("/community");
     }
   }, [addPostDone, updatePostDone]);

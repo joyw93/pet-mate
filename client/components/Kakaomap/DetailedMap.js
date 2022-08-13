@@ -4,9 +4,7 @@ import Link from "next/link";
 import { CustomOverlay } from "./styled";
 
 const DetailedMap = ({ lat, lng, placeResult }) => {
-  console.log(lat);
-  console.log(lng);
-  console.log(placeResult);
+
   return (
     <>
       <Map

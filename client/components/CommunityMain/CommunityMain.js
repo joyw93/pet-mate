@@ -61,6 +61,7 @@ const CommunityMain = (hotPosts) => {
   const { addPostDone } = useSelector((state) => state.community);
   const dispatch = useDispatch();
 
+  console.log(me);
   useEffect(() => {
     if (addPostDone) {
       dispatch(communityActions.addPostReset());
