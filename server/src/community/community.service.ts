@@ -97,6 +97,13 @@ export class CommunityService {
   }
 
   async getSearchPosts(keyword: string) {
+    const likeCount = this.communityLikeRepository
+      .createQueryBuilder()
+      .subQuery()
+      .select(['postId', 'COUNT(likes.userId) AS likeCount'])
+      .from(CommunityLikeEntity, 'likes')
+      .groupBy('postId')
+      .getQuery();
     const posts = this.communityRepository
       .createQueryBuilder('post')
       .select([
@@ -106,13 +113,21 @@ export class CommunityService {
         'post.createdAt',
         'post.views',
         'author.nickname',
-        'images.id',
+        'profile.imageUrl',
         'images.url',
+        'tags.id',
+        'hashtag.keyword',
+        'LikeCount.likeCount',
       ])
-      .leftJoin('post.images', 'images')
       .leftJoin('post.author', 'author')
+      .leftJoin('author.profile', 'profile')
+      .leftJoin('post.images', 'images')
       .leftJoin('post.tags', 'tags')
+      .leftJoin('post.likes', 'likes')
       .leftJoin('tags.hashtag', 'hashtag')
+      .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
+      .loadRelationCountAndMap('post.likeCount', 'post.likes')
+      .loadRelationCountAndMap('post.commentCount', 'post.comments')
       .where('post.title like :keyword', { keyword: `%${keyword}%` })
       .orWhere('post.content like :keyword', { keyword: `%${keyword}%` })
       .orWhere('hashtag.keyword like :keyword', { keyword: `%${keyword}%` })
