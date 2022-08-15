@@ -18,15 +18,15 @@ import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
 
-import { userActions } from '../../store/reducers/user';
-
+import { userActions } from "../../store/reducers/user";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
-  const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } = useSelector((state) => state.user);
+  const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } =
+    useSelector((state) => state.user);
 
-  console.log(me);
+  console.log("memeeeee", me);
 
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
@@ -107,18 +107,32 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
+                <li
+                  className={activeIndex === 0 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(0)}
+                >
                   내가 쓴 게시글
                 </li>
-                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
+                <li
+                  className={activeIndex === 1 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(1)}
+                >
                   내가 쓴 댓글
                 </li>
-                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickHandler(2)}>
+                <li
+                  className={activeIndex === 2 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(2)}
+                >
                   좋아요
                 </li>
               </TabList>
 
-              <ImageWrapper>{posts[activeIndex] && posts[activeIndex].map((post) => <MyPosts key={post.id} {...post} />)}</ImageWrapper>
+              <ImageWrapper>
+                {posts[activeIndex] &&
+                  posts[activeIndex].map((post) => (
+                    <MyPosts key={post.id} {...post} />
+                  ))}
+              </ImageWrapper>
             </TabWrapper>
           </UserContent>
         </ContentArea>

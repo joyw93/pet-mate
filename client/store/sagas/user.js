@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
-import { userActions } from '../reducers/user';
+import { userActions } from "../reducers/user";
 
 // const serverUrl = `http://127.0.0.1:3000`;
 const serverUrl = "http://api.petmate.kr";
@@ -35,7 +35,7 @@ function* signOut(action) {
 }
 
 function logInAPI(data) {
-  console.log(data);
+  console.log("로그인api사가", data);
   return axios.post(`${serverUrl}/user/login`, data, {
     withCredentials: true,
   });
@@ -43,8 +43,8 @@ function logInAPI(data) {
 
 function* logIn(action) {
   try {
-    const data = yield call(logInAPI, action.payload);
-    console.log(data);
+    const { data } = yield call(logInAPI, action.payload);
+    console.log("로그인데이터", data);
     yield put(userActions.logInSuccess(data));
   } catch (err) {
     console.error(err);
@@ -72,12 +72,12 @@ function loadProfileAPI(data) {
 
 function* loadProfile(action) {
   try {
-    const data = yield call(loadProfileAPI, action.payload);
-    console.log(data);
-    //yield put(userActions.loadProfileSuccess(data));
+    const { data } = yield call(loadProfileAPI, action.payload);
+    console.log("로드프로필사가", data);
+    yield put(userActions.loadProfileSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put(userActions.loadProfileFailure(err.response.data))
+    yield put(userActions.loadProfileFailure(err.response.data));
   }
 }
 
@@ -88,8 +88,8 @@ function loadMyProfileAPI() {
 function* loadMyProfile(action) {
   try {
     const { data } = yield call(loadMyProfileAPI, action.payload);
-    console.log(data);
-    //yield put(userActions.loadMyProfileSuccess(data));
+    yield put(userActions.loadMyProfileSuccess(data));
+    console.log("로드마이프로필사가데이터", data);
   } catch (err) {
     console.error(err);
     yield put(userActions.loadMyProfileFailure(err.response));
@@ -102,8 +102,7 @@ function loadUserInfoAPI() {
 
 function* loadUserInfo(action) {
   try {
-    const result = yield call(loadUserInfoAPI);
-    const data = result.data;
+    const { data } = yield call(loadUserInfoAPI);
     yield put(userActions.loadUserInfoSuccess(data));
   } catch (err) {
     console.error(err);
@@ -121,7 +120,7 @@ function* loadMyPosts(action) {
     yield put(userActions.loadMyPostsSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put(userActions.loadMyPostsFailure(err.response.data))
+    yield put(userActions.loadMyPostsFailure(err.response.data));
   }
 }
 
@@ -151,7 +150,7 @@ function* loadMyLiked(action) {
     yield put(userActions.loadMyLikedSuccess(data));
   } catch (err) {
     console.error(err);
-    yield put(userActions.loadMyLikedFailure(err.response.data))
+    yield put(userActions.loadMyLikedFailure(err.response.data));
   }
 }
 
