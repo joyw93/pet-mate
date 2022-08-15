@@ -124,6 +124,11 @@ export class UserController {
     return await this.userService.getMyPosts(user.id);
   }
 
+  @Get('sanchaeks')
+  async getMySanchaeks(@User() user: UserEntity) {
+    return await this.userService.getMySanchaeks(user.id)
+  }
+
   @Get('liked-posts')
   async getLikedPosts(@User() user: UserEntity) {
     return await this.userService.getLikedPosts(user.id);
@@ -143,6 +148,8 @@ export class UserController {
   async getUserProfile(@Param('userId', ParseIntPipe) userId: number) {
     return await this.userService.getUserProfile(userId);
   }
+
+
 
   @Get('session')
   async isLoggedIn(@User() user: UserEntity, @Req() req) {

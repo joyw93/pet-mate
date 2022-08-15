@@ -57,6 +57,29 @@ export class SanchaekService {
     }
   }
 
+  async getSearchSanchaeks(keyword: string) {
+    const sanchaeks = this.sanchaekRepository
+      .createQueryBuilder('sanchaek')
+      .select([
+        'sanchaek.id',
+        'sanchaek.title',
+        'sanchaek.content',
+        'sanchaek.createdAt',
+      ])
+      .addSelect(['user.nickname'])
+      .addSelect(['images.url'])
+      .leftJoin('sanchaek.images', 'images')
+      .leftJoin('sanchaek.user', 'user')
+      .leftJoinAndSelect('sanchaek.mapInfo', 'map')
+      .where('sanchaek.title like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('sanchaek.content like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('map.location like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('map.address like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('map.roadAddress like :keyword', { keyword: `%${keyword}%` })
+      .getMany();
+    return sanchaeks;
+  }
+
   async getOneSanchaek(postId: number) {
     const sanchaek = await this.sanchaekRepository.findOne({
       where: { id: postId },
@@ -77,10 +100,10 @@ export class SanchaekService {
           'sanchaek.createdAt',
           'sanchaek.views',
         ])
-        .addSelect(['user.nickname','user.id'])
+        .addSelect(['user.nickname', 'user.id'])
         .addSelect(['images.url'])
         .addSelect(['comments.content', 'comments.id'])
-        .addSelect(['author.nickname','author.id'])
+        .addSelect(['author.nickname', 'author.id'])
         .leftJoin('sanchaek.comments', 'comments')
         .leftJoin('comments.author', 'author')
         .leftJoin('sanchaek.images', 'images')

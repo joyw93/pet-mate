@@ -12,7 +12,7 @@ import {
   logoutResetAction,
   signupResetAction,
 } from "../store/reducers/user";
-import { userActions } from '../store/reducers/user';
+import { userActions } from "../store/reducers/user";
 
 const App = ({ Component, pageProps }) => {
   const feedback = [
@@ -42,12 +42,12 @@ const App = ({ Component, pageProps }) => {
     //dispatch(loadUserInfoRequestAction());
   }, []);
 
-  useEffect(() => {
-    if (userInfo && userInfo.active) {
-      dispatch(userActions.loadMyProfileRequest());
-      //dispatch(loadMyProfileRequestAction());
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (userInfo && userInfo.active) {
+  //     dispatch(userActions.loadMyProfileRequest());
+  //     //dispatch(loadMyProfileRequestAction());
+  //   }
+  // }, [userInfo]);
 
   // useEffect(() => {
   //   dispatch(userActions.loadProfileRequest());

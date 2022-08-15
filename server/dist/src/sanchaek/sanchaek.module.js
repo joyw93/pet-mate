@@ -31,6 +31,7 @@ SanchaekModule = __decorate([
         ],
         controllers: [sanchaek_controller_1.SanchaekController],
         providers: [sanchaek_service_1.SanchaekService],
+        exports: [sanchaek_service_1.SanchaekService]
     })
 ], SanchaekModule);
 exports.SanchaekModule = SanchaekModule;

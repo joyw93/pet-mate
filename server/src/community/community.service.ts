@@ -18,9 +18,8 @@ import { EditPostDto } from './dto/edit-post.dto';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
-
-import * as res from '../common/responses/message';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
+import * as res from '../common/responses/message';
 
 @Injectable()
 export class CommunityService {
@@ -95,6 +94,45 @@ export class CommunityService {
       console.error(err);
       throw new InternalServerErrorException(res.msg.COMMUNITY_GET_POST_FAIL);
     }
+  }
+
+  async getSearchPosts(keyword: string) {
+    const likeCount = this.communityLikeRepository
+      .createQueryBuilder()
+      .subQuery()
+      .select(['postId', 'COUNT(likes.userId) AS likeCount'])
+      .from(CommunityLikeEntity, 'likes')
+      .groupBy('postId')
+      .getQuery();
+    const posts = this.communityRepository
+      .createQueryBuilder('post')
+      .select([
+        'post.id',
+        'post.title',
+        'post.content',
+        'post.createdAt',
+        'post.views',
+        'author.nickname',
+        'profile.imageUrl',
+        'images.url',
+        'tags.id',
+        'hashtag.keyword',
+        'LikeCount.likeCount',
+      ])
+      .leftJoin('post.author', 'author')
+      .leftJoin('author.profile', 'profile')
+      .leftJoin('post.images', 'images')
+      .leftJoin('post.tags', 'tags')
+      .leftJoin('post.likes', 'likes')
+      .leftJoin('tags.hashtag', 'hashtag')
+      .leftJoin(likeCount, 'LikeCount', 'LikeCount.postId = post.id')
+      .loadRelationCountAndMap('post.likeCount', 'post.likes')
+      .loadRelationCountAndMap('post.commentCount', 'post.comments')
+      .where('post.title like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('post.content like :keyword', { keyword: `%${keyword}%` })
+      .orWhere('hashtag.keyword like :keyword', { keyword: `%${keyword}%` })
+      .getMany();
+    return posts;
   }
 
   async getOnePost(postId: number) {

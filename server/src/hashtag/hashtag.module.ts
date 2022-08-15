@@ -18,5 +18,6 @@ import { CommunityLikeEntity } from 'src/common/entities/community-like.entity';
   ],
   controllers: [HashtagController],
   providers: [HashtagService],
+  exports: [HashtagService]
 })
 export class HashtagModule {}

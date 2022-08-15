@@ -213,10 +213,13 @@ export class UserService {
         'sanchaek.id',
         'sanchaek.title',
         'sanchaek.content',
+        'sanchaek.createdAt',
+        'user.nickname',
         'images.url',
       ])
       .leftJoin('sanchaek.user', 'user')
       .leftJoin('sanchaek.images', 'images')
+      .leftJoinAndSelect('sanchaek.mapInfo','map')
       .where('user.id =:id', { id: userId })
       .getMany();
     return sanchaeks;

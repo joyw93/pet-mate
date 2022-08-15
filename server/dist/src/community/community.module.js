@@ -38,6 +38,7 @@ CommunityModule = __decorate([
         ],
         controllers: [community_controller_1.CommunityController],
         providers: [community_service_1.CommunityService, hashtag_service_1.HashtagService],
+        exports: [community_service_1.CommunityService]
     })
 ], CommunityModule);
 exports.CommunityModule = CommunityModule;

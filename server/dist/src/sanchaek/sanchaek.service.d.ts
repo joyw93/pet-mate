@@ -15,6 +15,7 @@ export declare class SanchaekService {
     private sanchaekMapRepository;
     constructor(sanchaekRepository: Repository<SanchaekEntity>, userRepository: Repository<UserEntity>, sanchaekImageRepository: Repository<SanchaekImageEntity>, sanchaekCommentRepository: Repository<SanchaekCommentEntity>, sanchaekMapRepository: Repository<SanchaekMapEntity>);
     getSanchaeks(offset: number, sanchaekCount: number): Promise<SanchaekEntity[]>;
+    getSearchSanchaeks(keyword: string): Promise<SanchaekEntity[]>;
     getOneSanchaek(postId: number): Promise<SanchaekEntity>;
     getHotSanchaeks(): Promise<SanchaekEntity[]>;
     createSanchaek(userId: number, createSanchaekDto: CreateSanchaekDto): Promise<SanchaekEntity>;
