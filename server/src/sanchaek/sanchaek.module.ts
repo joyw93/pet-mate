@@ -20,5 +20,6 @@ import { SanchaekService } from './sanchaek.service';
   ],
   controllers: [SanchaekController],
   providers: [SanchaekService],
+  exports: [SanchaekService]
 })
 export class SanchaekModule {}

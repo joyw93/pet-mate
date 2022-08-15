@@ -29,6 +29,7 @@ HashtagModule = __decorate([
         ],
         controllers: [hashtag_controller_1.HashtagController],
         providers: [hashtag_service_1.HashtagService],
+        exports: [hashtag_service_1.HashtagService]
     })
 ], HashtagModule);
 exports.HashtagModule = HashtagModule;
