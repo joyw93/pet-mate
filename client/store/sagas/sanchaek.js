@@ -65,7 +65,6 @@ function* loadMorePosts(action) {
   try {
     const { data } = yield call(loadMoreAPI, action.payload);
     yield put(sanchaekActions.sanchaekLoadMoreSuccess(data));
-    console.log(payload);
   } catch (err) {
     console.error(err);
     yield put(sanchaekActions.sanchaekLoadMoreFailure(err.response.data));
