@@ -2,10 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommunityItem from "./CommunityItem";
 import { ListContainer, BtnContainer, BtnLine, MoreBtn } from "./styled";
-import { communityActions } from '../../store/reducers/community';
+import { communityActions } from "../../store/reducers/community";
 
 const CommunityList = ({ filterCond }) => {
-
   const morePostsRef = useRef(1);
   const dispatch = useDispatch();
   const { posts, loadPostsDone, loadMoreDone, morePosts } = useSelector(
@@ -13,7 +12,6 @@ const CommunityList = ({ filterCond }) => {
   );
   const [noMoreList, setNoMoreList] = useState(false);
 
-  console.log(posts);
   useEffect(() => {
     dispatch(communityActions.loadPostsRequest(filterCond));
     morePostsRef.current = 1;
@@ -21,7 +19,6 @@ const CommunityList = ({ filterCond }) => {
 
   useEffect(() => {
     dispatch(communityActions.loadPostDetailReset());
-    // dispatch(loadPostDetailResetAction());
   }, []);
 
   useEffect(() => {

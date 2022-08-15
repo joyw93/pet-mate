@@ -148,7 +148,7 @@ const SanchaekPost = ({ editState }) => {
     window.URL.revokeObjectURL(fileImages.filter((_, index) => index === id));
   };
 
-  const handlePost = async () => {
+  const handlePost = () => {
     if (!title) {
       return titleRef.current.focus();
     }

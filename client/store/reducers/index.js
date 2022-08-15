@@ -1,5 +1,6 @@
 import { HYDRATE } from "next-redux-wrapper";
 import { combineReducers } from "@reduxjs/toolkit";
+
 import user from "./user";
 import community from "./community";
 import search from "./search";
@@ -39,7 +40,6 @@ const rootReducer = (state, action) => {
         community,
         sanchaek,
         search,
-        sanchaek,
       })(state, action);
   }
 }

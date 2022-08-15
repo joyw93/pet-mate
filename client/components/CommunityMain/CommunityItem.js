@@ -47,6 +47,8 @@ const CommunityItem = (post) => {
               <ContentDetail>조회수 {post.views}</ContentDetail>
               <ContentDetail>·</ContentDetail>
               <ContentDetail>좋아요 {post.likeCount}</ContentDetail>
+              <ContentDetail>·</ContentDetail>
+              <ContentDetail>댓글 {post.commentCount}</ContentDetail>
             </ContentInfo>
           </ContentArea>
           {post?.images && (

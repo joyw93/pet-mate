@@ -28,7 +28,7 @@ export const SanchaekContent = styled.div`
 export const ItemContainer = styled.div`
   /* background-color: #eee; */
 
-  margin: 0 10px 80px;
+  margin: 0 0 80px;
   cursor: pointer;
   border-radius: 10px;
 
