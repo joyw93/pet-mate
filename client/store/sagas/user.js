@@ -88,8 +88,7 @@ function loadMyProfileAPI() {
 function* loadMyProfile(action) {
   try {
     const { data } = yield call(loadMyProfileAPI, action.payload);
-    console.log(data);
-    //yield put(userActions.loadMyProfileSuccess(data));
+    yield put(userActions.loadMyProfileSuccess(data));
   } catch (err) {
     console.error(err);
     yield put(userActions.loadMyProfileFailure(err.response));

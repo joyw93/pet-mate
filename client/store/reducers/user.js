@@ -154,7 +154,7 @@ const userSlice = createSlice({
     loadMyProfileSuccess(state, action) {
       state.loadMyProfileLoading = false;
       state.loadMyProfileDone = true;
-      state.me = action.payload;
+      state.me = action.payload.data;
     },
     loadMyProfileFailure(state, action) {
       state.loadMyProfileLoading = false;
