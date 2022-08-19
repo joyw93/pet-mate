@@ -102,7 +102,9 @@ function loadUserInfoAPI() {
 
 function* loadUserInfo(action) {
   try {
-    const { data } = yield call(loadUserInfoAPI);
+    const result = yield call(loadUserInfoAPI);
+    const data = result.data;
+    console.log(data.data);
     yield put(userActions.loadUserInfoSuccess(data));
   } catch (err) {
     console.error(err);

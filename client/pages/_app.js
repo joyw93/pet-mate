@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import { SnackBarContent } from "../components/Header/styled";
-
+import axios from "axios";
 import { userActions } from "../store/reducers/user";
 
 const App = ({ Component, pageProps }) => {
@@ -21,7 +21,7 @@ const App = ({ Component, pageProps }) => {
       message: "회원가입 되었습니다! 🐾",
     },
   ];
-  const { logOutDone, signUpDone, userInfo } = useSelector(
+  const { me, logOutDone, signUpDone, userInfo } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
@@ -31,21 +31,18 @@ const App = ({ Component, pageProps }) => {
     setSnackBar(false);
   };
 
-  useEffect(() => {
-    dispatch(userActions.loadUserInfoRequest());
-    //dispatch(loadUserInfoRequestAction());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(userActions.loadUserInfoRequest());
+  // }, []);
 
   // useEffect(() => {
   //   if (userInfo && userInfo.active) {
   //     dispatch(userActions.loadMyProfileRequest());
-  //     //dispatch(loadMyProfileRequestAction());
   //   }
   // }, [userInfo]);
 
   // useEffect(() => {
   //   dispatch(userActions.loadProfileRequest());
-  //   dispatch(loadProfileRequestAction());
   // }, []);
 
   useEffect(() => {
@@ -86,5 +83,15 @@ const App = ({ Component, pageProps }) => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch("http://api.petmate.kr/user");
+  const data = await res.json();
+
+  console.log(data);
+  // Pass data to the page via props
+  return { props: { data } };
+}
 
 export default wrapper.withRedux(App);
