@@ -19,6 +19,8 @@ import Router from "next/router";
 import { useCallback } from "react";
 
 import { userActions } from '../../store/reducers/user';
+import { communityActions } from '../../store/reducers/community';
+import { sanchaekActions } from '../../store/reducers/sanchaek';
 
 
 const MyProfile = () => {
@@ -26,7 +28,7 @@ const MyProfile = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } = useSelector((state) => state.user);
 
-  console.log('나', me);
+  //console.log('나', me);
 
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
@@ -38,6 +40,11 @@ const MyProfile = () => {
     dispatch(userActions.loadMyPostsRequest());
     dispatch(userActions.loadMyCommentsRequest());
     dispatch(userActions.loadMyLikedRequest());
+  }, []);
+
+  useEffect(() => {
+    dispatch(communityActions.loadPostDetailReset());
+    dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
   }, []);
 
   const posts = [myPostsData, myCommentsData, myLikedData];

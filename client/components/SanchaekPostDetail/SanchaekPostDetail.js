@@ -40,6 +40,8 @@ const SanchaekPostDetail = () => {
     (state) => state.sanchaek
   );
 
+  console.log(sanchaekPost);
+
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
@@ -155,7 +157,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
                 {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
-                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                  Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
                   <>
                     <h2>지도</h2>
                     <DetailedMap

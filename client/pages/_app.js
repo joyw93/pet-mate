@@ -31,23 +31,6 @@ const App = ({ Component, pageProps }) => {
     setSnackBar(false);
   };
 
-  // useEffect(() => {
-  //   dispatch(userActions.loadUserInfoRequest());
-  //   //dispatch(loadUserInfoRequestAction());
-  // }, []);
-
-  // useEffect(() => {
-  //   if (userInfo && userInfo.active) {
-  //     dispatch(userActions.loadMyProfileRequest());
-  //     //dispatch(loadMyProfileRequestAction());
-  //   }
-  // }, [userInfo]);
-
-  // useEffect(() => {
-  //   dispatch(userActions.loadProfileRequest());
-  //   dispatch(loadProfileRequestAction());
-  // }, []);
-
   useEffect(() => {
     if (logOutDone) {
       setSnackBar(logOutDone);
