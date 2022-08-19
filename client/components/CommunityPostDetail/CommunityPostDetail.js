@@ -51,6 +51,8 @@ const CommunityPostDetail = () => {
     slidesToScroll: 1,
   };
 
+  console.log(id);
+
   // 게시물 로드
   useEffect(() => {
     if (router.isReady && !post) {
