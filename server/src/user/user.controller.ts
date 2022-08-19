@@ -14,6 +14,7 @@ import {
   Patch,
   Param,
   ParseIntPipe,
+  Request,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
@@ -107,10 +108,11 @@ export class UserController {
   }
 
   @Get('logout')
-  async logout(@Response() response) {
+  async logout(@Request() req, @Response() res) {
     try {
-      response.clearCookie('connect.sid', { httpOnly: true });
-      return response.send({
+      req.logout()
+      res.clearCookie('connect.sid', { httpOnly: true });
+      return res.send({
         success: true,
         timestamp: new Date().toISOString(),
       });
