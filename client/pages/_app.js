@@ -31,15 +31,15 @@ const App = ({ Component, pageProps }) => {
     setSnackBar(false);
   };
 
-  // useEffect(() => {
-  //   dispatch(userActions.loadUserInfoRequest());
-  // }, []);
+  useEffect(() => {
+    dispatch(userActions.loadUserInfoRequest());
+  }, []);
 
-  // useEffect(() => {
-  //   if (userInfo && userInfo.active) {
-  //     dispatch(userActions.loadMyProfileRequest());
-  //   }
-  // }, [userInfo]);
+  useEffect(() => {
+    if (userInfo && userInfo.active) {
+      dispatch(userActions.loadMyProfileRequest());
+    }
+  }, [userInfo]);
 
   // useEffect(() => {
   //   dispatch(userActions.loadProfileRequest());
