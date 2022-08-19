@@ -43,8 +43,7 @@ function logInAPI(data) {
 
 function* logIn(action) {
   try {
-    const data = yield call(logInAPI, action.payload);
-    console.log(data);
+    const { data } = yield call(logInAPI, action.payload);
     yield put(userActions.logInSuccess(data));
   } catch (err) {
     console.error(err);

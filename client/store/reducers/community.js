@@ -166,7 +166,7 @@ const communitySlice = createSlice({
       state.addCommentError = null;
     },
     addCommentSuccess(state, action) {
-      state.post.comments.push(action.data);
+      state.post.comments.push(action.payload.data);
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },
