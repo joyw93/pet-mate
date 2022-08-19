@@ -39,7 +39,6 @@ export class UserController {
     return await this.userService.getMyProfile(user.id);
   }
 
-
   @Post('nickname-check')
   async checkNickname(@Body() data: { nickname: string }) {
     return await this.userService.checkNickname(data.nickname);
@@ -110,12 +109,15 @@ export class UserController {
   @Get('logout')
   async logout(@Request() req, @Response() res) {
     try {
-      res.clearCookie('connect.sid', { httpOnly: true });
-      return res.redirect('/')
-      // return res.send({
-      //   success: true,
-      //   timestamp: new Date().toISOString(),
-      // });
+      res.clearCookie('connect.sid', {
+        httpOnly: true,
+        secure: false,
+        domain: '.petmate.kr',
+      });
+      return res.send({
+        success: true,
+        timestamp: new Date().toISOString(),
+      });
     } catch (err) {
       throw new InternalServerErrorException();
     }
@@ -128,7 +130,7 @@ export class UserController {
 
   @Get('sanchaeks')
   async getMySanchaeks(@User() user: UserEntity) {
-    return await this.userService.getMySanchaeks(user.id)
+    return await this.userService.getMySanchaeks(user.id);
   }
 
   @Get('liked-posts')
@@ -150,8 +152,6 @@ export class UserController {
   async getUserProfile(@Param('userId', ParseIntPipe) userId: number) {
     return await this.userService.getUserProfile(userId);
   }
-
-
 
   @Get('session')
   async isLoggedIn(@User() user: UserEntity, @Req() req) {

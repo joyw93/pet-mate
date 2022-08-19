@@ -31,7 +31,6 @@ const App = ({ Component, pageProps }) => {
     setSnackBar(false);
   };
 
-<<<<<<< HEAD
   // useEffect(() => {
   //   dispatch(userActions.loadUserInfoRequest());
   // }, []);

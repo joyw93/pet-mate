@@ -52,7 +52,9 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.get(`${serverUrl}/user/logout`, { withCredentials: true });
+  return axios.get(`${serverUrl}/user/logout`, {
+    withCredentials: true,
+  });
 }
 
 function* logOut() {

@@ -65,8 +65,15 @@ let UserController = class UserController {
     }
     async logout(req, res) {
         try {
-            res.clearCookie('connect.sid', { httpOnly: true });
-            return res.redirect('/');
+            res.clearCookie('connect.sid', {
+                httpOnly: true,
+                secure: false,
+                domain: '.petmate.kr',
+            });
+            return res.send({
+                success: true,
+                timestamp: new Date().toISOString(),
+            });
         }
         catch (err) {
             throw new common_1.InternalServerErrorException();
