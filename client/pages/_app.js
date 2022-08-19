@@ -5,13 +5,7 @@ import React, { useEffect, useState } from "react";
 import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import { SnackBarContent } from "../components/Header/styled";
-import {
-  loadMyProfileRequestAction,
-  loadProfileRequestAction,
-  loadUserInfoRequestAction,
-  logoutResetAction,
-  signupResetAction,
-} from "../store/reducers/user";
+
 import { userActions } from "../store/reducers/user";
 
 const App = ({ Component, pageProps }) => {
