@@ -65,11 +65,11 @@ let UserController = class UserController {
     }
     async logout(req, res) {
         try {
-            req.logout();
-            res.clearCookie('connect.sid', { httpOnly: true });
-            return res.send({
-                success: true,
-                timestamp: new Date().toISOString(),
+            req.logout(() => {
+                res.send({
+                    success: true,
+                    timestamp: new Date().toISOString(),
+                });
             });
         }
         catch (err) {
