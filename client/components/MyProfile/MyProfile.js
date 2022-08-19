@@ -11,27 +11,31 @@ import {
   UserFeed,
   TabWrapper,
   TabList,
-  ImageWrapper,
+  SubTabList,
+  PostsWrapper,
+  PostsContainer,
   ButtonWrapper,
 } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import { useCallback } from "react";
-
-import { userActions } from '../../store/reducers/user';
-import { communityActions } from '../../store/reducers/community';
-import { sanchaekActions } from '../../store/reducers/sanchaek';
-
+import { userActions } from "../../store/reducers/user";
+import { communityActions } from "../../store/reducers/community";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
-  const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } = useSelector((state) => state.user);
-
-  //console.log('나', me);
+  const [titleIndex, setTitleIndex] = useState(0);
+  const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } =
+    useSelector((state) => state.user);
 
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
+  }, []);
+
+  const subTabClickHandler = useCallback((index) => {
+    setTitleIndex(index);
   }, []);
 
   useEffect(() => {
@@ -48,6 +52,7 @@ const MyProfile = () => {
   }, []);
 
   const posts = [myPostsData, myCommentsData, myLikedData];
+  // const title = [all, community, sanchaek];
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
@@ -93,7 +98,7 @@ const MyProfile = () => {
                   <p>
                     <span>{myPostsData.length}</span>개
                   </p>
-                </div>{" "}
+                </div>
                 <div className="list_wrapper">
                   <p>내가 쓴 댓글</p>
                   <p>
@@ -114,18 +119,84 @@ const MyProfile = () => {
             </ProfileInfo>
             <TabWrapper>
               <TabList>
-                <li className={activeIndex === 0 ? "is_active" : ""} onClick={() => tabClickHandler(0)}>
+                <li
+                  className={activeIndex === 0 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(0)}
+                >
                   내가 쓴 게시글
                 </li>
-                <li className={activeIndex === 1 ? "is_active" : ""} onClick={() => tabClickHandler(1)}>
+                <li
+                  className={activeIndex === 1 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(1)}
+                >
                   내가 쓴 댓글
                 </li>
-                <li className={activeIndex === 2 ? "is_active" : ""} onClick={() => tabClickHandler(2)}>
+                <li
+                  className={activeIndex === 2 ? "is_active" : ""}
+                  onClick={() => tabClickHandler(2)}
+                >
                   좋아요
                 </li>
               </TabList>
 
-              <ImageWrapper>{posts[activeIndex] && posts[activeIndex].map((post) => <MyPosts key={post.id} {...post} />)}</ImageWrapper>
+              <PostsContainer>
+                <SubTabList>
+                  <li
+                    className={titleIndex === 0 ? "is_active" : ""}
+                    onClick={() => subTabClickHandler(0)}
+                  >
+                    전체 <span>({posts[activeIndex].length})</span>
+                  </li>
+                  <li
+                    className={titleIndex === 1 ? "is_active" : ""}
+                    onClick={() => subTabClickHandler(1)}
+                  >
+                    커뮤니티 <span>({posts[activeIndex].length})</span>
+                  </li>
+                  <li
+                    className={titleIndex === 2 ? "is_active" : ""}
+                    onClick={() => subTabClickHandler(2)}
+                  >
+                    산책메이트 <span>({posts[activeIndex].length})</span>
+                  </li>
+                </SubTabList>
+                {posts[activeIndex] &&
+                  posts[activeIndex].length > 0 &&
+                  titleIndex === 0 && (
+                    <>
+                      <PostsWrapper>
+                        {posts[activeIndex] &&
+                          posts[activeIndex].map((post) => (
+                            <MyPosts key={post.id} {...post} />
+                          ))}
+                      </PostsWrapper>
+                    </>
+                  )}
+                {posts[activeIndex] &&
+                  posts[activeIndex].length > 0 &&
+                  titleIndex === 1 && (
+                    <>
+                      <PostsWrapper>
+                        {posts[activeIndex] &&
+                          posts[activeIndex].map((post) => (
+                            <MyPosts key={post.id} {...post} />
+                          ))}
+                      </PostsWrapper>
+                    </>
+                  )}
+                {posts[activeIndex] &&
+                  posts[activeIndex].length > 0 &&
+                  titleIndex === 2 && (
+                    <>
+                      <PostsWrapper>
+                        {posts[activeIndex] &&
+                          posts[activeIndex].map((post) => (
+                            <MyPosts key={post.id} {...post} />
+                          ))}
+                      </PostsWrapper>
+                    </>
+                  )}
+              </PostsContainer>
             </TabWrapper>
           </UserContent>
         </ContentArea>

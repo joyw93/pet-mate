@@ -125,9 +125,33 @@ export const TabList = styled.ul`
   }
 `;
 
-export const ImageWrapper = styled.div`
+export const SubTabList = styled.ul`
+  display: flex;
+  margin-bottom: 20px;
+
+  li {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-right: 15px;
+    padding-bottom: 5px;
+    cursor: pointer;
+  }
+  li.is_active {
+    color: ${Colors.primaryColor};
+    border-bottom: 2.5px solid ${Colors.primaryColor};
+  }
+`;
+
+export const PostsContainer = styled.div`
   width: 100%;
   padding-top: 28px;
+  h3 {
+    margin: 20px 0 10px;
+  }
+`;
+
+export const PostsWrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;

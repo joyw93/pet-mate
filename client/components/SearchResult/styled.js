@@ -171,12 +171,13 @@ export const SanchaekList = styled.div``;
 export const TitleWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 
   h1 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     span {
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: ${Colors.primaryColor};
       margin-left: 5px;
     }
@@ -186,7 +187,7 @@ export const MoreButton = styled.span`
   cursor: pointer;
   color: ${Colors.primaryColor};
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.1rem;
   &:hover {
     color: ${Colors.profileYellow};
     transition: all 0.2s;

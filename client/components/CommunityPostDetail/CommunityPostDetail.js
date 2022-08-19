@@ -20,11 +20,11 @@ import {
   CommentInput,
   AuthorProfile,
 } from "./styled";
-import CommentsList from '../Comments/CommentsList';
+import CommentsList from "../Comments/CommentsList";
 import { getElapsedTime } from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { communityActions } from '../../store/reducers/community';
+import { communityActions } from "../../store/reducers/community";
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
@@ -81,12 +81,16 @@ const CommunityPostDetail = () => {
   }, [like]);
 
   const handleCmtContent = useCallback(() => {
+    if (!me) {
+      router.push("/login");
+      return;
+    }
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
     const data = {
       postId: id,
-      content: cmtContent
+      content: cmtContent,
     };
     dispatch(communityActions.addCommentRequest(data));
     setCmtContent("");
@@ -96,12 +100,16 @@ const CommunityPostDetail = () => {
   const keyUp = useCallback(
     (e) => {
       if (e.keyCode === 13) {
+        if (!me) {
+          router.push("/login");
+          return;
+        }
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
         const data = {
           postId: id,
-          content: cmtContent
+          content: cmtContent,
         };
         dispatch(communityActions.addCommentRequest(data));
         setCmtContent("");

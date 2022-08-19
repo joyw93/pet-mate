@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
   logInLoading: false, // 로그인 시도중
@@ -66,7 +66,7 @@ export const initialState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     //signup
@@ -289,7 +289,7 @@ const userSlice = createSlice({
       state.editAccountLoading = false;
       state.editAccountDone = false;
     },
-  }
+  },
 });
 
 export const userActions = userSlice.actions;

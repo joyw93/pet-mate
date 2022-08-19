@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import "../pages/GlobalStyles.css";
 import wrapper from "../store/configureStore";
 import { SnackBarContent } from "../components/Header/styled";
-import axios from 'axios';
-import { userActions } from '../store/reducers/user';
+import axios from "axios";
+import { userActions } from "../store/reducers/user";
 
 const App = ({ Component, pageProps }) => {
   const feedback = [
@@ -30,6 +30,22 @@ const App = ({ Component, pageProps }) => {
   const handleClose = () => {
     setSnackBar(false);
   };
+
+<<<<<<< HEAD
+  // useEffect(() => {
+  //   dispatch(userActions.loadUserInfoRequest());
+  // }, []);
+
+  // useEffect(() => {
+  //   if (userInfo && userInfo.active) {
+  //     dispatch(userActions.loadMyProfileRequest());
+  //   }
+  // }, [userInfo]);
+
+  // useEffect(() => {
+  //   dispatch(userActions.loadProfileRequest());
+  // }, []);
+
 
   useEffect(() => {
     if (logOutDone) {
@@ -77,8 +93,7 @@ export async function getServerSideProps() {
 
   console.log(data);
   // Pass data to the page via props
-  return { props: { data } }
-
+  return { props: { data } };
 }
 
 export default wrapper.withRedux(App);

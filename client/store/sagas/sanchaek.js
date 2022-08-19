@@ -116,6 +116,7 @@ function* addComment(action) {
   try {
     const { data } = yield call(addCommentAPI, action.payload);
     yield put(sanchaekActions.sanchaekAddCommentSuccess(data));
+    console.log("산책댓글", data);
   } catch (err) {
     console.error(err);
     yield put(sanchaekActions.sanchaekAddCommentFailure(err.response.data));
