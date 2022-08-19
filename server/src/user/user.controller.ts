@@ -110,12 +110,14 @@ export class UserController {
   @Get('logout')
   async logout(@Request() req, @Response() res) {
     try {
-      req.logout()
-      res.clearCookie('connect.sid', { httpOnly: true });
-      return res.send({
-        success: true,
-        timestamp: new Date().toISOString(),
-      });
+      req.logout(()=>{
+        res.send("done")
+      })
+      // res.clearCookie('connect.sid', { httpOnly: true });
+      // return res.send({
+      //   success: true,
+      //   timestamp: new Date().toISOString(),
+      // });
     } catch (err) {
       throw new InternalServerErrorException();
     }
