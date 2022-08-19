@@ -65,9 +65,8 @@ let UserController = class UserController {
     }
     async logout(req, res) {
         try {
-            req.logout(() => {
-                res.send("done");
-            });
+            res.clearCookie('connect.sid', { httpOnly: true });
+            return res.redirect('/');
         }
         catch (err) {
             throw new common_1.InternalServerErrorException();
