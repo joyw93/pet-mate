@@ -63,10 +63,11 @@ let UserController = class UserController {
     async kakaoLoginCallback(req, res) {
         return this.userService.kakaoLoginCallback(req, res);
     }
-    async logout(response) {
+    async logout(req, res) {
         try {
-            response.clearCookie('connect.sid', { httpOnly: true });
-            return response.send({
+            req.logout();
+            res.clearCookie('connect.sid', { httpOnly: true });
+            return res.send({
                 success: true,
                 timestamp: new Date().toISOString(),
             });
@@ -198,9 +199,10 @@ __decorate([
 ], UserController.prototype, "kakaoLoginCallback", null);
 __decorate([
     (0, common_1.Get)('logout'),
-    __param(0, (0, common_1.Response)()),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "logout", null);
 __decorate([
