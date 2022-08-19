@@ -42,10 +42,6 @@ const Header = () => {
   const inputRef = useRef();
   const toggleInputRef = useRef();
 
-  useEffect(() => {
-    console.log("나아아아아", me);
-  }, [me]);
-
   useIsomorphicLayoutEffect(() => {
     if (pathCheck.includes("sanchaek")) {
       setPathCheck("sanchaek");

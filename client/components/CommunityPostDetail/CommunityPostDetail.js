@@ -28,7 +28,7 @@ import {
 import { getElapsedTime } from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { communityActions } from '../../store/reducers/community';
+import { communityActions } from "../../store/reducers/community";
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
@@ -87,12 +87,16 @@ const CommunityPostDetail = () => {
   }, [like]);
 
   const handleCmtContent = useCallback(() => {
+    if (!me) {
+      router.push("/login");
+      return;
+    }
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
     const data = {
       postId: id,
-      content: cmtContent
+      content: cmtContent,
     };
     dispatch(communityActions.addCommentRequest(data));
     // dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
@@ -103,12 +107,16 @@ const CommunityPostDetail = () => {
   const keyUp = useCallback(
     (e) => {
       if (e.keyCode === 13) {
+        if (!me) {
+          router.push("/login");
+          return;
+        }
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
         const data = {
           postId: id,
-          content: cmtContent
+          content: cmtContent,
         };
         dispatch(communityActions.addCommentRequest(data));
         // dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
@@ -240,7 +248,7 @@ const CommunityPostDetail = () => {
                         <CommentHandler>
                           <AuthorInfo>
                             <AuthorProfile>
-                              {comment?.author?.profile?.imageUrl ? (
+                              {comment.author.profile?.imageUrl ? (
                                 <img src={comment.author.profile.imageUrl} />
                               ) : (
                                 <img src="../img/defaultimgGrey.png" />
@@ -249,8 +257,8 @@ const CommunityPostDetail = () => {
                             <h3>{comment.author.nickname}</h3>
                           </AuthorInfo>
                           <CommentContentInfo>
-                            <span>{getElapsedTime(comment.createdAt)}</span>
-                            {comment?.author?.id === me?.id ? (
+                            <span>{getElapsedTime(comment?.createdAt)}</span>
+                            {me && comment.author.id === me.id ? (
                               <>
                                 <span>·</span>
                                 <span
@@ -263,7 +271,6 @@ const CommunityPostDetail = () => {
                             ) : null}
                           </CommentContentInfo>
                         </CommentHandler>
-
                         <p>{comment.content}</p>
                       </CommentItem>
                     ))}

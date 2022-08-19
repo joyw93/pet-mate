@@ -120,6 +120,7 @@ function* loadMyPosts(action) {
   try {
     const { data } = yield call(loadMyPostsAPI, action.payload);
     yield put(userActions.loadMyPostsSuccess(data));
+    console.log("myposts", data);
   } catch (err) {
     console.error(err);
     yield put(userActions.loadMyPostsFailure(err.response.data));

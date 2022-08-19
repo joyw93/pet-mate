@@ -113,7 +113,7 @@ const userSlice = createSlice({
     },
     logInSuccess(state, action) {
       state.logInLoading = false;
-      state.me = action.payload.data.data;
+      state.me = action.payload.data;
       state.logInDone = true;
     },
     logInFailure(state, action) {

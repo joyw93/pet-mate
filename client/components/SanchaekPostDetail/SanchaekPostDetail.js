@@ -55,6 +55,10 @@ const SanchaekPostDetail = () => {
   }, [router.isReady, sanchaekPost]);
 
   const handleCmtContent = useCallback(() => {
+    if (!me) {
+      router.push("/login");
+      return;
+    }
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
@@ -72,6 +76,10 @@ const SanchaekPostDetail = () => {
   const keyUp = useCallback(
     (e) => {
       if (e.keyCode === 13) {
+        if (!me) {
+          router.push("/login");
+          return;
+        }
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
