@@ -34,6 +34,7 @@ const SearchAll = () => {
   const [communityResults, setCommunityResults] = useState([]);
   const [sanchaekResults, setSanchaekResults] = useState([]);
 
+  //디테일 리셋
   useEffect(() => {
     dispatch(communityActions.loadPostDetailReset());
     dispatch(sanchaekActions.sanchaekLoadPostDetailReset());

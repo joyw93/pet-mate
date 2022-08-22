@@ -16,6 +16,7 @@ import {
 
 import { searchActions } from "../../store/reducers/search";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
+import { communityActions } from "../../store/reducers/community";
 import { useDispatch, useSelector } from "react-redux";
 
 const SearchAll = () => {
@@ -24,6 +25,7 @@ const SearchAll = () => {
   const { keyword } = router.query;
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(communityActions.loadPostDetailReset());
     dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
   }, []);
 

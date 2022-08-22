@@ -13,6 +13,7 @@ import {
 } from "./styled";
 
 import { searchActions } from "../../store/reducers/search";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { communityActions } from "../../store/reducers/community";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,6 +25,7 @@ const SearchAll = () => {
 
   useEffect(() => {
     dispatch(communityActions.loadPostDetailReset());
+    dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
   }, []);
 
   useEffect(() => {

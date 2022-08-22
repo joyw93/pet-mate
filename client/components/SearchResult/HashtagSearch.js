@@ -13,8 +13,8 @@ import {
 } from "./styled";
 
 import { searchActions } from "../../store/reducers/search";
-
-// import { loadHashtagPostsRequestAction } from "../../reducers/search";
+import { communityActions } from "../../store/reducers/community";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 
 const HashtagSearch = () => {
@@ -26,6 +26,11 @@ const HashtagSearch = () => {
   const dispatch = useDispatch();
 
   console.log(keyword);
+
+  useEffect(() => {
+    dispatch(communityActions.loadPostDetailReset());
+    dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
