@@ -62,3 +62,53 @@ export const AuthorProfile = styled.div`
     border-radius: 50%;
   }
 `;
+
+
+//CommentsInput
+export const Button = styled.button`
+  font-size: 0.9rem;
+  width: 60px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  background-color: #e9e9e9;
+  margin-left: 10px;
+  transition: all 0.1s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+  }
+`;
+
+
+export const CommentInput = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  input {
+    width: 100%;
+    height: 43px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding-left: 10px;
+    &:hover {
+      background-color: #FAFAFA;
+    }
+    &:focus {
+      border: 1px solid ${Colors.primaryColor};
+    }
+  }
+
+  button {
+    width: 70px;
+    height: 43px;
+    background-color: ${Colors.primaryColor};
+    color: #fff;
+  }
+`;
