@@ -41,7 +41,7 @@ export declare class UserController {
     googleLoginCallback(req: any, res: any): Promise<void | import("express").Response<any, Record<string, any>>>;
     kakaoLogin(req: any): Promise<void>;
     kakaoLoginCallback(req: any, res: any): Promise<void | import("express").Response<any, Record<string, any>>>;
-    logout(response: any): Promise<any>;
+    logout(req: any, res: any): Promise<any>;
     getMyPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
     getMySanchaeks(user: UserEntity): Promise<import("../sanchaek/sanchaek.entity").SanchaekEntity[]>;
     getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;

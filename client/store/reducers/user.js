@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
   logInLoading: false, // 로그인 시도중
@@ -66,7 +66,7 @@ export const initialState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     //signup
@@ -113,7 +113,7 @@ const userSlice = createSlice({
     },
     logInSuccess(state, action) {
       state.logInLoading = false;
-      state.me = action.payload.data.data;
+      state.me = action.payload.data;
       state.logInDone = true;
     },
     logInFailure(state, action) {
@@ -154,7 +154,7 @@ const userSlice = createSlice({
     loadMyProfileSuccess(state, action) {
       state.loadMyProfileLoading = false;
       state.loadMyProfileDone = true;
-      state.me = action.payload;
+      state.me = action.payload.data;
     },
     loadMyProfileFailure(state, action) {
       state.loadMyProfileLoading = false;
@@ -289,7 +289,7 @@ const userSlice = createSlice({
       state.editAccountLoading = false;
       state.editAccountDone = false;
     },
-  }
+  },
 });
 
 export const userActions = userSlice.actions;

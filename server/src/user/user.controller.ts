@@ -14,6 +14,7 @@ import {
   Patch,
   Param,
   ParseIntPipe,
+  Request,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { GoogleAuthGuard } from 'src/auth/google/google-auth.guard';
@@ -37,7 +38,6 @@ export class UserController {
   async getMyProfile(@User() user: UserEntity) {
     return await this.userService.getMyProfile(user.id);
   }
-
 
   @Post('nickname-check')
   async checkNickname(@Body() data: { nickname: string }) {
@@ -107,10 +107,14 @@ export class UserController {
   }
 
   @Get('logout')
-  async logout(@Response() response) {
+  async logout(@Request() req, @Response() res) {
     try {
-      response.clearCookie('connect.sid', { httpOnly: true });
-      return response.send({
+      res.clearCookie('connect.sid', {
+        httpOnly: true,
+        secure: false,
+        domain: '.petmate.kr',
+      });
+      return res.send({
         success: true,
         timestamp: new Date().toISOString(),
       });
@@ -126,7 +130,7 @@ export class UserController {
 
   @Get('sanchaeks')
   async getMySanchaeks(@User() user: UserEntity) {
-    return await this.userService.getMySanchaeks(user.id)
+    return await this.userService.getMySanchaeks(user.id);
   }
 
   @Get('liked-posts')
@@ -148,8 +152,6 @@ export class UserController {
   async getUserProfile(@Param('userId', ParseIntPipe) userId: number) {
     return await this.userService.getUserProfile(userId);
   }
-
-
 
   @Get('session')
   async isLoggedIn(@User() user: UserEntity, @Req() req) {

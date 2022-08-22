@@ -40,6 +40,8 @@ const SanchaekPostDetail = () => {
     (state) => state.sanchaek
   );
 
+  console.log(sanchaekPost);
+
   const dispatch = useDispatch();
   const commentInputRef = useRef();
 
@@ -55,6 +57,10 @@ const SanchaekPostDetail = () => {
   }, [router.isReady, sanchaekPost]);
 
   const handleCmtContent = useCallback(() => {
+    if (!me) {
+      router.push("/login");
+      return;
+    }
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
@@ -72,6 +78,10 @@ const SanchaekPostDetail = () => {
   const keyUp = useCallback(
     (e) => {
       if (e.keyCode === 13) {
+        if (!me) {
+          router.push("/login");
+          return;
+        }
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
@@ -155,7 +165,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
                 {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
-                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                  Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
                   <>
                     <h2>지도</h2>
                     <DetailedMap

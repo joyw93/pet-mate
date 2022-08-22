@@ -18,17 +18,13 @@ import {
   CommentWrapper,
   Button,
   CommentInput,
-  CommentArea,
-  CommentContentInfo,
-  CommentHandler,
-  CommentItem,
   AuthorProfile,
-  AuthorInfo,
 } from "./styled";
+import CommentsList from "../Comments/CommentsList";
 import { getElapsedTime } from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { communityActions } from '../../store/reducers/community';
+import { communityActions } from "../../store/reducers/community";
 
 const CommunityPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
@@ -51,6 +47,7 @@ const CommunityPostDetail = () => {
     slidesToScroll: 1,
   };
 
+  console.log(post);
   // 게시물 로드
   useEffect(() => {
     if (router.isReady && !post) {
@@ -81,19 +78,21 @@ const CommunityPostDetail = () => {
     }
     setLike(!like);
     dispatch(communityActions.likePostRequest(id));
-    // dispatch(likePostRequestAction(id));
   }, [like]);
 
   const handleCmtContent = useCallback(() => {
+    if (!me) {
+      router.push("/login");
+      return;
+    }
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
     const data = {
       postId: id,
-      content: cmtContent
+      content: cmtContent,
     };
     dispatch(communityActions.addCommentRequest(data));
-    // dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
     setCmtContent("");
     commentInputRef.current.blur();
   }, [cmtContent]);
@@ -101,15 +100,18 @@ const CommunityPostDetail = () => {
   const keyUp = useCallback(
     (e) => {
       if (e.keyCode === 13) {
+        if (!me) {
+          router.push("/login");
+          return;
+        }
         if (!e.target.value.trim()) {
           return alert("내용을 입력하세요");
         }
         const data = {
           postId: id,
-          content: cmtContent
+          content: cmtContent,
         };
         dispatch(communityActions.addCommentRequest(data));
-        // dispatch(addCommentRequestAction({ postId: id, content: cmtContent }));
         setCmtContent("");
         commentInputRef.current.blur();
       }
@@ -117,18 +119,9 @@ const CommunityPostDetail = () => {
     [cmtContent]
   );
 
-  const handleDeleteCmt = (commentId) => {
-    if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
-      console.log(commentId);
-      dispatch(communityActions.removeCommentRequest(commentId));
-      // dispatch(removeCommentRequestAction(commentId));
-    }
-  };
-
   const handleDeletePost = () => {
     if (window.confirm("글을 삭제하겠습니까?")) {
       dispatch(communityActions.removePostRequest(parseInt(id)));
-      // dispatch(removePostRequestAction(parseInt(id)));
       router.push(`/community`);
     }
   };
@@ -228,44 +221,7 @@ const CommunityPostDetail = () => {
                 />
                 <Button onClick={handleCmtContent}>입력</Button>
               </CommentInput>
-              <CommentArea>
-                {post.comments &&
-                  post.comments
-                    .slice(0)
-                    .reverse()
-                    .map((comment) => (
-                      <CommentItem key={comment.id}>
-                        <CommentHandler>
-                          <AuthorInfo>
-                            <AuthorProfile>
-                              {comment?.author?.profile?.imageUrl ? (
-                                <img src={comment.author.profile.imageUrl} />
-                              ) : (
-                                <img src="../img/defaultimgGrey.png" />
-                              )}
-                            </AuthorProfile>
-                            <h3>{comment.author.nickname}</h3>
-                          </AuthorInfo>
-                          <CommentContentInfo>
-                            <span>{getElapsedTime(comment.createdAt)}</span>
-                            {comment?.author?.id === me?.id ? (
-                              <>
-                                <span>·</span>
-                                <span
-                                  id="delete_btn"
-                                  onClick={() => handleDeleteCmt(comment.id)}
-                                >
-                                  삭제
-                                </span>
-                              </>
-                            ) : null}
-                          </CommentContentInfo>
-                        </CommentHandler>
-
-                        <p>{comment.content}</p>
-                      </CommentItem>
-                    ))}
-              </CommentArea>
+              {post.comments ? <CommentsList list={post.comments} /> : null}
             </CommentWrapper>
           </div>
         </PostDetailContainer>

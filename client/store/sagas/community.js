@@ -99,6 +99,7 @@ function* addComment(action) {
   try {
     const { data } = yield call(addCommentAPI, action.payload);
     yield put(communityActions.addCommentSuccess(data));
+    console.log("댓글데이터", data);
   } catch (err) {
     console.error(err);
     yield put(communityActions.addCommentFailure(err.response.data));
