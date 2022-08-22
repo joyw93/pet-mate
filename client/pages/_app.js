@@ -31,9 +31,10 @@ const App = ({ Component, pageProps }) => {
     setSnackBar(false);
   };
 
-  useEffect(() => {
-    dispatch(userActions.loadUserInfoRequest());
-  }, []);
+
+  // useEffect(() => {
+  //   dispatch(userActions.loadUserInfoRequest());
+  // }, []);
 
   useEffect(() => {
     if (userInfo && userInfo.active) {
@@ -44,7 +45,6 @@ const App = ({ Component, pageProps }) => {
   // useEffect(() => {
   //   dispatch(userActions.loadProfileRequest());
   // }, []);
-
 
   useEffect(() => {
     if (logOutDone) {
