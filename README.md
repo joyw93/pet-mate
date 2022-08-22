@@ -28,15 +28,14 @@
 ## 3. ERD
 <img width="659" alt="erd" src="https://user-images.githubusercontent.com/48177285/181696667-c02c865e-eb52-492b-aae9-4146d96beece.PNG">
 
-
-
-
 >상세보기
 https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 
-## 4. 핵심 기능
+<br/>
+
+## 4. 기능 요약
 <details>
-<summary><b>백엔드</b></summary>
+<summary><b>펼치기</b></summary>
 <div markdown="1">
 
 
@@ -76,17 +75,10 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
   
 </div>
 </details>
-<details>
-<summary><b>프론트엔드</b></summary>
-<div markdown="1">
 
-</div>
-</details>
+<br/>
 
-## 5. 트러블 슈팅
-<details>
-<summary><b>백엔드</b></summary>
-<div markdown="1">
+## 5. 주요 기능
 
 ### 5.1 커뮤니티 게시글 등록
 
@@ -97,7 +89,7 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 <br/>
 
 ~~~javascript
-/*
+/**
 community.controller.ts
 */
 
@@ -128,8 +120,8 @@ community.controller.ts
 </div>
 </details>
 
-</div>
-</details>
+<br/>
+
 
 ## 6. More Info
 - 협업 문서
