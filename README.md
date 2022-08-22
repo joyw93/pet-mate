@@ -28,11 +28,10 @@
 ## 3. ERD
 <img width="659" alt="erd" src="https://user-images.githubusercontent.com/48177285/181696667-c02c865e-eb52-492b-aae9-4146d96beece.PNG">
 
-
-
-
 >상세보기
 https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
+
+<br/>
 
 ## 4. 기능 요약
 <details>
@@ -77,9 +76,9 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 </div>
 </details>
 
+<br/>
 
 ## 5. 주요 기능
-
 
 ### 5.1 커뮤니티 게시글 등록
 
@@ -120,6 +119,8 @@ community.controller.ts
 
 </div>
 </details>
+
+<br/>
 
 
 ## 6. More Info
