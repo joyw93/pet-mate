@@ -12,13 +12,6 @@ import {
   CustomOverlay,
 } from "./styled";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
-
-// import {
-//   sanchaekPostRequestAction,
-//   sanchaekUpdatePostRequestAction,
-//   sanchaekPostResetAction,
-//   sanchaekUpdatePostResetAction,
-// } from "../../reducers/sanchaek";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +26,6 @@ const SanchaekPost = ({ editState }) => {
     (state) => state.sanchaek
   );
   const selectedPost = useSelector((state) => state.sanchaek.sanchaekPost);
-
-  //const { me } = useSelector((state) => state.user);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -389,9 +380,6 @@ const SanchaekPost = ({ editState }) => {
                   }}
                 />
                 {info && info.content === marker.content && (
-                  // <SelectedLocation style={{ color: "#000" }}>
-                  //   {marker.content}
-                  // </SelectedLocation>
                   <CustomOverlayMap
                     position={{ lat: lat, lng: lng }}
                     xAnchor={0.5}
@@ -402,11 +390,11 @@ const SanchaekPost = ({ editState }) => {
                     </CustomOverlay>
                   </CustomOverlayMap>
                 )}
-                {/* </MapMarker> */}
               </>
             ))}
           </Map>
         </>
+        <Map />
       </MapWrapper>
     </CreatePostContainer>
   );

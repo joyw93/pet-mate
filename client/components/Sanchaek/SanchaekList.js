@@ -6,7 +6,7 @@ import SanchaekItem from "./SanchaekItem";
 import { SanchaekContent, BtnContainer, BtnLine, MoreBtn } from "./styled";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
-const ContentList = () => {
+const SanchaekList = () => {
   const [noMoreList, setNoMoreList] = useState(false);
   const {
     sanchaekPosts,
@@ -88,4 +88,4 @@ const ContentList = () => {
   );
 };
 
-export default ContentList;
+export default SanchaekList;

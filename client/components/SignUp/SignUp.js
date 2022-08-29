@@ -11,30 +11,29 @@ import {
   CheckInput,
   CheckContainer,
   CheckBoxInput,
+  SnackBarContent
 } from "./styled";
 import { userActions } from '../../store/reducers/user';
 import Router from "next/router";
 import Snackbar from "@mui/material/Snackbar";
 
-
 const SignUp = () => {
-  const serverUrl = "http://api.petmate.kr";
-  // process.env.NODE_ENV === "production"
-  //   ? "http://api.petmate.kr"
-  //   : "http://127.0.0.1:3000";
-
   const dispatch = useDispatch();
+  const serverUrl = "http://api.petmate.kr";
   const { signUpDone } = useSelector((state) => state.user);
+
+  //알림창
+  const [snackBar, setSnackBar] = useState(false);
 
   useEffect(() => {
     if (signUpDone) {
+      //회원가입 완료
       dispatch(userActions.signUpReset());
-      //dispatch(signupResetAction());
       Router.replace("/");
+      setSnackBar(false);
     }
   }, [signUpDone]);
 
-  //객체로 바꾸기
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
@@ -42,65 +41,10 @@ const SignUp = () => {
   const [password2, setPassword2] = useState("");
 
   //체크박스
-  const [checkbox, setCheckbox] = useState({
-    check1: false,
-    check2: false,
-    check3: false,
-  });
-
   const [entireCheck, setEntireCheck] = useState(false);
   const [restCheck1, setRestCheck1] = useState(false);
   const [restCheck2, setRestCheck2] = useState(false);
   const [checkboxIsValid, setCheckboxIsValid] = useState(true);
-
-  const handleCheckbox = useCallback((e) => {
-    const { checked, name } = e.target;
-    // //전체 동의
-    // if (name === "check1" && checked === true) {
-    //   setEntireCheck(true);
-    //   setRestCheck1(true);
-    //   setRestCheck2(true);
-    // }
-    // //전체 동의 안 할 때
-    // if (name === "check1" && checked === false) {
-    //   setEntireCheck(false);
-    //   setRestCheck1(false);
-    //   setRestCheck2(false);
-    // }
-
-    // //따로따로
-    // if (name === "check2") {
-    //   if (checked === true) {
-    //     return setRestCheck1(true);
-    //   } else {
-    //     return setRestCheck1(false);
-    //   }
-    // }
-
-    // if (name === "check3") {
-    //   if (checked === true) {
-    //     return setRestCheck2(true);
-    //   } else {
-    //     return setRestCheck2(false);
-    //   }
-    // }
-    console.log(checkboxIsValid)
-
-    if (name === "check1") {
-      setEntireCheck(checked);
-      setRestCheck1(checked);
-      setRestCheck2(checked);
-    }
-    if (name === "check2") {
-      setRestCheck1(checked);
-      setEntireCheck(restCheck2 && checked);
-    }
-    if (name === "check3") {
-      setRestCheck2(checked);
-      setEntireCheck(restCheck1 && checked);
-    }
-  }, [entireCheck, restCheck1, restCheck2]);
-
 
   const nameRef = useRef();
   const nicknameRef = useRef();
@@ -133,11 +77,11 @@ const SignUp = () => {
     }
   }, [nickname, email, password2]);
 
-  const checkNickname = (e) => {
+  const checkNickname = useCallback((e) => {
     setNickname(e.target.value);
     setNicknameIsValid(false);
     setNicknameIsInvalid(false);
-  };
+  }, [nickname]);
 
   const checkEmail = (e) => {
     setEmail(e.target.value);
@@ -185,6 +129,23 @@ const SignUp = () => {
       });
   };
 
+  const handleCheckbox = useCallback((e) => {
+    const { name, checked } = e.target;
+    if (name === "check1") {
+      setEntireCheck(checked);
+      setRestCheck1(checked);
+      setRestCheck2(checked);
+    }
+    if (name === "check2") {
+      setRestCheck1(checked);
+      setEntireCheck(restCheck2 && checked);
+    }
+    if (name === "check3") {
+      setRestCheck2(checked);
+      setEntireCheck(restCheck1 && checked);
+    }
+  }, []);
+
   const handleSignUpSubmit = useCallback(() => {
     //이름 유효성 검사
     const nameregExp = /^[가-힣|a-zA-Z|]{2,6}$/;
@@ -227,15 +188,14 @@ const SignUp = () => {
       return setCheckboxIsValid(false);
     }
 
-    const newUser = {
+    const user = {
       name,
       nickname,
       email,
       password,
     };
 
-    dispatch(userActions.signUpRequest(newUser));
-    //dispatch(signupRequestAction(newUser));
+    dispatch(userActions.signUpRequest(user));
   }, [
     name,
     nickname,
@@ -355,6 +315,16 @@ const SignUp = () => {
         </CheckContainer>
         <SignupBtn onClick={handleSignUpSubmit}>회원가입</SignupBtn>
       </FormWrapper>
+      {signUpDone ?
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={snackBar}
+          autoHideDuration={2000}
+          key={"bottomcenter"}
+        >
+          <SnackBarContent>회원가입 완료되었습니다!</SnackBarContent>
+        </Snackbar>
+        : null}
     </SignUpContainer>
   );
 };

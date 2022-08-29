@@ -5,7 +5,6 @@ import { communityActions } from '../../store/reducers/community';
 
 
 const CommentsInput = ({ postId }) => {
-  console.log(postId);
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [cmtContent, setCmtContent] = useState("");
