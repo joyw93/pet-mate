@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
-import ContentList from "./ContentList";
+import SanchaekList from "./SanchaekList";
 import { SanchaekContainer, SanchaekBanner } from "./styled";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
@@ -19,10 +19,10 @@ const SanchaekMain = () => {
 
   const goToNew = () => {
     if (!me) {
-      Router.replace("/login");
+      Router.push("/login");
     } else {
       if (window.confirm("글 작성하러 가시겠습니까?")) {
-        Router.replace("/sanchaek/new");
+        Router.push("/sanchaek/new");
       }
     }
   };
@@ -30,7 +30,7 @@ const SanchaekMain = () => {
   return (
     <SanchaekContainer>
       <SanchaekBanner onClick={goToNew}></SanchaekBanner>
-      <ContentList />
+      <SanchaekList />
     </SanchaekContainer>
   );
 };

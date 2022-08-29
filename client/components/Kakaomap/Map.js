@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DetailedMap from "../Kakaomap/DetailedMap";
 
-const Kakaomap = ({ place }) => {
+const Map = ({ place }) => {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
