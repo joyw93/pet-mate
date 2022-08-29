@@ -1,10 +1,8 @@
-import {
-  CommentArea,
-} from './styled';
-import CommentsItem from './CommentsItem';
-import { communityActions } from '../../store/reducers/community';
+import { CommentArea } from "./styled";
+import CommentsItem from "./CommentsItem";
+import { communityActions } from "../../store/reducers/community";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 const CommentsList = ({ list }) => {
@@ -33,10 +31,14 @@ const CommentsList = ({ list }) => {
           .slice(0)
           .reverse()
           .map((comment) => (
-            <CommentsItem key={comment.id} comment={comment} onClick={handleDeleteCmt} />
+            <CommentsItem
+              key={comment.id}
+              comment={comment}
+              onClick={handleDeleteCmt}
+            />
           ))}
     </CommentArea>
   );
-}
+};
 
 export default CommentsList;

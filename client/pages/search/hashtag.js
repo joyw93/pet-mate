@@ -6,7 +6,7 @@ const HashtagSearchPage = () => {
   return (
     <>
       <Head>
-        <title>검색결과 | 펫메이트</title>
+        <title>해시태그 검색결과 | 펫메이트</title>
       </Head>
       <AppLayout>
         <HashtagSearch />

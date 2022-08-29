@@ -1,8 +1,7 @@
-import { useState, useRef, useCallback } from 'react';
-import { CommentInput, Button } from './styled';
+import { useState, useRef, useCallback } from "react";
+import { CommentInput, Button } from "./styled";
 import { useSelector, useDispatch } from "react-redux";
-import { communityActions } from '../../store/reducers/community';
-
+import { communityActions } from "../../store/reducers/community";
 
 const CommentsInput = ({ postId }) => {
   console.log(postId);
@@ -19,10 +18,6 @@ const CommentsInput = ({ postId }) => {
     if (!cmtContent.trim()) {
       return alert("내용을 입력하세요");
     }
-    const data = {
-      postId,
-      content: cmtContent,
-    };
     onAddComment(postId, cmtContent);
   }, [cmtContent]);
 
@@ -50,7 +45,7 @@ const CommentsInput = ({ postId }) => {
     dispatch(communityActions.addCommentRequest(data));
     setCmtContent("");
     commentInputRef.current.blur();
-  }
+  };
 
   return (
     <CommentInput>
@@ -64,8 +59,7 @@ const CommentsInput = ({ postId }) => {
       />
       <Button onClick={handleCmtContent}>입력</Button>
     </CommentInput>
-
   );
-}
+};
 
 export default CommentsInput;

@@ -6,7 +6,7 @@ const CommunitySearchPage = () => {
   return (
     <>
       <Head>
-        <title>검색결과 | 펫메이트</title>
+        <title>커뮤니티 검색결과 | 펫메이트</title>
       </Head>
       <AppLayout>
         <CommunitySearch />
