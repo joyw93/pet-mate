@@ -18,13 +18,6 @@ import {
   CommentItem,
 } from "./styled";
 import { getElapsedTime } from "../../utils";
-// import {
-//   sanchaekLoadPostDetailRequestAction,
-//   sanchaekAddCommentRequestAction,
-//   sanchaekRemovePostRequestAction,
-//   sanchaekRemoveCommentRequestAction,
-// } from "../../store/reducers/sanchaek";
-
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,61 +1,19 @@
 import {
   CommunityCon,
   Title,
-  NoticeBtn,
   PostBtn,
-  HeadWrapper,
-  NoticeWrapper,
-  Selection,
+  HeadWrapper
 } from "./styled";
-
 import { useSelector, useDispatch } from "react-redux";
 import CommunityList from "./CommunityList";
-import axios from "axios";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import { communityActions } from '../../store/reducers/community';
+import FilterList from './FilterList';
+import CommunityNotice from './CommunityNotice';
 
 
-const SelectOptions = [
-  { id: "latest", name: "최신순" },
-  { id: "oldest", name: "오래된 순" },
-  { id: "view", name: "조회 순" },
-  { id: "like", name: "좋아요 순" },
-];
-
-const ListSelection = ({ onChange }) => {
-  return (
-    <Selection onChange={onChange}>
-      {SelectOptions.map((item) => (
-        <option key={item.id}>{item.name}</option>
-      ))}
-    </Selection>
-  );
-};
-
-const Notice = ({ hotPosts }) => {
-  const [noticeList, setNoticeList] = useState([]);
-  useEffect(() => {
-    setNoticeList(hotPosts.hotPosts.data.slice(0, 2));
-  }, []);
-
-  return (
-    <>
-      {noticeList &&
-        noticeList.map((notice) => (
-          <NoticeWrapper
-            key={notice.id}
-            onClick={() => Router.push(`community/${notice.id}`)}
-          >
-            <NoticeBtn>인기</NoticeBtn>
-            <span>{notice.title}</span>
-          </NoticeWrapper>
-        ))}
-    </>
-  );
-};
-
-const CommunityMain = (hotPosts) => {
+const CommunityMain = ({ hotPosts }) => {
   const [filterCond, setFilterCond] = useState("new");
   const { me } = useSelector((state) => state.user);
   const { addPostDone } = useSelector((state) => state.community);
@@ -64,15 +22,8 @@ const CommunityMain = (hotPosts) => {
   useEffect(() => {
     if (addPostDone) {
       dispatch(communityActions.addPostReset());
-      //dispatch(postResetAction());
-      //console.log("글 리셋");
     }
   }, [addPostDone]);
-
-  // useEffect(() => {
-  //   //setFilterCond("new");
-  //   dispatch(loadPostsRequestAction(filterCond));
-  // }, [filterCond]);
 
   const goToNew = () => {
     if (!me) {
@@ -96,18 +47,19 @@ const CommunityMain = (hotPosts) => {
     console.log(e.target.value);
   };
 
+
   return (
     <CommunityCon>
       <Title>커뮤니티</Title>
       <HeadWrapper>
-        <ListSelection onChange={handleListSelect} />
+        <FilterList onChange={handleListSelect} />
         {me ? (
           <PostBtn onClick={goToNew}>
             <span>글쓰기</span>
           </PostBtn>
         ) : null}
       </HeadWrapper>
-      <Notice hotPosts={hotPosts} />
+      <CommunityNotice hotPosts={hotPosts} />
       <CommunityList filterCond={filterCond} />
     </CommunityCon>
   );

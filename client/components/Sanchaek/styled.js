@@ -12,11 +12,46 @@ export const SanchaekBanner = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  margin-bottom: 100px;
   cursor: pointer;
   &:hover {
     opacity: 0.8;
     transition: all 0.3s;
+  }
+`;
+
+export const LocationSearch = styled.div`
+  max-width: 1200px;
+  margin: 40px auto;
+  div {
+    width: 70%;
+    position: relative;
+    margin: 0 auto;
+
+    input {
+      font-size: 1.1rem;
+      border-radius: 20px;
+      border: 2px solid ${Colors.primaryColor};
+      height: 40px;
+      width: 100%;
+      opacity: 0.7;
+      text-indent: 18px;
+      &:focus {
+        box-shadow: 0 0 7px ${Colors.primaryColor};
+        transition: all 0.1s;
+      }
+    }
+    .cancel_btn {
+      background: none;
+      border: none;
+      position: absolute;
+      right: 7px;
+      top: 10px;
+      cursor: pointer;
+    }
+    .cancel_btn > img {
+      width: 24px;
+      height: 24px;
+    }
   }
 `;
 

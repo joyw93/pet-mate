@@ -1,11 +1,17 @@
-import AppLayout from '../../components/AppLayout';
-import MyProfile from '../../components/MyProfile/MyProfile';
+import Head from "next/head";
+import AppLayout from "../../components/AppLayout";
+import MyProfile from "../../components/MyProfile/MyProfile";
 
 const ProfilePage = () => {
   return (
-    <AppLayout>
-      <MyProfile />
-    </AppLayout>
+    <>
+      <head>
+        <title>프로필 | 펫메이트</title>
+      </head>
+      <AppLayout>
+        <MyProfile />
+      </AppLayout>
+    </>
   );
 };
 export default ProfilePage;

@@ -34,6 +34,10 @@ const SearchAll = () => {
   const [communityResults, setCommunityResults] = useState([]);
   const [sanchaekResults, setSanchaekResults] = useState([]);
 
+  /* 
+  Todo : 디테일 리셋 기능 추가
+  **/
+
   useEffect(() => {
     dispatch(communityActions.loadPostDetailReset());
     dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
@@ -53,7 +57,7 @@ const SearchAll = () => {
       } else {
         setCommunityResults(searchPosts.communityPosts);
       }
-      if (searchPosts.communityPosts.length > 4) {
+      if (searchPosts.sanchaekPosts.length > 4) {
         const result = searchPosts.sanchaekPosts.slice(0, 4);
         setSanchaekResults(result);
         console.log("산책", result);
@@ -98,9 +102,11 @@ const SearchAll = () => {
                       산책메이트
                       <span>({searchPosts.sanchaekPosts.length})</span>
                     </h1>
-                    <MoreButton onClick={goToSanchaekSearchResults}>
-                      더보기
-                    </MoreButton>
+                    {searchPosts.sanchaekPosts.length > 4 && (
+                      <MoreButton onClick={goToSanchaekSearchResults}>
+                        더보기
+                      </MoreButton>
+                    )}
                   </TitleWrapper>
                   <Box
                     sx={{
@@ -128,9 +134,11 @@ const SearchAll = () => {
                       커뮤니티
                       <span>({searchPosts.communityPosts.length})</span>
                     </h1>
-                    <MoreButton onClick={goToCommunitySearchResults}>
-                      더보기
-                    </MoreButton>
+                    {searchPosts.communityPosts.length > 2 && (
+                      <MoreButton onClick={goToCommunitySearchResults}>
+                        더보기
+                      </MoreButton>
+                    )}
                   </TitleWrapper>
                   {communityResults && (
                     <CommunityResultsContainer>
