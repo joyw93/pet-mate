@@ -380,6 +380,9 @@ const SanchaekPost = ({ editState }) => {
                   }}
                 />
                 {info && info.content === marker.content && (
+                  // <SelectedLocation style={{ color: "#000" }}>
+                  //   {marker.content}
+                  // </SelectedLocation>
                   <CustomOverlayMap
                     position={{ lat: lat, lng: lng }}
                     xAnchor={0.5}
@@ -390,11 +393,11 @@ const SanchaekPost = ({ editState }) => {
                     </CustomOverlay>
                   </CustomOverlayMap>
                 )}
+                {/* </MapMarker> */}
               </>
             ))}
           </Map>
         </>
-        <Map />
       </MapWrapper>
     </CreatePostContainer>
   );
