@@ -7,6 +7,10 @@ import {
   ItemImage,
   ContentInfo,
   LocaImg,
+  ItemHeader,
+  HeadUser,
+  FollowBtn,
+  ContentDetail
 } from "./styled";
 import Grid from "@mui/material/Grid";
 
@@ -20,6 +24,13 @@ const SanchaekItem = (post) => {
 
   return (
     <Grid item xs={12} sm={6} md={3}>
+      <ItemHeader>
+        <HeadUser>
+          <img src="../img/defaultimgGrey.png" style={{ width: '30px' }} />
+          <p>{post.user.nickname}</p>
+        </HeadUser>
+        <FollowBtn>팔로우</FollowBtn>
+      </ItemHeader>
       <ItemContainer onClick={itemSelect}>
         <ItemWrapper>
           {post?.images && (
@@ -36,9 +47,10 @@ const SanchaekItem = (post) => {
             {post && post.mapInfo && post.mapInfo.location && (
               <ContentInfo>
                 <LocaImg src="../../img/locationEmojiBlk.png" />
-                {post.mapInfo.location}
+                <span>{post.mapInfo.location}</span>
               </ContentInfo>
             )}
+            <ContentDetail>좋아요 5 · 조회수 26</ContentDetail>
           </ContentArea>
         </ItemWrapper>
       </ItemContainer>
