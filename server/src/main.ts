@@ -30,11 +30,11 @@ async function bootstrap() {
       saveUninitialized: false,
       secret: process.env.COOKIE_SECRET,
       // 배포 때 주석 풀기!
-      cookie: {
-        httpOnly: true,
-        secure: false,
-        domain:'.petmate.kr'
-      },
+      // cookie: {
+      //   httpOnly: true,
+      //   secure: false,
+      //   domain:'.petmate.kr'
+      // },
     }),
   );
   app.use(passport.initialize());

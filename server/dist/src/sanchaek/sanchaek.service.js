@@ -108,10 +108,10 @@ let SanchaekService = class SanchaekService {
                 .leftJoin('sanchaek.comments', 'comments')
                 .leftJoin('comments.author', 'commentAuthor')
                 .leftJoin('commentAuthor.profile', 'commentAuthorProfile')
-                .leftJoin('user.profile', 'userProfile')
                 .leftJoin('sanchaek.images', 'images')
                 .leftJoinAndSelect('sanchaek.mapInfo', 'map')
                 .leftJoin('sanchaek.user', 'user')
+                .leftJoin('user.profile', 'userProfile')
                 .where('sanchaek.id= :id', { id: postId })
                 .getOne();
             return sanchaek;
