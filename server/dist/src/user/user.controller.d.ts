@@ -42,10 +42,16 @@ export declare class UserController {
     kakaoLogin(req: any): Promise<void>;
     kakaoLoginCallback(req: any, res: any): Promise<void | import("express").Response<any, Record<string, any>>>;
     logout(req: any, res: any): Promise<any>;
-    getMyPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
+    getMyPosts(user: UserEntity): Promise<{
+        communityPosts: import("../community/community.entity").CommunityEntity[];
+        sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
+    }>;
     getMySanchaeks(user: UserEntity): Promise<import("../sanchaek/sanchaek.entity").SanchaekEntity[]>;
     getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
-    getCommentedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
+    getCommentedPosts(user: UserEntity): Promise<{
+        communityPosts: Promise<import("../community/community.entity").CommunityEntity[]>;
+        sanchaekPosts: Promise<import("../sanchaek/sanchaek.entity").SanchaekEntity[]>;
+    }>;
     signout(user: UserEntity): Promise<import("typeorm").DeleteResult>;
     getUserProfile(userId: number): Promise<UserEntity>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;

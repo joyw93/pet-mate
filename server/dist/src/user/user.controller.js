@@ -80,7 +80,10 @@ let UserController = class UserController {
         }
     }
     async getMyPosts(user) {
-        return await this.userService.getMyPosts(user.id);
+        const communityPosts = await this.userService.getMyPosts(user.id);
+        const sanchaekPosts = await this.userService.getMySanchaeks(user.id);
+        const posts = { communityPosts, sanchaekPosts };
+        return posts;
     }
     async getMySanchaeks(user) {
         return await this.userService.getMySanchaeks(user.id);
@@ -89,7 +92,10 @@ let UserController = class UserController {
         return await this.userService.getLikedPosts(user.id);
     }
     async getCommentedPosts(user) {
-        return await this.userService.getCommentedPosts(user.id);
+        const communityPosts = this.userService.getCommentedPosts(user.id);
+        const sanchaekPosts = this.userService.getCommentedSanchaeks(user.id);
+        const posts = { communityPosts, sanchaekPosts };
+        return posts;
     }
     async signout(user) {
         return await this.userService.signout(user.id);
