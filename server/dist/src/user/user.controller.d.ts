@@ -49,8 +49,8 @@ export declare class UserController {
     getMySanchaeks(user: UserEntity): Promise<import("../sanchaek/sanchaek.entity").SanchaekEntity[]>;
     getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
     getCommentedPosts(user: UserEntity): Promise<{
-        communityPosts: Promise<import("../community/community.entity").CommunityEntity[]>;
-        sanchaekPosts: Promise<import("../sanchaek/sanchaek.entity").SanchaekEntity[]>;
+        communityPosts: import("../community/community.entity").CommunityEntity[];
+        sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
     }>;
     signout(user: UserEntity): Promise<import("typeorm").DeleteResult>;
     getUserProfile(userId: number): Promise<UserEntity>;

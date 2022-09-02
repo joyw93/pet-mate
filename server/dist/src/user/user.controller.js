@@ -92,8 +92,8 @@ let UserController = class UserController {
         return await this.userService.getLikedPosts(user.id);
     }
     async getCommentedPosts(user) {
-        const communityPosts = this.userService.getCommentedPosts(user.id);
-        const sanchaekPosts = this.userService.getCommentedSanchaeks(user.id);
+        const communityPosts = await this.userService.getCommentedPosts(user.id);
+        const sanchaekPosts = await this.userService.getCommentedSanchaeks(user.id);
         const posts = { communityPosts, sanchaekPosts };
         return posts;
     }
