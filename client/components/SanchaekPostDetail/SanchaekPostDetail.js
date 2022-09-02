@@ -26,6 +26,7 @@ import Link from "next/link";
 import CommentsList from '../Comments/CommentsList';
 
 const SanchaekPostDetail = () => {
+  const likeIcon = "../img/filled_heart2.png";
   const [cmtContent, setCmtContent] = useState("");
   const router = useRouter();
   const { id } = router.query;
@@ -139,6 +140,12 @@ const SanchaekPostDetail = () => {
                 {getElapsedTime(sanchaekPost.createdAt)}
               </span>
               <span id="views">조회수 {sanchaekPost.views}</span>
+            </div>
+            <div id="like_wrapper">
+              <button >
+                <img src={likeIcon} alt="좋아요" />
+              </button>
+              <span id="like_count">1</span>
             </div>
           </PostInfo>
           <div id="content">

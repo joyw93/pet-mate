@@ -24,19 +24,29 @@ async function bootstrap() {
     ],
     credentials: true,
   });
-  app.use(
-    session({
-      resave: false,
-      saveUninitialized: false,
-      secret: process.env.COOKIE_SECRET,
-      // 배포 때 주석 풀기!
-      cookie: {
-        httpOnly: true,
-        secure: false,
-        domain:'.petmate.kr'
-      },
-    }),
-  );
+  if (process.env.NODE_ENV === 'development') {
+    app.use(
+      session({
+        resave: false,
+        saveUninitialized: false,
+        secret: process.env.COOKIE_SECRET,
+      }),
+    );
+  } else if (process.env.NODE_ENV === 'production') {
+    app.use(
+      session({
+        resave: false,
+        saveUninitialized: false,
+        secret: process.env.COOKIE_SECRET,
+        cookie: {
+          httpOnly: true,
+          secure: false,
+          domain: '.petmate.kr',
+        },
+      }),
+    );
+  }
+
   app.use(passport.initialize());
   app.use(passport.session());
 

@@ -1,6 +1,6 @@
 import { CommentArea } from "./styled";
-import CommentsItem from "./CommentsItem";
 import { communityActions } from "../../store/reducers/community";
+import CommentsItem from "./CommentsItem";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";

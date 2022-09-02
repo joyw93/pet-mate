@@ -398,7 +398,7 @@ const SanchaekPost = ({ editState }) => {
             ))}
           </Map>
         </>
-      </MapWrapper>{" "}
+      </MapWrapper>
     </CreatePostContainer>
   );
 };

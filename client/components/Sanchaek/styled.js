@@ -79,12 +79,6 @@ export const ItemContainer = styled.div`
   margin: 0 0 80px;
   cursor: pointer;
   border-radius: 10px;
-
-  &:hover {
-    transform: scale(1.1);
-    transition: all 0.3s;
-    opacity: 0.7;
-  }
 `;
 
 export const ItemImage = styled.img`
@@ -92,6 +86,12 @@ export const ItemImage = styled.img`
   height: 270px;
   object-fit: cover;
   border-radius: 10px;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
+    opacity: 0.7;
+  }
 `;
 
 //
@@ -145,8 +145,42 @@ export const MoreBtn = styled(MoreButton)`
   }
 `;
 
+export const ItemHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom:5px;
+`;
+
+export const HeadUser = styled.div`
+  display: flex;
+  align-items: center;
+  gap:10px;
+
+  img{
+    width: 30px;
+    border-radius: 50%;
+  }
+
+  p{
+    font-weight: bold;
+  }
+`;
+
+export const FollowBtn = styled.button`
+  border:none;
+  background: none;
+  cursor: pointer;
+  font-size:1rem ;
+  font-weight: bold;
+  color: ${Colors.primaryColor};
+  `;
+
 export const ItemWrapper = styled.div``;
-export const ImageWrapper = styled.div``;
+export const ImageWrapper = styled.div`
+  overflow: hidden;
+  border-radius: 10px;
+`;
 export const ContentArea = styled.div`
   margin: 10px 0;
 `;
@@ -159,15 +193,23 @@ export const ContentTitle = styled.h2`
 
 export const ContentInfo = styled.div`
   padding-left: 24px;
-  line-height: 23px;
+  line-height: 20px;
   position: relative;
+
   span {
-    font-size: 0.7rem;
-  }
+    font-size: 0.85rem;
+    }
+`;
+
+export const ContentDetail = styled.p`
+  margin-top:5px;
+  font-size: 0.7rem;
+  color:gray;
+  text-align: right;
 `;
 
 export const LocaImg = styled.img`
-  height: 24px;
+  height: 20px;
   position: absolute;
   left: 0;
   top: 0;
