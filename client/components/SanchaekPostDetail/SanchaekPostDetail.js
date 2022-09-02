@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import Link from "next/link";
+import CommentsList from '../Comments/CommentsList';
 
 const SanchaekPostDetail = () => {
   const [cmtContent, setCmtContent] = useState("");
@@ -185,34 +186,7 @@ const SanchaekPostDetail = () => {
                 />
                 <Button onClick={handleCmtContent}>입력</Button>
               </CommentInput>
-              <CommentArea>
-                {sanchaekPost.comments &&
-                  sanchaekPost.comments
-                    .slice(0)
-                    .reverse()
-                    .map((comment) => (
-                      <CommentItem key={comment.id}>
-                        <CommentHandler>
-                          <h3>{comment.author.nickname}</h3>
-                          <CommentContentInfo>
-                            <span>{getElapsedTime(comment.createdAt)}</span>
-                            {comment?.author?.id === me?.id ? (
-                              <>
-                                <span>·</span>
-                                <span
-                                  id="delete_btn"
-                                  onClick={() => handleDeleteCmt(comment.id)}
-                                >
-                                  삭제
-                                </span>
-                              </>
-                            ) : null}
-                          </CommentContentInfo>
-                        </CommentHandler>
-                        <p>{comment.content}</p>
-                      </CommentItem>
-                    ))}
-              </CommentArea>
+              {sanchaekPost.comments ? <CommentsList list={sanchaekPost.comments} /> : null}
             </CommentWrapper>
           </div>
         </PostDetailContainer>

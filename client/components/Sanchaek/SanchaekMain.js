@@ -2,8 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router from "next/router";
+<<<<<<< HEAD
 import ContentList from "./ContentList";
 import { SanchaekContainer, SanchaekBanner, LocationSearch } from "./styled";
+=======
+import SanchaekList from "./SanchaekList";
+import { SanchaekContainer, SanchaekBanner } from "./styled";
+>>>>>>> c0f8e9f7fd6d26d7df9ee78ea3c63f14119f90a7
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 const SanchaekMain = () => {
@@ -24,10 +29,10 @@ const SanchaekMain = () => {
 
   const goToNew = () => {
     if (!me) {
-      Router.replace("/login");
+      Router.push("/login");
     } else {
       if (window.confirm("글 작성하러 가시겠습니까?")) {
-        Router.replace("/sanchaek/new");
+        Router.push("/sanchaek/new");
       }
     }
   };
@@ -67,6 +72,7 @@ const SanchaekMain = () => {
   return (
     <SanchaekContainer>
       <SanchaekBanner onClick={goToNew}></SanchaekBanner>
+<<<<<<< HEAD
       <LocationSearch>
         <div>
           <input
@@ -85,6 +91,9 @@ const SanchaekMain = () => {
         </div>
       </LocationSearch>
       <ContentList />
+=======
+      <SanchaekList />
+>>>>>>> c0f8e9f7fd6d26d7df9ee78ea3c63f14119f90a7
     </SanchaekContainer>
   );
 };

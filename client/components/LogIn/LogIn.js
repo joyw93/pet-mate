@@ -21,24 +21,25 @@ import {
 } from "./styled";
 import { userActions } from '../../store/reducers/user';
 
-// const serverUrl = 'http://127.0.0.1:3000';
 
 const LogIn = () => {
-  const [snackBar, setSnackBar] = useState(false);
-  const handleClose = () => {
-    setSnackBar(false);
-  };
-  const serverUrl = "http://api.petmate.kr";
-  // const serverUrl = "http://127.0.0.1:3000";
   const dispatch = useDispatch();
   const { me, logInError } = useSelector((state) => state.user);
 
+  //input값 설정
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailIsValid, setEmailIsValid] = useState(true);
 
   const emailRef = useRef();
   const passwordRef = useRef();
+
+  //알림창
+  const [snackBar, setSnackBar] = useState(false);
+
+  const handleClose = () => {
+    setSnackBar(false);
+  };
 
   useEffect(() => {
     dispatch(userActions.logInReset());
@@ -63,17 +64,17 @@ const LogIn = () => {
       return passwordRef.current.focus();
     }
 
-    const newUser = {
+    const logInUser = {
       email,
       password,
     };
-    dispatch(userActions.logInRequest(newUser));
+    dispatch(userActions.logInRequest(logInUser));
   }, [email, password]);
 
-  const handleLoginEmail = (e) => {
+  const handleLoginEmail = useCallback((e) => {
     setEmail(e.target.value);
     setEmailIsValid(true);
-  };
+  }, [email]);
 
   const handleGoogleLoginSubmit = useCallback(() => {
     Router.push(`${serverUrl}/user/google`);
@@ -84,8 +85,10 @@ const LogIn = () => {
   }, []);
 
   useEffect(() => {
+    //로그인 완료 됐을 때
     if (me) {
       Router.push("/");
+      setSnackBar(true);
     }
   }, [me]);
 
@@ -136,15 +139,15 @@ const LogIn = () => {
           </KakaoBtn>
         </SnsLoginBtns>
       </FormWrapper>
-      <Snackbar
+      {/* <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={snackBar}
         autoHideDuration={2000}
         onClose={handleClose}
         key={"bottomcenter"}
       >
-        <SnackBarContent>{logInError?.message}</SnackBarContent>
-      </Snackbar>
+        <SnackBarContent></SnackBarContent>
+      </Snackbar> */}
       {logInError ? (
         <>
           <Snackbar
