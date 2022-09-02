@@ -52,6 +52,7 @@ const SanchaekList = () => {
     moreSanchaekPostsRef.current++;
   };
 
+  console.log(sanchaekPosts);
   return (
     <SanchaekContent>
       <Box sx={{ width: "100%" }}>
