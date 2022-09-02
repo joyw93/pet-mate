@@ -284,7 +284,6 @@ const SanchaekPost = ({ editState }) => {
           placeholder="내용을 입력해 주세요"
         ></textarea>
       </TextEditWrapper>
-
       <AddPhotoWrapper>
         <h2>사진 추가(최대 3장)</h2>
         <div id="photos">
@@ -355,9 +354,10 @@ const SanchaekPost = ({ editState }) => {
             onCreate={setMap}
           >
             {markers.map((marker) => (
-              <>
+              <div
+                key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+              >
                 <MapMarker
-                  key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
                   position={marker.position}
                   image={{
                     src: "../../img/locationEmojiBlk.png",
@@ -380,6 +380,9 @@ const SanchaekPost = ({ editState }) => {
                   }}
                 />
                 {info && info.content === marker.content && (
+                  // <SelectedLocation style={{ color: "#000" }}>
+                  //   {marker.content}
+                  // </SelectedLocation>
                   <CustomOverlayMap
                     position={{ lat: lat, lng: lng }}
                     xAnchor={0.5}
@@ -390,12 +393,12 @@ const SanchaekPost = ({ editState }) => {
                     </CustomOverlay>
                   </CustomOverlayMap>
                 )}
-              </>
+                {/* </MapMarker> */}
+              </div>
             ))}
           </Map>
         </>
-        <Map />
-      </MapWrapper>
+      </MapWrapper>{" "}
     </CreatePostContainer>
   );
 };

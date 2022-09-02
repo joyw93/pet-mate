@@ -15,7 +15,7 @@ const Footer = () => {
             </div>
             <div>
               <div id="son_face">
-                <a href="https://github.com/lili-ys"></a>
+                <a href="https://github.com/ys9494"></a>
               </div>
               <p>손유경 FrontEnd</p>
               <p>ykson94@gmail.com</p>

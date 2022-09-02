@@ -27,6 +27,8 @@ const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
   const [titleIndex, setTitleIndex] = useState(0);
+  const [myPostLength, setMyPostLength] = useState(0);
+  const [myCommentLength, setMyCommentLength] = useState(0);
   const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } =
     useSelector((state) => state.user);
 
@@ -51,8 +53,30 @@ const MyProfile = () => {
     dispatch(sanchaekActions.sanchaekLoadPostDetailReset());
   }, []);
 
+  useEffect(() => {
+    if (myPostsData.communityPosts && myPostsData.sanchaekPosts) {
+      if (
+        (myPostsData.communityPosts.length === 0,
+        myPostsData.sanchaekPosts.length === 0)
+      ) {
+        setMyPostLength(0);
+      } else if (myPostsData.communityPosts.length === 0) {
+        setMyPostLength(myPostsData.sanchaekPosts.length);
+      } else if (myPostsData.sanchaekPosts.length === 0) {
+        setMyPostLength(myPostsData.communityPosts.length);
+      } else {
+        setMyPostLength(
+          myPostsData.communityPosts.length + myPostsData.sanchaekPosts.length
+        );
+      }
+    }
+  }, [myPostsData]);
+
+  console.log("length", myPostLength);
+
   const posts = [myPostsData, myCommentsData, myLikedData];
-  // const title = [all, community, sanchaek];
+  // const length = [all, community, sanchaek];
+
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
     if (isAgreed) {
@@ -96,20 +120,20 @@ const MyProfile = () => {
                 <div className="list_wrapper">
                   <p>내가 쓴 게시글</p>
                   <p>
-                    <span>{myPostsData.length}</span>개
+                    <span>{myPostLength}</span>개
                   </p>
                 </div>
                 <div className="list_wrapper">
                   <p>내가 쓴 댓글</p>
-                  <p>
+                  {/* <p>
                     <span>{myCommentsData.length}</span>개
-                  </p>
+                  </p> */}
                 </div>
                 <div className="list_wrapper">
                   <p>좋아요</p>
-                  <p>
+                  {/* <p>
                     <span>{myLikedData.length}</span>개
-                  </p>
+                  </p> */}
                 </div>
               </UserFeed>
               <ButtonWrapper>
@@ -145,19 +169,27 @@ const MyProfile = () => {
                     className={titleIndex === 0 ? "is_active" : ""}
                     onClick={() => subTabClickHandler(0)}
                   >
-                    전체 <span>({posts[activeIndex].length})</span>
+                    전체{" "}
+                    <span>
+                      {/* (
+                      {posts[activeIndex].community?.length +
+                        posts[activeIndex].sanchaek?.length}
+                      ) */}
+                    </span>
                   </li>
                   <li
                     className={titleIndex === 1 ? "is_active" : ""}
                     onClick={() => subTabClickHandler(1)}
                   >
-                    커뮤니티 <span>({posts[activeIndex].length})</span>
+                    커뮤니티
+                    <span>({posts[activeIndex].communityPosts?.length})</span>
                   </li>
                   <li
                     className={titleIndex === 2 ? "is_active" : ""}
                     onClick={() => subTabClickHandler(2)}
                   >
-                    산책메이트 <span>({posts[activeIndex].length})</span>
+                    산책메이트
+                    <span>({posts[activeIndex].sanchaekPosts?.length})</span>
                   </li>
                 </SubTabList>
                 {posts[activeIndex] &&
@@ -166,14 +198,20 @@ const MyProfile = () => {
                     <>
                       <PostsWrapper>
                         {posts[activeIndex] &&
-                          posts[activeIndex].map((post) => (
+                          posts[activeIndex].communityPosts?.map((post) => (
+                            <MyPosts key={post.id} {...post} />
+                          ))}
+                      </PostsWrapper>
+                      <PostsWrapper>
+                        {posts[activeIndex] &&
+                          posts[activeIndex].sanchaekPosts?.map((post) => (
                             <MyPosts key={post.id} {...post} />
                           ))}
                       </PostsWrapper>
                     </>
                   )}
                 {posts[activeIndex] &&
-                  posts[activeIndex].length > 0 &&
+                  posts[activeIndex].communityPosts?.length > 0 &&
                   titleIndex === 1 && (
                     <>
                       <PostsWrapper>
@@ -185,7 +223,7 @@ const MyProfile = () => {
                     </>
                   )}
                 {posts[activeIndex] &&
-                  posts[activeIndex].length > 0 &&
+                  posts[activeIndex].sanchaekPosts?.length > 0 &&
                   titleIndex === 2 && (
                     <>
                       <PostsWrapper>
