@@ -10,7 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-const CommentsItem = ({ reply, onClick }) => {
+const CommentReply = ({ reply, onClick }) => {
   const { me } = useSelector((state) => state.user);
 
   return (
@@ -48,35 +48,4 @@ const CommentsItem = ({ reply, onClick }) => {
   );
 };
 
-export default CommentsItem;
-//(
-// <CommentItem>
-//   <CommentHandler>
-//     <AuthorInfo>
-//       <AuthorProfile>
-//         {author?.profile?.imageUrl ? (
-//           <img src={author.profile.imageUrl} />
-//         ) : (
-//           <img src="../img/defaultimgGrey.png" />
-//         )}
-//       </AuthorProfile>
-//       <h3>{author.nickname}</h3>
-//     </AuthorInfo>
-//     <CommentContentInfo>
-//       <span>{getElapsedTime(createdAt)}</span>
-//       {author?.id === me?.id ? (
-//         <>
-//           <span>·</span>
-//           <span
-//             id="delete_btn"
-//             onClick={() => handleDeleteCmt(id)}
-//           >
-//             삭제
-//           </span>
-//         </>
-//       ) : null}
-//     </CommentContentInfo>
-//   </CommentHandler>
-//   <p>{content}</p>
-// </CommentItem>
-//)
+export default CommentReply;

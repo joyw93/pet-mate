@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router from "next/router";
-import SanchaekList from "./SanchaekList";
 import { SanchaekContainer, SanchaekBanner, LocationSearch } from "./styled";
+import SanchaekList from "./SanchaekList";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 const SanchaekMain = () => {
@@ -71,7 +71,7 @@ const SanchaekMain = () => {
         <div>
           <input
             onKeyUp={keyUp}
-            placeholder="위치를 검색하세요"
+            placeholder="위치를 검색해보세요"
             onChange={handleValChange}
             value={inputVal}
             ref={inputRef}
@@ -84,9 +84,8 @@ const SanchaekMain = () => {
           )}
         </div>
       </LocationSearch>
-
       <SanchaekList />
-    </SanchaekContainer >
+    </SanchaekContainer>
   );
 };
 

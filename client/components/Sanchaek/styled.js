@@ -22,19 +22,32 @@ export const SanchaekBanner = styled.div`
 export const LocationSearch = styled.div`
   max-width: 1200px;
   margin: 40px auto;
+
   div {
     width: 70%;
     position: relative;
     margin: 0 auto;
-
+    &::after {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-image: url("../img/search.png");
+      background-position: center;
+      background-size: cover;
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
     input {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       border-radius: 20px;
       border: 2px solid ${Colors.primaryColor};
       height: 40px;
       width: 100%;
       opacity: 0.7;
-      text-indent: 18px;
+      text-indent: 40px;
       &:focus {
         box-shadow: 0 0 7px ${Colors.primaryColor};
         transition: all 0.1s;
