@@ -18,7 +18,7 @@ const Footer = () => {
                 <a href="https://github.com/lili-ys"></a>
               </div>
               <p>손유경 FrontEnd</p>
-              <p>mdlife94@gmail.com</p>
+              <p>ykson94@gmail.com</p>
             </div>
             <div>
               <div id="jo_face">

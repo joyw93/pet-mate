@@ -1,11 +1,12 @@
-import {
-  CommentArea,
-} from './styled';
-import CommentsItem from './CommentsItem';
-import { communityActions } from '../../store/reducers/community';
-import { sanchaekActions } from '../../store/reducers/sanchaek';
+import { CommentArea } from "./styled";
+import CommentsItem from "./CommentsItem";
+import { communityActions } from "../../store/reducers/community";
+import { CommentArea } from "./styled";
+import CommentsItem from "./CommentsItem";
+import { communityActions } from "../../store/reducers/community";
+import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 const CommentsList = ({ list }) => {
@@ -29,14 +30,16 @@ const CommentsList = ({ list }) => {
 
   const handleDeleteCmt = (commentId) => {
     //커뮤니티일 때 (라우터 검색해서)
-    if (location.pathname.includes('/community')) {
+    if (location.pathname.includes("/community")) {
       if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
         dispatch(communityActions.removeCommentRequest(parseInt(commentId)));
       }
-    } else if (location.pathname.includes('/sanchaek')) {
+    } else if (location.pathname.includes("/sanchaek")) {
       //산책일 때
       if (commentId && window.confirm("댓글을 삭제하시겠습니까?")) {
-        dispatch(sanchaekActions.sanchaekRemoveCommentRequest(parseInt(commentId)))
+        dispatch(
+          sanchaekActions.sanchaekRemoveCommentRequest(parseInt(commentId))
+        );
       }
     }
   };
@@ -48,10 +51,14 @@ const CommentsList = ({ list }) => {
           .slice(0)
           .reverse()
           .map((comment) => (
-            <CommentsItem key={comment.id} comment={comment} onClick={handleDeleteCmt} />
+            <CommentsItem
+              key={comment.id}
+              comment={comment}
+              onClick={handleDeleteCmt}
+            />
           ))}
     </CommentArea>
   );
-}
+};
 
 export default CommentsList;

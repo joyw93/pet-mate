@@ -70,7 +70,6 @@ const Header = () => {
   }, []);
 
   const clearInputVal = useCallback((e) => {
-    e.preventDefault();
     setInputVal("");
     setVisible(false);
   }, []);
