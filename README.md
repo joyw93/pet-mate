@@ -25,7 +25,10 @@
 
 </br>
 
-## 3. ERD
+## 3. 협업문서
+https://www.notion.so/4061678abea846c6b4f4858e4b8725a0
+
+## 4. ERD
 <img width="659" alt="erd" src="https://user-images.githubusercontent.com/48177285/181696667-c02c865e-eb52-492b-aae9-4146d96beece.PNG">
 
 >상세보기
@@ -33,25 +36,25 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 
 <br/>
 
-## 4. 기능 요약
+## 5. 기능 요약
 <details>
 <summary><b>펼치기</b></summary>
 <div markdown="1">
 
 
-#### 4.1. 인증 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/auth)
+#### 5.1. 인증 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/auth)
 - 로그인
   - 이메일
   - 구글
   - 카카오
 
-#### 4.2. 유저 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/user)
+#### 5.2. 유저 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/user)
 - 회원가입
 - 프로필 수정
 - 계정정보 수정
 - 내 게시글 조회
 
-#### 4.3. 커뮤니티 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/community)
+#### 5.3. 커뮤니티 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/community)
 - 게시글
   - 조회
   - 등록
@@ -63,7 +66,7 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 - 해쉬태그
 - 좋아요
 
-#### 4.4. 산책메이트 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/sanchaek)
+#### 5.4. 산책메이트 :pushpin: [코드 확인](https://github.com/joyw93/pet-mate/tree/main/server/src/sanchaek)
 - 산책
   - 조회
   - 등록
@@ -78,9 +81,9 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 
 <br/>
 
-## 5. 주요 기능
+## 6. 주요 기능
 
-### 5.1 커뮤니티 게시글 등록
+### 6.1 커뮤니티 게시글 등록
 
 <details>
 <summary><b>설명 펼치기</b></summary>
@@ -122,7 +125,3 @@ community.controller.ts
 
 <br/>
 
-
-## 6. More Info
-- 협업 문서
-https://www.notion.so/4061678abea846c6b4f4858e4b8725a0
