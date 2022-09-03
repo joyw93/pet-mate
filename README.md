@@ -81,47 +81,5 @@ https://www.erdcloud.com/d/4i3JW87RGiuJyFCNL
 
 <br/>
 
-## 6. 주요 기능
 
-### 6.1 커뮤니티 게시글 등록
-
-<details>
-<summary><b>설명 펼치기</b></summary>
-<div markdown="1">
-
-<br/>
-
-~~~javascript
-/**
-community.controller.ts
-*/
-
-  @Post()
-  @UseInterceptors(FilesInterceptor('images', 3, createPostConfig))
-  async createPost(
-    @User() user: UserEntity,
-    @UploadedFiles(ImageFilePipe) imgUrls: string[],
-    @Body(CommunityCreatePipe) createPostDto: CreatePostDto,
-  ) {
-    const { hashtags } = createPostDto;
-    const post = await this.communityService.createPost(user.id, createPostDto);
-    if (hashtags) {
-      await this.hashtagService.addTags(post, hashtags);
-    }
-    if (imgUrls) {
-      await this.communityService.uploadImages(post, imgUrls);
-    }
-    return post;
-  }
-~~~
-
-- 게시글 등록/수정의 경우 컨트롤러에서 다음과 같이 세개의 서비스 함수를 순서대로 호출하는 방식으로 코드를 작성했습니다.
-  - 게시글 저장
-  - 해쉬태그 등록
-  - 이미지 등록
-
-</div>
-</details>
-
-<br/>
 
