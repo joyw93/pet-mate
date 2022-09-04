@@ -1,5 +1,5 @@
 import MyPosts from "./MyPosts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import {
   ProfileContainer,
   BackgroundArea,
@@ -26,21 +26,26 @@ import { sanchaekActions } from "../../store/reducers/sanchaek";
 const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [titleIndex, setTitleIndex] = useState(0);
-  const [myPostLength, setMyPostLength] = useState(0);
-  const [myCommentLength, setMyCommentLength] = useState(0);
+  const [subTabActiveIndex, setSubTabActiveIndex] = useState(0);
   const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } =
     useSelector((state) => state.user);
+  const posts = [myPostsData, myCommentsData, myLikedData];
+  const [postLength, setPostLength] = useState(0);
 
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
+    setSubTabActiveIndex(0);
+    setPostLength(
+      posts[activeIndex].communityPosts?.length +
+        posts[activeIndex].sanchaekPosts?.length
+    );
   }, []);
 
   const subTabClickHandler = useCallback((index) => {
-    setTitleIndex(index);
+    setSubTabActiveIndex(index);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     //dispatch(userActions.loadProfileRequest());
     dispatch(userActions.loadMyProfileRequest());
     dispatch(userActions.loadMyPostsRequest());
@@ -54,28 +59,13 @@ const MyProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (myPostsData.communityPosts && myPostsData.sanchaekPosts) {
-      if (
-        (myPostsData.communityPosts.length === 0,
-        myPostsData.sanchaekPosts.length === 0)
-      ) {
-        setMyPostLength(0);
-      } else if (myPostsData.communityPosts.length === 0) {
-        setMyPostLength(myPostsData.sanchaekPosts.length);
-      } else if (myPostsData.sanchaekPosts.length === 0) {
-        setMyPostLength(myPostsData.communityPosts.length);
-      } else {
-        setMyPostLength(
-          myPostsData.communityPosts.length + myPostsData.sanchaekPosts.length
-        );
-      }
+    if (signOutDone) {
+      dispatch(userActions.signOutReset());
+      //dispatch(signOutResetAction());
+      Router.push("/");
+      alert("회원탈퇴가 완료되었습니다.");
     }
-  }, [myPostsData]);
-
-  console.log("length", myPostLength);
-
-  const posts = [myPostsData, myCommentsData, myLikedData];
-  // const length = [all, community, sanchaek];
+  }, [signOutDone]);
 
   const signOut = () => {
     const isAgreed = confirm("정말로 탈퇴하시겠습니까?");
@@ -85,18 +75,13 @@ const MyProfile = () => {
     }
   };
 
-  useEffect(() => {
-    if (signOutDone) {
-      dispatch(userActions.signOutReset());
-      //dispatch(signOutResetAction());
-      Router.push("/");
-      alert("회원탈퇴가 완료되었습니다.");
-    }
-  }, [signOutDone]);
-
   const profileEdit = () => {
     Router.push("/profile/edit");
   };
+
+  useLayoutEffect(() => {
+    setPostLength();
+  }, [myPostsData]);
 
   return (
     <>
@@ -120,20 +105,28 @@ const MyProfile = () => {
                 <div className="list_wrapper">
                   <p>내가 쓴 게시글</p>
                   <p>
-                    <span>{myPostLength}</span>개
+                    <span>
+                      {myPostsData?.communityPosts?.length +
+                        myPostsData?.sanchaekPosts?.length}
+                    </span>
+                    개
                   </p>
                 </div>
                 <div className="list_wrapper">
                   <p>내가 쓴 댓글</p>
-                  {/* <p>
-                    <span>{myCommentsData.length}</span>개
-                  </p> */}
+                  <p>
+                    <span>
+                      {myCommentsData?.communityPosts?.length +
+                        myCommentsData?.sanchaekPosts?.length}
+                    </span>
+                    개
+                  </p>
                 </div>
                 <div className="list_wrapper">
                   <p>좋아요</p>
-                  {/* <p>
-                    <span>{myLikedData.length}</span>개
-                  </p> */}
+                  <p>
+                    <span>{myLikedData?.length}</span>개
+                  </p>
                 </div>
               </UserFeed>
               <ButtonWrapper>
@@ -166,26 +159,28 @@ const MyProfile = () => {
               <PostsContainer>
                 <SubTabList>
                   <li
-                    className={titleIndex === 0 ? "is_active" : ""}
+                    className={subTabActiveIndex === 0 ? "is_active" : ""}
                     onClick={() => subTabClickHandler(0)}
                   >
-                    전체{" "}
+                    전체
                     <span>
-                      {/* (
-                      {posts[activeIndex].community?.length +
-                        posts[activeIndex].sanchaek?.length}
-                      ) */}
+                      (
+                      {posts[activeIndex].communityPosts &&
+                        posts[activeIndex].sanchaekPosts &&
+                        posts[activeIndex].communityPosts?.length +
+                          posts[activeIndex].sanchaekPosts?.length}
+                      )
                     </span>
                   </li>
                   <li
-                    className={titleIndex === 1 ? "is_active" : ""}
+                    className={subTabActiveIndex === 1 ? "is_active" : ""}
                     onClick={() => subTabClickHandler(1)}
                   >
                     커뮤니티
                     <span>({posts[activeIndex].communityPosts?.length})</span>
                   </li>
                   <li
-                    className={titleIndex === 2 ? "is_active" : ""}
+                    className={subTabActiveIndex === 2 ? "is_active" : ""}
                     onClick={() => subTabClickHandler(2)}
                   >
                     산책메이트
@@ -193,43 +188,42 @@ const MyProfile = () => {
                   </li>
                 </SubTabList>
                 {posts[activeIndex] &&
-                  posts[activeIndex].length > 0 &&
-                  titleIndex === 0 && (
+                  (posts[activeIndex].communityPosts?.length > 0 ||
+                    posts[activeIndex].sanchaekPosts?.length > 0) &&
+                  subTabActiveIndex === 0 && (
                     <>
                       <PostsWrapper>
                         {posts[activeIndex] &&
                           posts[activeIndex].communityPosts?.map((post) => (
-                            <MyPosts key={post.id} {...post} />
+                            <MyPosts key={post.id} nav="community" {...post} />
                           ))}
-                      </PostsWrapper>
-                      <PostsWrapper>
                         {posts[activeIndex] &&
                           posts[activeIndex].sanchaekPosts?.map((post) => (
-                            <MyPosts key={post.id} {...post} />
+                            <MyPosts key={post.id} nav="sanchaek" {...post} />
                           ))}
                       </PostsWrapper>
                     </>
                   )}
                 {posts[activeIndex] &&
                   posts[activeIndex].communityPosts?.length > 0 &&
-                  titleIndex === 1 && (
+                  subTabActiveIndex === 1 && (
                     <>
                       <PostsWrapper>
                         {posts[activeIndex] &&
-                          posts[activeIndex].map((post) => (
-                            <MyPosts key={post.id} {...post} />
+                          posts[activeIndex].communityPosts?.map((post) => (
+                            <MyPosts key={post.id} nav="community" {...post} />
                           ))}
                       </PostsWrapper>
                     </>
                   )}
                 {posts[activeIndex] &&
                   posts[activeIndex].sanchaekPosts?.length > 0 &&
-                  titleIndex === 2 && (
+                  subTabActiveIndex === 2 && (
                     <>
                       <PostsWrapper>
                         {posts[activeIndex] &&
-                          posts[activeIndex].map((post) => (
-                            <MyPosts key={post.id} {...post} />
+                          posts[activeIndex].sanchaekPosts?.map((post) => (
+                            <MyPosts key={post.id} nav="sanchaek" {...post} />
                           ))}
                       </PostsWrapper>
                     </>
