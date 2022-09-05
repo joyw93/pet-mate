@@ -127,6 +127,11 @@ export class CommunityController {
     );
   }
 
+  @Post(':postId/:commentId/comment')
+  async addCoComment(){
+    
+  }
+
   @Patch('comment/:commentId')
   async editComment(
     @Param('commentId', ParseIntPipe) commentId: number,

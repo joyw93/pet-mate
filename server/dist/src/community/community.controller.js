@@ -71,6 +71,8 @@ let CommunityController = class CommunityController {
     async addComment(user, postId, createCommentDto) {
         return await this.communityService.addComment(user.id, postId, createCommentDto);
     }
+    async addCoComment() {
+    }
     async editComment(commentId, commentContent) {
         return await this.communityService.editComment(commentId, commentContent);
     }
@@ -146,6 +148,12 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "addComment", null);
+__decorate([
+    (0, common_1.Post)(':postId/:commentId/comment'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "addCoComment", null);
 __decorate([
     (0, common_1.Patch)('comment/:commentId'),
     __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),

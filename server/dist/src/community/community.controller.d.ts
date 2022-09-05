@@ -11,7 +11,7 @@ export declare class CommunityController {
     getPosts(offset: number, postCount: number, orderBy: string): Promise<import("./community.entity").CommunityEntity[]>;
     getHotPosts(): Promise<import("./community.entity").CommunityEntity[]>;
     getOnePost(postId: number): Promise<import("./community.entity").CommunityEntity>;
-    likePost(user: UserEntity, postId: number): Promise<"like" | "unlike">;
+    likePost(user: UserEntity, postId: number): Promise<"unlike" | "like">;
     createPost(user: UserEntity, imgUrls: string[], createPostDto: CreatePostDto): Promise<import("./community.entity").CommunityEntity>;
     editPost(user: UserEntity, postId: number, imgUrls: string[], editPostDto: EditPostDto): Promise<{
         title: string;
@@ -30,9 +30,12 @@ export declare class CommunityController {
     } & import("./community.entity").CommunityEntity>;
     deletePost(user: UserEntity, postId: number): Promise<import("./community.entity").CommunityEntity>;
     addComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
+    addCoComment(): Promise<void>;
     editComment(commentId: number, commentContent: string): Promise<{
         content: string;
         id: number;
+        parentId: number;
+        depth: number;
         createdAt: Date;
         deletedAt: Date;
         author: UserEntity;

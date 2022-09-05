@@ -46,6 +46,8 @@ export declare class CommunityService {
     editComment(commentId: number, content: string): Promise<{
         content: string;
         id: number;
+        parentId: number;
+        depth: number;
         createdAt: Date;
         deletedAt: Date;
         author: UserEntity;
