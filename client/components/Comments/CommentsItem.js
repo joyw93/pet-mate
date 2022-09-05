@@ -35,12 +35,41 @@ const replyArr = [
 ];
 
 const CommentsItem = ({ comment, onClick }) => {
+  const likeIcon = "../img/filled_heart2.png";
+  const unlikeIcon = "../img/heart2.png";
+  const [cmtLike, setCmtLike] = useState(false);
+
   const [toggleReplyInput, setToggleReplyInput] = useState(false);
   const { me } = useSelector((state) => state.user);
 
   const openReply = () => {
     setToggleReplyInput(!toggleReplyInput);
   };
+
+  // 내가 좋아요 댓글 표시
+  // useEffect(() => {
+  //   if (!me) {
+  //     setCmtLike(false);
+  //     return;
+  //   }
+  //   if (comment && comment.likes) {
+  //     comment.likes.forEach((likers) => {
+  //       if (likers.userId === me.id) {
+  //         setCmtLike(true);
+  //         return;
+  //       }
+  //     });
+  //   }
+  // }, [me, comment]);
+
+  const handleLike = useCallback(() => {
+    if (!me) {
+      alert("로그인이 필요합니다.");
+      return router.push("/login");
+    }
+    setCmtLike(!cmtLike);
+    // dispatch(communityActions.likePostRequest(id));
+  }, [cmtLike]);
 
   return (
     <CommentItem>
@@ -57,6 +86,19 @@ const CommentsItem = ({ comment, onClick }) => {
         </AuthorInfo>
         <CommentContentInfo>
           <span>{getElapsedTime(comment.createdAt)}</span>
+          <span>·</span>
+          <span id="open_reply" onClick={openReply}>
+            답글 달기
+          </span>
+          <span>·</span>
+          <span id="like_comment" onClick={handleLike}>
+            0
+            {cmtLike ? (
+              <img src={likeIcon} alt="좋아요" />
+            ) : (
+              <img src={unlikeIcon} alt="안좋아요" />
+            )}
+          </span>
           {comment.author?.id === me?.id ? (
             <>
               <span>·</span>
@@ -65,10 +107,6 @@ const CommentsItem = ({ comment, onClick }) => {
               </span>
             </>
           ) : null}
-          <span>·</span>
-          <span id="open_reply" onClick={openReply}>
-            답글 달기
-          </span>
         </CommentContentInfo>
       </CommentHandler>
       <p>{comment.content}</p>
