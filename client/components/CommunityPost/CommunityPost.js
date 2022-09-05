@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { communityActions } from '../../store/reducers/community';
+import { communityActions } from "../../store/reducers/community";
 import { CreatePostContainer } from "./styled";
 
 import {

@@ -15,9 +15,21 @@ export const CommentContentInfo = styled.div`
     font-size: 0.8rem;
     font-weight: bold;
     margin-right: 10px;
+    position: relative;
+    img {
+      width: 0.9rem;
+      height: 0.9rem;
+      position: absolute;
+      bottom: 1px;
+      left: 0;
+    }
+  }
+  #like_comment {
+    padding-left: 15px;
   }
   #delete_btn,
-  #open_reply {
+  #open_reply,
+  #like_comment {
     cursor: pointer;
   }
   #delete_btn:hover,
