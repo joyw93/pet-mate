@@ -15,22 +15,26 @@ export const Button = styled.button`
   margin-left: 10px;
   transition: all 0.1s;
 
-  &:first-child {
-    background-color: ${Colors.primaryColor};
-  }
-
-  &:last-child {
-    background-color: #000;
-    color: #fff;
-  }
-
-  &:first-child:hover {
-    color: #fff;
+  :hover {
     background-color: rgba(0, 0, 0, 0.5);
   }
-  &:last-child:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+`;
+
+export const PostButton = styled(Button)`
+  background-color: ${Colors.primaryColor};
+  
+  :hover {
+    color: #fff;
+    }
+`;
+
+export const BackButton = styled(Button)`
+  background-color: #000;
+    color: #fff;
+`;
+
+export const TempButton = styled(Button)`
+  background-color: ${Colors.btnGray};
 `;
 
 export const CreatePostContainer = styled.div`
