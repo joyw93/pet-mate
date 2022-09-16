@@ -30,7 +30,7 @@ export declare class CommunityController {
     } & import("./community.entity").CommunityEntity>;
     deletePost(user: UserEntity, postId: number): Promise<import("./community.entity").CommunityEntity>;
     addComment(user: UserEntity, postId: number, createCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
-    addCoComment(): Promise<void>;
+    addCoComment(user: UserEntity, postId: number, commentId: number, CreateCommentDto: CreateCommentDto): Promise<import("../common/entities/community-comment.entity").CommunityCommentEntity>;
     editComment(commentId: number, commentContent: string): Promise<{
         content: string;
         id: number;

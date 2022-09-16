@@ -55,6 +55,8 @@ export class CommunityController {
     return await this.communityService.getOnePost(postId);
   }
 
+ 
+
   @Get(':postId/like')
   async likePost(
     @User() user: UserEntity,
@@ -80,7 +82,6 @@ export class CommunityController {
     }
     return post;
   }
-
 
   @Patch(':postId')
   @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
@@ -110,9 +111,8 @@ export class CommunityController {
     @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
   ) {
-    return await this.communityService.deletePost(user.id,postId);
+    return await this.communityService.deletePost(user.id, postId);
   }
-
 
   @Post(':postId/comment')
   async addComment(
@@ -128,8 +128,18 @@ export class CommunityController {
   }
 
   @Post(':postId/:commentId/comment')
-  async addCoComment(){
-    
+  async addCoComment(
+    @User() user: UserEntity,
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @Body() CreateCommentDto: CreateCommentDto,
+  ) {
+    return await this.communityService.addCoComment(
+      user.id,
+      postId,
+      commentId,
+      CreateCommentDto,
+    );
   }
 
   @Patch('comment/:commentId')

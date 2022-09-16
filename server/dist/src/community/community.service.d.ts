@@ -43,6 +43,7 @@ export declare class CommunityService {
     deletePost(userId: number, postId: number): Promise<CommunityEntity>;
     likePost(userId: number, postId: number): Promise<"like" | "unlike">;
     addComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
+    addCoComment(userId: number, postId: number, commentId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
     editComment(commentId: number, content: string): Promise<{
         content: string;
         id: number;

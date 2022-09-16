@@ -162,6 +162,8 @@ export class CommunityService {
           'images.id',
           'images.url',
           'comments.id',
+          'comments.depth',
+          'comments.parentId',
           'comments.content',
           'comments.createdAt',
           'commentAuthor.id',
@@ -340,6 +342,38 @@ export class CommunityService {
     }
   }
 
+  async addCoComment(
+    userId: number,
+    postId: number,
+    commentId: number,
+    createCommentDto: CreateCommentDto,
+  ) {
+    const { content } = createCommentDto;
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const userProfile = await this.userProfileRepository.findOne({
+      where: { id: user.profileId },
+    });
+    const post = await this.communityRepository.findOne({
+      where: { id: postId },
+    });
+    if (!post) throw new BadRequestException(res.msg.COMMUNITY_POST_NOT_EXIST);
+    try {
+      const comment = new CommunityCommentEntity();
+      comment.author = user;
+      comment.depth = 1;
+      comment.parentId = commentId;
+      comment.post = post;
+      comment.content = content;
+      comment.author.profile = userProfile;
+      return await this.communityCommentRepository.save(comment);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_CREATE_COMMENT_FAIL,
+      );
+    }
+  }
+
   async editComment(commentId: number, content: string) {
     try {
       const comment = await this.communityCommentRepository.findOne({
@@ -389,4 +423,6 @@ export class CommunityService {
       throw new InternalServerErrorException(res.msg.COMMUNITY_ADD_IMAGE_FAIL);
     }
   }
+
+ 
 }

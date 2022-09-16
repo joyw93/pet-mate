@@ -158,6 +158,8 @@ let CommunityService = class CommunityService {
                 'images.id',
                 'images.url',
                 'comments.id',
+                'comments.depth',
+                'comments.parentId',
                 'comments.content',
                 'comments.createdAt',
                 'commentAuthor.id',
@@ -310,6 +312,32 @@ let CommunityService = class CommunityService {
         try {
             const comment = new community_comment_entity_1.CommunityCommentEntity();
             comment.author = user;
+            comment.post = post;
+            comment.content = content;
+            comment.author.profile = userProfile;
+            return await this.communityCommentRepository.save(comment);
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_CREATE_COMMENT_FAIL);
+        }
+    }
+    async addCoComment(userId, postId, commentId, createCommentDto) {
+        const { content } = createCommentDto;
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        const userProfile = await this.userProfileRepository.findOne({
+            where: { id: user.profileId },
+        });
+        const post = await this.communityRepository.findOne({
+            where: { id: postId },
+        });
+        if (!post)
+            throw new common_1.BadRequestException(res.msg.COMMUNITY_POST_NOT_EXIST);
+        try {
+            const comment = new community_comment_entity_1.CommunityCommentEntity();
+            comment.author = user;
+            comment.depth = 1;
+            comment.parentId = commentId;
             comment.post = post;
             comment.content = content;
             comment.author.profile = userProfile;
