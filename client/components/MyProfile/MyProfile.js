@@ -30,15 +30,10 @@ const MyProfile = () => {
   const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } =
     useSelector((state) => state.user);
   const posts = [myPostsData, myCommentsData, myLikedData];
-  const [postLength, setPostLength] = useState(0);
 
   const tabClickHandler = useCallback((index) => {
     setActiveIndex(index);
     setSubTabActiveIndex(0);
-    setPostLength(
-      posts[activeIndex].communityPosts?.length +
-        posts[activeIndex].sanchaekPosts?.length
-    );
   }, []);
 
   const subTabClickHandler = useCallback((index) => {
@@ -78,10 +73,6 @@ const MyProfile = () => {
   const profileEdit = () => {
     Router.push("/profile/edit");
   };
-
-  useLayoutEffect(() => {
-    setPostLength();
-  }, [myPostsData]);
 
   return (
     <>
