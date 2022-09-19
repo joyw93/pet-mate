@@ -9,6 +9,7 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     getMyProfile(user: UserEntity): Promise<UserEntity>;
+    getUserProfile(userId: number): Promise<UserEntity>;
     checkNickname(data: {
         nickname: string;
     }): Promise<void>;
@@ -47,12 +48,14 @@ export declare class UserController {
         sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
     }>;
     getMySanchaeks(user: UserEntity): Promise<import("../sanchaek/sanchaek.entity").SanchaekEntity[]>;
-    getLikedPosts(user: UserEntity): Promise<import("../community/community.entity").CommunityEntity[]>;
+    getLikedPosts(user: UserEntity): Promise<{
+        communityPosts: import("../community/community.entity").CommunityEntity[];
+        sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
+    }>;
     getCommentedPosts(user: UserEntity): Promise<{
         communityPosts: import("../community/community.entity").CommunityEntity[];
         sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
     }>;
     signout(user: UserEntity): Promise<import("typeorm").DeleteResult>;
-    getUserProfile(userId: number): Promise<UserEntity>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;
 }

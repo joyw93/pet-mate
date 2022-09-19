@@ -47,9 +47,43 @@ export class SanchaekController {
     return await this.sanchaekService.getOneSanchaek(sanchaekId);
   }
 
+  @Get(':sanchaekId/like')
+  async likePost(
+    @User() user: UserEntity,
+    @Param('sanchaekId', ParseIntPipe) sanchaekId: number,
+  ) {
+    return await this.sanchaekService.likeSanchaek(user.id, sanchaekId);
+  }
+
+  @Get('comment/:commentId/like')
+  async likeComment(
+    @User() user: UserEntity,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return await this.sanchaekService.likeComment(user.id, commentId);
+  }
+
   @Post()
   @UseInterceptors(FilesInterceptor('images', 3, createSanchaekConfig))
   async createSanchaek(
+    @User() user: UserEntity,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
+    @Body() createSanchaekDto: CreateSanchaekDto,
+  ) {
+    const sanchaek = await this.sanchaekService.createSanchaek(
+      user.id,
+      createSanchaekDto,
+    );
+    if (imgUrls) {
+      await this.sanchaekService.uploadImages(sanchaek, imgUrls);
+    }
+
+    return sanchaek;
+  }
+
+  @Post('temporary')
+  @UseInterceptors(FilesInterceptor('images', 3, createSanchaekConfig))
+  async createTemporarySanchaek(
     @User() user: UserEntity,
     @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body() createSanchaekDto: CreateSanchaekDto,

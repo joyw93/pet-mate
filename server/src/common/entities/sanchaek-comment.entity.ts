@@ -1,6 +1,7 @@
 import { SanchaekEntity } from 'src/sanchaek/sanchaek.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SanchaekCommentLikeEntity } from './sanchaek-comment-like.entity';
 
 @Entity('SanchaekComment')
 export class SanchaekCommentEntity {
@@ -9,6 +10,12 @@ export class SanchaekCommentEntity {
 
   @Column('text', { name: 'content' })
   content: string;
+
+  @Column('int', { name: 'parentId', nullable: true })
+  parentId: number;
+
+  @Column('int', { name: 'depth', default: 0 })
+  depth: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -27,4 +34,13 @@ export class SanchaekCommentEntity {
   })
   @JoinColumn({ name: 'sanchaekId', referencedColumnName: 'id' })
   sanchaek: SanchaekEntity;
+
+  @OneToMany(
+    () => SanchaekCommentLikeEntity,
+    (like: SanchaekCommentLikeEntity) => like.comment,
+    {
+      cascade: true,
+    },
+  )
+  likes: SanchaekCommentLikeEntity[];
 }

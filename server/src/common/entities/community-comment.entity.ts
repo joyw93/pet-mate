@@ -7,8 +7,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { CommunityCommentLikeEntity } from './community-comment-like.entity';
 
 @Entity('CommunityComment')
 export class CommunityCommentEntity {
@@ -41,4 +43,13 @@ export class CommunityCommentEntity {
   })
   @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: CommunityEntity;
+
+  @OneToMany(
+    () => CommunityCommentLikeEntity,
+    (like: CommunityCommentLikeEntity) => like.comment,
+    {
+      cascade: true,
+    },
+  )
+  likes: CommunityCommentLikeEntity[];
 }

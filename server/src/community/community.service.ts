@@ -20,6 +20,7 @@ import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.en
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
 import * as res from '../common/responses/message';
+import { CommunityCommentLikeEntity } from 'src/common/entities/community-comment-like.entity';
 
 @Injectable()
 export class CommunityService {
@@ -40,6 +41,8 @@ export class CommunityService {
     private communityHashtagRepository: Repository<CommunityHashtagEntity>,
     @InjectRepository(HashtagEntity)
     private hashtagRepository: Repository<HashtagEntity>,
+    @InjectRepository(CommunityCommentLikeEntity)
+    private communityCommentLikeRepository: Repository<CommunityCommentLikeEntity>,
   ) {}
 
   async getPosts(offset: number, postCount: number, orderBy: string) {
@@ -171,6 +174,7 @@ export class CommunityService {
           'commentAuthorProfile.imageUrl',
           'commentAuthorProfile.id',
           'likes.userId',
+          'commentLikes.userId',
           'tags.id',
           'hashtag.keyword',
         ])
@@ -182,8 +186,10 @@ export class CommunityService {
         .leftJoin('post.images', 'images')
         .leftJoin('post.tags', 'tags')
         .leftJoin('post.likes', 'likes')
+        .leftJoin('comments.likes','commentLikes')
         .leftJoin('tags.hashtag', 'hashtag')
         .loadRelationCountAndMap('post.likeCount', 'post.likes')
+        .loadRelationCountAndMap('comments.commentLikeCount', 'comments.likes')
         .where('post.id = :id', { id: postId })
         .getOne();
       return post;
@@ -219,6 +225,24 @@ export class CommunityService {
       post.title = title;
       post.content = content;
       post.author = user;
+      return await this.communityRepository.save(post);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(
+        res.msg.COMMUNITY_CREATE_POST_FAIL,
+      );
+    }
+  }
+
+  async createTemporaryPost(userId: number, createPostDto: CreatePostDto) {
+    try {
+      const { title, content } = createPostDto;
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      const post = new CommunityEntity();
+      post.title = title;
+      post.content = content;
+      post.author = user;
+      post.temporary = true;
       return await this.communityRepository.save(post);
     } catch (err) {
       console.error(err);
@@ -305,6 +329,31 @@ export class CommunityService {
         communityLike.user = user;
         communityLike.post = post;
         await this.communityLikeRepository.save(communityLike);
+        return 'like';
+      }
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
+    }
+  }
+
+  async likeComment(userId: number, commentId: number) {
+    try {
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      const comment = await this.communityCommentRepository.findOne({
+        where: { id: commentId },
+      });
+      const commentLike = await this.communityCommentLikeRepository.findOne({
+        where: { userId, commentId },
+      });
+      if (commentLike) {
+        await this.communityCommentLikeRepository.remove(commentLike);
+        return 'unlike';
+      } else {
+        const commentLike = new CommunityCommentLikeEntity();
+        commentLike.user = user;
+        commentLike.comment = comment;
+        await this.communityCommentLikeRepository.save(commentLike);
         return 'like';
       }
     } catch (err) {
@@ -423,6 +472,4 @@ export class CommunityService {
       throw new InternalServerErrorException(res.msg.COMMUNITY_ADD_IMAGE_FAIL);
     }
   }
-
- 
 }

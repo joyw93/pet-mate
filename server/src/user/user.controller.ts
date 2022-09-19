@@ -39,6 +39,11 @@ export class UserController {
     return await this.userService.getMyProfile(user.id);
   }
 
+  @Get(':userId')
+  async getUserProfile(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.userService.getUserProfile(userId);
+  }
+
   @Post('nickname-check')
   async checkNickname(@Body() data: { nickname: string }) {
     return await this.userService.checkNickname(data.nickname);
@@ -138,7 +143,10 @@ export class UserController {
 
   @Get('liked-posts')
   async getLikedPosts(@User() user: UserEntity) {
-    return await this.userService.getLikedPosts(user.id);
+    const communityPosts = await this.userService.getLikedPosts(user.id);
+    const sanchaekPosts = await this.userService.getLikedSanchaeks(user.id);
+    const posts = { communityPosts, sanchaekPosts };
+    return posts;
   }
 
   @Get('commented-posts')
@@ -152,11 +160,6 @@ export class UserController {
   @Delete('signout')
   async signout(@User() user: UserEntity) {
     return await this.userService.signout(user.id);
-  }
-
-  @Get(':userId')
-  async getUserProfile(@Param('userId', ParseIntPipe) userId: number) {
-    return await this.userService.getUserProfile(userId);
   }
 
   @Get('session')

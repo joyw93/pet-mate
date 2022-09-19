@@ -25,8 +25,9 @@ const community_hashtag_entity_1 = require("../common/entities/community-hashtag
 const hashtag_entity_1 = require("../hashtag/hashtag.entity");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const res = require("../common/responses/message");
+const community_comment_like_entity_1 = require("../common/entities/community-comment-like.entity");
 let CommunityService = class CommunityService {
-    constructor(communityRepository, userRepository, userProfileRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository) {
+    constructor(communityRepository, userRepository, userProfileRepository, communityLikeRepository, communityCommentRepository, communityImageRepository, communityHashtagRepository, hashtagRepository, communityCommentLikeRepository) {
         this.communityRepository = communityRepository;
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
@@ -35,6 +36,7 @@ let CommunityService = class CommunityService {
         this.communityImageRepository = communityImageRepository;
         this.communityHashtagRepository = communityHashtagRepository;
         this.hashtagRepository = hashtagRepository;
+        this.communityCommentLikeRepository = communityCommentLikeRepository;
     }
     async getPosts(offset, postCount, orderBy) {
         let cond;
@@ -167,6 +169,7 @@ let CommunityService = class CommunityService {
                 'commentAuthorProfile.imageUrl',
                 'commentAuthorProfile.id',
                 'likes.userId',
+                'commentLikes.userId',
                 'tags.id',
                 'hashtag.keyword',
             ])
@@ -178,8 +181,10 @@ let CommunityService = class CommunityService {
                 .leftJoin('post.images', 'images')
                 .leftJoin('post.tags', 'tags')
                 .leftJoin('post.likes', 'likes')
+                .leftJoin('comments.likes', 'commentLikes')
                 .leftJoin('tags.hashtag', 'hashtag')
                 .loadRelationCountAndMap('post.likeCount', 'post.likes')
+                .loadRelationCountAndMap('comments.commentLikeCount', 'comments.likes')
                 .where('post.id = :id', { id: postId })
                 .getOne();
             return post;
@@ -215,6 +220,22 @@ let CommunityService = class CommunityService {
             post.title = title;
             post.content = content;
             post.author = user;
+            return await this.communityRepository.save(post);
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_CREATE_POST_FAIL);
+        }
+    }
+    async createTemporaryPost(userId, createPostDto) {
+        try {
+            const { title, content } = createPostDto;
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            const post = new community_entity_1.CommunityEntity();
+            post.title = title;
+            post.content = content;
+            post.author = user;
+            post.temporary = true;
             return await this.communityRepository.save(post);
         }
         catch (err) {
@@ -290,6 +311,32 @@ let CommunityService = class CommunityService {
                 communityLike.user = user;
                 communityLike.post = post;
                 await this.communityLikeRepository.save(communityLike);
+                return 'like';
+            }
+        }
+        catch (err) {
+            console.error(err);
+            throw new common_1.InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
+        }
+    }
+    async likeComment(userId, commentId) {
+        try {
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            const comment = await this.communityCommentRepository.findOne({
+                where: { id: commentId },
+            });
+            const commentLike = await this.communityCommentLikeRepository.findOne({
+                where: { userId, commentId },
+            });
+            if (commentLike) {
+                await this.communityCommentLikeRepository.remove(commentLike);
+                return 'unlike';
+            }
+            else {
+                const commentLike = new community_comment_like_entity_1.CommunityCommentLikeEntity();
+                commentLike.user = user;
+                commentLike.comment = comment;
+                await this.communityCommentLikeRepository.save(commentLike);
                 return 'like';
             }
         }
@@ -403,7 +450,9 @@ CommunityService = __decorate([
     __param(5, (0, typeorm_1.InjectRepository)(community_image_entity_1.CommunityImageEntity)),
     __param(6, (0, typeorm_1.InjectRepository)(community_hashtag_entity_1.CommunityHashtagEntity)),
     __param(7, (0, typeorm_1.InjectRepository)(hashtag_entity_1.HashtagEntity)),
+    __param(8, (0, typeorm_1.InjectRepository)(community_comment_like_entity_1.CommunityCommentLikeEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,

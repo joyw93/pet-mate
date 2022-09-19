@@ -1,5 +1,6 @@
 import { SanchaekCommentEntity } from 'src/common/entities/sanchaek-comment.entity';
 import { SanchaekImageEntity } from 'src/common/entities/sanchaek-image.entity';
+import { SanchaekLikeEntity } from 'src/common/entities/sanchaek-like.entity';
 import { SanchaekMapEntity } from 'src/common/entities/sanchaek-map.entity';
 import { UserEntity } from 'src/user/user.entity';
 import {
@@ -25,6 +26,9 @@ export class SanchaekEntity {
 
   @Column('text', { name: 'content' })
   content: string;
+
+  @Column('boolean', {name:'temporary', default: false})
+  temporary: boolean;
 
   @Column('int', { name: 'userId' })
   userId: number;
@@ -68,6 +72,15 @@ export class SanchaekEntity {
     { cascade: true },
   )
   images: SanchaekImageEntity[];
+
+  @OneToMany(
+    () => SanchaekLikeEntity,
+    (like: SanchaekLikeEntity) => like.sanchaek,
+    {
+      cascade: true,
+    },
+  )
+  likes: SanchaekLikeEntity[];
 
   @OneToOne(
     () => SanchaekMapEntity,

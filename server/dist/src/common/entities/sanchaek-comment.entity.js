@@ -13,6 +13,7 @@ exports.SanchaekCommentEntity = void 0;
 const sanchaek_entity_1 = require("../../sanchaek/sanchaek.entity");
 const user_entity_1 = require("../../user/user.entity");
 const typeorm_1 = require("typeorm");
+const sanchaek_comment_like_entity_1 = require("./sanchaek-comment-like.entity");
 let SanchaekCommentEntity = class SanchaekCommentEntity {
 };
 __decorate([
@@ -23,6 +24,14 @@ __decorate([
     (0, typeorm_1.Column)('text', { name: 'content' }),
     __metadata("design:type", String)
 ], SanchaekCommentEntity.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { name: 'parentId', nullable: true }),
+    __metadata("design:type", Number)
+], SanchaekCommentEntity.prototype, "parentId", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { name: 'depth', default: 0 }),
+    __metadata("design:type", Number)
+], SanchaekCommentEntity.prototype, "depth", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
@@ -45,6 +54,12 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'sanchaekId', referencedColumnName: 'id' }),
     __metadata("design:type", sanchaek_entity_1.SanchaekEntity)
 ], SanchaekCommentEntity.prototype, "sanchaek", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => sanchaek_comment_like_entity_1.SanchaekCommentLikeEntity, (like) => like.comment, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], SanchaekCommentEntity.prototype, "likes", void 0);
 SanchaekCommentEntity = __decorate([
     (0, typeorm_1.Entity)('SanchaekComment')
 ], SanchaekCommentEntity);

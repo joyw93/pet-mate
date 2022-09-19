@@ -55,8 +55,6 @@ export class CommunityController {
     return await this.communityService.getOnePost(postId);
   }
 
- 
-
   @Get(':postId/like')
   async likePost(
     @User() user: UserEntity,
@@ -65,9 +63,35 @@ export class CommunityController {
     return await this.communityService.likePost(user.id, postId);
   }
 
+  @Get('comment/:commentId/like')
+  async likeComment(
+    @User() user: UserEntity,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return await this.communityService.likeComment(user.id, commentId);
+  }
+
   @Post()
   @UseInterceptors(FilesInterceptor('images', 3, createPostConfig))
   async createPost(
+    @User() user: UserEntity,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
+    @Body(CommunityCreatePipe) createPostDto: CreatePostDto,
+  ) {
+    const { hashtags } = createPostDto;
+    const post = await this.communityService.createPost(user.id, createPostDto);
+    if (hashtags) {
+      await this.hashtagService.addTags(post, hashtags);
+    }
+    if (imgUrls) {
+      await this.communityService.uploadImages(post, imgUrls);
+    }
+    return post;
+  }
+
+  @Post('temporary')
+  @UseInterceptors(FilesInterceptor('images', 3, createPostConfig))
+  async createTemporaryPost(
     @User() user: UserEntity,
     @UploadedFiles(ImageFilePipe) imgUrls: string[],
     @Body(CommunityCreatePipe) createPostDto: CreatePostDto,

@@ -9,12 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SearchModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const community_comment_like_entity_1 = require("../common/entities/community-comment-like.entity");
 const community_comment_entity_1 = require("../common/entities/community-comment.entity");
 const community_hashtag_entity_1 = require("../common/entities/community-hashtag.entity");
 const community_image_entity_1 = require("../common/entities/community-image.entity");
 const community_like_entity_1 = require("../common/entities/community-like.entity");
+const sanchaek_comment_like_entity_1 = require("../common/entities/sanchaek-comment-like.entity");
 const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
+const sanchaek_like_entity_1 = require("../common/entities/sanchaek-like.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
 const user_profile_entity_1 = require("../common/entities/user-profile.entity");
 const community_entity_1 = require("../community/community.entity");
@@ -35,10 +38,13 @@ SearchModule = __decorate([
                 community_like_entity_1.CommunityLikeEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,
                 community_image_entity_1.CommunityImageEntity,
+                community_comment_like_entity_1.CommunityCommentLikeEntity,
                 sanchaek_entity_1.SanchaekEntity,
                 sanchaek_map_entity_1.SanchaekMapEntity,
                 sanchaek_image_entity_1.SanchaekImageEntity,
                 sanchaek_comment_entity_1.SanchaekCommentEntity,
+                sanchaek_like_entity_1.SanchaekLikeEntity,
+                sanchaek_comment_like_entity_1.SanchaekCommentLikeEntity,
                 hashtag_entity_1.HashtagEntity,
                 user_entity_1.UserEntity,
                 user_profile_entity_1.UserProfileEntity

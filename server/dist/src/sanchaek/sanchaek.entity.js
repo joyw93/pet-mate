@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SanchaekEntity = void 0;
 const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
+const sanchaek_like_entity_1 = require("../common/entities/sanchaek-like.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
 const user_entity_1 = require("../user/user.entity");
 const typeorm_1 = require("typeorm");
@@ -29,6 +30,10 @@ __decorate([
     (0, typeorm_1.Column)('text', { name: 'content' }),
     __metadata("design:type", String)
 ], SanchaekEntity.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)('boolean', { name: 'temporary', default: false }),
+    __metadata("design:type", Boolean)
+], SanchaekEntity.prototype, "temporary", void 0);
 __decorate([
     (0, typeorm_1.Column)('int', { name: 'userId' }),
     __metadata("design:type", Number)
@@ -73,6 +78,12 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => sanchaek_image_entity_1.SanchaekImageEntity, (image) => image.sanchaek, { cascade: true }),
     __metadata("design:type", Array)
 ], SanchaekEntity.prototype, "images", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => sanchaek_like_entity_1.SanchaekLikeEntity, (like) => like.sanchaek, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], SanchaekEntity.prototype, "likes", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => sanchaek_map_entity_1.SanchaekMapEntity, (mapInfo) => mapInfo.sanchaek, {
         cascade: true,
