@@ -156,9 +156,10 @@ export const HeadUser = styled.div`
   display: flex;
   align-items: center;
   gap:10px;
-
-  img{
+  
+  img {
     width: 30px;
+    height:30px;
     border-radius: 50%;
   }
 
@@ -214,3 +215,5 @@ export const LocaImg = styled.img`
   left: 0;
   top: 0;
 `;
+
+

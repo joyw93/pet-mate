@@ -27,6 +27,8 @@ import CommentsList from '../Comments/CommentsList';
 
 const SanchaekPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
+  const unlikeIcon = "../img/heart2.png";
+  const [like, setLike] = useState(false);
   const [cmtContent, setCmtContent] = useState("");
   const router = useRouter();
   const { id } = router.query;
@@ -35,15 +37,8 @@ const SanchaekPostDetail = () => {
     (state) => state.sanchaek
   );
 
-  console.log(sanchaekPost);
-
   const dispatch = useDispatch();
   const commentInputRef = useRef();
-
-  // useEffect(() => {
-  //   if (sanchaekAddCommentDone) {
-  //   }
-  // }, [sanchaekPost]);
 
   useEffect(() => {
     if (router.isReady && !sanchaekPost) {
@@ -69,6 +64,15 @@ const SanchaekPostDetail = () => {
     commentInputRef.current.blur();
     console.log(cmtContent);
   }, [cmtContent]);
+
+  const handleLike = useCallback(() => {
+    if (!me) {
+      alert("로그인이 필요합니다.");
+      return router.push("/login");
+    }
+    setLike(!like);
+    dispatch(sanchaekActions.likePostRequest(id));
+  }, [like]);
 
   const keyUp = useCallback(
     (e) => {
@@ -142,10 +146,14 @@ const SanchaekPostDetail = () => {
               <span id="views">조회수 {sanchaekPost.views}</span>
             </div>
             <div id="like_wrapper">
-              <button >
-                <img src={likeIcon} alt="좋아요" />
+              <button onClick={handleLike}>
+                {like ? (
+                  <img src={likeIcon} alt="좋아요" />
+                ) : (
+                  <img src={unlikeIcon} alt="안좋아요" />
+                )}
               </button>
-              <span id="like_count">1</span>
+              <span id="like_count">{sanchaekPost.likeCount}</span>
             </div>
           </PostInfo>
           <div id="content">
