@@ -9,8 +9,8 @@ export declare class SanchaekController {
     getSanchaeks(offset: number, sanchaekCount: number): Promise<import("./sanchaek.entity").SanchaekEntity[]>;
     getHotSanchaeks(): Promise<import("./sanchaek.entity").SanchaekEntity[]>;
     getOneSanchaek(sanchaekId: number): Promise<import("./sanchaek.entity").SanchaekEntity>;
-    likePost(user: UserEntity, sanchaekId: number): Promise<"unlike" | "like">;
-    likeComment(user: UserEntity, commentId: number): Promise<"unlike" | "like">;
+    likePost(user: UserEntity, sanchaekId: number): Promise<"like" | "unlike">;
+    likeComment(user: UserEntity, commentId: number): Promise<"like" | "unlike">;
     createSanchaek(user: UserEntity, imgUrls: string[], createSanchaekDto: CreateSanchaekDto): Promise<import("./sanchaek.entity").SanchaekEntity>;
     createTemporarySanchaek(user: UserEntity, imgUrls: string[], createSanchaekDto: CreateSanchaekDto): Promise<import("./sanchaek.entity").SanchaekEntity>;
     editSanchaek(user: UserEntity, sanchaekId: number, imgUrls: string[], editSanchaekDto: EditSanchaekDto): Promise<{

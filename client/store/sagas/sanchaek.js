@@ -142,6 +142,24 @@ function* removeComment(action) {
   }
 }
 
+// 좋아요
+function likePostAPI(data) {
+  return axios.get(`${serverUrl}/sanchaek/${data}/like`, {
+    withCredentials: true,
+  });
+}
+
+function* likePost(action) {
+  try {
+    const { data } = yield call(likePostAPI, action.payload);
+    yield put(sanchaekActions.likePostSuccess(data));
+  } catch (err) {
+    console.error(err);
+    yield put(sanchaekActions.likePostFailure(err.response.data));
+  }
+}
+
+
 function* watchAddPost() {
   yield takeLatest(sanchaekActions.sanchaekAddPostRequest, post);
 }
@@ -177,6 +195,10 @@ function* watchRemoveComment() {
   yield takeLatest(sanchaekActions.sanchaekRemoveCommentRequest, removeComment);
 }
 
+function* watchLikePost() {
+  yield takeLatest(sanchaekActions.likePostRequest, likePost);
+}
+
 export default function* sanchaekSaga() {
   yield all([
     fork(watchAddPost),
@@ -187,5 +209,6 @@ export default function* sanchaekSaga() {
     fork(watchAddComment),
     fork(watchRemoveComment),
     fork(watchUpdatePost),
+    fork(watchLikePost)
   ]);
 }

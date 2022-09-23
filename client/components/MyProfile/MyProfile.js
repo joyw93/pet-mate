@@ -163,7 +163,7 @@ const MyProfile = () => {
                       {posts[activeIndex].communityPosts &&
                         posts[activeIndex].sanchaekPosts &&
                         posts[activeIndex].communityPosts?.length +
-                          posts[activeIndex].sanchaekPosts?.length}
+                        posts[activeIndex].sanchaekPosts?.length}
                       )
                     </span>
                   </li>

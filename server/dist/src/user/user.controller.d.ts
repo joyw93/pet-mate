@@ -9,7 +9,6 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     getMyProfile(user: UserEntity): Promise<UserEntity>;
-    getUserProfile(userId: number): Promise<UserEntity>;
     checkNickname(data: {
         nickname: string;
     }): Promise<void>;
@@ -57,5 +56,6 @@ export declare class UserController {
         sanchaekPosts: import("../sanchaek/sanchaek.entity").SanchaekEntity[];
     }>;
     signout(user: UserEntity): Promise<import("typeorm").DeleteResult>;
+    getUserProfile(userId: number): Promise<UserEntity>;
     isLoggedIn(user: UserEntity, req: any): Promise<void>;
 }

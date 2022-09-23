@@ -34,9 +34,6 @@ let UserController = class UserController {
     async getMyProfile(user) {
         return await this.userService.getMyProfile(user.id);
     }
-    async getUserProfile(userId) {
-        return await this.userService.getUserProfile(userId);
-    }
     async checkNickname(data) {
         return await this.userService.checkNickname(data.nickname);
     }
@@ -106,6 +103,9 @@ let UserController = class UserController {
     async signout(user) {
         return await this.userService.signout(user.id);
     }
+    async getUserProfile(userId) {
+        return await this.userService.getUserProfile(userId);
+    }
     async isLoggedIn(user, req) {
         console.log(user);
         console.log(req.session);
@@ -118,13 +118,6 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getMyProfile", null);
-__decorate([
-    (0, common_1.Get)(':userId'),
-    __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getUserProfile", null);
 __decorate([
     (0, common_1.Post)('nickname-check'),
     __param(0, (0, common_1.Body)()),
@@ -259,6 +252,13 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "signout", null);
+__decorate([
+    (0, common_1.Get)(':userId'),
+    __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserProfile", null);
 __decorate([
     (0, common_1.Get)('session'),
     __param(0, (0, user_decorator_1.User)()),

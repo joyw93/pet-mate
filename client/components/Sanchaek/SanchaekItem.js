@@ -26,7 +26,13 @@ const SanchaekItem = (post) => {
     <Grid item xs={12} sm={6} md={3}>
       <ItemHeader>
         <HeadUser>
-          <img src="../img/defaultimgGrey.png" style={{ width: '30px' }} />
+          {/* <img src="../img/defaultimgGrey.png" style={{ width: '30px' }} />
+          <p>{post.user.nickname}</p> */}
+          {post?.user?.profile?.imageUrl ? (
+            <img src={post.user.profile.imageUrl} />
+          ) : (
+            <img src={'../img/defaultimgGrey.png'} />
+          )}
           <p>{post.user.nickname}</p>
         </HeadUser>
         <FollowBtn>팔로우</FollowBtn>
@@ -50,7 +56,7 @@ const SanchaekItem = (post) => {
                 <span>{post.mapInfo.location}</span>
               </ContentInfo>
             )}
-            <ContentDetail>좋아요 5 · 조회수 26</ContentDetail>
+            <ContentDetail>좋아요 {post.likeCount} · 조회수 {post.views}</ContentDetail>
           </ContentArea>
         </ItemWrapper>
       </ItemContainer>
