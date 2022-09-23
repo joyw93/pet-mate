@@ -97,6 +97,7 @@ let SanchaekService = class SanchaekService {
         ])
             .leftJoin('sanchaek.images', 'images')
             .leftJoin('sanchaek.user', 'user')
+            .leftJoin('user.profile', 'profile')
             .leftJoinAndSelect('sanchaek.mapInfo', 'map')
             .leftJoin(likeCount, 'LikeCount', 'LikeCount.sanchaekId = sanchaek.id')
             .loadRelationCountAndMap('sanchaek.likeCount', 'sanchaek.likes')
