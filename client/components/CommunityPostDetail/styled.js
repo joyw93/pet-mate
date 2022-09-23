@@ -49,6 +49,30 @@ export const Title = styled.div`
     line-height: 35px;
   }
 `;
+
+export const PostInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 48px;
+  margin-left: 10px;
+  div {
+    display: flex;
+    span {
+      margin-right: 5px;
+      line-height: 24px;
+      font-size: 0.8rem;
+    }
+  }
+  #post_author {
+    display: inline-block;
+    font-weight: bold;
+    color: #000;
+    border-radius: 20px;
+    font-size: 1rem;
+    line-height: 24px;
+  }
+`;
 export const PostInfo = styled.div`
   margin: 10px 0 30px;
   display: flex;
@@ -57,21 +81,9 @@ export const PostInfo = styled.div`
   line-height: 32px;
   font-size: 0.8rem;
 
-  div {
+  #post_info_wrapper {
     display: flex;
-  }
-  #post_author {
-    display: inline-block;
-    height: 32px;
-    /* background-color: ${Colors.primaryColor}; */
-    /* font-weight: bold; */
-    color: black;
-    padding: 0 15px;
-    border-radius: 20px;
-  }
-  #post_created_time,
-  #views {
-    margin-left: 10px;
+    height: 48px;
   }
   #like_wrapper {
     display: flex;
@@ -166,7 +178,7 @@ export const CommentInput = styled.div`
     border-radius: 8px;
     padding-left: 10px;
     &:hover {
-      background-color: #FAFAFA;
+      background-color: #fafafa;
     }
     &:focus {
       border: 1px solid ${Colors.primaryColor};
@@ -222,12 +234,13 @@ export const Images = styled.div`
 `;
 
 export const AuthorProfile = styled.div`
-  width: 28px;
-  height: 28px;
+  width: 48px;
+  height: 48px;
   margin-right: 5px;
+  border-radius: 50%;
   img {
-    width: 100%;
-    height: 100%;
+    width: 48px;
+    height: 48px;
     object-fit: cover;
     border-radius: 50%;
   }

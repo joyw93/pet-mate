@@ -8,6 +8,8 @@ import {
   Images,
   Title,
   PostInfo,
+  PostInfoWrapper,
+  AuthorProfile,
   MapWrapper,
   CommentWrapper,
   Button,
@@ -23,7 +25,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import Link from "next/link";
-import CommentsList from '../Comments/CommentsList';
+import CommentsList from "../Comments/CommentsList";
 
 const SanchaekPostDetail = () => {
   const likeIcon = "../img/filled_heart2.png";
@@ -134,15 +136,27 @@ const SanchaekPostDetail = () => {
             ) : null}
           </Title>
           <PostInfo>
-            <div>
-              <span id="post_author">{sanchaekPost.user.nickname}</span>
-              <span id="post_created_time">
-                {getElapsedTime(sanchaekPost.createdAt)}
-              </span>
-              <span id="views">조회수 {sanchaekPost.views}</span>
+            <div id="post_info_wrapper">
+              <AuthorProfile>
+                {sanchaekPost?.user?.profile?.imageUrl ? (
+                  <img src={sanchaekPost.user.profile.imageUrl} />
+                ) : (
+                  <img src="../img/defaultimgGrey.png" />
+                )}
+              </AuthorProfile>
+              <PostInfoWrapper>
+                <span id="post_author">{sanchaekPost.user.nickname}</span>
+                <div>
+                  <span id="post_created_time">
+                    {getElapsedTime(sanchaekPost.createdAt)}
+                  </span>
+                  <span>·</span>
+                  <span id="views">조회수 {sanchaekPost.views}</span>
+                </div>
+              </PostInfoWrapper>
             </div>
             <div id="like_wrapper">
-              <button >
+              <button>
                 <img src={likeIcon} alt="좋아요" />
               </button>
               <span id="like_count">1</span>
@@ -166,7 +180,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
                 {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
-                  Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
                   <>
                     <h2>지도</h2>
                     <DetailedMap
@@ -193,7 +207,9 @@ const SanchaekPostDetail = () => {
                 />
                 <Button onClick={handleCmtContent}>입력</Button>
               </CommentInput>
-              {sanchaekPost.comments ? <CommentsList list={sanchaekPost.comments} /> : null}
+              {sanchaekPost.comments ? (
+                <CommentsList list={sanchaekPost.comments} />
+              ) : null}
             </CommentWrapper>
           </div>
         </PostDetailContainer>
