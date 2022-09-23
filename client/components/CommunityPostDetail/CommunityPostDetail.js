@@ -19,6 +19,7 @@ import {
   Button,
   CommentInput,
   AuthorProfile,
+  PostInfoWrapper,
 } from "./styled";
 import CommentsList from "../Comments/CommentsList";
 import { getElapsedTime } from "../../utils";
@@ -146,7 +147,7 @@ const CommunityPostDetail = () => {
             ) : null}
           </Title>
           <PostInfo>
-            <div>
+            <div id="post_info_wrapper">
               <AuthorProfile>
                 {post?.author?.profile?.imageUrl ? (
                   <img src={post.author.profile.imageUrl} />
@@ -154,11 +155,16 @@ const CommunityPostDetail = () => {
                   <img src="../img/defaultimgGrey.png" />
                 )}
               </AuthorProfile>
-              {/* <span id="post_author">{post.author.nickname}</span> */}
-              <span id="post_created_time">
-                {getElapsedTime(post.createdAt)}
-              </span>
-              <span id="views">조회수 {post.views}</span>
+              <PostInfoWrapper>
+                <span id="post_author">{post.author.nickname}</span>
+                <div>
+                  <span id="post_created_time">
+                    {getElapsedTime(post.createdAt)}
+                  </span>
+                  <span>·</span>
+                  <span id="views">조회수 {post.views}</span>
+                </div>
+              </PostInfoWrapper>
             </div>
             <div id="like_wrapper">
               <button onClick={handleLike}>

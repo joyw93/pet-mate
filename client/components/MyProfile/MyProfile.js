@@ -116,7 +116,11 @@ const MyProfile = () => {
                 <div className="list_wrapper">
                   <p>좋아요</p>
                   <p>
-                    <span>{myLikedData?.length}</span>개
+                    <span>
+                      {myLikedData?.communityPosts?.length +
+                        myLikedData?.sanchaekPosts?.length}
+                    </span>
+                    개
                   </p>
                 </div>
               </UserFeed>
