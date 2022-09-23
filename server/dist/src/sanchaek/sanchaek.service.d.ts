@@ -22,8 +22,8 @@ export declare class SanchaekService {
     getSearchSanchaeks(keyword: string): Promise<SanchaekEntity[]>;
     getOneSanchaek(sanchaekId: number): Promise<SanchaekEntity>;
     getHotSanchaeks(): Promise<SanchaekEntity[]>;
-    likeSanchaek(userId: number, sanchaekId: number): Promise<"unlike" | "like">;
-    likeComment(userId: number, commentId: number): Promise<"unlike" | "like">;
+    likeSanchaek(userId: number, sanchaekId: number): Promise<"like" | "unlike">;
+    likeComment(userId: number, commentId: number): Promise<"like" | "unlike">;
     createSanchaek(userId: number, createSanchaekDto: CreateSanchaekDto): Promise<SanchaekEntity>;
     createTemporarySanchaek(userId: number, createSanchaekDto: CreateSanchaekDto): Promise<SanchaekEntity>;
     editSanchaek(sanchaekId: number, editSanchaekDto: EditSanchaekDto): Promise<{
