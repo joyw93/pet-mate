@@ -39,6 +39,10 @@ export const initialState = {
   sanchaekRemoveCommentLoading: false,
   sanchaekRemoveCommentDone: false,
   sanchaekRemoveCommentError: null,
+
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
 };
 
 const sanchaekSlice = createSlice({
@@ -185,6 +189,28 @@ const sanchaekSlice = createSlice({
     sanchaekRemoveCommentFailure(state, action) {
       state.sanchaekRemoveCommentLoading = false;
       state.sanchaekRemoveCommentError = action.payload.error;
+    },
+    //좋아요
+    likePostRequest(state, action) {
+      state.likePostLoading = true;
+      state.likePostError = null;
+      state.likePostDone = false;
+    },
+    likePostSuccess(state, action) {
+      state.sanchaekPost.likeCount =
+        action.payload.data === "like"
+          ? state.sanchaekPost.likeCount + 1
+          : state.sanchaekPost.likeCount - 1;
+      state.likePostLoading = false;
+      state.likePostError = null;
+      state.likePostDone = true;
+    },
+    likePostFailure(state, action) {
+      state.likePostLoading = false;
+      state.likePostError = action.payload.error;
+    },
+    likePostReset(state, action) {
+      state.likePostDone = false;
     },
   },
 });
