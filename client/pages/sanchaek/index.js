@@ -3,6 +3,7 @@ import AppLayout from "../../components/AppLayout";
 import SanchaekMain from "../../components/Sanchaek/SanchaekMain";
 
 const SanchaekMate = () => {
+
   return (
     <>
       <Head>
@@ -14,5 +15,6 @@ const SanchaekMate = () => {
     </>
   );
 };
+
 
 export default SanchaekMate;

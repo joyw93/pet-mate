@@ -23,9 +23,9 @@ const CommentReply = ({ reply, onClick }) => {
           <AuthorInfo>
             <AuthorProfile>
               {reply.author?.profile?.imageUrl ? (
-                <img src={reply.author.profile.imageUrl} />
+                <img src={reply.author.profile.imageUrl} alt='프로필 사진' />
               ) : (
-                <img src="../img/defaultimgGrey.png" />
+                <img src="../img/defaultimgGrey.png" alt='기본 프로필 사진' />
               )}
             </AuthorProfile>
             <h3>{reply.author.nickname}</h3>

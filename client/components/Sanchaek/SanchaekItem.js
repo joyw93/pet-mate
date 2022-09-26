@@ -26,8 +26,6 @@ const SanchaekItem = (post) => {
     <Grid item xs={12} sm={6} md={3}>
       <ItemHeader>
         <HeadUser>
-          {/* <img src="../img/defaultimgGrey.png" style={{ width: '30px' }} />
-          <p>{post.user.nickname}</p> */}
           {post?.user?.profile?.imageUrl ? (
             <img src={post.user.profile.imageUrl} />
           ) : (
@@ -42,9 +40,9 @@ const SanchaekItem = (post) => {
           {post?.images && (
             <ImageWrapper>
               {post?.images?.length === 0 ? (
-                <ItemImage src="../img/defaultimgGrey.png" />
+                <ItemImage src="../img/defaultimgGrey.png" alt='기본 프로필 사진' />
               ) : (
-                <ItemImage src={post.images[0].url} />
+                <ItemImage src={post.images[0].url} alt='프로필 사진' />
               )}
             </ImageWrapper>
           )}
@@ -52,7 +50,7 @@ const SanchaekItem = (post) => {
             <ContentTitle>{post.title.slice(0, 20)}</ContentTitle>
             {post && post.mapInfo && post.mapInfo.location && (
               <ContentInfo>
-                <LocaImg src="../../img/locationEmojiBlk.png" />
+                <LocaImg src="../../img/locationEmojiBlk.png" alt='지도' />
                 <span>{post.mapInfo.location}</span>
               </ContentInfo>
             )}

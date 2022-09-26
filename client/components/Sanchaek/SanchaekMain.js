@@ -79,7 +79,7 @@ const SanchaekMain = () => {
           />
           {visible && (
             <button className="cancel_btn" onClick={clearInputVal}>
-              <img src="../img/cancel-btn.png" />
+              <img src="../img/cancel-btn.png" alt='취소버튼' />
             </button>
           )}
         </div>
