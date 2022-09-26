@@ -30,7 +30,7 @@ export const BannerItem = styled.div`
   .banner_item_img img {
     width: 100%;
   }
-  .banner_item_box h1 {
+  .banner_item_box h2 {
     font-weight: bold;
     font-size: 2rem;
     line-height: 1.5;

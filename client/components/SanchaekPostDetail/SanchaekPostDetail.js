@@ -143,9 +143,9 @@ const SanchaekPostDetail = () => {
             <div id="post_info_wrapper">
               <AuthorProfile>
                 {sanchaekPost?.user?.profile?.imageUrl ? (
-                  <img src={sanchaekPost.user.profile.imageUrl} />
+                  <img src={sanchaekPost.user.profile.imageUrl} alt='프로필 사진' />
                 ) : (
-                  <img src="../img/defaultimgGrey.png" />
+                  <img src="../img/defaultimgGrey.png" alt='기본 프로필 사진' />
                 )}
               </AuthorProfile>
               <PostInfoWrapper>
@@ -188,7 +188,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
                 {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
-                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                  Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
                   <>
                     <h2>지도</h2>
                     <DetailedMap

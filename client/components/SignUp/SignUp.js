@@ -209,7 +209,7 @@ const SignUp = () => {
 
   return (
     <SignUpContainer>
-      <img src="../img/welcomecat.png" />
+      <img src="../img/welcomecat.png" alt='회원가입 이미지' />
       <FormWrapper>
         <InputWrapper>
           <label>이름</label>

@@ -138,7 +138,7 @@ const Header = () => {
             />
             {visible && (
               <button className="cancel_btn" onClick={clearInputVal}>
-                <img src="../img/cancel-btn.png" />
+                <img src="../img/cancel-btn.png" alt='취소버튼' />
               </button>
             )}
           </InputWrapper>
@@ -191,7 +191,7 @@ const Header = () => {
               />
               {visible && (
                 <button className="toggle_cancel_btn" onClick={clearInputVal}>
-                  <img src="../img/cancel-btn.png" />
+                  <img src="../img/cancel-btn.png" alt='취소버튼' />
                 </button>
               )}
             </InputWrapper>
