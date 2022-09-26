@@ -31,6 +31,10 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityEntity.prototype, "content", void 0);
 __decorate([
+    (0, typeorm_1.Column)('boolean', { name: 'temporary', default: false }),
+    __metadata("design:type", Boolean)
+], CommunityEntity.prototype, "temporary", void 0);
+__decorate([
     (0, typeorm_1.Column)('int', { name: 'authorId' }),
     __metadata("design:type", Number)
 ], CommunityEntity.prototype, "authorId", void 0);

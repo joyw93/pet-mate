@@ -31,13 +31,36 @@ export class UserService {
     private sanchaekRepository: Repository<SanchaekEntity>,
   ) {}
 
+  async getMyProfile(userId: number) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.nickname',
+        'user.email',
+        'user.active',
+      ])
+      .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
+      .leftJoin('user.profile', 'profile')
+      .where('user.id= :id', { id: userId })
+      .getOne();
+    return user;
+  }
+
   async getUserProfile(userId: number) {
     const user = await this.userRepository
       .createQueryBuilder('user')
-      .select(['user.nickname'])
+      .select([
+        'user.id',
+        'user.name',
+        'user.nickname',
+        'user.email',
+        'user.active',
+      ])
       .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
       .leftJoin('user.profile', 'profile')
-      .where('user.id=:id', { id: userId })
+      .where('user.id= :id', { id: userId })
       .getOne();
     return user;
   }
@@ -219,7 +242,7 @@ export class UserService {
       ])
       .leftJoin('sanchaek.user', 'user')
       .leftJoin('sanchaek.images', 'images')
-      .leftJoinAndSelect('sanchaek.mapInfo','map')
+      .leftJoinAndSelect('sanchaek.mapInfo', 'map')
       .where('user.id =:id', { id: userId })
       .getMany();
     return sanchaeks;
@@ -234,6 +257,17 @@ export class UserService {
       .where('likes.userId = :id', { id: userId })
       .getMany();
     return posts;
+  }
+
+  async getLikedSanchaeks(userId: number) {
+    const sanchaeks = await this.sanchaekRepository
+      .createQueryBuilder('sanchaek')
+      .select(['sanchaek.id', 'sanchaek.title', 'sanchaek.content', 'images.url'])
+      .leftJoin('sanchaek.likes', 'likes')
+      .leftJoin('sanchaek.images', 'images')
+      .where('likes.userId = :id', { id: userId })
+      .getMany();
+    return sanchaeks;
   }
 
   async getCommentedPosts(userId: number) {
@@ -263,23 +297,6 @@ export class UserService {
       .where('author.id=:id', { id: userId })
       .getMany();
     return sanchaeks;
-  }
-
-  async getMyProfile(userId: number) {
-    const user = await this.userRepository
-      .createQueryBuilder('user')
-      .select([
-        'user.id',
-        'user.name',
-        'user.nickname',
-        'user.email',
-        'user.active',
-      ])
-      .addSelect(['profile.imageUrl', 'profile.comment', 'profile.birth'])
-      .leftJoin('user.profile', 'profile')
-      .where('user.id= :id', { id: userId })
-      .getOne();
-    return user;
   }
 
   async signout(userId: number) {

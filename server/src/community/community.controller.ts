@@ -63,6 +63,14 @@ export class CommunityController {
     return await this.communityService.likePost(user.id, postId);
   }
 
+  @Get('comment/:commentId/like')
+  async likeComment(
+    @User() user: UserEntity,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return await this.communityService.likeComment(user.id, commentId);
+  }
+
   @Post()
   @UseInterceptors(FilesInterceptor('images', 3, createPostConfig))
   async createPost(
@@ -81,6 +89,23 @@ export class CommunityController {
     return post;
   }
 
+  @Post('temporary')
+  @UseInterceptors(FilesInterceptor('images', 3, createPostConfig))
+  async createTemporaryPost(
+    @User() user: UserEntity,
+    @UploadedFiles(ImageFilePipe) imgUrls: string[],
+    @Body(CommunityCreatePipe) createPostDto: CreatePostDto,
+  ) {
+    const { hashtags } = createPostDto;
+    const post = await this.communityService.createPost(user.id, createPostDto);
+    if (hashtags) {
+      await this.hashtagService.addTags(post, hashtags);
+    }
+    if (imgUrls) {
+      await this.communityService.uploadImages(post, imgUrls);
+    }
+    return post;
+  }
 
   @Patch(':postId')
   @UseInterceptors(FilesInterceptor('images', 3, editPostConfig))
@@ -110,9 +135,8 @@ export class CommunityController {
     @User() user: UserEntity,
     @Param('postId', ParseIntPipe) postId: number,
   ) {
-    return await this.communityService.deletePost(user.id,postId);
+    return await this.communityService.deletePost(user.id, postId);
   }
-
 
   @Post(':postId/comment')
   async addComment(
@@ -124,6 +148,21 @@ export class CommunityController {
       user.id,
       postId,
       createCommentDto,
+    );
+  }
+
+  @Post(':postId/:commentId/comment')
+  async addCoComment(
+    @User() user: UserEntity,
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @Body() CreateCommentDto: CreateCommentDto,
+  ) {
+    return await this.communityService.addCoComment(
+      user.id,
+      postId,
+      commentId,
+      CreateCommentDto,
     );
   }
 

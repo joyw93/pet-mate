@@ -6,7 +6,7 @@ import SanchaekItem from "./SanchaekItem";
 import { SanchaekContent, BtnContainer, BtnLine, MoreBtn } from "./styled";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
-const ContentList = () => {
+const SanchaekList = () => {
   const [noMoreList, setNoMoreList] = useState(false);
   const {
     sanchaekPosts,
@@ -52,6 +52,7 @@ const ContentList = () => {
     moreSanchaekPostsRef.current++;
   };
 
+
   return (
     <SanchaekContent>
       <Box sx={{ width: "100%" }}>
@@ -88,4 +89,4 @@ const ContentList = () => {
   );
 };
 
-export default ContentList;
+export default SanchaekList;

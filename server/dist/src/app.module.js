@@ -26,6 +26,7 @@ const sanchaek_entity_1 = require("./sanchaek/sanchaek.entity");
 const market_module_1 = require("./market/market.module");
 const search_module_1 = require("./search/search.module");
 const ormconfig = require("../ormconfig");
+const sanchaek_like_entity_1 = require("./common/entities/sanchaek-like.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -38,7 +39,8 @@ AppModule = __decorate([
                 community_entity_1.CommunityEntity,
                 community_like_entity_1.CommunityLikeEntity,
                 community_hashtag_entity_1.CommunityHashtagEntity,
-                sanchaek_entity_1.SanchaekEntity
+                sanchaek_entity_1.SanchaekEntity,
+                sanchaek_like_entity_1.SanchaekLikeEntity
             ]),
             user_module_1.UserModule,
             auth_module_1.AuthModule,

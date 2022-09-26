@@ -43,7 +43,21 @@ let CommunityController = class CommunityController {
     async likePost(user, postId) {
         return await this.communityService.likePost(user.id, postId);
     }
+    async likeComment(user, commentId) {
+        return await this.communityService.likeComment(user.id, commentId);
+    }
     async createPost(user, imgUrls, createPostDto) {
+        const { hashtags } = createPostDto;
+        const post = await this.communityService.createPost(user.id, createPostDto);
+        if (hashtags) {
+            await this.hashtagService.addTags(post, hashtags);
+        }
+        if (imgUrls) {
+            await this.communityService.uploadImages(post, imgUrls);
+        }
+        return post;
+    }
+    async createTemporaryPost(user, imgUrls, createPostDto) {
         const { hashtags } = createPostDto;
         const post = await this.communityService.createPost(user.id, createPostDto);
         if (hashtags) {
@@ -70,6 +84,9 @@ let CommunityController = class CommunityController {
     }
     async addComment(user, postId, createCommentDto) {
         return await this.communityService.addComment(user.id, postId, createCommentDto);
+    }
+    async addCoComment(user, postId, commentId, CreateCommentDto) {
+        return await this.communityService.addCoComment(user.id, postId, commentId, CreateCommentDto);
     }
     async editComment(commentId, commentContent) {
         return await this.communityService.editComment(commentId, commentContent);
@@ -109,6 +126,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "likePost", null);
 __decorate([
+    (0, common_1.Get)('comment/:commentId/like'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "likeComment", null);
+__decorate([
     (0, common_1.Post)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.createPostConfig)),
     __param(0, (0, user_decorator_1.User)()),
@@ -118,6 +143,16 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.Post)('temporary'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.createPostConfig)),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
+    __param(2, (0, common_1.Body)(community_create_pipe_1.CommunityCreatePipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, create_post_dto_1.CreatePostDto]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "createTemporaryPost", null);
 __decorate([
     (0, common_1.Patch)(':postId'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editPostConfig)),
@@ -146,6 +181,16 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", Promise)
 ], CommunityController.prototype, "addComment", null);
+__decorate([
+    (0, common_1.Post)(':postId/:commentId/comment'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('postId', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
+    __param(3, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number, Number, create_comment_dto_1.CreateCommentDto]),
+    __metadata("design:returntype", Promise)
+], CommunityController.prototype, "addCoComment", null);
 __decorate([
     (0, common_1.Patch)('comment/:commentId'),
     __param(0, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),

@@ -8,6 +8,8 @@ import {
   Images,
   Title,
   PostInfo,
+  PostInfoWrapper,
+  AuthorProfile,
   MapWrapper,
   CommentWrapper,
   Button,
@@ -23,8 +25,12 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import Link from "next/link";
+import CommentsList from "../Comments/CommentsList";
 
 const SanchaekPostDetail = () => {
+  const likeIcon = "../img/filled_heart2.png";
+  const unlikeIcon = "../img/heart2.png";
+  const [like, setLike] = useState(false);
   const [cmtContent, setCmtContent] = useState("");
   const router = useRouter();
   const { id } = router.query;
@@ -33,15 +39,8 @@ const SanchaekPostDetail = () => {
     (state) => state.sanchaek
   );
 
-  console.log(sanchaekPost);
-
   const dispatch = useDispatch();
   const commentInputRef = useRef();
-
-  // useEffect(() => {
-  //   if (sanchaekAddCommentDone) {
-  //   }
-  // }, [sanchaekPost]);
 
   useEffect(() => {
     if (router.isReady && !sanchaekPost) {
@@ -67,6 +66,15 @@ const SanchaekPostDetail = () => {
     commentInputRef.current.blur();
     console.log(cmtContent);
   }, [cmtContent]);
+
+  const handleLike = useCallback(() => {
+    if (!me) {
+      alert("로그인이 필요합니다.");
+      return router.push("/login");
+    }
+    setLike(!like);
+    dispatch(sanchaekActions.likePostRequest(id));
+  }, [like]);
 
   const keyUp = useCallback(
     (e) => {
@@ -132,12 +140,34 @@ const SanchaekPostDetail = () => {
             ) : null}
           </Title>
           <PostInfo>
-            <div>
-              <span id="post_author">{sanchaekPost.user.nickname}</span>
-              <span id="post_created_time">
-                {getElapsedTime(sanchaekPost.createdAt)}
-              </span>
-              <span id="views">조회수 {sanchaekPost.views}</span>
+            <div id="post_info_wrapper">
+              <AuthorProfile>
+                {sanchaekPost?.user?.profile?.imageUrl ? (
+                  <img src={sanchaekPost.user.profile.imageUrl} />
+                ) : (
+                  <img src="../img/defaultimgGrey.png" />
+                )}
+              </AuthorProfile>
+              <PostInfoWrapper>
+                <span id="post_author">{sanchaekPost.user.nickname}</span>
+                <div>
+                  <span id="post_created_time">
+                    {getElapsedTime(sanchaekPost.createdAt)}
+                  </span>
+                  <span>·</span>
+                  <span id="views">조회수 {sanchaekPost.views}</span>
+                </div>
+              </PostInfoWrapper>
+            </div>
+            <div id="like_wrapper">
+              <button onClick={handleLike}>
+                {like ? (
+                  <img src={likeIcon} alt="좋아요" />
+                ) : (
+                  <img src={unlikeIcon} alt="안좋아요" />
+                )}
+              </button>
+              <span id="like_count">{sanchaekPost.likeCount}</span>
             </div>
           </PostInfo>
           <div id="content">
@@ -158,7 +188,7 @@ const SanchaekPostDetail = () => {
             {sanchaekPost.mapInfo.length !== 0 ? (
               <MapWrapper>
                 {Number(sanchaekPost.mapInfo.lat) == 37.566826 &&
-                  Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
+                Number(sanchaekPost.mapInfo.lng) == 126.9786567 ? null : (
                   <>
                     <h2>지도</h2>
                     <DetailedMap
@@ -185,34 +215,9 @@ const SanchaekPostDetail = () => {
                 />
                 <Button onClick={handleCmtContent}>입력</Button>
               </CommentInput>
-              <CommentArea>
-                {sanchaekPost.comments &&
-                  sanchaekPost.comments
-                    .slice(0)
-                    .reverse()
-                    .map((comment) => (
-                      <CommentItem key={comment.id}>
-                        <CommentHandler>
-                          <h3>{comment.author.nickname}</h3>
-                          <CommentContentInfo>
-                            <span>{getElapsedTime(comment.createdAt)}</span>
-                            {comment?.author?.id === me?.id ? (
-                              <>
-                                <span>·</span>
-                                <span
-                                  id="delete_btn"
-                                  onClick={() => handleDeleteCmt(comment.id)}
-                                >
-                                  삭제
-                                </span>
-                              </>
-                            ) : null}
-                          </CommentContentInfo>
-                        </CommentHandler>
-                        <p>{comment.content}</p>
-                      </CommentItem>
-                    ))}
-              </CommentArea>
+              {sanchaekPost.comments ? (
+                <CommentsList list={sanchaekPost.comments} />
+              ) : null}
             </CommentWrapper>
           </div>
         </PostDetailContainer>

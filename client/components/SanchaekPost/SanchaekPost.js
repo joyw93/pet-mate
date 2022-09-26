@@ -12,13 +12,6 @@ import {
   CustomOverlay,
 } from "./styled";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
-
-// import {
-//   sanchaekPostRequestAction,
-//   sanchaekUpdatePostRequestAction,
-//   sanchaekPostResetAction,
-//   sanchaekUpdatePostResetAction,
-// } from "../../reducers/sanchaek";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +26,6 @@ const SanchaekPost = ({ editState }) => {
     (state) => state.sanchaek
   );
   const selectedPost = useSelector((state) => state.sanchaek.sanchaekPost);
-
-  //const { me } = useSelector((state) => state.user);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -293,7 +284,6 @@ const SanchaekPost = ({ editState }) => {
           placeholder="내용을 입력해 주세요"
         ></textarea>
       </TextEditWrapper>
-
       <AddPhotoWrapper>
         <h2>사진 추가(최대 3장)</h2>
         <div id="photos">
@@ -364,9 +354,10 @@ const SanchaekPost = ({ editState }) => {
             onCreate={setMap}
           >
             {markers.map((marker) => (
-              <>
+              <div
+                key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+              >
                 <MapMarker
-                  key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
                   position={marker.position}
                   image={{
                     src: "../../img/locationEmojiBlk.png",
@@ -403,7 +394,7 @@ const SanchaekPost = ({ editState }) => {
                   </CustomOverlayMap>
                 )}
                 {/* </MapMarker> */}
-              </>
+              </div>
             ))}
           </Map>
         </>

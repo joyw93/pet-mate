@@ -15,6 +15,8 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { SanchaekCommentEntity } from 'src/common/entities/sanchaek-comment.entity';
 import { EditSanchaekDto } from './dto/edit-sanchaek.dto';
 import * as res from '../common/responses/message';
+import { SanchaekLikeEntity } from 'src/common/entities/sanchaek-like.entity';
+import { SanchaekCommentLikeEntity } from 'src/common/entities/sanchaek-comment-like.entity';
 @Injectable()
 export class SanchaekService {
   constructor(
@@ -28,10 +30,21 @@ export class SanchaekService {
     private sanchaekCommentRepository: Repository<SanchaekCommentEntity>,
     @InjectRepository(SanchaekMapEntity)
     private sanchaekMapRepository: Repository<SanchaekMapEntity>,
+    @InjectRepository(SanchaekLikeEntity)
+    private sanchaekLikeRepository: Repository<SanchaekLikeEntity>,
+    @InjectRepository(SanchaekCommentLikeEntity)
+    private sanchaekCommentLikeRepository: Repository<SanchaekCommentLikeEntity>,
   ) {}
 
   async getSanchaeks(offset: number, sanchaekCount: number) {
     try {
+      const likeCount = this.sanchaekLikeRepository
+        .createQueryBuilder()
+        .subQuery()
+        .select(['sanchaekId', 'COUNT(likes.userId) AS likeCount'])
+        .from(SanchaekLikeEntity, 'likes')
+        .groupBy('sanchaekId')
+        .getQuery();
       const sanchaeks = this.sanchaekRepository
         .createQueryBuilder('sanchaek')
         .select([
@@ -39,12 +52,19 @@ export class SanchaekService {
           'sanchaek.title',
           'sanchaek.content',
           'sanchaek.createdAt',
+          'sanchaek.views',
+          'user.nickname',
+          'profile.imageUrl',
+          'images.url',
+          'LikeCount.likeCount',
         ])
-        .addSelect(['user.nickname'])
-        .addSelect(['images.url'])
+        .leftJoin('sanchaek.user', 'user')
+        .leftJoin('user.profile', 'profile')
         .leftJoin('sanchaek.images', 'images')
         .leftJoinAndSelect('sanchaek.mapInfo', 'map')
-        .leftJoin('sanchaek.user', 'user')
+        .leftJoin(likeCount, 'LikeCount', 'LikeCount.sanchaekId = sanchaek.id')
+        .loadRelationCountAndMap('sanchaek.likeCount', 'sanchaek.likes')
+        .loadRelationCountAndMap('sanchaek.commentCount', 'sanchaek.comments')
         .skip(offset)
         .take(sanchaekCount)
         .orderBy({ 'sanchaek.createdAt': 'DESC' })
@@ -58,6 +78,13 @@ export class SanchaekService {
   }
 
   async getSearchSanchaeks(keyword: string) {
+    const likeCount = this.sanchaekLikeRepository
+      .createQueryBuilder()
+      .subQuery()
+      .select(['sanchaekId', 'COUNT(likes.userId) AS likeCount'])
+      .from(SanchaekLikeEntity, 'likes')
+      .groupBy('sanchaekId')
+      .getQuery();
     const sanchaeks = this.sanchaekRepository
       .createQueryBuilder('sanchaek')
       .select([
@@ -65,12 +92,19 @@ export class SanchaekService {
         'sanchaek.title',
         'sanchaek.content',
         'sanchaek.createdAt',
+        'sanchaek.views',
+        'user.nickname',
+        'profile.imageUrl',
+        'images.url',
+        'LikeCount.likeCount',
       ])
-      .addSelect(['user.nickname'])
-      .addSelect(['images.url'])
       .leftJoin('sanchaek.images', 'images')
       .leftJoin('sanchaek.user', 'user')
+      .leftJoin('user.profile','profile')
       .leftJoinAndSelect('sanchaek.mapInfo', 'map')
+      .leftJoin(likeCount, 'LikeCount', 'LikeCount.sanchaekId = sanchaek.id')
+      .loadRelationCountAndMap('sanchaek.likeCount', 'sanchaek.likes')
+      .loadRelationCountAndMap('sanchaek.commentCount', 'sanchaek.comments')
       .where('sanchaek.title like :keyword', { keyword: `%${keyword}%` })
       .orWhere('sanchaek.content like :keyword', { keyword: `%${keyword}%` })
       .orWhere('map.location like :keyword', { keyword: `%${keyword}%` })
@@ -80,9 +114,9 @@ export class SanchaekService {
     return sanchaeks;
   }
 
-  async getOneSanchaek(postId: number) {
+  async getOneSanchaek(sanchaekId: number) {
     const sanchaek = await this.sanchaekRepository.findOne({
-      where: { id: postId },
+      where: { id: sanchaekId },
     });
     if (!sanchaek) {
       throw new NotFoundException(res.msg.SANCHAEK_POST_NOT_EXIST);
@@ -101,15 +135,28 @@ export class SanchaekService {
           'sanchaek.views',
         ])
         .addSelect(['user.nickname', 'user.id'])
-        .addSelect(['images.url'])
-        .addSelect(['comments.content', 'comments.id'])
-        .addSelect(['author.nickname', 'author.id'])
+        .addSelect(['images.id', 'images.url'])
+        .addSelect([
+          'comments.id',
+          'comments.depth',
+          'comments.parentId',
+          'comments.content',
+          'comments.createdAt',
+        ])
+        .addSelect(['commentAuthor.nickname', 'commentAuthor.id'])
+        .addSelect(['commentAuthorProfile.imageUrl', 'commentAuthorProfile.id'])
+        .addSelect(['userProfile.id', 'userProfile.imageUrl'])
+        .addSelect(['likes.userId'])
         .leftJoin('sanchaek.comments', 'comments')
-        .leftJoin('comments.author', 'author')
+        .leftJoin('comments.author', 'commentAuthor')
+        .leftJoin('commentAuthor.profile', 'commentAuthorProfile')
         .leftJoin('sanchaek.images', 'images')
         .leftJoinAndSelect('sanchaek.mapInfo', 'map')
         .leftJoin('sanchaek.user', 'user')
-        .where('sanchaek.id= :id', { id: postId })
+        .leftJoin('sanchaek.likes', 'likes')
+        .leftJoin('user.profile', 'userProfile')
+        .loadRelationCountAndMap('sanchaek.likeCount', 'sanchaek.likes')
+        .where('sanchaek.id= :id', { id: sanchaekId })
         .getOne();
       return sanchaek;
     } catch (err) {
@@ -142,6 +189,56 @@ export class SanchaekService {
     }
   }
 
+  async likeSanchaek(userId: number, sanchaekId: number) {
+    try {
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      const sanchaek = await this.sanchaekRepository.findOne({
+        where: { id: sanchaekId },
+      });
+      const sanchaekLike = await this.sanchaekLikeRepository.findOne({
+        where: { userId, sanchaekId },
+      });
+      if (sanchaekLike) {
+        await this.sanchaekLikeRepository.remove(sanchaekLike);
+        return 'unlike';
+      } else {
+        const sanchaekLike = new SanchaekLikeEntity();
+        sanchaekLike.user = user;
+        sanchaekLike.sanchaek = sanchaek;
+        await this.sanchaekLikeRepository.save(sanchaekLike);
+        return 'like';
+      }
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
+    }
+  }
+
+  async likeComment(userId: number, commentId: number) {
+    try {
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      const comment = await this.sanchaekCommentRepository.findOne({
+        where: { id: commentId },
+      });
+      const commentLike = await this.sanchaekCommentLikeRepository.findOne({
+        where: { userId, commentId },
+      });
+      if (commentLike) {
+        await this.sanchaekCommentLikeRepository.remove(commentLike);
+        return 'unlike';
+      } else {
+        const commentLike = new SanchaekCommentLikeEntity();
+        commentLike.user = user;
+        commentLike.comment = comment;
+        await this.sanchaekCommentLikeRepository.save(commentLike);
+        return 'like';
+      }
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.COMMUNITY_LIKE_FAIL);
+    }
+  }
+
   async createSanchaek(userId: number, createSanchaekDto: CreateSanchaekDto) {
     try {
       const { title, content, mapInfo } = createSanchaekDto;
@@ -153,6 +250,34 @@ export class SanchaekService {
       sanchaek.title = title;
       sanchaek.content = content;
       sanchaek.user = user;
+
+      const sanchaekMap = new SanchaekMapEntity();
+      sanchaekMap.lat = lat;
+      sanchaekMap.lng = lng;
+      sanchaekMap.location = location;
+      sanchaekMap.address = address;
+      sanchaekMap.roadAddress = roadAddress;
+
+      sanchaek.mapInfo = sanchaekMap;
+      return await this.sanchaekRepository.save(sanchaek);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException(res.msg.SANCHAEK_POST_NOT_EXIST);
+    }
+  }
+
+  async createTemporarySanchaek(userId: number, createSanchaekDto: CreateSanchaekDto) {
+    try {
+      const { title, content, mapInfo } = createSanchaekDto;
+      const { lat, lng, location, address, roadAddress } = mapInfo;
+
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+
+      const sanchaek = new SanchaekEntity();
+      sanchaek.title = title;
+      sanchaek.content = content;
+      sanchaek.user = user;
+      sanchaek.temporary = true;
 
       const sanchaekMap = new SanchaekMapEntity();
       sanchaekMap.lat = lat;

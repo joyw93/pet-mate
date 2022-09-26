@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { communityActions } from '../../store/reducers/community';
+import { communityActions } from "../../store/reducers/community";
 import { CreatePostContainer } from "./styled";
 
 import {
@@ -14,9 +14,12 @@ import {
   TextEditWrapper,
   AddPhotoWrapper,
   KeywordWrapper,
-  Button,
+  PostButton,
+  TempButton,
+  BackButton
 } from "./styled";
 import { useRouter } from "next/router";
+import TemporaryPost from '../TemporaryPost/TemporaryPost';
 
 const CommunityPost = ({ editState }) => {
   const router = useRouter();
@@ -227,22 +230,39 @@ const CommunityPost = ({ editState }) => {
     }
   }, [addPostDone, updatePostDone]);
 
+
+  // modal
+  const [show, setShow] = useState(false);
+
+  const handleShowTemp = () => {
+    setShow(!show);
+  }
+
   return (
     <>
       <CreatePostContainer>
         <TitleWrapper>
           <h1>커뮤니티 글쓰기</h1>
           {editState ? (
-            <div id="buttons">
-              <Button onClick={handlePost}>수정완료</Button>
-              <Button onClick={() => router.back()}>취소</Button>
+            <div id="buttons" style={{ display: 'flex' }}>
+              <PostButton onClick={handlePost}>수정완료</PostButton>
+              <BackButton onClick={() => router.back()}>취소</BackButton>
+              <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <TempButton onClick={handleShowTemp}>임시저장</TempButton>
+                {show ? <TemporaryPost /> : <></>}
+              </div>
             </div>
           ) : (
-            <div id="buttons">
-              <Button onClick={handlePost}>등록</Button>
-              <Button onClick={() => router.push("/community")}>취소</Button>
+            <div id="buttons" style={{ display: 'flex' }}>
+              <PostButton onClick={handlePost}>등록</PostButton>
+              <BackButton onClick={() => router.back()}>취소</BackButton>
+              <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <TempButton onClick={handleShowTemp}>임시저장</TempButton>
+                {show ? <TemporaryPost /> : <></>}
+              </div>
             </div>
           )}
+
         </TitleWrapper>
 
         <TextEditWrapper>

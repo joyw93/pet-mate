@@ -125,7 +125,10 @@ export class UserController {
 
   @Get('posts')
   async getMyPosts(@User() user: UserEntity) {
-    return await this.userService.getMyPosts(user.id);
+    const communityPosts = await this.userService.getMyPosts(user.id);
+    const sanchaekPosts = await this.userService.getMySanchaeks(user.id);
+    const posts = { communityPosts, sanchaekPosts };
+    return posts;
   }
 
   @Get('sanchaeks')
@@ -135,12 +138,18 @@ export class UserController {
 
   @Get('liked-posts')
   async getLikedPosts(@User() user: UserEntity) {
-    return await this.userService.getLikedPosts(user.id);
+    const communityPosts = await this.userService.getLikedPosts(user.id);
+    const sanchaekPosts = await this.userService.getLikedSanchaeks(user.id);
+    const posts = { communityPosts, sanchaekPosts };
+    return posts;
   }
 
   @Get('commented-posts')
   async getCommentedPosts(@User() user: UserEntity) {
-    return await this.userService.getCommentedPosts(user.id);
+    const communityPosts = await this.userService.getCommentedPosts(user.id);
+    const sanchaekPosts = await this.userService.getCommentedSanchaeks(user.id);
+    const posts = { communityPosts, sanchaekPosts };
+    return posts;
   }
 
   @Delete('signout')

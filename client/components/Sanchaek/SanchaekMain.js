@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router from "next/router";
-import ContentList from "./ContentList";
 import { SanchaekContainer, SanchaekBanner, LocationSearch } from "./styled";
+import SanchaekList from "./SanchaekList";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 
 const SanchaekMain = () => {
@@ -24,10 +24,10 @@ const SanchaekMain = () => {
 
   const goToNew = () => {
     if (!me) {
-      Router.replace("/login");
+      Router.push("/login");
     } else {
       if (window.confirm("글 작성하러 가시겠습니까?")) {
-        Router.replace("/sanchaek/new");
+        Router.push("/sanchaek/new");
       }
     }
   };
@@ -71,7 +71,7 @@ const SanchaekMain = () => {
         <div>
           <input
             onKeyUp={keyUp}
-            placeholder="위치를 검색하세요"
+            placeholder="위치를 검색해보세요"
             onChange={handleValChange}
             value={inputVal}
             ref={inputRef}
@@ -84,7 +84,7 @@ const SanchaekMain = () => {
           )}
         </div>
       </LocationSearch>
-      <ContentList />
+      <SanchaekList />
     </SanchaekContainer>
   );
 };

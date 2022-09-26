@@ -1,6 +1,16 @@
 import { CommunityEntity } from 'src/community/community.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { CommunityCommentLikeEntity } from './community-comment-like.entity';
 
 @Entity('CommunityComment')
 export class CommunityCommentEntity {
@@ -10,6 +20,12 @@ export class CommunityCommentEntity {
   @Column('text', { name: 'content' })
   content: string;
 
+  @Column('int', { name: 'parentId', nullable: true })
+  parentId: number;
+
+  @Column('int', { name: 'depth', default: 0 })
+  depth: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -17,14 +33,23 @@ export class CommunityCommentEntity {
   deletedAt: Date | null;
 
   @ManyToOne(() => UserEntity, (author) => author.communityComments, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'authorId', referencedColumnName: 'id' })
   author: UserEntity;
 
   @ManyToOne(() => CommunityEntity, (post) => post.comments, {
-    onDelete:'CASCADE'
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: CommunityEntity;
+
+  @OneToMany(
+    () => CommunityCommentLikeEntity,
+    (like: CommunityCommentLikeEntity) => like.comment,
+    {
+      cascade: true,
+    },
+  )
+  likes: CommunityCommentLikeEntity[];
 }

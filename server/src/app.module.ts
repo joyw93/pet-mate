@@ -17,6 +17,7 @@ import { SanchaekEntity } from './sanchaek/sanchaek.entity';
 import { MarketModule } from './market/market.module';
 import { SearchModule } from './search/search.module';
 import * as ormconfig from '../ormconfig';
+import { SanchaekLikeEntity } from './common/entities/sanchaek-like.entity';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import * as ormconfig from '../ormconfig';
       CommunityEntity,
       CommunityLikeEntity,
       CommunityHashtagEntity,
-      SanchaekEntity
+      SanchaekEntity,
+      SanchaekLikeEntity
     ]),
     UserModule,
     AuthModule,

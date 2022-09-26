@@ -1,7 +1,11 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useLayoutEffect, useState } from "react";
+
 import { MyPostItem } from "./styled";
 
-const MyPosts = ({ id, images, title, content }) => {
+const MyPosts = ({ id, images, title, content, nav }) => {
+  const [randomNum, setRandomNum] = useState(0);
   const defaultImages = [
     "../img/defaultimg1.png",
     "../img/defaultimg2.png",
@@ -10,17 +14,23 @@ const MyPosts = ({ id, images, title, content }) => {
     "../img/defaultimg5.png",
     "../img/defaultimg6.png",
   ];
-  let randomNum = Math.floor(Math.random() * 4) + 1;
+  useLayoutEffect(() => {
+    setRandomNum(Math.floor(Math.random() * 4) + 1);
+  }, []);
+
+  const router = useRouter();
+
+  const goToDetail = () => {
+    router.push(`/${nav}/${id}`);
+  };
 
   return (
-    <MyPostItem>
-      <Link href={`/community/${id}`}>
-        {images[0] ? (
-          <img src={images[0].url} />
-        ) : (
-          <img src={defaultImages[randomNum]} />
-        )}
-      </Link>
+    <MyPostItem onClick={goToDetail}>
+      {images[0] ? (
+        <img src={images[0].url} />
+      ) : (
+        <img src={defaultImages[randomNum]} />
+      )}
       <h1>{title.slice(0, 12)}</h1>
       <p>{content.slice(0, 12)}</p>
     </MyPostItem>

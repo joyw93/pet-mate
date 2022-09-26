@@ -14,6 +14,7 @@ export declare class UserService {
     private communityRepository;
     private sanchaekRepository;
     constructor(userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityRepository: Repository<CommunityEntity>, sanchaekRepository: Repository<SanchaekEntity>);
+    getMyProfile(userId: number): Promise<UserEntity>;
     getUserProfile(userId: number): Promise<UserEntity>;
     checkNickname(nickname: string): Promise<void>;
     checkEmail(email: string): Promise<void>;
@@ -43,8 +44,8 @@ export declare class UserService {
     getMyPosts(userId: number): Promise<CommunityEntity[]>;
     getMySanchaeks(userId: number): Promise<SanchaekEntity[]>;
     getLikedPosts(userId: number): Promise<CommunityEntity[]>;
+    getLikedSanchaeks(userId: number): Promise<SanchaekEntity[]>;
     getCommentedPosts(userId: number): Promise<CommunityEntity[]>;
     getCommentedSanchaeks(userId: number): Promise<SanchaekEntity[]>;
-    getMyProfile(userId: number): Promise<UserEntity>;
     signout(userId: number): Promise<import("typeorm").DeleteResult>;
 }

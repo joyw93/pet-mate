@@ -37,7 +37,20 @@ let SanchaekController = class SanchaekController {
     async getOneSanchaek(sanchaekId) {
         return await this.sanchaekService.getOneSanchaek(sanchaekId);
     }
+    async likePost(user, sanchaekId) {
+        return await this.sanchaekService.likeSanchaek(user.id, sanchaekId);
+    }
+    async likeComment(user, commentId) {
+        return await this.sanchaekService.likeComment(user.id, commentId);
+    }
     async createSanchaek(user, imgUrls, createSanchaekDto) {
+        const sanchaek = await this.sanchaekService.createSanchaek(user.id, createSanchaekDto);
+        if (imgUrls) {
+            await this.sanchaekService.uploadImages(sanchaek, imgUrls);
+        }
+        return sanchaek;
+    }
+    async createTemporarySanchaek(user, imgUrls, createSanchaekDto) {
         const sanchaek = await this.sanchaekService.createSanchaek(user.id, createSanchaekDto);
         if (imgUrls) {
             await this.sanchaekService.uploadImages(sanchaek, imgUrls);
@@ -83,6 +96,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SanchaekController.prototype, "getOneSanchaek", null);
 __decorate([
+    (0, common_1.Get)(':sanchaekId/like'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('sanchaekId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
+    __metadata("design:returntype", Promise)
+], SanchaekController.prototype, "likePost", null);
+__decorate([
+    (0, common_1.Get)('comment/:commentId/like'),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('commentId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Number]),
+    __metadata("design:returntype", Promise)
+], SanchaekController.prototype, "likeComment", null);
+__decorate([
     (0, common_1.Post)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.createSanchaekConfig)),
     __param(0, (0, user_decorator_1.User)()),
@@ -92,6 +121,16 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, create_sanchaek_dto_1.CreateSanchaekDto]),
     __metadata("design:returntype", Promise)
 ], SanchaekController.prototype, "createSanchaek", null);
+__decorate([
+    (0, common_1.Post)('temporary'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.createSanchaekConfig)),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.UploadedFiles)(image_file_pipe_1.ImageFilePipe)),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.UserEntity, Array, create_sanchaek_dto_1.CreateSanchaekDto]),
+    __metadata("design:returntype", Promise)
+], SanchaekController.prototype, "createTemporarySanchaek", null);
 __decorate([
     (0, common_1.Patch)(':sanchaekId'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('images', 3, s3_1.editSanchaekConfig)),

@@ -10,6 +10,7 @@ import { CommunityImageEntity } from 'src/common/entities/community-image.entity
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { HashtagEntity } from 'src/hashtag/hashtag.entity';
 import { UserProfileEntity } from 'src/common/entities/user-profile.entity';
+import { CommunityCommentLikeEntity } from 'src/common/entities/community-comment-like.entity';
 export declare class CommunityService {
     private communityRepository;
     private userRepository;
@@ -19,16 +20,19 @@ export declare class CommunityService {
     private communityImageRepository;
     private communityHashtagRepository;
     private hashtagRepository;
-    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>);
+    private communityCommentLikeRepository;
+    constructor(communityRepository: Repository<CommunityEntity>, userRepository: Repository<UserEntity>, userProfileRepository: Repository<UserProfileEntity>, communityLikeRepository: Repository<CommunityLikeEntity>, communityCommentRepository: Repository<CommunityCommentEntity>, communityImageRepository: Repository<CommunityImageEntity>, communityHashtagRepository: Repository<CommunityHashtagEntity>, hashtagRepository: Repository<HashtagEntity>, communityCommentLikeRepository: Repository<CommunityCommentLikeEntity>);
     getPosts(offset: number, postCount: number, orderBy: string): Promise<CommunityEntity[]>;
     getSearchPosts(keyword: string): Promise<CommunityEntity[]>;
     getOnePost(postId: number): Promise<CommunityEntity>;
     getHotPosts(): Promise<CommunityEntity[]>;
     createPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
+    createTemporaryPost(userId: number, createPostDto: CreatePostDto): Promise<CommunityEntity>;
     editPost(userId: number, postId: number, editPostDto: EditPostDto): Promise<{
         title: string;
         content: string;
         id: number;
+        temporary: boolean;
         authorId: number;
         views: number;
         createdAt: Date;
@@ -42,14 +46,19 @@ export declare class CommunityService {
     } & CommunityEntity>;
     deletePost(userId: number, postId: number): Promise<CommunityEntity>;
     likePost(userId: number, postId: number): Promise<"like" | "unlike">;
+    likeComment(userId: number, commentId: number): Promise<"like" | "unlike">;
     addComment(userId: number, postId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
+    addCoComment(userId: number, postId: number, commentId: number, createCommentDto: CreateCommentDto): Promise<CommunityCommentEntity>;
     editComment(commentId: number, content: string): Promise<{
         content: string;
         id: number;
+        parentId: number;
+        depth: number;
         createdAt: Date;
         deletedAt: Date;
         author: UserEntity;
         post: CommunityEntity;
+        likes: CommunityCommentLikeEntity[];
     } & CommunityCommentEntity>;
     deleteComment(userId: number, commentId: number): Promise<import("typeorm").DeleteResult>;
     uploadImages(post: CommunityEntity, imgUrls: string[]): Promise<CommunityImageEntity[]>;

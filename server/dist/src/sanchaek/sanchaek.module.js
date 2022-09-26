@@ -9,8 +9,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SanchaekModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const sanchaek_comment_like_entity_1 = require("../common/entities/sanchaek-comment-like.entity");
 const sanchaek_comment_entity_1 = require("../common/entities/sanchaek-comment.entity");
 const sanchaek_image_entity_1 = require("../common/entities/sanchaek-image.entity");
+const sanchaek_like_entity_1 = require("../common/entities/sanchaek-like.entity");
 const sanchaek_map_entity_1 = require("../common/entities/sanchaek-map.entity");
 const user_entity_1 = require("../user/user.entity");
 const sanchaek_controller_1 = require("./sanchaek.controller");
@@ -23,15 +25,17 @@ SanchaekModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([
                 user_entity_1.UserEntity,
+                sanchaek_like_entity_1.SanchaekLikeEntity,
                 sanchaek_entity_1.SanchaekEntity,
                 sanchaek_map_entity_1.SanchaekMapEntity,
                 sanchaek_image_entity_1.SanchaekImageEntity,
-                sanchaek_comment_entity_1.SanchaekCommentEntity
+                sanchaek_comment_entity_1.SanchaekCommentEntity,
+                sanchaek_comment_like_entity_1.SanchaekCommentLikeEntity,
             ]),
         ],
         controllers: [sanchaek_controller_1.SanchaekController],
         providers: [sanchaek_service_1.SanchaekService],
-        exports: [sanchaek_service_1.SanchaekService]
+        exports: [sanchaek_service_1.SanchaekService],
     })
 ], SanchaekModule);
 exports.SanchaekModule = SanchaekModule;

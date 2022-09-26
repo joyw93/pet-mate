@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommunityCommentLikeEntity } from 'src/common/entities/community-comment-like.entity';
 import { CommunityCommentEntity } from 'src/common/entities/community-comment.entity';
 import { CommunityHashtagEntity } from 'src/common/entities/community-hashtag.entity';
 import { CommunityImageEntity } from 'src/common/entities/community-image.entity';
@@ -20,6 +21,7 @@ import { CommunityService } from './community.service';
       CommunityLikeEntity,
       CommunityHashtagEntity,
       CommunityImageEntity,
+      CommunityCommentLikeEntity,
       HashtagEntity,
       UserEntity,
       UserProfileEntity

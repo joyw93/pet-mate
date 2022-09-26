@@ -15,10 +15,10 @@ const Footer = () => {
             </div>
             <div>
               <div id="son_face">
-                <a href="https://github.com/lili-ys"></a>
+                <a href="https://github.com/ys9494"></a>
               </div>
               <p>손유경 FrontEnd</p>
-              <p>mdlife94@gmail.com</p>
+              <p>ykson94@gmail.com</p>
             </div>
             <div>
               <div id="jo_face">

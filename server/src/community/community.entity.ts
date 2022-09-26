@@ -26,6 +26,9 @@ export class CommunityEntity {
   @Column('text', { name: 'content' })
   content: string;
 
+  @Column('boolean', {name:'temporary', default: false})
+  temporary: boolean;
+
   @Column('int', { name: 'authorId' })
   authorId: number;
 

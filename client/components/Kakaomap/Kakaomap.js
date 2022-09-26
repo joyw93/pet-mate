@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DetailedMap from "../Kakaomap/DetailedMap";
 
-// const MapContainer = styled.div`
-//   aspect-ratio: 320 / 220;
-// `;
-
 const Kakaomap = ({ place }) => {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);

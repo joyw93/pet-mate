@@ -13,6 +13,7 @@ exports.CommunityCommentEntity = void 0;
 const community_entity_1 = require("../../community/community.entity");
 const user_entity_1 = require("../../user/user.entity");
 const typeorm_1 = require("typeorm");
+const community_comment_like_entity_1 = require("./community-comment-like.entity");
 let CommunityCommentEntity = class CommunityCommentEntity {
 };
 __decorate([
@@ -24,6 +25,14 @@ __decorate([
     __metadata("design:type", String)
 ], CommunityCommentEntity.prototype, "content", void 0);
 __decorate([
+    (0, typeorm_1.Column)('int', { name: 'parentId', nullable: true }),
+    __metadata("design:type", Number)
+], CommunityCommentEntity.prototype, "parentId", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { name: 'depth', default: 0 }),
+    __metadata("design:type", Number)
+], CommunityCommentEntity.prototype, "depth", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], CommunityCommentEntity.prototype, "createdAt", void 0);
@@ -33,18 +42,24 @@ __decorate([
 ], CommunityCommentEntity.prototype, "deletedAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, (author) => author.communityComments, {
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)({ name: 'authorId', referencedColumnName: 'id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], CommunityCommentEntity.prototype, "author", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => community_entity_1.CommunityEntity, (post) => post.comments, {
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)({ name: 'postId', referencedColumnName: 'id' }),
     __metadata("design:type", community_entity_1.CommunityEntity)
 ], CommunityCommentEntity.prototype, "post", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => community_comment_like_entity_1.CommunityCommentLikeEntity, (like) => like.comment, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], CommunityCommentEntity.prototype, "likes", void 0);
 CommunityCommentEntity = __decorate([
     (0, typeorm_1.Entity)('CommunityComment')
 ], CommunityCommentEntity);
