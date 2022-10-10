@@ -27,9 +27,9 @@ const MyPosts = ({ id, images, title, content, nav }) => {
   return (
     <MyPostItem onClick={goToDetail}>
       {images[0] ? (
-        <img src={images[0].url} />
+        <img src={images[0].url} alt='작성 글 이미지' />
       ) : (
-        <img src={defaultImages[randomNum]} />
+        <img src={defaultImages[randomNum]} alt='랜덤 이미지' />
       )}
       <h1>{title.slice(0, 12)}</h1>
       <p>{content.slice(0, 12)}</p>

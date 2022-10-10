@@ -65,6 +65,10 @@ const App = ({ Component, pageProps }) => {
       <Head>
         <meta charSet="utf-8" />
         <title>펫메이트</title>
+        <meta
+          name="description"
+          content="반려동물 온라인 커뮤니티 펫메이트 | 집 근처에서 우리 강아지 동네친구를 찾아보세요! & 이웃 반려인들과 함께 즐거운 반려생활을 공유해보세요!"
+        />
         <link rel="icon" href="../img/footprint.png" />
         <script
           src="//dapi.kakao.com/v2/maps/sdk.js?appkey=74641db2b92f24a8a2f5a57b3451b548&libraries=services,clusterer&autoload=false"

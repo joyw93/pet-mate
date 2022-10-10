@@ -132,10 +132,10 @@ const LogIn = () => {
         <SnsLogin>SNS계정으로 간편 로그인/회원가입</SnsLogin>
         <SnsLoginBtns>
           <GoogleBtn onClick={handleGoogleLoginSubmit}>
-            <img src="../img/googleLogin.png" alt="" />
+            <img src="../img/googleLogin.png" alt="구글 로그인" />
           </GoogleBtn>
           <KakaoBtn onClick={handleKakaoLoginSubmit}>
-            <img src="../img/kakaoLogin.png" alt="" />
+            <img src="../img/kakaoLogin.png" alt="카카오 로그인" />
           </KakaoBtn>
         </SnsLoginBtns>
       </FormWrapper>

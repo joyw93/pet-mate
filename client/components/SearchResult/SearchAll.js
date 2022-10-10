@@ -80,16 +80,15 @@ const SearchAll = () => {
         <SearchKeyword>{keyword}</SearchKeyword>에 대한 검색결과
         <ResultLength>
           {searchPosts &&
-            `(${
-              searchPosts.communityPosts.length +
-              searchPosts.sanchaekPosts.length
+            `(${searchPosts.communityPosts.length +
+            searchPosts.sanchaekPosts.length
             }개)`}
         </ResultLength>
       </SearchResultComment>
       {searchPosts && searchPosts.length === 0 ? (
         <NoResult>
           <p>검색결과가 없습니다&#128546; 다른 검색어를 입력하세요.</p>
-          <NoResultImg src="../img/no-search-result.png" />
+          <NoResultImg src="../img/no-search-result.png" alt='결과없음' />
         </NoResult>
       ) : (
         <>

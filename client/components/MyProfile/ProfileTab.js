@@ -173,7 +173,7 @@ const ProfileTab = () => {
             ) : (
               <ImageHolder
                 src="../../img/defaultimgGrey.png"
-                alte="이미지없음"
+                alt="이미지없음"
               />
             )}
           </ImageInputArea>

@@ -77,9 +77,9 @@ const CommentsItem = ({ comment, onClick }) => {
         <AuthorInfo>
           <AuthorProfile>
             {comment.author?.profile?.imageUrl ? (
-              <img src={comment.author.profile.imageUrl} />
+              <img src={comment.author.profile.imageUrl} alt='프로필 사진' />
             ) : (
-              <img src="../img/defaultimgGrey.png" />
+              <img src="../img/defaultimgGrey.png" alt='기본 프로필 사진' />
             )}
           </AuthorProfile>
           <h3>{comment.author.nickname}</h3>

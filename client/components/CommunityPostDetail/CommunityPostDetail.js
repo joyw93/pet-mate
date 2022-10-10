@@ -150,9 +150,9 @@ const CommunityPostDetail = () => {
             <div id="post_info_wrapper">
               <AuthorProfile>
                 {post?.author?.profile?.imageUrl ? (
-                  <img src={post.author.profile.imageUrl} />
+                  <img src={post.author.profile.imageUrl} alt='프로필 사진' />
                 ) : (
-                  <img src="../img/defaultimgGrey.png" />
+                  <img src="../img/defaultimgGrey.png" alt='기본 프로필 사진' />
                 )}
               </AuthorProfile>
               <PostInfoWrapper>
