@@ -5,9 +5,9 @@ import CommunityPost from "../../components/CommunityPost/CommunityPost";
 const PostPage = () => {
   return (
     <>
-      <head>
+      <Head>
         <title>커뮤니티 게시글 작성 | 펫메이트</title>
-      </head>
+      </Head>
       <AppLayout>
         <CommunityPost />
       </AppLayout>

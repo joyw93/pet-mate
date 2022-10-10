@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useEffect } from "react";
 import { useState } from "react";
 import AppLayout from "../../../components/AppLayout";
@@ -9,9 +10,14 @@ const SanchaekEditPage = () => {
     setEditState(true);
   }, []);
   return (
-    <AppLayout>
-      <SanchaekPost editState={editState} />
-    </AppLayout>
+    <>
+      <Head>
+        <title>산책메이트 게시글 수정 중 | 펫메이트</title>
+      </Head>
+      <AppLayout>
+        <SanchaekPost editState={editState} />
+      </AppLayout>
+    </>
   );
 };
 
