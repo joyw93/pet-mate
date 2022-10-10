@@ -5,9 +5,9 @@ import MyProfile from "../../components/MyProfile/MyProfile";
 const ProfilePage = () => {
   return (
     <>
-      <head>
+      <Head>
         <title>프로필 | 펫메이트</title>
-      </head>
+      </Head>
       <AppLayout>
         <MyProfile />
       </AppLayout>

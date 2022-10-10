@@ -11,21 +11,21 @@ const Footer = () => {
                 <a href="https://github.com/kkwakkwake"></a>
               </div>
               <p>곽성이 FrontEnd</p>
-              <p>glowupup@naver.com</p>
+              <a href="mailto:glowupup@naver.com">glowupup@naver.com</a>
             </div>
             <div>
               <div id="son_face">
                 <a href="https://github.com/ys9494"></a>
               </div>
               <p>손유경 FrontEnd</p>
-              <p>ykson94@gmail.com</p>
+              <a href="mailto:ykson94@gmail.com">ykson94@gmail.com</a>
             </div>
             <div>
               <div id="jo_face">
                 <a href="https://github.com/joyw93"></a>
               </div>
               <p>조용원 BackEnd</p>
-              <p>joyw93@naver.com</p>
+              <a href="mailto:joyw93@naver.com">joyw93@naver.com</a>
             </div>
           </div>
         </div>
