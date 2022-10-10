@@ -122,6 +122,7 @@ const Header = () => {
                 <Link href="/community" passHref>
                   <CommunityWrapper path={pathCheck}>커뮤니티</CommunityWrapper>
                 </Link>
+                
               </Tab>
             </li>
           </ul>

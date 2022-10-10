@@ -27,7 +27,7 @@ const MyProfile = () => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
   const [subTabActiveIndex, setSubTabActiveIndex] = useState(0);
-  const { user, me, signOutDone, myPostsData, myCommentsData, myLikedData } =
+  const { me, signOutDone, myPostsData, myCommentsData, myLikedData } =
     useSelector((state) => state.user);
   const posts = [myPostsData, myCommentsData, myLikedData];
 
@@ -163,7 +163,7 @@ const MyProfile = () => {
                       {posts[activeIndex].communityPosts &&
                         posts[activeIndex].sanchaekPosts &&
                         posts[activeIndex].communityPosts?.length +
-                        posts[activeIndex].sanchaekPosts?.length}
+                          posts[activeIndex].sanchaekPosts?.length}
                       )
                     </span>
                   </li>

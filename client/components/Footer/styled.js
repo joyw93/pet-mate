@@ -25,14 +25,16 @@ export const FooterContainer = styled.footer`
     flex-direction: column;
     align-items: center;
   }
-  #members p {
+  #members p,
+  #members > div > a {
+    display: block;
     margin-top: 7px;
     font-size: 0.9em;
   }
-  #members p:nth-of-type(1) {
+  #members p {
     font-weight: bold;
   }
-  #members a {
+  #members div div a {
     display: block;
     width: 100%;
     height: 100%;
