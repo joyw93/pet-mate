@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useEffect } from "react";
 import { useState } from "react";
 import AppLayout from "../../../components/AppLayout";
@@ -9,9 +10,14 @@ const EditPage = () => {
     setEditState(true);
   }, []);
   return (
-    <AppLayout>
-      <CommunityPost editState={editState} />
-    </AppLayout>
+    <>
+      <Head>
+        <title>커뮤니티 게시글 수정 중 | 펫메이트</title>
+      </Head>
+      <AppLayout>
+        <CommunityPost editState={editState} />
+      </AppLayout>
+    </>
   );
 };
 
