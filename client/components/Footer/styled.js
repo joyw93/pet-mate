@@ -12,18 +12,20 @@ export const FooterContainer = styled.footer`
   #members_container {
     width: 100%;
     background-color: #eee;
-    padding: 20px 0;
+    padding-bottom: 20px;
   }
   #members {
     display: flex;
+    flex-wrap: wrap;
     max-width: 800px;
     margin: 0 auto;
-    justify-content: space-between;
+    justify-content: space-around;
   }
   #members > div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 20px;
   }
   #members p,
   #members > div > a {
@@ -63,16 +65,18 @@ export const FooterContainer = styled.footer`
   }
   #copyright {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    margin: 10px 0;
   }
   #copyright > a,
   #copyright img {
     display: block;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
   }
   #copyright p {
-    line-height: 28px;
+    line-height: 32px;
     margin-left: 5px;
     font-size: 0.9rem;
   }
