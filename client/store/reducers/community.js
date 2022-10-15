@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const initialState = {
   posts: [],
   //content: [],
-  commentId: [],
+  commentId: null,
   post: null, // post = {...post, comments:[...comments, '새로운댓글']}
   morePosts: null,
 
@@ -44,6 +44,10 @@ export const initialState = {
   likePostLoading: false,
   likePostDone: false,
   likePostError: null,
+
+  likeCommentLoading: false,
+  likeCommentDone: false,
+  likeCommentError: null,
 };
 
 const communitySlice = createSlice({
@@ -197,6 +201,8 @@ const communitySlice = createSlice({
       state.likePostLoading = true;
       state.likePostError = null;
       state.likePostDone = false;
+      // console.log("like", action.payload);
+      state.commentId = action.payload;
     },
     likePostSuccess(state, action) {
       state.post.likeCount =
@@ -213,6 +219,35 @@ const communitySlice = createSlice({
     },
     likePostReset(state, action) {
       state.likePostDone = false;
+    },
+    //댓글 좋아요
+    likeCommentRequest(state, action) {
+      state.likeCommentLoading = true;
+      state.likeCommentError = null;
+      state.likeCommentDone = false;
+      state.commentId = action.payload;
+    },
+    likeCommentSuccess(state, action) {
+      state.post.comments.map((v) => {
+        if (v.id === state.commentId) {
+          v.commentLikeCount =
+            action.payload.data === "like"
+              ? v.commentLikeCount + 1
+              : v.commentLikeCount - 1;
+          console.log("id", state.commentId);
+          console.log("count", v.commentLikeCount);
+        }
+      });
+      state.likeCommentLoading = false;
+      state.likeCommentError = null;
+      state.likeCommentDone = true;
+    },
+    likeCommentFailure(state, action) {
+      state.likeCommentLoading = false;
+      state.likeCommentError = action.payload.error;
+    },
+    likeCommentReset(state, action) {
+      state.likeCommentDone = false;
     },
   },
 });

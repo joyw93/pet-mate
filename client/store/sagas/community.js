@@ -89,6 +89,7 @@ function* removePost(action) {
   }
 }
 
+//댓글 작성
 function addCommentAPI(data) {
   return axios.post(`${serverUrl}/community/${data.postId}/comment`, data, {
     withCredentials: true,
@@ -106,6 +107,7 @@ function* addComment(action) {
   }
 }
 
+//댓글 삭제
 function removeCommentAPI(data) {
   return axios.delete(`${serverUrl}/community/comment/${data}`, {
     withCredentials: true,
@@ -122,6 +124,7 @@ function* removeComment(action) {
   }
 }
 
+//게시글 좋아요
 function likePostAPI(data) {
   return axios.get(`${serverUrl}/community/${data}/like`, {
     withCredentials: true,
@@ -137,8 +140,24 @@ function* likePost(action) {
     yield put(communityActions.likePostFailure(err.response.data));
   }
 }
+//댓글 좋아요
+function likeCommentAPI(data) {
+  return axios.get(`${serverUrl}/community/comment/${data}/like`, {
+    withCredentials: true,
+  });
+}
 
-// //글 수정하기
+function* likeComment(action) {
+  try {
+    const { data } = yield call(likeCommentAPI, action.payload);
+    yield put(communityActions.likeCommentSuccess(data));
+  } catch (err) {
+    console.log(err);
+    yield put(communityActions.likeCommentFailure(err.response.data));
+  }
+}
+
+//글 수정하기
 function updatePostAPI(data) {
   return axios.patch(`${serverUrl}/community/${data.id}`, data.post, {
     withCredentials: true,
@@ -186,6 +205,10 @@ function* watchLikePost() {
   yield takeLatest(communityActions.likePostRequest, likePost);
 }
 
+function* watchLikeComment() {
+  yield takeLatest(communityActions.likeCommentRequest, likeComment);
+}
+
 function* watchUpdatePost() {
   yield takeLatest(communityActions.updatePostRequest, updatePost);
 }
@@ -200,6 +223,7 @@ export default function* communitySaga() {
     fork(watchAddComment),
     fork(watchRemoveComment),
     fork(watchLikePost),
+    fork(watchLikeComment),
     fork(watchUpdatePost),
   ]);
 }

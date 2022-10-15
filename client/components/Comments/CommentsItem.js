@@ -8,10 +8,12 @@ import {
   CommentReplyWrapper,
   CommentReplyInputWrapper,
 } from "./styled";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CommentReply from "./CommentReply";
 import CommentReplyInput from "./CommentReplyInput";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { communityActions } from "../../store/reducers/community";
+import { useRouter } from "next/router";
 
 const replyArr = [
   {
@@ -38,37 +40,43 @@ const CommentsItem = ({ comment, onClick }) => {
   const likeIcon = "../img/filled_heart2.png";
   const unlikeIcon = "../img/heart2.png";
   const [cmtLike, setCmtLike] = useState(false);
-
   const [toggleReplyInput, setToggleReplyInput] = useState(false);
+  const { loadPostDetailDone } = useSelector((state) => state.community);
   const { me } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const openReply = () => {
     setToggleReplyInput(!toggleReplyInput);
   };
 
   // 내가 좋아요 댓글 표시
-  // useEffect(() => {
-  //   if (!me) {
-  //     setCmtLike(false);
-  //     return;
-  //   }
-  //   if (comment && comment.likes) {
-  //     comment.likes.forEach((likers) => {
-  //       if (likers.userId === me.id) {
-  //         setCmtLike(true);
-  //         return;
-  //       }
-  //     });
-  //   }
-  // }, [me, comment]);
+  useEffect(() => {
+    if (!me) {
+      setCmtLike(false);
+      console.log("notMe");
+      return;
+    }
+    if (comment && comment.likes) {
+      comment.likes.forEach((likers) => {
+        if (likers.userId === me.id) {
+          setCmtLike(true);
+          console.log(likers.userId, me.id, cmtLike);
+          return;
+        }
+      });
+    }
+    console.log(comment);
+  }, [me, comment]);
 
   const handleLike = useCallback(() => {
     if (!me) {
       alert("로그인이 필요합니다.");
       return router.push("/login");
     }
+    dispatch(communityActions.likeCommentRequest(comment.id));
     setCmtLike(!cmtLike);
-    // dispatch(communityActions.likePostRequest(id));
+    console.log("like??", cmtLike);
   }, [cmtLike]);
 
   return (
@@ -77,9 +85,9 @@ const CommentsItem = ({ comment, onClick }) => {
         <AuthorInfo>
           <AuthorProfile>
             {comment.author?.profile?.imageUrl ? (
-              <img src={comment.author.profile.imageUrl} alt='프로필 사진' />
+              <img src={comment.author.profile.imageUrl} alt="프로필 사진" />
             ) : (
-              <img src="../img/defaultimgGrey.png" alt='기본 프로필 사진' />
+              <img src="../img/defaultimgGrey.png" alt="기본 프로필 사진" />
             )}
           </AuthorProfile>
           <h3>{comment.author.nickname}</h3>
@@ -92,7 +100,7 @@ const CommentsItem = ({ comment, onClick }) => {
           </span>
           <span>·</span>
           <span id="like_comment" onClick={handleLike}>
-            0
+            {comment.commentLikeCount}
             {cmtLike ? (
               <img src={likeIcon} alt="좋아요" />
             ) : (
