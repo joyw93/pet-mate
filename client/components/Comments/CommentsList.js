@@ -9,15 +9,18 @@ import { useRouter } from "next/router";
 const CommentsList = ({ list }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { post, removeCommentDone } = useSelector((state) => state.community);
+  const { post, removeCommentDone, addCommentDone } = useSelector(
+    (state) => state.community
+  );
   const { sanchaekRemoveCommentDone } = useSelector((state) => state.sanchaek);
   const { id } = router.query;
 
+  // console.log("listsss", list);
   useEffect(() => {
     if (removeCommentDone) {
       dispatch(communityActions.loadPostDetailRequest(id));
     }
-  }, [removeCommentDone]);
+  }, [removeCommentDone, addCommentDone]);
 
   useEffect(() => {
     if (sanchaekRemoveCommentDone) {
