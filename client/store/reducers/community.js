@@ -202,8 +202,6 @@ const communitySlice = createSlice({
       state.likePostLoading = true;
       state.likePostError = null;
       state.likePostDone = false;
-      // console.log("like", action.payload);
-      state.commentId = action.payload;
     },
     likePostSuccess(state, action) {
       state.post.likeCount =
@@ -235,9 +233,6 @@ const communitySlice = createSlice({
             action.payload.data === "like"
               ? parseInt(v.commentLikeCount) + 1
               : parseInt(v.commentLikeCount) - 1;
-          // console.log("cmt", v);
-          // console.log("id", state.commentId);
-          // console.log("count", v.commentLikeCount);
         }
       });
       state.likeCommentLoading = false;

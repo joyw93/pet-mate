@@ -34,7 +34,9 @@ const CommunityPostDetail = () => {
   const [like, setLike] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { post, loadPostDetailDone } = useSelector((state) => state.community);
+  const { post, loadPostDetailDone, addCommentDone } = useSelector(
+    (state) => state.community
+  );
   const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const commentInputRef = useRef();

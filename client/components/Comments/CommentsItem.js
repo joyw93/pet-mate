@@ -71,11 +71,11 @@ const CommentsItem = ({ comment, onClick }) => {
       alert("로그인이 필요합니다.");
       return router.push("/login");
     }
-    console.log("like111", cmtLike);
+    // console.log("like111", cmtLike);
 
-    setCmtLike(!cmtLike);
     dispatch(communityActions.likeCommentRequest(comment.id));
-    console.log("like222", cmtLike);
+    setCmtLike(!cmtLike);
+    // console.log("like222", cmtLike);
     // console.log("comment", comment);
   }, [cmtLike]);
 
@@ -100,11 +100,15 @@ const CommentsItem = ({ comment, onClick }) => {
           </span>
           <span>·</span>
           <span id="like_comment" onClick={handleLike}>
-            {comment?.commentLikeCount}
             {cmtLike ? (
               <img src={likeIcon} alt="좋아요" />
             ) : (
               <img src={unlikeIcon} alt="안좋아요" />
+            )}
+            {comment.commentLikeCount > 0 ? (
+              <span>{comment.commentLikeCount}</span>
+            ) : (
+              <span>0</span>
             )}
           </span>
           {comment.author?.id === me?.id ? (
