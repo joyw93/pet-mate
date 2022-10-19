@@ -171,6 +171,7 @@ const communitySlice = createSlice({
     },
     addCommentSuccess(state, action) {
       state.post.comments.push(action.payload.data);
+      console.log("added", action.payload.data);
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },
@@ -201,8 +202,6 @@ const communitySlice = createSlice({
       state.likePostLoading = true;
       state.likePostError = null;
       state.likePostDone = false;
-      // console.log("like", action.payload);
-      state.commentId = action.payload;
     },
     likePostSuccess(state, action) {
       state.post.likeCount =
@@ -232,10 +231,8 @@ const communitySlice = createSlice({
         if (v.id === state.commentId) {
           v.commentLikeCount =
             action.payload.data === "like"
-              ? v.commentLikeCount + 1
-              : v.commentLikeCount - 1;
-          console.log("id", state.commentId);
-          console.log("count", v.commentLikeCount);
+              ? parseInt(v.commentLikeCount) + 1
+              : parseInt(v.commentLikeCount) - 1;
         }
       });
       state.likeCommentLoading = false;

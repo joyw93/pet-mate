@@ -3,21 +3,23 @@ import { communityActions } from "../../store/reducers/community";
 import CommentsItem from "./CommentsItem";
 import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 
 const CommentsList = ({ list }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { post, removeCommentDone } = useSelector((state) => state.community);
+  const { post, removeCommentDone, addCommentDone } = useSelector(
+    (state) => state.community
+  );
   const { sanchaekRemoveCommentDone } = useSelector((state) => state.sanchaek);
   const { id } = router.query;
 
-  useEffect(() => {
-    if (removeCommentDone) {
+  useLayoutEffect(() => {
+    if (removeCommentDone || addCommentDone) {
       dispatch(communityActions.loadPostDetailRequest(id));
     }
-  }, [removeCommentDone]);
+  }, [removeCommentDone, addCommentDone]);
 
   useEffect(() => {
     if (sanchaekRemoveCommentDone) {

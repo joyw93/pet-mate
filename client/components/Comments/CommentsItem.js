@@ -54,29 +54,29 @@ const CommentsItem = ({ comment, onClick }) => {
   useEffect(() => {
     if (!me) {
       setCmtLike(false);
-      console.log("notMe");
       return;
     }
     if (comment && comment.likes) {
       comment.likes.forEach((likers) => {
         if (likers.userId === me.id) {
-          setCmtLike(true);
-          console.log(likers.userId, me.id, cmtLike);
-          return;
+          // console.log("likers info", likers.userId, me.id, cmtLike);
+          return setCmtLike(true);
         }
       });
     }
-    console.log(comment);
-  }, [me, comment]);
+  }, [me, loadPostDetailDone]);
 
   const handleLike = useCallback(() => {
     if (!me) {
       alert("로그인이 필요합니다.");
       return router.push("/login");
     }
+    // console.log("like111", cmtLike);
+
     dispatch(communityActions.likeCommentRequest(comment.id));
     setCmtLike(!cmtLike);
-    console.log("like??", cmtLike);
+    // console.log("like222", cmtLike);
+    // console.log("comment", comment);
   }, [cmtLike]);
 
   return (
@@ -100,11 +100,15 @@ const CommentsItem = ({ comment, onClick }) => {
           </span>
           <span>·</span>
           <span id="like_comment" onClick={handleLike}>
-            {comment.commentLikeCount}
             {cmtLike ? (
               <img src={likeIcon} alt="좋아요" />
             ) : (
               <img src={unlikeIcon} alt="안좋아요" />
+            )}
+            {comment.commentLikeCount > 0 ? (
+              <span>{comment.commentLikeCount}</span>
+            ) : (
+              <span>0</span>
             )}
           </span>
           {comment.author?.id === me?.id ? (
