@@ -197,7 +197,8 @@ const communitySlice = createSlice({
       state.removeCommentLoading = false;
       state.removeCommentError = action.payload.error;
     },
-    //좋아요
+
+    //게시글 좋아요
     likePostRequest(state, action) {
       state.likePostLoading = true;
       state.likePostError = null;
@@ -219,6 +220,7 @@ const communitySlice = createSlice({
     likePostReset(state, action) {
       state.likePostDone = false;
     },
+
     //댓글 좋아요
     likeCommentRequest(state, action) {
       state.likeCommentLoading = true;

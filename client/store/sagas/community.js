@@ -140,6 +140,7 @@ function* likePost(action) {
     yield put(communityActions.likePostFailure(err.response.data));
   }
 }
+
 //댓글 좋아요
 function likeCommentAPI(data) {
   return axios.get(`${serverUrl}/community/comment/${data}/like`, {
