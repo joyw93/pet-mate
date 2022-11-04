@@ -5,6 +5,7 @@ import { sanchaekActions } from "../../store/reducers/sanchaek";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const CommentsList = ({ list }) => {
   const dispatch = useDispatch();

@@ -140,6 +140,7 @@ function* likePost(action) {
     yield put(communityActions.likePostFailure(err.response.data));
   }
 }
+
 //댓글 좋아요
 function likeCommentAPI(data) {
   return axios.get(`${serverUrl}/community/comment/${data}/like`, {
@@ -171,6 +172,28 @@ function* updatePost(action) {
   } catch (err) {
     console.error(err);
     yield put(communityActions.updatePostFailure(err.response.data));
+  }
+}
+
+//대댓글 작성
+function addReplyAPI(data) {
+  return axios.post(
+    `${serverUrl}/community/${data.postId}/${data.commentId}/comment`,
+    data,
+    {
+      withCredentials: true,
+    }
+  );
+}
+
+function* addReply(action) {
+  try {
+    const { data } = yield call(addReplyAPI, action.payload);
+    yield put(communityActions.addReplySuccess(data));
+    console.log("댓글데이터", data);
+  } catch (err) {
+    console.error(err);
+    yield put(communityActions.addReplyFailure(err.response.data));
   }
 }
 
@@ -213,6 +236,10 @@ function* watchUpdatePost() {
   yield takeLatest(communityActions.updatePostRequest, updatePost);
 }
 
+function* watchAddReply() {
+  yield takeLatest(communityActions.addReplyRequest, addReply);
+}
+
 export default function* communitySaga() {
   yield all([
     fork(watchAddPost),
@@ -225,5 +252,6 @@ export default function* communitySaga() {
     fork(watchLikePost),
     fork(watchLikeComment),
     fork(watchUpdatePost),
+    fork(watchAddReply),
   ]);
 }

@@ -48,6 +48,10 @@ export const initialState = {
   likeCommentLoading: false,
   likeCommentDone: false,
   likeCommentError: null,
+
+  addReplyLoading: false,
+  addReplyDone: false,
+  addReplyError: null,
 };
 
 const communitySlice = createSlice({
@@ -171,7 +175,7 @@ const communitySlice = createSlice({
     },
     addCommentSuccess(state, action) {
       state.post.comments.push(action.payload.data);
-      console.log("added", action.payload.data);
+      // console.log("added", action.payload.data);
       state.addCommentLoading = false;
       state.addCommentDone = true;
     },
@@ -197,7 +201,8 @@ const communitySlice = createSlice({
       state.removeCommentLoading = false;
       state.removeCommentError = action.payload.error;
     },
-    //좋아요
+
+    //게시글 좋아요
     likePostRequest(state, action) {
       state.likePostLoading = true;
       state.likePostError = null;
@@ -219,6 +224,7 @@ const communitySlice = createSlice({
     likePostReset(state, action) {
       state.likePostDone = false;
     },
+
     //댓글 좋아요
     likeCommentRequest(state, action) {
       state.likeCommentLoading = true;
@@ -245,6 +251,23 @@ const communitySlice = createSlice({
     },
     likeCommentReset(state, action) {
       state.likeCommentDone = false;
+    },
+
+    //대댓글 추가
+    addReplyRequest(state, action) {
+      state.addReplyLoading = true;
+      state.addReplyDone = false;
+      state.addReplyError = null;
+    },
+    addReplySuccess(state, action) {
+      state.post.comments.push(action.payload.data);
+      console.log("reply added", action.payload.data);
+      state.addReplyLoading = false;
+      state.addReplyDone = true;
+    },
+    addReplyFailure(state, action) {
+      state.addReplyLoading = false;
+      state.addReplyError = action.payload.error;
     },
   },
 });

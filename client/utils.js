@@ -24,3 +24,25 @@ export const getElapsedTime = (createdAt) => {
     return "방금 전";
   }
 };
+
+export const getCommentReply = () => {
+  const cmtList = [...post.comments];
+  cmtList.forEach((item) => {
+    if (!item.parentId) {
+      item = {
+        ...item,
+        reply: [],
+      };
+    } else {
+      const parent = cmtList.find((comment) => comment.id === item.parentId);
+      console.log("찾기", parent, item);
+      parent = {
+        ...parent,
+        reply: [],
+      };
+    }
+  });
+
+  // const commentList = cmtList.filter((comment) => comment.parentId == null);
+  // console.log("댓글들", commentList);
+};
