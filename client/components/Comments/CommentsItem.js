@@ -15,26 +15,26 @@ import { useState, useCallback, useEffect } from "react";
 import { communityActions } from "../../store/reducers/community";
 import { useRouter } from "next/router";
 
-const replyArr = [
-  {
-    id: 1,
-    content: "testtest",
-    author: {
-      id: 1,
-      nickname: "test1",
-    },
-    createdAt: "2022-08-19T09:50:01.140Z",
-  },
-  {
-    id: 2,
-    content: "testtest2",
-    author: {
-      id: 2,
-      nickname: "test2",
-    },
-    createdAt: "2022-08-23T07:59:36.210Z",
-  },
-];
+// const replyArr = [
+//   {
+//     id: 1,
+//     content: "testtest",
+//     author: {
+//       id: 1,
+//       nickname: "test1",
+//     },
+//     createdAt: "2022-08-19T09:50:01.140Z",
+//   },
+//   {
+//     id: 2,
+//     content: "testtest2",
+//     author: {
+//       id: 2,
+//       nickname: "test2",
+//     },
+//     createdAt: "2022-08-23T07:59:36.210Z",
+//   },
+// ];
 
 const CommentsItem = ({ comment, onClick }) => {
   const likeIcon = "../img/filled_heart2.png";
@@ -123,8 +123,8 @@ const CommentsItem = ({ comment, onClick }) => {
         </CommentReplyInputWrapper>
       ) : null}
       <CommentReplyWrapper>
-        {replyArr &&
-          replyArr
+        {comment.reply &&
+          comment.reply
             .slice(0)
             .reverse()
             .map((reply) => (

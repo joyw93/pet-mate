@@ -22,7 +22,7 @@ import {
   PostInfoWrapper,
 } from "./styled";
 import CommentsList from "../Comments/CommentsList";
-import { getElapsedTime } from "../../utils";
+import { getElapsedTime, getCommentReply } from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { communityActions } from "../../store/reducers/community";
@@ -32,6 +32,7 @@ const CommunityPostDetail = () => {
   const unlikeIcon = "../img/heart2.png";
   const [cmtContent, setCmtContent] = useState("");
   const [like, setLike] = useState(false);
+  const [commentList, setCommentList] = useState([]);
   const router = useRouter();
   const { id } = router.query;
   const { post, loadPostDetailDone, addCommentDone } = useSelector(
@@ -56,6 +57,11 @@ const CommunityPostDetail = () => {
       dispatch(communityActions.loadPostDetailRequest(id));
     }
   }, [router.isReady, post]);
+
+  // 댓글, 대댓글 정렬
+  useEffect(() => {
+    if (post && post.comments) setCommentList(getCommentReply(post.comments));
+  }, [post, loadPostDetailDone]);
 
   // 내가 좋아요 누른 글 표시
   useEffect(() => {
@@ -215,7 +221,7 @@ const CommunityPostDetail = () => {
             </KeywordWrapper>
             <CommentWrapper>
               <h2>
-                댓글 <span>{post.comments.length}</span>
+                댓글 <span>{commentList.length}</span>
               </h2>
               <CommentInput>
                 <input
@@ -228,7 +234,7 @@ const CommunityPostDetail = () => {
                 />
                 <Button onClick={handleCmtContent}>입력</Button>
               </CommentInput>
-              {post.comments ? <CommentsList list={post.comments} /> : null}
+              {commentList ? <CommentsList list={commentList} /> : null}
             </CommentWrapper>
           </div>
         </PostDetailContainer>
