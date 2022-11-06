@@ -25,24 +25,19 @@ export const getElapsedTime = (createdAt) => {
   }
 };
 
-export const getCommentReply = () => {
-  const cmtList = [...post.comments];
-  cmtList.forEach((item) => {
-    if (!item.parentId) {
+export const getCommentReply = (comments) => {
+  const cmtList = [];
+  comments.forEach((item) => {
+    if (item.depth === 0) {
       item = {
         ...item,
         reply: [],
       };
+      cmtList.push(item);
     } else {
       const parent = cmtList.find((comment) => comment.id === item.parentId);
-      console.log("찾기", parent, item);
-      parent = {
-        ...parent,
-        reply: [],
-      };
+      parent?.reply?.push(item);
     }
   });
-
-  // const commentList = cmtList.filter((comment) => comment.parentId == null);
-  // console.log("댓글들", commentList);
+  return cmtList;
 };
